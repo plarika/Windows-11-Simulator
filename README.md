@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.5 Desktop & Window Manager 2.0** — Snap Layouts, Snap Groups, previews reais, ambientes virtuais avançados e Desktop reposicionável.
+**V7.6 Real Device Integration** — Centro do dispositivo real, estado em tempo real, permissões, armazenamento e diagnóstico exportável.
 
 ## Funcionalidades
 
@@ -270,3 +270,19 @@ Primeiro passo de integração com funções reais do dispositivo:
 - ícones reais de C:/Desktop aparecem no ambiente de trabalho
 - ícones do Desktop podem ser reposicionados e a posição fica guardada por perfil
 - menu de contexto do Desktop com nova pasta, novo documento, atualizar e ordenar
+
+## V7.6 Real Device Integration
+
+- Centro do dispositivo real acessível pela taskbar, Quick Settings e Definições
+- rede online/offline em tempo real
+- Connection API quando exposta: effectiveType, downlink, RTT e Data Saver
+- bateria e carregamento quando Battery Status API está disponível
+- CPU lógica, memória aproximada, touch points e informação de ecrã exposta pelo browser
+- uso/quota de armazenamento e armazenamento persistente
+- centro de permissões para notificações, câmara, microfone, localização e clipboard
+- nenhum pedido de permissão é feito automaticamente
+- resumo de dispositivos media sem revelar labels antes da autorização
+- matriz de capacidades reais do navegador
+- estado reativo para bateria, rede, fullscreen, visibilidade e dispositivos media
+- relatório JSON de diagnóstico sem coordenadas de localização, conteúdo do clipboard ou credenciais
+- novo Diagnóstico V7.6 em Informações do Sistema

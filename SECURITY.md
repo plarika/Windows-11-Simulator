@@ -62,3 +62,7 @@ A seleção múltipla e as operações em lote da V7.4 atuam no filesystem virtu
 ## Window Manager V7.5
 
 Os previews de Alt+Tab, Task View e taskbar são clones visuais sanitizados da interface local. Iframes, vídeo, áudio e canvas não são executados novamente dentro dos previews. Snap Layouts e ambientes virtuais atuam apenas nas janelas do simulador e não controlam janelas reais do sistema operativo.
+
+## Real Device Integration V7.6
+
+O Centro do dispositivo mostra apenas dados que o navegador expõe à aplicação. Não tenta obter identificadores ocultos nem contorna permissões. Câmara, microfone, notificações e localização só são solicitados após uma ação explícita do utilizador. O relatório de diagnóstico não inclui coordenadas de localização, conteúdo da área de transferência, credenciais, PINs ou palavras-passe. Métricas de rede como downlink e RTT são estimativas da Network Information API quando o browser as disponibiliza.

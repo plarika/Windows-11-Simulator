@@ -138,7 +138,7 @@
   registerServiceWorker();
 
   globalThis.RealPlatformBridge=Object.freeze({
-    version:"7.5.0",
+    version:"7.6.0",
     notificationSupported,
     requestNotificationPermission,
     sendRealNotification,
