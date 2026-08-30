@@ -453,7 +453,13 @@
       if(detail)detail.textContent=info.detail;
     });
     const qb=$("#quick-btn");
-    if(qb)qb.textContent=(navigator.onLine?"📶":"○")+" 🔊";
+    if(qb){
+      if(globalThis.Win11SystemTray?.refresh){
+        globalThis.Win11SystemTray.refresh().catch(()=>{});
+      }else{
+        qb.textContent=(navigator.onLine?"📶":"○")+" 🔊";
+      }
+    }
   }
 
   const previousSettings=globalThis.renderSettingsPageV5;
@@ -479,7 +485,7 @@
   installQuickSettings();
 
   globalThis.Win11DesktopIntegration=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     extensionOf,
     categoryOf,
     defaultAppFor,
@@ -498,7 +504,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     step:9,
     features:[
       "real-file-open","real-file-save","download-fallback",

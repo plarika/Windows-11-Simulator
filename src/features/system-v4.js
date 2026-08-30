@@ -22,15 +22,18 @@ function v4MigrateState(){
 }
 
 function applyState(){
-  $("#app").style.background=WALLPAPERS[state.wallpaper]||WALLPAPERS[0];
-  $("#app").classList.toggle("theme-dark",state.theme==="dark");
-  $("#desktop").style.filter=`brightness(${state.brightness/100})`;
-  $("#brightness").value=state.brightness;
-  $("#volume").value=state.volume;
-  syncQuick();
-  renderNotifications();
-  renderRecommended();
-  renderClipboard();
+  const app=$("#app"),desktop=$("#desktop"),brightness=$("#brightness"),volume=$("#volume");
+  if(app){
+    app.style.background=WALLPAPERS[state.wallpaper]||WALLPAPERS[0];
+    app.classList.toggle("theme-dark",state.theme==="dark");
+  }
+  if(desktop)desktop.style.filter=`brightness(${state.brightness/100})`;
+  if(brightness)brightness.value=state.brightness;
+  if(volume)volume.value=state.volume;
+  try{syncQuick()}catch{}
+  try{renderNotifications()}catch{}
+  try{renderRecommended()}catch{}
+  try{renderClipboard()}catch{}
   const d=new Date();
   if($("#widget-day"))$("#widget-day").textContent=d.getDate();
   if($("#widget-date"))$("#widget-date").textContent=d.toLocaleDateString("pt-PT",{weekday:"long",month:"long"});

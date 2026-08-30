@@ -113,7 +113,7 @@
   }
 
   globalThis.RealClipboardBridge=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     canNativeRead,
     canNativeWrite,
     writeText,
@@ -262,7 +262,7 @@
   };
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     step:2,
     features:[
       "real-file-open",

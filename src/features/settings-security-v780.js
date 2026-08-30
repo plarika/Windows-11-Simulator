@@ -490,7 +490,7 @@
   applyPersonalization();
 
   globalThis.Win11Personalization=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     accents:[...ACCENTS],
     wallpaperCount:WALLPAPERS_V78.length,
     apply:applyPersonalization,
@@ -498,7 +498,7 @@
     get state(){ensureState();return clone(state.personalizationV78)}
   });
   globalThis.Win11SecurityCenter=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     runScan,
     createTestItem,
     resolveThreat,
@@ -512,7 +512,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.8.1",
+    version:"7.9.0",
     step:17,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

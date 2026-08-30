@@ -183,9 +183,9 @@
   $$(".window").forEach(decorateWindow);
   decorateSearch(document);
 
-  document.documentElement.dataset.simVersion="7.8.1";
+  document.documentElement.dataset.simVersion="7.9.0";
   globalThis.Win11Realism={
-    version:"7.8.1",
+    version:"7.9.0",
     iconFor,
     refresh(){populateDesktop();populateStart();setupTray();$$(".window").forEach(decorateWindow);decorateSearch(document)}
   };

@@ -77,3 +77,9 @@ O motor de tarefas da V7.7 é interno ao simulador e apenas executa ações Java
 O Windows Security V7.8 é um subsistema interno do simulador. As verificações analisam exclusivamente o filesystem virtual guardado no estado do perfil e procuram apenas o marcador inofensivo `WIN11_SIMULATOR_TEST_THREAT`, criado pelo próprio simulador para testes. Não são lidos ficheiros do Windows anfitrião, pastas montadas pelo File System Access API, processos, Registry, Microsoft Defender, TPM, Secure Boot ou regras reais do Windows Firewall.
 
 Os controlos de firewall, SmartScreen, proteção em tempo real, cloud, tamper e ransomware são estados virtuais persistentes. Nenhuma destas opções modifica políticas ou definições do sistema operativo real. O diagnóstico do ambiente web limita-se a sinais expostos pelo browser, como `isSecureContext`, `navigator.onLine` e disponibilidade de IndexedDB.
+
+## System Tray and Quick Settings V7.9
+
+O System Tray V7.9 apenas observa sinais que o navegador disponibiliza explicitamente. O estado de rede usa `navigator.onLine` e, quando disponível, a Network Information API. O estado de bateria usa a Battery Status API quando exposta pelo navegador. Nenhum destes controlos liga/desliga Wi-Fi, Bluetooth, interfaces de rede ou bateria do dispositivo.
+
+Volume, brilho, Bluetooth e luz noturna são controlos virtuais do simulador. Fullscreen e Wake Lock usam APIs Web reais apenas após uma ação do utilizador e quando suportadas pelo navegador. O indicador de privacidade apenas observa streams MediaStream já autorizados e ativos dentro da própria página; não enumera nem captura dispositivos em segundo plano.

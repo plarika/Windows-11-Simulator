@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.8.1 Shell Icons Fix** — ícones SVG consistentes no Ambiente de Trabalho e botão de energia independente de fontes.
+**V7.9.0 Shell Icons Fix** — ícones SVG consistentes no Ambiente de Trabalho e botão de energia independente de fontes.
 
 ## Funcionalidades
 
@@ -327,7 +327,7 @@ Primeiro passo de integração com funções reais do dispositivo:
 - integração das deteções e alterações críticas com o Centro de Notificações V7.7
 - indicadores do browser como Secure Context, rede e IndexedDB identificados explicitamente como ambiente web
 
-## V7.8.1 Shell Icons Fix
+## V7.9.0 Shell Icons Fix
 
 - substituição dos emoji do Ambiente de Trabalho por SVGs internos
 - ícones distintos para Este PC, Documentos, Edge, Reciclagem e Definições
@@ -336,3 +336,22 @@ Primeiro passo de integração com funções reais do dispositivo:
 - botão de energia redesenhado em CSS sem depender do glifo Unicode U+23FB
 - aria-label no botão de energia
 - testes contra regressão para SVGs e menu de energia
+
+## V7.9 System Tray & Quick Settings V2
+
+- cluster unificado de rede, volume e bateria na taskbar
+- ícones SVG internos e independentes de emoji/fontes
+- estado online/offline real do browser
+- tipo efetivo de ligação e downlink estimado quando Network Information API está disponível
+- estado e percentagem reais de bateria quando Battery Status API está disponível
+- Quick Settings V2 reconstruído como um único painel
+- volume e brilho virtuais com sliders integrados
+- Bluetooth virtual explicitamente identificado
+- Luz noturna virtual com efeito visual no desktop
+- integração com Não incomodar / Focus Assist
+- integração com Fullscreen API e Screen Wake Lock quando suportados
+- tray overflow com Segurança, Centro do dispositivo, OneDrive e atividade em background
+- indicador de privacidade quando streams autorizados de câmara/microfone estão ativos
+- Win+A abre Definições rápidas
+- Win+N abre Notificações
+- estados reais e virtuais identificados separadamente no painel
