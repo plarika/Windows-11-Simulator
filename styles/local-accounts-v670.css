@@ -302,3 +302,50 @@
     width:100%;
   }
 }
+
+.session-avatar.has-image{overflow:hidden;background:#dfe7ee;padding:0}
+.session-avatar.has-image img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-management-card{display:grid;gap:14px}
+.profile-current{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;
+  padding:14px;border:1px solid #e0e5e9;border-radius:10px;background:rgba(255,255,255,.55)
+}
+.profile-current-meta{display:flex;flex-direction:column;gap:3px;min-width:0}
+.profile-current-meta>strong{font-size:18px;font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.profile-current-meta>small{font-size:10px;color:#6b7580}
+.profile-current-actions{grid-column:1/-1;display:flex;gap:7px;flex-wrap:wrap}
+.profile-section{
+  padding:13px;border:1px solid #e2e6ea;border-radius:10px;background:rgba(255,255,255,.38)
+}
+.profile-section>strong{display:block;font-size:13px}
+.profile-section>p{margin:5px 0 10px;color:#67717b;font-size:11px;line-height:1.45}
+.profile-select-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  color:#3e4852;font-size:12px
+}
+.profile-select-row select{
+  min-width:150px;height:34px;padding:0 8px;border:1px solid #cbd3da;border-radius:6px;
+  background:#fff;color:#20262c
+}
+.profile-account-row{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:9px;align-items:center}
+.danger-soft{color:#a52b22!important}
+.dialog-input{
+  width:100%;box-sizing:border-box;margin-top:5px;height:36px;padding:0 9px;
+  border:1px solid #c9d1d8;border-bottom:2px solid #1689d8;border-radius:5px
+}
+#app.theme-dark .profile-current,
+#app.theme-dark .profile-section{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.09)}
+#app.theme-dark .profile-current-meta>small,
+#app.theme-dark .profile-section>p{color:#b9c1c9}
+#app.theme-dark .profile-select-row{color:#e5e8eb}
+#app.theme-dark .profile-select-row select,
+#app.theme-dark .dialog-input{background:#292e35;color:#f5f7f9;border-color:#505861}
+@media(max-width:720px){
+  .profile-current{grid-template-columns:auto minmax(0,1fr);padding:11px}
+  .profile-current-actions{display:grid;grid-template-columns:1fr 1fr}
+  .profile-current-actions .sys-button:last-child:nth-child(odd){grid-column:1/-1}
+  .profile-select-row{align-items:stretch;flex-direction:column}
+  .profile-select-row select{width:100%}
+  .profile-account-row{grid-template-columns:auto minmax(0,1fr)}
+  .profile-account-row .danger-soft{grid-column:1/-1}
+}

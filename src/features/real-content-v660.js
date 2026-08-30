@@ -130,6 +130,104 @@
     return count;
   }
 
+  function bytesToBase64(bytes){
+    let out="";
+    const chunk=0x8000;
+    for(let i=0;i<bytes.length;i+=chunk){
+      out+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+    }
+    return btoa(out);
+  }
+
+  function base64ToBytes(value){
+    const raw=atob(String(value||""));
+    const out=new Uint8Array(raw.length);
+    for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
+    return out;
+  }
+
+  async function exportOwnerBackup(ownerId,{maxBytes=67108864}={}){
+    if(!ownerId)return {records:[],totalBytes:0};
+    const db=await openDB();
+    const owned=[];
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,"readonly");
+      const req=tx.objectStore(STORE).openCursor();
+      req.onsuccess=()=>{
+        const cursor=req.result;
+        if(!cursor)return;
+        const record=cursor.value;
+        if(record?.ownerId===ownerId)owned.push(record);
+        cursor.continue();
+      };
+      req.onerror=()=>reject(req.error||new Error("Falha ao preparar backup dos ficheiros."));
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error||new Error("Falha ao preparar backup dos ficheiros."));
+    });
+    const totalBytes=owned.reduce((n,r)=>n+(Number(r.size)||Number(r.blob?.size)||0),0);
+    if(totalBytes>maxBytes){
+      throw new Error("Os ficheiros reais deste perfil excedem 64 MB. Remova ou exporte ficheiros grandes antes de criar o backup completo.");
+    }
+    const records=[];
+    for(const record of owned){
+      const bytes=new Uint8Array(await record.blob.arrayBuffer());
+      records.push({
+        sourceId:record.id,
+        name:record.name||"ficheiro",
+        type:record.type||record.blob.type||"application/octet-stream",
+        size:bytes.byteLength,
+        lastModified:Number(record.lastModified)||Date.now(),
+        data:bytesToBase64(bytes)
+      });
+    }
+    return {records,totalBytes};
+  }
+
+  async function importOwnerBackup(ownerId,records){
+    if(!ownerId)throw new Error("Sessão de utilizador necessária.");
+    const db=await openDB();
+    const idMap={};
+    const created=[];
+    try{
+      for(const item of Array.from(records||[])){
+        const newId="real-"+Date.now()+"-"+Math.random().toString(36).slice(2);
+        const bytes=base64ToBytes(item.data);
+        const blob=new Blob([bytes],{type:item.type||"application/octet-stream"});
+        const record={
+          id:newId,
+          ownerId,
+          blob,
+          name:item.name||"ficheiro",
+          type:item.type||blob.type||"application/octet-stream",
+          size:blob.size,
+          lastModified:Number(item.lastModified)||Date.now()
+        };
+        await new Promise((resolve,reject)=>{
+          const tx=db.transaction(STORE,"readwrite");
+          tx.objectStore(STORE).put(record);
+          tx.oncomplete=resolve;
+          tx.onerror=()=>reject(tx.error||new Error("Falha ao restaurar ficheiro real."));
+          tx.onabort=()=>reject(tx.error||new Error("Restauro de ficheiro cancelado."));
+        });
+        idMap[item.sourceId]=newId;
+        created.push(newId);
+      }
+      return {idMap,created};
+    }catch(err){
+      for(const id of created){
+        try{
+          await new Promise(resolve=>{
+            const tx=db.transaction(STORE,"readwrite");
+            tx.objectStore(STORE).delete(id);
+            tx.oncomplete=resolve;
+            tx.onerror=resolve;
+          });
+        }catch{}
+      }
+      throw err;
+    }
+  }
+
   function uniqueName(folder,name){
     const files=ensureFolder(folder);
     if(!(name in files))return name;
@@ -477,12 +575,14 @@
   }
 
   globalThis.RealContentBridge=Object.freeze({
-    version:"6.8.0",
+    version:"6.9.0",
     putBlob,
     getRecord,
     deleteRecord,
     claimLegacyBlobs,
     purgeOwnerBlobs,
+    exportOwnerBackup,
+    importOwnerBackup,
     cleanupVirtualValue,
     cleanupVirtualFolder,
     importFileToVirtual,
@@ -649,7 +749,7 @@
   };
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.8.0",
+    version:"6.9.0",
     step:5,
     features:[
       "real-file-open","real-file-save","download-fallback",

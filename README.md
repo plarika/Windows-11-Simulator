@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.8 Real Device Tools** — microfone, câmara, captura de ecrã, informações reais do dispositivo e armazenamento persistente.
+**V6.9 Profile & Recovery** — gestão avançada de contas, avatar, alteração de credencial, backup/restauro e bloqueio automático.
 
 ## Funcionalidades
 
@@ -165,3 +165,17 @@ Primeiro passo de integração com funções reais do dispositivo:
 - modo ecrã completo real
 - rede online/offline refletida através de eventos reais do browser
 - todas as permissões sensíveis continuam a exigir ação explícita do utilizador
+
+## V6.9 Profile & Recovery
+
+- fotografia/avatar por conta local
+- alteração do nome da conta
+- alteração segura de PIN/palavra-passe com PBKDF2-SHA-256
+- eliminação de contas inativas e limpeza dos respetivos blobs IndexedDB
+- exportação de perfil para ficheiro `.win11profile`
+- backup inclui estado virtual e até 64 MB de blobs reais do utilizador
+- o backup exclui credencial, hash e salt do login
+- restauro remapeia IDs de blobs para evitar colisões entre contas
+- bloqueio automático configurável por inatividade
+- bloqueio de sessão encerra Câmara e finaliza de forma segura o Gravador
+- terminar sessão interrompe streams sensíveis e descarta gravações ainda não concluídas

@@ -146,7 +146,7 @@
   window.addEventListener("offline",()=>notify("Rede","O dispositivo ficou offline."));
 
   globalThis.RealDeviceBridge=Object.freeze({
-    version:"6.8.0",
+    version:"6.9.0",
     formatBytes,
     getStorageInfo,
     requestPersistentStorage,
@@ -207,6 +207,7 @@
     let animationFrame=null;
     let latest=null;
     let latestUrl=null;
+    let discardOnStop=false;
 
     function updateTime(){
       if(!startedAt)return;
@@ -265,6 +266,15 @@
         recorder.onstop=async()=>{
           stopVisuals();
           stopStream();
+          if(discardOnStop){
+            discardOnStop=false;
+            chunks=[];
+            stateEl.textContent="Interrompida";
+            toggle.textContent="Iniciar gravação";
+            toggle.disabled=false;
+            timeEl.textContent="00:00";
+            return;
+          }
           const type=recorder?.mimeType||mime||"audio/webm";
           const blob=new Blob(chunks,{type});
           if(!blob.size){
@@ -324,6 +334,23 @@
       }
     }
 
+    const onSessionLock=()=>{
+      if(recorder?.state==="recording")stopRecording();
+      else stopStream();
+      try{audio.pause()}catch{}
+    };
+    const onSessionEnd=()=>{
+      discardOnStop=true;
+      if(recorder?.state==="recording"){
+        try{recorder.stop()}catch{}
+      }
+      stopVisuals();
+      stopStream();
+      try{audio.pause()}catch{}
+    };
+    window.addEventListener("win11-session-lock",onSessionLock);
+    window.addEventListener("win11-session-end",onSessionEnd);
+
     toggle.onclick=()=>recorder?.state==="recording"?stopRecording():startRecording();
     micButton.onclick=()=>toggle.click();
 
@@ -352,6 +379,8 @@
       if(recorder?.state==="recording"){
         try{recorder.stop()}catch{}
       }
+      window.removeEventListener("win11-session-lock",onSessionLock);
+      window.removeEventListener("win11-session-end",onSessionEnd);
       stopVisuals();
       stopStream();
       if(latestUrl)URL.revokeObjectURL(latestUrl);
@@ -407,6 +436,11 @@
       switchBtn.disabled=true;
       stopBtn.disabled=true;
     }
+
+    const onSessionLock=()=>stopCamera();
+    const onSessionEnd=()=>stopCamera();
+    window.addEventListener("win11-session-lock",onSessionLock);
+    window.addEventListener("win11-session-end",onSessionEnd);
 
     async function startCamera(){
       if(!navigator.mediaDevices?.getUserMedia){
@@ -470,6 +504,8 @@
     const cleanup=setInterval(()=>{
       if(wrap.isConnected)return;
       clearInterval(cleanup);
+      window.removeEventListener("win11-session-lock",onSessionLock);
+      window.removeEventListener("win11-session-end",onSessionEnd);
       stopCamera();
       if(lastUrl)URL.revokeObjectURL(lastUrl);
     },700);
@@ -711,8 +747,8 @@
   }
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.8.0",
-    step:7,
+    version:"6.9.0",
+    step:8,
     features:[
       "real-file-open","real-file-save","download-fallback",
       "real-clipboard-write","real-clipboard-read","clipboard-manual-paste-fallback",
@@ -721,7 +757,8 @@
       "local-accounts","per-user-state","session-lock","session-signout","session-switch-user",
       "pbkdf2-credentials","broadcast-session-conflict","per-user-indexeddb-ownership",
       "real-microphone-recording","real-camera","real-screen-capture",
-      "real-device-info","persistent-storage","screen-wake-lock","fullscreen"
+      "real-device-info","persistent-storage","screen-wake-lock","fullscreen",
+      "profile-avatar","profile-rename","credential-change","profile-backup","profile-restore","account-delete","auto-lock"
     ]
   });
 })();

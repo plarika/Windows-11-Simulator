@@ -1,6 +1,6 @@
 {
   "name": "windows-11-simulator",
-  "version": "6.8.0",
+  "version": "6.9.0",
   "private": true,
   "scripts": {
     "test": "node tests/smoke.mjs"
