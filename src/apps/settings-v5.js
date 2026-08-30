@@ -21,7 +21,7 @@ function renderSettingsPageV5(box,page){
       <div class="sys-card clickable" data-sys="power"><strong>🔋 Energia e bateria</strong><p>${state.power.battery}% · ${state.power.mode}</p></div>
       <div class="sys-card clickable" data-sys="storage"><strong>💽 Armazenamento</strong><p>Gestão de discos e Sensor de Armazenamento.</p></div>
       <div class="sys-card clickable" data-sys="multitasking"><strong>▣ Multitarefas</strong><p>Snap, ambientes virtuais e Alt+Tab.</p></div>
-      <div class="sys-card clickable" data-sys="clipboard"><strong>📋 Área de transferência</strong><p>Histórico com Win+V.</p></div>
+      <div class="sys-card clickable" data-sys="clipboard"><strong>📋 Área de transferência</strong><p>Histórico virtual + ligação à área de transferência real com Win+V.</p></div>
       <div class="sys-card clickable" data-open-v5="optionalfeatures"><strong>🧩 Funcionalidades opcionais</strong><p>.NET, WSL, Sandbox e outras opções virtuais.</p></div>
       <div class="sys-card clickable" data-open-v5="recovery"><strong>🩹 Recuperação</strong><p>Opções de recuperação do simulador.</p></div>
       <div class="sys-card clickable" data-open-v5="remotedesktop"><strong>🖥️ Ambiente de Trabalho Remoto</strong><p>${state.remoteDesktop.enabled?"Ativado":"Desativado"}</p></div>

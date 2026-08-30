@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.4 Real Functions — Step 1** — Bloco de Notas com abertura e gravação de ficheiros reais mediante autorização do utilizador.
+**V6.5 Real Functions — Step 2** — área de transferência real integrada com o histórico Win+V e o Bloco de Notas.
 
 ## Funcionalidades
 
@@ -83,3 +83,13 @@ Primeiro passo de integração com funções reais do dispositivo:
 - fallback de upload/download em browsers sem essa API
 - acesso sempre depende de uma ação e autorização explícita do utilizador
 - filesystem virtual continua separado dos ficheiros reais
+
+## V6.5 Real Functions — Step 2
+
+- copiar texto do simulador para a área de transferência real do Android/Windows
+- colar texto do dispositivo para o simulador
+- integração no Bloco de Notas
+- integração no painel Win+V
+- Clipboard API em contexto HTTPS quando disponível
+- fallback de cópia e de colagem manual quando o navegador restringe leitura direta
+- sem leitura da área de transferência em segundo plano

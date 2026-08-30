@@ -1,0 +1,39 @@
+/* Windows 11 Simulator V6.5 — Real Clipboard Bridge */
+.real-clipboard-tools{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px;margin-bottom:8px;border:1px solid rgba(0,0,0,.08);
+  border-radius:8px;background:rgba(255,255,255,.56)
+}
+.real-clipboard-tools>div:first-child{display:flex;flex-direction:column;gap:2px}
+.real-clipboard-tools small{font-size:10px;color:#68727d}
+.real-clipboard-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.real-clipboard-items{display:grid;gap:7px}
+.real-clip-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;align-items:start}
+.real-clip-text{white-space:pre-wrap;word-break:break-word;grid-column:1/2}
+.real-clip-item>small{grid-column:2/3;grid-row:1;color:#7a838d;white-space:nowrap}
+.real-clip-item-actions{grid-column:1/-1;display:flex;gap:6px}
+.real-clip-item-actions button{
+  border:0;background:transparent;color:#0969aa;cursor:pointer;
+  font-size:10px;padding:3px 5px;border-radius:4px
+}
+.real-clip-item-actions button:hover{background:rgba(0,103,192,.08)}
+.real-paste-box{
+  width:100%;min-height:120px;resize:vertical;margin-top:8px;padding:10px;
+  border:1px solid #cdd4da;border-radius:6px;background:#fff;color:#1d2329;
+  font:13px "Segoe UI",system-ui,sans-serif;outline:none
+}
+.real-paste-box:focus{border-color:#1689d8;box-shadow:0 0 0 1px #1689d8}
+.real-clipboard-note{display:block;margin-top:6px;color:#737d87}
+.notepad-toolbar-real [data-copy-device],
+.notepad-toolbar-real [data-paste-device]{font-weight:500}
+#app.theme-dark .real-clipboard-tools{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.09)}
+#app.theme-dark .real-clipboard-tools small{color:#b8c0ca}
+#app.theme-dark .real-clip-item-actions button{color:#71bdf0}
+#app.theme-dark .real-paste-box{background:#25282e;color:#f2f4f6;border-color:#484e57}
+@media(max-width:720px){
+  .real-clipboard-tools{align-items:stretch;flex-direction:column}
+  .real-clipboard-actions{justify-content:stretch}
+  .real-clipboard-actions .sys-button{flex:1}
+  .real-clip-item{grid-template-columns:1fr}
+  .real-clip-item>small{grid-column:1;grid-row:auto}
+}

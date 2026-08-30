@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=6.4.0"),
+  index.includes("./favicon.svg?v=6.5.0"),
   "Versioned favicon reference"
 );
 
@@ -109,8 +109,22 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=6.4.0"), "Real file bridge loaded");
-check(index.includes("./styles/real-files-v640.css?v=6.4.0"), "Real file bridge styles loaded");
+check(index.includes("./src/features/real-files-v640.js?v=6.5.0"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=6.5.0"), "Real file bridge styles loaded");
+
+
+
+const realClipboard = readFileSync(resolve(root, "src/features/real-clipboard-v650.js"), "utf8");
+check(realClipboard.includes("navigator.clipboard?.writeText"), "Real clipboard write integration present");
+check(realClipboard.includes("navigator.clipboard?.readText"), "Real clipboard read integration present");
+check(realClipboard.includes('document.execCommand("copy")'), "Clipboard copy fallback present");
+check(realClipboard.includes("manualPasteDialog"), "Clipboard manual paste fallback present");
+check(realClipboard.includes("Ler do dispositivo"), "Win+V real clipboard read control present");
+check(realClipboard.includes("Copiar para dispositivo"), "Win+V real clipboard write control present");
+check(realClipboard.includes("Copiar dispositivo"), "Notepad real clipboard copy control present");
+check(realClipboard.includes("Colar dispositivo"), "Notepad real clipboard paste control present");
+check(index.includes("./src/features/real-clipboard-v650.js?v=6.5.0"), "Real clipboard bridge loaded");
+check(index.includes("./styles/real-clipboard-v650.css?v=6.5.0"), "Real clipboard styles loaded");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

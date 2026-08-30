@@ -4,7 +4,7 @@ function buildGetHelp(wrap){
   wrap.className="help-v5";
   const faqs=[
     ["Como abrir o Gestor de Tarefas?","Use Ctrl+Shift+Esc ou procure Gestor de Tarefas no Iniciar."],
-    ["Como usar a Área de Transferência?","Use Win+V. O histórico é virtual e fica apenas no estado do simulador."],
+    ["Como usar a Área de Transferência?","Use Win+V. O histórico virtual pode agora importar e exportar texto para a área de transferência real do dispositivo, sempre após uma ação explícita do utilizador."],
     ["O Terminal executa comandos reais?","Não. CMD e PowerShell são interpretadores virtuais isolados."],
     ["Posso alterar discos reais?","Não. Gestão de Discos trabalha apenas sobre objetos virtuais."],
     ["O Windows Update é real?","Não. A sequência de procura, transferência e reinício é simulada."]
