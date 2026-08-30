@@ -43,3 +43,7 @@ NÃ£o sÃ£o recolhidas credenciais reais e o terminal nÃ£o executa comandos 
 Projeto educacional e experimental. NÃ£o Ã© afiliado, aprovado ou suportado pela Microsoft.
 Windows e Windows 11 sÃ£o marcas da Microsoft Corporation.
 
+
+## V6.2 Realism Layer
+
+A V6.2 melhora Taskbar, Start, janelas, ícones, system tray, lock screen, menus e animações sem alterar o modelo de segurança do simulador.
