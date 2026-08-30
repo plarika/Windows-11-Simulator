@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.2 Edge Internet Compatibility** — Google integrado, YouTube com player oficial, atalhos Web e fallback explícito para sites que bloqueiam iframe.
+**V7.3 Edge Advanced** — favoritos, histórico, downloads, separadores persistentes, tabs fixadas e atalhos de teclado.
 
 ## Funcionalidades
 
@@ -221,3 +221,19 @@ Primeiro passo de integração com funções reais do dispositivo:
 - sites conhecidos por bloquear iframe recebem uma página de compatibilidade em vez de um ecrã vazio
 - botão Abrir site real preservado em todos os modos
 - o simulador não contorna X-Frame-Options nem Content-Security-Policy dos sites
+
+## V7.3 Edge Advanced
+
+- favoritos persistentes por perfil e barra de favoritos
+- histórico de navegação pesquisável por perfil
+- página `edge://downloads` com downloads diretos quando CORS permite
+- página `edge://favorites`
+- página `edge://history`
+- página `edge://settings`
+- restaurar sessão de separadores depois de refresh
+- separadores fixados
+- duplicar separador
+- fechar outros / fechar à direita
+- reabrir separador fechado
+- atalhos Ctrl+T, Ctrl+W, Ctrl+Shift+T, Ctrl+L, Ctrl+R e Ctrl+Tab
+- Google e YouTube V7.2 mantidos

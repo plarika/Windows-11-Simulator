@@ -1,0 +1,138 @@
+/* Windows 11 Simulator V7.3 — Edge Advanced */
+.edge-v730{display:flex;flex-direction:column;height:100%;min-height:0}
+.edge-v730 .edge-real-tabs{flex:0 0 auto}
+.edge-v730-bar{flex:0 0 auto}
+.edge-v730-tabs .edge-real-tab.pinned{max-width:48px;min-width:42px}
+.edge-v730-tabs .edge-real-tab.pinned .tab-label{display:none}
+.edge-v730-tabs .edge-real-tab.pinned .tab-favicon{margin:auto}
+.edge-v730-tabs .edge-real-tab{position:relative}
+.edge-v730-tabs .edge-real-tab.active::after{
+  content:"";position:absolute;left:8px;right:8px;bottom:0;height:2px;border-radius:4px;background:#0f6cbd
+}
+.edge-v730 [data-favorite].active{color:#e0a300}
+.edge-favorites-bar{
+  flex:0 0 auto;min-height:30px;display:flex;align-items:center;gap:4px;padding:3px 8px;
+  box-sizing:border-box;border-bottom:1px solid #e5e9ed;background:#fbfcfd;overflow-x:auto
+}
+.edge-favorites-bar[hidden]{display:none}
+.edge-favorite-chip{
+  max-width:170px;min-height:24px;border:0;border-radius:5px;background:transparent;color:#2d343b;
+  display:inline-flex;align-items:center;gap:6px;padding:3px 7px;cursor:pointer;white-space:nowrap
+}
+.edge-favorite-chip:hover{background:#edf2f6}
+.edge-favorite-chip span:last-child{overflow:hidden;text-overflow:ellipsis}
+.edge-favorites-empty{padding:0 5px;color:#8a949d;font-size:9px}
+.edge-v730 .edge-real-page{flex:1;min-height:0}
+
+.edge-v730-dashboard{
+  max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+}
+.edge-v730-dashboard button{
+  min-height:82px;border:1px solid #e1e7eb;border-radius:12px;background:rgba(255,255,255,.8);
+  padding:12px;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;
+  gap:2px 10px;align-items:center;text-align:left;cursor:pointer;color:#28323b
+}
+.edge-v730-dashboard button:hover{background:#fff;box-shadow:0 4px 16px rgba(40,55,70,.07)}
+.edge-v730-dashboard button>span{grid-row:1/3;font-size:24px}
+.edge-v730-dashboard small{font-size:9px;color:#74808a}
+
+.edge-internal-page{
+  height:100%;overflow:auto;box-sizing:border-box;padding:22px 24px;background:#f7f9fb;color:#242c33
+}
+.edge-internal-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px
+}
+.edge-internal-head h2{margin:0;font-size:23px;font-weight:600}
+.edge-internal-head p{margin:4px 0 0;color:#6d7882;font-size:11px}
+.edge-internal-list{display:grid;gap:5px}
+.edge-internal-row,.edge-history-row,.edge-download-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;
+  border:1px solid #e3e8ec;border-radius:9px;background:#fff;padding:8px 10px
+}
+.edge-internal-main,.edge-history-row{
+  min-width:0;border:0;background:transparent;color:inherit;cursor:pointer;text-align:left
+}
+.edge-internal-main{
+  display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:8px;padding:0
+}
+.edge-internal-main>span:last-child,.edge-history-main,.edge-download-main{display:flex;flex-direction:column;min-width:0;gap:2px}
+.edge-internal-main strong,.edge-history-main strong,.edge-download-main strong{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px
+}
+.edge-internal-main small,.edge-history-main small,.edge-download-main small{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#727d87;font-size:9px
+}
+.edge-row-icon{font-size:18px;text-align:center}
+.edge-row-action{
+  width:28px;height:28px;border:0;border-radius:6px;background:transparent;color:#65717c;cursor:pointer
+}
+.edge-row-action:hover{background:#edf1f4}
+.edge-empty-state{
+  min-height:160px;display:grid;place-items:center;border:1px dashed #d7dee4;border-radius:10px;
+  color:#7c8791;background:rgba(255,255,255,.5);font-size:11px
+}
+.edge-internal-search{margin-bottom:10px}
+.edge-internal-search input,.edge-download-add input{
+  width:100%;height:36px;box-sizing:border-box;border:1px solid #cbd4db;border-radius:7px;
+  padding:0 10px;background:#fff;color:#20272d
+}
+.edge-history-row{grid-template-columns:30px minmax(0,1fr) auto;width:100%;text-align:left;color:inherit}
+.edge-history-row time{font-size:9px;color:#7a858f;white-space:nowrap}
+.edge-download-add{display:flex;gap:8px;margin-bottom:8px}
+.edge-download-add input{flex:1}
+.edge-download-note{
+  margin-bottom:12px;padding:7px 9px;border:1px solid #e5dfc9;border-radius:7px;
+  background:#fffbe9;color:#6f622f;font-size:9px;line-height:1.4
+}
+.edge-download-row{grid-template-columns:30px minmax(0,1fr) auto}
+.edge-download-main em{font-style:normal;font-size:9px;color:#66727c}
+.edge-download-row.failed .edge-download-main em{color:#b2382e}
+.edge-download-row.downloading .edge-download-main em{color:#0f6cbd}
+
+.edge-settings-cards{display:grid;gap:8px}
+.edge-setting-row{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin:0!important;padding:12px;border:1px solid #e1e6ea;border-radius:10px;background:#fff;color:#2b333a!important
+}
+.edge-setting-row>span{display:flex;flex-direction:column;gap:2px}
+.edge-setting-row small{font-size:9px;color:#707b85}
+.edge-setting-row input[type="checkbox"]{width:18px;height:18px}
+.edge-setting-row.vertical{align-items:flex-start;flex-direction:column}
+.edge-setting-row select{
+  width:min(320px,100%);height:34px;border:1px solid #ccd4da;border-radius:6px;padding:0 8px;background:#fff;color:#252d34
+}
+.edge-settings-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+#app.theme-dark .edge-favorites-bar{background:#25292e;border-color:#383e45}
+#app.theme-dark .edge-favorite-chip{color:#eef1f4}
+#app.theme-dark .edge-favorite-chip:hover{background:#343a41}
+#app.theme-dark .edge-v730-dashboard button{background:#292d33;border-color:#42484f;color:#f1f4f6}
+#app.theme-dark .edge-v730-dashboard small{color:#b5bec6}
+#app.theme-dark .edge-internal-page{background:#202329;color:#eff2f4}
+#app.theme-dark .edge-internal-head p{color:#b8c0c8}
+#app.theme-dark .edge-internal-row,
+#app.theme-dark .edge-history-row,
+#app.theme-dark .edge-download-row,
+#app.theme-dark .edge-setting-row{background:#292d33;border-color:#40474e;color:#f1f4f6!important}
+#app.theme-dark .edge-internal-main small,
+#app.theme-dark .edge-history-main small,
+#app.theme-dark .edge-download-main small,
+#app.theme-dark .edge-setting-row small{color:#b3bcc4}
+#app.theme-dark .edge-internal-search input,
+#app.theme-dark .edge-download-add input,
+#app.theme-dark .edge-setting-row select{background:#202329;color:#f2f4f6;border-color:#4b535b}
+#app.theme-dark .edge-empty-state{background:rgba(255,255,255,.025);border-color:#424950;color:#aeb7bf}
+#app.theme-dark .edge-download-note{background:rgba(160,125,25,.1);border-color:rgba(190,155,57,.22);color:#e2c875}
+
+@media(max-width:720px){
+  .edge-v730-bar button[data-history],.edge-v730-bar button[data-menu]{display:none}
+  .edge-v730-dashboard{grid-template-columns:1fr}
+  .edge-internal-page{padding:14px 10px}
+  .edge-internal-head{align-items:stretch;flex-direction:column}
+  .edge-internal-head .sys-button{align-self:flex-start}
+  .edge-history-row{grid-template-columns:26px minmax(0,1fr)}
+  .edge-history-row time{display:none}
+  .edge-download-add{flex-direction:column}
+  .edge-download-add .sys-button{width:100%}
+  .edge-setting-row{align-items:flex-start}
+}

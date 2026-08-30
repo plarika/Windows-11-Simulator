@@ -50,3 +50,7 @@ A V7.1 só acede a diretórios escolhidos explicitamente pelo utilizador atravé
 ## Compatibilidade Web do Edge
 
 A V7.2 continua a respeitar as políticas de incorporação dos sites. O simulador não tenta contornar X-Frame-Options ou Content-Security-Policy. O YouTube completo não é incorporado; vídeos e playlists específicos usam o player oficial em `youtube.com/embed`. Quando um site bloqueia iframe, a interface apresenta um botão explícito para abrir o endereço real num separador externo do navegador.
+
+## Downloads do Edge
+
+A página `edge://downloads` só transfere recursos por `fetch()` quando o servidor remoto permite CORS. O simulador não contorna políticas cross-origin. O conteúdo descarregado é entregue ao utilizador através de File System Access quando disponível ou por download local do browser. Histórico, favoritos e sessão do Edge ficam dentro do perfil local atual.
