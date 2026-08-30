@@ -54,3 +54,7 @@ A V7.2 continua a respeitar as políticas de incorporação dos sites. O simulad
 ## Downloads do Edge
 
 A página `edge://downloads` só transfere recursos por `fetch()` quando o servidor remoto permite CORS. O simulador não contorna políticas cross-origin. O conteúdo descarregado é entregue ao utilizador através de File System Access quando disponível ou por download local do browser. Histórico, favoritos e sessão do Edge ficam dentro do perfil local atual.
+
+## Explorer Pro V7.4
+
+A seleção múltipla e as operações em lote da V7.4 atuam no filesystem virtual do perfil atual. Pastas reais montadas continuam a usar a camada explícita File System Access da V7.1 e não são modificadas silenciosamente pela lógica de batch virtual. Ao copiar um ficheiro importado para IndexedDB, a V7.4 cria um novo Blob associado ao utilizador atual para evitar referências partilhadas perigosas entre cópias.

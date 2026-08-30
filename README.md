@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.3 Edge Advanced** — favoritos, histórico, downloads, separadores persistentes, tabs fixadas e atalhos de teclado.
+**V7.4 Explorer Pro** — seleção múltipla, operações em lote, filtros avançados, thumbnails e drag-and-drop multi-item.
 
 ## Funcionalidades
 
@@ -237,3 +237,20 @@ Primeiro passo de integração com funções reais do dispositivo:
 - reabrir separador fechado
 - atalhos Ctrl+T, Ctrl+W, Ctrl+Shift+T, Ctrl+L, Ctrl+R e Ctrl+Tab
 - Google e YouTube V7.2 mantidos
+
+## V7.4 Explorer Pro
+
+- seleção múltipla com Ctrl+clique e Shift+clique
+- caixa de seleção por arrasto em área vazia
+- Ctrl+A, Ctrl+C, Ctrl+X e Ctrl+V no Explorer
+- Delete envia vários itens para a Reciclagem
+- Shift+Delete elimina permanentemente com confirmação
+- copiar/mover vários ficheiros e pastas
+- drag-and-drop multi-item para pastas
+- F2 para mudar o nome e Alt+Enter para Propriedades
+- propriedades agregadas de múltiplos itens
+- pesquisa com filtros type:, ext:, name: e size:
+- thumbnails de imagens locais e ficheiros reais importados
+- pastas virtuais também passam pela Reciclagem
+- cópias de ficheiros IndexedDB duplicam o Blob em vez de partilhar a mesma referência
+- montagens de pastas reais da V7.1 mantidas sem alteração de permissões
