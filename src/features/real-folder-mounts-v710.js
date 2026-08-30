@@ -743,7 +743,7 @@
   }
 
   globalThis.Win11RealMounts=Object.freeze({
-    version:"7.4.0",
+    version:"7.5.0",
     supported:typeof window.showDirectoryPicker==="function",
     currentOwnerId,
     permissionState,
@@ -767,7 +767,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.4.0",
+    version:"7.5.0",
     step:10,
     features:[
       "real-file-open","real-file-save","download-fallback",

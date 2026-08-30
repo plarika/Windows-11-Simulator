@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.4 Explorer Pro** — seleção múltipla, operações em lote, filtros avançados, thumbnails e drag-and-drop multi-item.
+**V7.5 Desktop & Window Manager 2.0** — Snap Layouts, Snap Groups, previews reais, ambientes virtuais avançados e Desktop reposicionável.
 
 ## Funcionalidades
 
@@ -254,3 +254,19 @@ Primeiro passo de integração com funções reais do dispositivo:
 - pastas virtuais também passam pela Reciclagem
 - cópias de ficheiros IndexedDB duplicam o Blob em vez de partilhar a mesma referência
 - montagens de pastas reais da V7.1 mantidas sem alteração de permissões
+
+## V7.5 Desktop & Window Manager 2.0
+
+- seis Snap Layouts
+- Snap Assist para preencher espaços vazios
+- Snap Groups entre janelas do mesmo layout
+- arrastar janelas para margens, cantos e topo
+- Alt+Tab com previews reais das janelas
+- previews de janelas e Snap Groups na taskbar
+- Task View com previews reais
+- mover janelas entre ambientes por drag-and-drop ou menu
+- renomear e fechar ambientes virtuais
+- Win+Ctrl+D cria ambiente e Win+Ctrl+F4 fecha o atual
+- ícones reais de C:/Desktop aparecem no ambiente de trabalho
+- ícones do Desktop podem ser reposicionados e a posição fica guardada por perfil
+- menu de contexto do Desktop com nova pasta, novo documento, atualizar e ordenar

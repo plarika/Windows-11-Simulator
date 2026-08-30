@@ -58,3 +58,7 @@ A página `edge://downloads` só transfere recursos por `fetch()` quando o servi
 ## Explorer Pro V7.4
 
 A seleção múltipla e as operações em lote da V7.4 atuam no filesystem virtual do perfil atual. Pastas reais montadas continuam a usar a camada explícita File System Access da V7.1 e não são modificadas silenciosamente pela lógica de batch virtual. Ao copiar um ficheiro importado para IndexedDB, a V7.4 cria um novo Blob associado ao utilizador atual para evitar referências partilhadas perigosas entre cópias.
+
+## Window Manager V7.5
+
+Os previews de Alt+Tab, Task View e taskbar são clones visuais sanitizados da interface local. Iframes, vídeo, áudio e canvas não são executados novamente dentro dos previews. Snap Layouts e ambientes virtuais atuam apenas nas janelas do simulador e não controlam janelas reais do sistema operativo.
