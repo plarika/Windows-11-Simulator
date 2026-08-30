@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.7.1 Session Boot Fix** — login e registo preparados durante o boot, sem depender de refresh, mantendo contas e perfis isolados.
+**V6.7.2 First-Load Fix** — login/registo preparados no primeiro carregamento e scripts descarregados em paralelo com `defer`.
 
 ## Funcionalidades
 
@@ -128,3 +128,11 @@ Primeiro passo de integração com funções reais do dispositivo:
 - quando já existem contas, o runtime deixa de carregar ou gravar estado fora de uma sessão autenticada
 - cache PWA/service worker atualizada para forçar a nova sequência de arranque
 - o ecrã de bloqueio inicial fica preparado sob o boot para evitar um estado intermédio clicável
+
+## V6.7.2 First-Load Fix
+
+- todos os scripts do simulador usam `defer`, permitindo download em paralelo na primeira abertura
+- a ordem de execução continua preservada
+- o gestor de sessões é preparado antes de o boot desaparecer
+- o ecrã inicial mostra `A preparar sessão...`
+- cache PWA/service worker atualizada para 6.7.2
