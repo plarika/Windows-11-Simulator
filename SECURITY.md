@@ -95,3 +95,7 @@ As atualizações PWA deixam de ativar silenciosamente uma nova Service Worker q
 A pesquisa V8.1 indexa apenas aplicações, definições e o sistema de ficheiros virtual pertencente ao perfil ativo. Não percorre pastas reais montadas, não lê o conteúdo da área de transferência e não envia consultas para serviços externos. A pesquisa por conteúdo limita a análise de cada valor textual virtual para evitar trabalho excessivo no UI thread.
 
 Pins, aplicações recentes e histórico de pesquisa são guardados apenas no estado do perfil local ativo. As jump lists operam sobre aplicações e ficheiros do simulador; não executam comandos do sistema anfitrião.
+
+## Google Navigation V8.1.2
+
+A integração Google mantém o iframe sandboxed e não concede `allow-top-navigation` nem `allow-top-navigation-by-user-activation`. As pesquisas incorporadas usam `newwindow=1` para pedir ao Google que abra resultados numa nova aba/janela, caminho compatível com `allow-popups` e `allow-popups-to-escape-sandbox`. Ao usar o botão para abrir o Google completo, o parâmetro `igu` é removido antes da abertura externa. Assim, conteúdo cross-origin não recebe permissão para substituir o shell do simulador.

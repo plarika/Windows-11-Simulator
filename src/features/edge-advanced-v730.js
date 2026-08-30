@@ -710,9 +710,12 @@
       if(BASE.knownFrameBlocker(url)){renderCompatibility(url);return}
       const shell=document.createElement("div");
       shell.className="edge-site-shell edge-v720-site";
+      const isGoogle=(()=>{try{return new URL(url).hostname.toLowerCase().endsWith("google.com")}catch{return false}})();
       const note=document.createElement("div");
       note.className="edge-site-note";
-      note.innerHTML='<span>🔒 HTTPS · conteúdo Web real incorporado</span><button data-ext>Abrir site real ↗</button>';
+      note.innerHTML=isGoogle
+        ?'<span>G Google · resultados abrem numa nova aba</span><button data-ext>Abrir Google completo ↗</button>'
+        :'<span>🔒 HTTPS · conteúdo Web real incorporado</span><button data-ext>Abrir site real ↗</button>';
       const frame=document.createElement("iframe");
       frame.className="edge-tab-frame";
       frame.src=url;
@@ -827,7 +830,7 @@
   globalThis.buildEdge=buildEdgeV730;
 
   globalThis.Win11EdgeAdvanced=Object.freeze({
-    version:"8.1.1",
+    version:"8.1.2",
     ensureEdgeState,
     normalize,
     addHistory,

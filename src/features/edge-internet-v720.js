@@ -24,10 +24,12 @@
       if(url.pathname==="/"||url.pathname==="/webhp"){
         url.pathname="/webhp";
         url.searchParams.set("igu","1");
+        url.searchParams.set("newwindow","1");
         return url.href;
       }
       if(url.pathname==="/search"){
         url.searchParams.set("igu","1");
+        url.searchParams.set("newwindow","1");
         return url.href;
       }
       return url.href;
@@ -58,7 +60,7 @@
       return normalize("https://"+value);
     }
 
-    return "https://www.google.com/search?igu=1&q="+encodeURIComponent(value);
+    return "https://www.google.com/search?igu=1&newwindow=1&q="+encodeURIComponent(value);
   }
 
   function titleFor(url){
@@ -89,6 +91,14 @@
 
   function externalUrlFor(edgeUrl){
     if(edgeUrl==="edge://ouvirmusica"||String(edgeUrl||"").startsWith("edge://youtube"))return OUVIR_MUSICA_URL;
+    try{
+      const url=new URL(edgeUrl);
+      if(GOOGLE_HOSTS.has(url.hostname.toLowerCase())){
+        url.searchParams.delete("igu");
+        url.searchParams.set("newwindow","1");
+        return url.href;
+      }
+    }catch{}
     return edgeUrl;
   }
 
@@ -262,9 +272,12 @@
       }
       const shell=document.createElement("div");
       shell.className="edge-site-shell edge-v720-site";
+      const isGoogle=(()=>{try{return GOOGLE_HOSTS.has(new URL(url).hostname.toLowerCase())}catch{return false}})();
       const note=document.createElement("div");
       note.className="edge-site-note";
-      note.innerHTML='<span>🔒 HTTPS · conteúdo Web real incorporado</span><button data-ext>Abrir site real ↗</button>';
+      note.innerHTML=isGoogle
+        ?'<span>G Google · resultados abrem numa nova aba</span><button data-ext>Abrir Google completo ↗</button>'
+        :'<span>🔒 HTTPS · conteúdo Web real incorporado</span><button data-ext>Abrir site real ↗</button>';
       const frame=document.createElement("iframe");
       frame.className="edge-tab-frame";
       frame.src=url;
@@ -320,7 +333,7 @@
   globalThis.buildEdge=buildEdgeV720;
 
   globalThis.Win11EdgeInternet=Object.freeze({
-    version:"8.1.1",
+    version:"8.1.2",
     OUVIR_MUSICA_URL,
     OUVIR_MUSICA_HOSTS,
     normalize,
@@ -345,7 +358,7 @@
       "profile-avatar","profile-rename","credential-change","profile-backup","profile-restore","account-delete","auto-lock",
       "file-associations","open-with","native-share","real-print","real-network-status","real-quick-settings",
       "real-folder-mounts","real-folder-readwrite","real-folder-create","real-folder-rename","real-folder-delete","real-folder-persist",
-      "edge-google","edge-ouvir-musica","edge-music-iframe","edge-site-compatibility","edge-external-open"
+      "edge-google","edge-google-new-window-results","edge-ouvir-musica","edge-music-iframe","edge-site-compatibility","edge-external-open"
     ]
   });
 })();

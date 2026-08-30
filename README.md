@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.1.1 Ouvir Música Integration** — o atalho e a experiência YouTube do Edge foram substituídos por https://www.ouvirmusica.com.br/, mantendo migração de sessões antigas.
+**V8.1.2 Google Navigation Reliability** — pesquisas Google incorporadas usam modo de nova janela para tornar os resultados navegáveis sem permitir que um iframe substitua o simulador.
 
 ## Funcionalidades
 
@@ -394,3 +394,11 @@ Primeiro passo de integração com funções reais do dispositivo:
 - carregamento em iframe Web sandboxed com permissões de media limitadas
 - botão Abrir site real continua disponível como fallback
 - rotas antigas `edge://youtube` são migradas automaticamente
+
+## V8.1.2 Google Navigation Reliability
+
+- pesquisas Google incorporadas usam `igu=1` e `newwindow=1`
+- resultados Google podem abrir numa nova aba/janela através das permissões de popup já existentes
+- a sandbox continua sem `allow-top-navigation` e não pode substituir o simulador
+- Abrir Google completo remove o parâmetro `igu` exclusivo do modo incorporado
+- Ouvir Música e restantes integrações Web permanecem inalteradas

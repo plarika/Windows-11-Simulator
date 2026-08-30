@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v8.1.1";
+const CACHE_NAME="win11-simulator-v8.1.2";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -18,7 +18,7 @@ const PRECACHE=[
   "./styles/real-device-tools-v680.css?v=8.1.0",
   "./styles/desktop-integration-v700.css?v=8.1.0",
   "./styles/real-folder-mounts-v710.css?v=8.1.0",
-  "./styles/edge-internet-v720.css?v=8.1.1",
+  "./styles/edge-internet-v720.css?v=8.1.2",
   "./styles/edge-advanced-v730.css?v=8.1.0",
   "./styles/explorer-pro-v740.css?v=8.1.0",
   "./styles/window-manager-v750.css?v=8.1.0",
@@ -60,8 +60,8 @@ const PRECACHE=[
   "./src/features/real-device-tools-v680.js?v=8.1.0",
   "./src/features/desktop-integration-v700.js?v=8.1.0",
   "./src/features/real-folder-mounts-v710.js?v=8.1.0",
-  "./src/features/edge-internet-v720.js?v=8.1.1",
-  "./src/features/edge-advanced-v730.js?v=8.1.1",
+  "./src/features/edge-internet-v720.js?v=8.1.2",
+  "./src/features/edge-advanced-v730.js?v=8.1.2",
   "./src/features/explorer-pro-v740.js?v=8.1.0",
   "./src/features/window-manager-v750.js?v=8.1.0",
   "./src/features/real-device-integration-v760.js?v=8.1.0",
