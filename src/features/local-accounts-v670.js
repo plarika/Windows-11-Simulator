@@ -7,7 +7,8 @@
   const PROFILE_PREFIX="win11-sim-profile-v67:";
   const LEGACY_BACKUP_KEY="win11-sim-legacy-backup-v67";
   const CHANNEL_PREFIX="win11-sim-session-v67:";
-  const ITERATIONS=180000;
+  const ITERATIONS=120000;
+  const AUTH_WORKER_URL="./src/workers/auth-crypto-v673.js?v=6.7.3";
   const tabId=crypto.randomUUID?.()||("tab-"+Date.now()+"-"+Math.random().toString(36).slice(2));
 
   let activeAccount=null;
@@ -63,7 +64,17 @@
     return out;
   }
 
-  async function deriveCredential(secret,saltBase64,iterations=ITERATIONS){
+  function withTimeout(promise,ms,message){
+    let timer;
+    return Promise.race([
+      promise,
+      new Promise((_,reject)=>{
+        timer=setTimeout(()=>reject(new Error(message||"Operação excedeu o tempo limite.")),ms);
+      })
+    ]).finally(()=>clearTimeout(timer));
+  }
+
+  async function deriveCredentialMain(secret,saltBase64,iterations=ITERATIONS){
     if(!crypto.subtle)throw new Error("Web Crypto indisponível.");
     const key=await crypto.subtle.importKey(
       "raw",
@@ -85,11 +96,74 @@
     return bytesToBase64(new Uint8Array(bits));
   }
 
+  async function deriveCredentialWorker(secret,saltBase64,iterations=ITERATIONS){
+    if(typeof Worker!=="function")throw new Error("Web Worker indisponível.");
+    return new Promise((resolve,reject)=>{
+      const worker=new Worker(AUTH_WORKER_URL);
+      const id="auth-"+Date.now()+"-"+Math.random().toString(36).slice(2);
+      const timer=setTimeout(()=>{
+        try{worker.terminate()}catch{}
+        reject(new Error("A verificação demorou demasiado no worker."));
+      },10000);
+      worker.onmessage=e=>{
+        const data=e.data||{};
+        if(data.id!==id)return;
+        clearTimeout(timer);
+        try{worker.terminate()}catch{}
+        if(data.ok)resolve(data.hash);
+        else reject(new Error(data.error||"Falha na verificação do PIN."));
+      };
+      worker.onerror=e=>{
+        clearTimeout(timer);
+        try{worker.terminate()}catch{}
+        reject(new Error(e?.message||"Falha no worker de autenticação."));
+      };
+      worker.postMessage({id,secret:String(secret),saltBase64,iterations});
+    });
+  }
+
+  async function deriveCredential(secret,saltBase64,iterations=ITERATIONS){
+    try{
+      return await deriveCredentialWorker(secret,saltBase64,iterations);
+    }catch(workerError){
+      console.warn("[Sessions] auth worker fallback",workerError);
+      return withTimeout(
+        deriveCredentialMain(secret,saltBase64,iterations),
+        12000,
+        "A verificação do PIN demorou demasiado. Tente novamente."
+      );
+    }
+  }
+
   function constantTimeEqual(a,b){
     if(a.length!==b.length)return false;
     let diff=0;
     for(let i=0;i<a.length;i++)diff|=a.charCodeAt(i)^b.charCodeAt(i);
     return diff===0;
+  }
+
+  async function upgradeCredentialIfNeeded(account,secret){
+    const currentIterations=Number(account?.credential?.iterations)||ITERATIONS;
+    if(currentIterations<=ITERATIONS)return;
+    try{
+      const salt=crypto.getRandomValues(new Uint8Array(16));
+      const saltBase64=bytesToBase64(salt);
+      const hash=await deriveCredential(secret,saltBase64,ITERATIONS);
+      const accounts=readAccounts();
+      const target=accounts.find(a=>a.id===account.id);
+      if(!target)return;
+      target.credential={
+        type:"local-secret",
+        algorithm:"PBKDF2-SHA-256",
+        iterations:ITERATIONS,
+        salt:saltBase64,
+        hash
+      };
+      writeAccounts(accounts);
+      account.credential=target.credential;
+    }catch(err){
+      console.warn("[Sessions] credential upgrade skipped",err);
+    }
   }
 
   async function verifyAccount(account,secret){
@@ -99,7 +173,9 @@
       account.credential.salt,
       account.credential.iterations||ITERATIONS
     );
-    return constantTimeEqual(derived,account.credential.hash);
+    const ok=constantTimeEqual(derived,account.credential.hash);
+    if(ok)await upgradeCredentialIfNeeded(account,secret);
+    return ok;
   }
 
   function normalizedName(name){
@@ -362,10 +438,15 @@
     const login=lock.querySelector("[data-login]");
 
     async function submit(){
+      if(login.disabled)return;
+      const enteredSecret=secret.value;
       login.disabled=true;
       login.textContent="A verificar...";
+      const slowTimer=setTimeout(()=>{
+        if(login.isConnected)login.textContent="A verificar no dispositivo...";
+      },1200);
       try{
-        const ok=await verifyAccount(selected,secret.value);
+        const ok=await verifyAccount(selected,enteredSecret);
         if(!ok){
           renderLogin({selectedId:selected.id,message:"PIN/palavra-passe incorreto."});
           return;
@@ -386,11 +467,13 @@
         await finishLogin(selected,{loadProfile:true});
       }catch(err){
         renderLogin({selectedId:selected.id,message:err?.message||"Não foi possível iniciar sessão."});
+      }finally{
+        clearTimeout(slowTimer);
       }
     }
 
     login.onclick=submit;
-    secret.onkeydown=e=>{if(e.key==="Enter")submit()};
+    secret.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();submit()}};
     setTimeout(()=>secret.focus(),0);
   }
 
@@ -675,7 +758,7 @@
   bootResumePromise=Promise.resolve();
 
   globalThis.Win11SessionManager=Object.freeze({
-    version:"6.7.2",
+    version:"6.7.3",
     get activeUserId(){return activeAccount?.id||null},
     get activeUser(){return activeAccount?{id:activeAccount.id,displayName:activeAccount.displayName}:null},
     get isLocked(){return locked},
@@ -691,7 +774,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.7.2",
+    version:"6.7.3",
     step:6,
     features:[
       "real-file-open","real-file-save","download-fallback",

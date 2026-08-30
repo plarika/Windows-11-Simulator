@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.7.2 First-Load Fix** — login/registo preparados no primeiro carregamento e scripts descarregados em paralelo com `defer`.
+**V6.7.3 Android Login Fix** — autenticação PBKDF2 em Web Worker, timeout de segurança e migração de credenciais antigas.
 
 ## Funcionalidades
 
@@ -136,3 +136,12 @@ Primeiro passo de integração com funções reais do dispositivo:
 - o gestor de sessões é preparado antes de o boot desaparecer
 - o ecrã inicial mostra `A preparar sessão...`
 - cache PWA/service worker atualizada para 6.7.2
+
+## V6.7.3 Android Login Fix
+
+- PBKDF2 passa a ser executado num Web Worker dedicado
+- a interface deixa de ficar bloqueada durante a verificação no Android
+- fallback Web Crypto no thread principal com timeout
+- botão de login não permite submissões duplicadas
+- contas antigas com 180000 iterações são migradas após login válido para 120000 iterações
+- o PIN/palavra-passe continua sem ser persistido em texto simples

@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=6.7.2"),
+  index.includes("./favicon.svg?v=6.7.3"),
   "Versioned favicon reference"
 );
 
@@ -109,8 +109,8 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=6.7.2"), "Real file bridge loaded");
-check(index.includes("./styles/real-files-v640.css?v=6.7.2"), "Real file bridge styles loaded");
+check(index.includes("./src/features/real-files-v640.js?v=6.7.3"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=6.7.3"), "Real file bridge styles loaded");
 
 
 
@@ -123,8 +123,8 @@ check(realClipboard.includes("Ler do dispositivo"), "Win+V real clipboard read c
 check(realClipboard.includes("Copiar para dispositivo"), "Win+V real clipboard write control present");
 check(realClipboard.includes("Copiar dispositivo"), "Notepad real clipboard copy control present");
 check(realClipboard.includes("Colar dispositivo"), "Notepad real clipboard paste control present");
-check(index.includes("./src/features/real-clipboard-v650.js?v=6.7.2"), "Real clipboard bridge loaded");
-check(index.includes("./styles/real-clipboard-v650.css?v=6.7.2"), "Real clipboard styles loaded");
+check(index.includes("./src/features/real-clipboard-v650.js?v=6.7.3"), "Real clipboard bridge loaded");
+check(index.includes("./styles/real-clipboard-v650.css?v=6.7.3"), "Real clipboard styles loaded");
 
 
 
@@ -137,16 +137,16 @@ check(realContent.includes("data-import-files"), "Explorer real import control p
 check(realContent.includes("data-export-file"), "Explorer real export control present");
 check(realContent.includes("Abrir imagem do dispositivo"), "Photos real image control present");
 check(realContent.includes("Abrir multimédia"), "Media Player real media control present");
-check(index.includes("./src/features/real-content-v660.js?v=6.7.2"), "Real content module loaded");
-check(index.includes("./styles/real-content-v660.css?v=6.7.2"), "Real content styles loaded");
+check(index.includes("./src/features/real-content-v660.js?v=6.7.3"), "Real content module loaded");
+check(index.includes("./styles/real-content-v660.css?v=6.7.3"), "Real content styles loaded");
 
 const realPlatform = readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8");
 check(realPlatform.includes("Notification.requestPermission"), "Real notification permission integration present");
 check(realPlatform.includes("new Notification"), "Real browser notification integration present");
 check(realPlatform.includes("serviceWorker.register"), "PWA service worker registration present");
 check(realPlatform.includes("beforeinstallprompt"), "PWA install prompt integration present");
-check(index.includes("./manifest.webmanifest?v=6.7.2"), "PWA manifest loaded");
-check(index.includes("./src/features/real-platform-v660.js?v=6.7.2"), "Real platform module loaded");
+check(index.includes("./manifest.webmanifest?v=6.7.3"), "PWA manifest loaded");
+check(index.includes("./src/features/real-platform-v660.js?v=6.7.3"), "Real platform module loaded");
 check(existsSync(resolve(root, "manifest.webmanifest")), "PWA manifest exists");
 check(existsSync(resolve(root, "service-worker.js")), "Service worker exists");
 check(existsSync(resolve(root, "icons/icon-192.png")), "PWA 192 icon exists");
@@ -174,14 +174,22 @@ check(sessions.includes("Terminar sessão"), "Sign out control present");
 check(sessions.includes("Mudar de utilizador"), "Switch user control present");
 check(sessions.includes("legacy-backup-v67"), "Legacy migration backup present");
 check(!/localStorage\.setItem\([^;]*secret/i.test(sessions), "Secrets are not stored directly");
-check(index.includes("./src/features/local-accounts-v670.js?v=6.7.2"), "Session module loaded");
-check(index.includes("./styles/local-accounts-v670.css?v=6.7.2"), "Session styles loaded");
+check(index.includes("./src/features/local-accounts-v670.js?v=6.7.3"), "Session module loaded");
+check(index.includes("./styles/local-accounts-v670.css?v=6.7.3"), "Session styles loaded");
 check(realContent.includes("ownerId:currentOwnerId()"), "IndexedDB blobs record ownerId");
 check(realContent.includes("claimLegacyBlobs"), "Legacy IndexedDB ownership migration present");
 check(realContent.includes("record.ownerId&&record.ownerId!==owner"), "IndexedDB owner isolation enforced");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=6.7.2"), "Session module precached by service worker");
-
-
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=6.7.3"), "Session module precached by service worker");
+check(existsSync(resolve(root, "src/workers/auth-crypto-v673.js")), "Auth crypto worker exists");
+const authWorkerSource=readFileSync(resolve(root, "src/workers/auth-crypto-v673.js"), "utf8");
+const authWorkerCheck=spawnSync(process.execPath, ["--check", resolve(root, "src/workers/auth-crypto-v673.js")], {encoding:"utf8"});
+check(authWorkerCheck.status===0, "Auth crypto worker syntax");
+check(authWorkerSource.includes("crypto.subtle.deriveBits"), "Auth worker performs PBKDF2 off main thread");
+check(sessions.includes("new Worker(AUTH_WORKER_URL)"), "Session login uses auth worker");
+check(sessions.includes("const ITERATIONS=120000"), "New credentials use mobile-optimized PBKDF2 cost");
+check(sessions.includes("upgradeCredentialIfNeeded"), "Legacy credential upgrade present");
+check(sessions.includes("A verificar no dispositivo..."), "Slow auth progress state present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=6.7.3"), "Auth worker precached by service worker");
 
 const runtimeSource = readFileSync(resolve(root, "src/core/runtime.js"), "utf8");
 const bootSource = readFileSync(resolve(root, "src/core/boot.js"), "utf8");
