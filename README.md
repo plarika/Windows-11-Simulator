@@ -55,3 +55,12 @@ A V6.2 melhora Taskbar, Start, janelas, ícones, system tray, lock screen, menus
 - Task Manager moderno com processos, desempenho, arranque, utilizadores, detalhes e serviços
 - Notepad com diálogos virtuais Abrir e Guardar como
 - Settings com identidade do dispositivo e pesquisa integrada
+
+## V6.3.1 Stability Review
+
+- corrigido ciclo de MutationObserver nos breadcrumbs do Explorer
+- corrigida atualização da contagem de seleção no Explorer
+- corrigido duplo clique no diálogo Abrir
+- Guardar como acrescenta automaticamente a extensão .txt quando necessário
+- adicionado favicon para eliminar o 404 do browser
+- validação funcional em Chromium: Explorer, Edge, Task Manager, Settings, Notepad e layout mobile

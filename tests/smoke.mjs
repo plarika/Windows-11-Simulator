@@ -29,5 +29,11 @@ for (const forbidden of [/\beval\s*\(/, /\bnew\s+Function\s*\(/, /\bchild_proces
   check(!forbidden.test(allJs), "Forbidden API absent " + forbidden);
 }
 
+const appRealism = readFileSync(resolve(root, "src/features/app-realism-v63.js"), "utf8");
+check(appRealism.includes("pathObserver.disconnect()"), "Explorer breadcrumb observer guarded");
+check(/gridObserver\.observe\(grid,\{childList:true,subtree:true,attributes:true/.test(appRealism), "Explorer selection observer watches child classes");
+check(appRealism.includes('name+=accept'), "Save dialog appends required extension");
+check(index.includes("./favicon.svg?v=6.3.1"), "Versioned favicon reference");
+
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

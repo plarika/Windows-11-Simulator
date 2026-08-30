@@ -33,7 +33,10 @@
         (mode==="save"?'<label style="display:block;font-size:11px;margin-bottom:4px">Nome do ficheiro</label><input data-dialog-name class="file-dialog-field" value="'+escapeHTML(options.defaultName||"Documento.txt")+'">':"");
       body.querySelector("[data-dialog-folder]").onchange=e=>{current=e.target.value;selected="";render()};
       body.querySelectorAll("[data-dialog-file]").forEach(r=>{
-        r.onclick=()=>{selected=r.dataset.dialogFile;render()};
+        r.onclick=()=>{
+          selected=r.dataset.dialogFile;
+          body.querySelectorAll("[data-dialog-file]").forEach(x=>x.classList.toggle("selected",x.dataset.dialogFile===selected));
+        };
         r.ondblclick=()=>{selected=r.dataset.dialogFile;finish()};
       });
     }
@@ -41,6 +44,7 @@
       let name=mode==="save"?(body.querySelector("[data-dialog-name]")?.value||"").trim():selected;
       if(!name){notify(mode==="save"?"Guardar":"Abrir","Selecione ou indique um ficheiro.");return}
       name=name.replace(/[\\/:*?"<>|]/g,"_");
+      if(mode==="save"&&accept&&accept.startsWith(".")&&!name.toLowerCase().endsWith(accept.toLowerCase()))name+=accept;
       dialog.classList.remove("open");
       options.onSelect?.({path:current,name,value:ensureFolder(current)[name]});
     }
@@ -105,12 +109,14 @@
     status.className="explorer-status";
     files?.appendChild(status);
 
+    let pathObserver=null;
     function updateBreadcrumb(){
       if(!pathbar)return;
       const raw=pathbar.textContent.trim()||startPath||"This PC";
       const title=wrap.querySelector("[data-explorer-tab-title]");
       if(title)title.textContent=raw==="This PC"?"Este PC":raw.split("/").pop()||"Explorador";
       const parts=raw==="This PC"?["Este PC"]:raw.split("/");
+      if(pathObserver)pathObserver.disconnect();
       pathbar.innerHTML="";
       parts.forEach((part,i)=>{
         const b=document.createElement("button");b.className="crumb";b.textContent=part==="C:"?"Este PC":part;
@@ -121,10 +127,10 @@
           win.dispatchEvent(new CustomEvent("navigate",{detail:target||"This PC"}));
         };
         pathbar.appendChild(b);
-        if(i<parts.length-1){const s=document.createElement("span");s.className="crumb-sep";s.textContent="›";pathbar.appendChild(s)}
+        if(i<parts.length-1){const sep=document.createElement("span");sep.className="crumb-sep";sep.textContent="›";pathbar.appendChild(sep)}
       });
+      if(pathObserver)pathObserver.observe(pathbar,{childList:true,subtree:true,characterData:true});
     }
-
     function updateStatus(){
       const grid=wrap.querySelector(".file-grid,.file-list");
       if(!grid||!status)return;
@@ -136,10 +142,11 @@
       }
     }
 
-    const obs=new MutationObserver(()=>{queueMicrotask(()=>{updateBreadcrumb();updateStatus()})});
-    if(pathbar)obs.observe(pathbar,{childList:true,subtree:true,characterData:true});
+    pathObserver=new MutationObserver(()=>{updateBreadcrumb();updateStatus()});
+    if(pathbar)pathObserver.observe(pathbar,{childList:true,subtree:true,characterData:true});
     const grid=wrap.querySelector(".file-grid");
-    if(grid)obs.observe(grid,{childList:true,subtree:false,class:true,attributes:true});
+    const gridObserver=new MutationObserver(()=>{updateStatus()});
+    if(grid)gridObserver.observe(grid,{childList:true,subtree:true,attributes:true,attributeFilter:["class"]});
     updateBreadcrumb();updateStatus();
   };
 
@@ -292,5 +299,5 @@
     newTab();
   };
 
-  globalThis.Win11AppRealism={version:"6.3.0"};
+  globalThis.Win11AppRealism={version:"6.3.1"};
 })();

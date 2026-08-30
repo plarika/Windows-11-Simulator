@@ -75,3 +75,6 @@
   .tm-real-content{padding:0 5px 10px}.tm-process-table th:nth-child(4),.tm-process-table td:nth-child(4),.tm-process-table th:nth-child(5),.tm-process-table td:nth-child(5){display:none}
   .settings-real-top{align-items:flex-start;flex-direction:column}.settings-searchbox{width:100%}
 }
+
+.tm-process-table tbody tr.selected{background:#dcecf8;outline:1px solid #b7d8ee;outline-offset:-1px}
+#app.theme-dark .tm-process-table tbody tr.selected{background:#314657;outline-color:#42647d}
