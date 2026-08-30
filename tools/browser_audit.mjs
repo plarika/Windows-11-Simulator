@@ -12,6 +12,7 @@ let seq=0;
 const pending=new Map();
 const exceptions=[];
 const consoleErrors=[];
+const privacyWarnings=[];
 
 ws.onmessage=(ev)=>{
   const msg=JSON.parse(ev.data);
@@ -26,11 +27,13 @@ ws.onmessage=(ev)=>{
     exceptions.push(msg.params.exceptionDetails?.exception?.description||msg.params.exceptionDetails?.text||"exception");
   }
   if(msg.method==="Log.entryAdded"&&["error","warning"].includes(msg.params.entry?.level)){
-    consoleErrors.push({
+    const entry={
       text:msg.params.entry.text,
       url:msg.params.entry.url||"",
       source:msg.params.entry.source||""
-    });
+    };
+    if(/^Tracking Prevention blocked access to storage for /i.test(entry.text||""))privacyWarnings.push(entry);
+    else consoleErrors.push(entry);
   }
 };
 
@@ -77,6 +80,11 @@ async function waitFor(fn,timeout=3000,step=100){
   return false;
 }
 
+async function isolatedTargetUrls(){
+  const result=await send("Target.getTargets");
+  return (result.targetInfos||[]).map(t=>t.url).filter(Boolean);
+}
+
 async function uiLogin(id,secret){
   await evaluate(`(()=>{const id=${JSON.stringify(id)};const b=document.querySelector('[data-account="'+id+'"]');if(!b)return false;b.click();return true})()`);
   await wait(80);
@@ -90,7 +98,7 @@ await send("Page.enable");
 await wait(250);
 
 await check("boot diagnostics",async()=>await evaluate(`typeof Win11SimDiagnostics==="object" && Win11SimDiagnostics.run().missingFunctions.length===0`));
-await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="7.1.0"`));
+await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="7.2.0"`));
 await check("first account setup visible",async()=>await evaluate(`!!document.querySelector("[data-new-user-name]") && !!document.querySelector("[data-create-user]")`));
 
 await evaluate(`(()=>{
@@ -194,7 +202,7 @@ await check("Explorer status",async()=>await evaluate(`!!document.querySelector(
 await evaluate(`document.querySelector('.window[data-app="explorer"] .file,.window[data-app="explorer"] .file-row:not(.header)')?.click();true`);
 await wait(120);
 await check("Explorer selected count",async()=>await evaluate(`document.querySelector('.window[data-app="explorer"] .explorer-status')?.textContent.includes("selecionado")`));
-await check("Desktop integration bridge",async()=>await evaluate(`typeof Win11DesktopIntegration==="object" && Win11DesktopIntegration.version==="7.1.0"`));
+await check("Desktop integration bridge",async()=>await evaluate(`typeof Win11DesktopIntegration==="object" && Win11DesktopIntegration.version==="7.2.0"`));
 await check("Default file associations",async()=>await evaluate(`Win11DesktopIntegration.defaultAppFor("teste.txt")==="notepad" && Win11DesktopIntegration.defaultAppFor("imagem.png")==="photos"`));
 await check("Image has multiple Open With apps",async()=>await evaluate(`(()=>{const ids=Win11DesktopIntegration.candidateApps("imagem.png").map(a=>a.id);return ids.includes("photos")&&ids.includes("paint")})()`));
 await evaluate(`(()=>{const c=document.createElement("canvas");c.width=16;c.height=16;const x=c.getContext("2d");x.fillStyle="#3366cc";x.fillRect(0,0,16,16);ensureFolder("C:/Pictures")["V7Audit.png"]=c.toDataURL("image/png");Win11DesktopIntegration.setDefaultApp(".png","paint");return true})()`);
@@ -222,6 +230,28 @@ await check("Edge multi tab",async()=>await evaluate(`document.querySelectorAll(
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="wikipedia.org";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`);
 await wait(180);
 await check("Edge URL normalization",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-tab-frame')?.src.startsWith("https://wikipedia.org")`));
+await check("Edge Internet bridge",async()=>await evaluate(`Win11EdgeInternet?.version==="7.2.0"`));
+await evaluate(`document.querySelector('.window[data-app="edge"] [data-home]').click();true`); await wait(100);
+await check("Edge Web shortcuts",async()=>await evaluate(`document.querySelectorAll('.window[data-app="edge"] [data-edge-shortcut]').length===4`));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="google.com";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(160);
+await check("Edge Google home iframe",async()=>await evaluate(`(()=>{const f=document.querySelector('.window[data-app="edge"] .edge-tab-frame');return !!f && f.src.includes("google.com/webhp") && f.src.includes("igu=1")})()`));
+await check("Edge Google cross-origin iframe target",async()=>await waitFor(async()=>{const urls=await isolatedTargetUrls();return urls.some(u=>u.includes("google.com/webhp")&&u.includes("igu=1"))},3000,150));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="Windows 11";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(160);
+await check("Edge Google search",async()=>await evaluate(`(()=>{const f=document.querySelector('.window[data-app="edge"] .edge-tab-frame');return !!f && f.src.includes("google.com/search") && f.src.includes("igu=1") && f.src.includes("Windows")})()`));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="youtube.com";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(120);
+await check("Edge YouTube compatibility portal",async()=>await evaluate(`!!document.querySelector('.window[data-app="edge"] .edge-youtube-portal') && !!document.querySelector('.window[data-app="edge"] [data-youtube-url]')`));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="yt: nasa";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(100);
+await check("Edge YouTube search mode",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] [data-youtube-search]')?.value==="nasa" && !!document.querySelector('.window[data-app="edge"] [data-youtube-external-search]')`));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="https://www.youtube.com/watch?v=M7lc1UVf-VE";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(180);
+await check("Edge YouTube official video player",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("youtube.com/embed/M7lc1UVf-VE")`));
+await check("Edge YouTube cross-origin iframe target",async()=>await waitFor(async()=>{const urls=await isolatedTargetUrls();return urls.some(u=>u.includes("youtube.com/embed/M7lc1UVf-VE"))},3000,150));
+await check("Edge YouTube external video URL",async()=>await evaluate(`Win11EdgeInternet.externalUrlFor("edge://youtube/watch?v=M7lc1UVf-VE")==="https://www.youtube.com/watch?v=M7lc1UVf-VE"`));
+await check("Edge youtu.be parsing",async()=>await evaluate(`Win11EdgeInternet.normalize("https://youtu.be/M7lc1UVf-VE").startsWith("edge://youtube/watch?v=M7lc1UVf-VE")`));
+await check("Edge YouTube Shorts parsing",async()=>await evaluate(`Win11EdgeInternet.normalize("https://www.youtube.com/shorts/M7lc1UVf-VE").startsWith("edge://youtube/watch?v=M7lc1UVf-VE")`));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="https://www.youtube.com/playlist?list=PLC77007E23FF423C6";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(160);
+await check("Edge YouTube playlist player",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("youtube.com/embed/videoseries") && document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("PLC77007E23FF423C6")`));
+await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="https://x.com/";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(100);
+await check("Edge blocked-site compatibility page",async()=>await evaluate(`!!document.querySelector('.window[data-app="edge"] .edge-compat-page [data-compat-open]')`));
 
 await evaluate(`openApp("taskmanager");true`);
 await wait(250);
@@ -250,12 +280,12 @@ await wait(120);
 await check("Save extension .txt",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(state.files["C:/Documents"],"AuditFile.txt")`));
 await evaluate(`delete state.files["C:/Documents"]["AuditFile.txt"];saveState();true`);
 
-await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="7.1.0"`));
+await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="7.2.0"`));
 await check("Notepad real file controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-open-device]') && !!document.querySelector('.window[data-app="notepad"] [data-save-device]')`));
 await check("Real file handle write path",async()=>await evaluate(`(async()=>{const test={text:null,closed:false};const handle={name:"audit.txt",async createWritable(){return {async write(v){test.text=v},async close(){test.closed=true}}}};await RealFileBridge.writeHandle(handle,"conteúdo real");return test.text==="conteúdo real"&&test.closed})()`));
-await check("Real functions folder-mount marker",async()=>await evaluate(`Win11RealFunctions?.step===10 && Win11RealFunctions.features.includes("profile-backup") && Win11RealFunctions.features.includes("file-associations") && Win11RealFunctions.features.includes("real-folder-mounts") && Win11RealFunctions.features.includes("real-folder-readwrite")`));
+await check("Real functions Edge Internet marker",async()=>await evaluate(`Win11RealFunctions?.step===11 && Win11RealFunctions.features.includes("real-folder-mounts") && Win11RealFunctions.features.includes("edge-google") && Win11RealFunctions.features.includes("edge-youtube-player") && Win11RealFunctions.features.includes("edge-site-compatibility")`));
 
-await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="7.1.0"`));
+await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="7.2.0"`));
 await check("Notepad real clipboard controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-copy-device]') && !!document.querySelector('.window[data-app="notepad"] [data-paste-device]')`));
 await evaluate(`closeOverlays();toggleOverlay("clipboard");renderClipboard();true`);
 await wait(120);
@@ -263,7 +293,7 @@ await check("Win+V real clipboard controls",async()=>await evaluate(`!!document.
 await check("Manual paste fallback",async()=>await evaluate(`(async()=>{const p=RealClipboardBridge.manualPasteDialog();await new Promise(r=>setTimeout(r,30));const box=document.querySelector("[data-real-paste-box]");if(!box)return false;box.value="clipboard audit";document.querySelector("#system-dialog-ok").click();return (await p)==="clipboard audit"})()`));
 await evaluate(`closeOverlays();true`);
 
-await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="7.1.0"`));
+await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="7.2.0"`));
 await check("IndexedDB import and cleanup",async()=>await evaluate(`(async()=>{const imported=await RealContentBridge.importFileToVirtual(new File(["conteúdo indexeddb"],"browser-audit-real.txt",{type:"text/plain"}),"C:/Documents");const rec=await RealContentBridge.getRecord(imported.ref);const ok=rec&&await rec.blob.text()==="conteúdo indexeddb"&&rec.ownerId===Win11SessionManager.activeUserId;delete state.files["C:/Documents"][imported.name];saveState();await RealContentBridge.cleanupVirtualValue(imported.ref);const gone=!(await RealContentBridge.getRecord(imported.ref));return !!ok&&gone})()`));
 await check("Real folder import preserves subfolders",async()=>await evaluate(`(async()=>{const f=new File(["subfile"],"one.txt",{type:"text/plain"});Object.defineProperty(f,"_relativePath",{value:"Sub/one.txt"});const result=await RealContentBridge.importDirectoryToVirtual({name:"AuditFolder",files:[f]},"C:/Downloads");const ref=state.files[result.root+"/Sub"]?.["one.txt"];const ok=!!ref?.__realBlobId;await RealContentBridge.cleanupVirtualFolder(result.root);Object.keys(state.files).filter(p=>p===result.root||p.startsWith(result.root+"/")).forEach(p=>delete state.files[p]);saveState();return ok})()`));
 await check("Explorer real content controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="explorer"] [data-import-files]') && !!document.querySelector('.window[data-app="explorer"] [data-import-folder]') && !!document.querySelector('.window[data-app="explorer"] [data-export-file]')`));
@@ -276,17 +306,17 @@ await evaluate(`globalThis.RealMediaPending={name:"audit.wav",blob:new Blob([new
 await wait(160);
 await check("Media Player real media",async()=>await evaluate(`!!document.querySelector('.window[data-app="mediaplayer"] [data-open-media]') && !!document.querySelector('.window[data-app="mediaplayer"] audio')`));
 
-await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="7.1.0"`));
+await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="7.2.0"`));
 await evaluate(`renderNotifications();true`);
 await wait(80);
 await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notification-tools [data-notify-enable]") && !!document.querySelector("#notification-list [data-notify-test]")`));
 await check("PWA manifest link",async()=>await evaluate(`document.querySelector('link[rel="manifest"]')?.getAttribute("href").includes("manifest.webmanifest")`));
 await check("PWA service worker registration",async()=>await evaluate(`(async()=>{if(!("serviceWorker" in navigator))return false;for(let i=0;i<20;i++){const r=await navigator.serviceWorker.getRegistration();if(r)return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
-await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v7.1.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v7.2.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
 await evaluate(`(()=>{state.settingsPage="system";const settingsWin=document.querySelector('.window[data-app="settings"]');if(settingsWin){settingsWin.querySelector(".win-body").innerHTML="";settingsWin.querySelector(".win-body").appendChild(renderApp("settings",settingsWin));}return true})()`);
 await wait(140);
 await check("PWA settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-pwa-card] [data-install-pwa]')`));
-await check("Real device bridge available",async()=>await evaluate(`typeof RealDeviceBridge==="object" && RealDeviceBridge.version==="7.1.0"`));
+await check("Real device bridge available",async()=>await evaluate(`typeof RealDeviceBridge==="object" && RealDeviceBridge.version==="7.2.0"`));
 await check("Real device diagnostics",async()=>await evaluate(`(async()=>{const i=await RealDeviceBridge.getDeviceInfo();return typeof i.online==="boolean"&&i.storage&&typeof i.secureContext==="boolean"})()`));
 await check("Real device settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-real-device-settings]') && !!document.querySelector('.window[data-app="settings"] [data-persist-storage]') && !!document.querySelector('.window[data-app="settings"] [data-wake-lock]')`));
 await evaluate(`globalThis.__auditMusicBefore=Object.keys(ensureFolder("C:/Music"));openApp("soundrecorder");true`); await wait(160);
@@ -337,6 +367,6 @@ await check("start footer shows active user",async()=>await evaluate(`document.q
 
 await wait(250);
 const failed=checks.filter(c=>!c.ok);
-console.log(JSON.stringify({checks,exceptions,consoleErrors},null,2));
+console.log(JSON.stringify({checks,exceptions,consoleErrors,privacyWarnings},null,2));
 ws.close();
 if(failed.length||exceptions.length||consoleErrors.length)process.exit(1);

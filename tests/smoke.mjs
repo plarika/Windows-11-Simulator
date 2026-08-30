@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=7.1.0"),
+  index.includes("./favicon.svg?v=7.2.0"),
   "Versioned favicon reference"
 );
 
@@ -109,8 +109,8 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=7.1.0"), "Real file bridge loaded");
-check(index.includes("./styles/real-files-v640.css?v=7.1.0"), "Real file bridge styles loaded");
+check(index.includes("./src/features/real-files-v640.js?v=7.2.0"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=7.2.0"), "Real file bridge styles loaded");
 
 
 
@@ -123,8 +123,8 @@ check(realClipboard.includes("Ler do dispositivo"), "Win+V real clipboard read c
 check(realClipboard.includes("Copiar para dispositivo"), "Win+V real clipboard write control present");
 check(realClipboard.includes("Copiar dispositivo"), "Notepad real clipboard copy control present");
 check(realClipboard.includes("Colar dispositivo"), "Notepad real clipboard paste control present");
-check(index.includes("./src/features/real-clipboard-v650.js?v=7.1.0"), "Real clipboard bridge loaded");
-check(index.includes("./styles/real-clipboard-v650.css?v=7.1.0"), "Real clipboard styles loaded");
+check(index.includes("./src/features/real-clipboard-v650.js?v=7.2.0"), "Real clipboard bridge loaded");
+check(index.includes("./styles/real-clipboard-v650.css?v=7.2.0"), "Real clipboard styles loaded");
 
 
 
@@ -137,16 +137,16 @@ check(realContent.includes("data-import-files"), "Explorer real import control p
 check(realContent.includes("data-export-file"), "Explorer real export control present");
 check(realContent.includes("Abrir imagem do dispositivo"), "Photos real image control present");
 check(realContent.includes("Abrir multimédia"), "Media Player real media control present");
-check(index.includes("./src/features/real-content-v660.js?v=7.1.0"), "Real content module loaded");
-check(index.includes("./styles/real-content-v660.css?v=7.1.0"), "Real content styles loaded");
+check(index.includes("./src/features/real-content-v660.js?v=7.2.0"), "Real content module loaded");
+check(index.includes("./styles/real-content-v660.css?v=7.2.0"), "Real content styles loaded");
 
 const realPlatform = readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8");
 check(realPlatform.includes("Notification.requestPermission"), "Real notification permission integration present");
 check(realPlatform.includes("new Notification"), "Real browser notification integration present");
 check(realPlatform.includes("serviceWorker.register"), "PWA service worker registration present");
 check(realPlatform.includes("beforeinstallprompt"), "PWA install prompt integration present");
-check(index.includes("./manifest.webmanifest?v=7.1.0"), "PWA manifest loaded");
-check(index.includes("./src/features/real-platform-v660.js?v=7.1.0"), "Real platform module loaded");
+check(index.includes("./manifest.webmanifest?v=7.2.0"), "PWA manifest loaded");
+check(index.includes("./src/features/real-platform-v660.js?v=7.2.0"), "Real platform module loaded");
 check(existsSync(resolve(root, "manifest.webmanifest")), "PWA manifest exists");
 check(existsSync(resolve(root, "service-worker.js")), "Service worker exists");
 check(existsSync(resolve(root, "icons/icon-192.png")), "PWA 192 icon exists");
@@ -174,12 +174,12 @@ check(sessions.includes("Terminar sessão"), "Sign out control present");
 check(sessions.includes("Mudar de utilizador"), "Switch user control present");
 check(sessions.includes("legacy-backup-v67"), "Legacy migration backup present");
 check(!/localStorage\.setItem\([^;]*secret/i.test(sessions), "Secrets are not stored directly");
-check(index.includes("./src/features/local-accounts-v670.js?v=7.1.0"), "Session module loaded");
-check(index.includes("./styles/local-accounts-v670.css?v=7.1.0"), "Session styles loaded");
+check(index.includes("./src/features/local-accounts-v670.js?v=7.2.0"), "Session module loaded");
+check(index.includes("./styles/local-accounts-v670.css?v=7.2.0"), "Session styles loaded");
 check(realContent.includes("ownerId:currentOwnerId()"), "IndexedDB blobs record ownerId");
 check(realContent.includes("claimLegacyBlobs"), "Legacy IndexedDB ownership migration present");
 check(realContent.includes("record.ownerId&&record.ownerId!==owner"), "IndexedDB owner isolation enforced");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=7.1.0"), "Session module precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=7.2.0"), "Session module precached by service worker");
 check(existsSync(resolve(root, "src/workers/auth-crypto-v673.js")), "Auth crypto worker exists");
 const authWorkerSource=readFileSync(resolve(root, "src/workers/auth-crypto-v673.js"), "utf8");
 const authWorkerCheck=spawnSync(process.execPath, ["--check", resolve(root, "src/workers/auth-crypto-v673.js")], {encoding:"utf8"});
@@ -189,7 +189,7 @@ check(sessions.includes("new Worker(AUTH_WORKER_URL)"), "Session login uses auth
 check(sessions.includes("const ITERATIONS=120000"), "New credentials use mobile-optimized PBKDF2 cost");
 check(sessions.includes("upgradeCredentialIfNeeded"), "Legacy credential upgrade present");
 check(sessions.includes("A verificar no dispositivo..."), "Slow auth progress state present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=7.1.0"), "Auth worker precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=7.2.0"), "Auth worker precached by service worker");
 
 const runtimeSource = readFileSync(resolve(root, "src/core/runtime.js"), "utf8");
 const bootSource = readFileSync(resolve(root, "src/core/boot.js"), "utf8");
@@ -222,11 +222,11 @@ check(realDevice.includes("navigator.hardwareConcurrency"), "Real CPU diagnostic
 check(realDevice.includes("navigator.deviceMemory"), "Real memory diagnostics present");
 check(realDevice.includes('RealContentBridge.importFileToVirtual(file,"C:/Music")'), "Recorder stores audio in user filesystem");
 check(realDevice.includes('RealContentBridge.importFileToVirtual(file,"C:/Pictures")'), "Camera and snipping store images in user filesystem");
-check(index.includes("./src/features/real-device-tools-v680.js?v=7.1.0"), "Real device tools module loaded");
-check(index.includes("./styles/real-device-tools-v680.css?v=7.1.0"), "Real device tools styles loaded");
+check(index.includes("./src/features/real-device-tools-v680.js?v=7.2.0"), "Real device tools module loaded");
+check(index.includes("./styles/real-device-tools-v680.css?v=7.2.0"), "Real device tools styles loaded");
 check(readFileSync(resolve(root, "src/core/runtime.js"), "utf8").includes('camera:{name:"Câmara"'), "Camera app registered");
 check(readFileSync(resolve(root, "src/apps/v5-runtime.js"), "utf8").includes('if(appId==="camera"){buildCamera(wrap);return wrap}'), "Camera renderer registered");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-tools-v680.js?v=7.1.0"), "Real device tools precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-tools-v680.js?v=7.2.0"), "Real device tools precached");
 check(sessions.includes("updateAccountName"), "Account rename integration present");
 check(sessions.includes("setAccountAvatar"), "Profile avatar integration present");
 check(sessions.includes("changeCurrentCredential"), "Credential change integration present");
@@ -244,8 +244,8 @@ check(readFileSync(resolve(root, "styles/local-accounts-v670.css"), "utf8").incl
 check(readFileSync(resolve(root, "styles/local-accounts-v670.css"), "utf8").includes(".profile-management-card"), "Profile management styles present");
 check(realDevice.includes('"profile-backup"') && realDevice.includes('"auto-lock"'), "V6.9 profile capabilities registered");
 const desktopIntegration=readFileSync(resolve(root, "src/features/desktop-integration-v700.js"), "utf8");
-check(index.includes("./src/features/desktop-integration-v700.js?v=7.1.0"), "Desktop integration module loaded");
-check(index.includes("./styles/desktop-integration-v700.css?v=7.1.0"), "Desktop integration styles loaded");
+check(index.includes("./src/features/desktop-integration-v700.js?v=7.2.0"), "Desktop integration module loaded");
+check(index.includes("./styles/desktop-integration-v700.css?v=7.2.0"), "Desktop integration styles loaded");
 check(desktopIntegration.includes("DEFAULT_ASSOCIATIONS"), "Default file associations present");
 check(desktopIntegration.includes("showOpenWith"), "Open With integration present");
 check(desktopIntegration.includes("navigator.share"), "Native share integration present");
@@ -262,11 +262,11 @@ check(desktopIntegration.includes("browser não pode alterar o Wi‑Fi real"), "
 check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes('["Abrir com...",()=>Win11DesktopIntegration.showOpenWith'), "Explorer Open With action present");
 check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes('["Partilhar",()=>Win11DesktopIntegration.shareFile'), "Explorer Share action present");
 check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes('["Imprimir",()=>Win11DesktopIntegration.printFile'), "Explorer Print action present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.js?v=7.1.0"), "Desktop integration precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.css?v=7.1.0"), "Desktop integration CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.js?v=7.2.0"), "Desktop integration precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.css?v=7.2.0"), "Desktop integration CSS precached");
 const realMounts=readFileSync(resolve(root, "src/features/real-folder-mounts-v710.js"), "utf8");
-check(index.includes("./src/features/real-folder-mounts-v710.js?v=7.1.0"), "Real folder mounts module loaded");
-check(index.includes("./styles/real-folder-mounts-v710.css?v=7.1.0"), "Real folder mounts styles loaded");
+check(index.includes("./src/features/real-folder-mounts-v710.js?v=7.2.0"), "Real folder mounts module loaded");
+check(index.includes("./styles/real-folder-mounts-v710.css?v=7.2.0"), "Real folder mounts styles loaded");
 check(realMounts.includes('showDirectoryPicker({mode:"readwrite"})'), "Directory picker requests read/write access");
 check(realMounts.includes('indexedDB.open(DB_NAME,DB_VERSION)'), "Mount handles use IndexedDB persistence");
 check(realMounts.includes('store.createIndex("ownerId","ownerId"'), "Mount persistence indexed by ownerId");
@@ -286,8 +286,26 @@ check(realMounts.includes("mem.ownerId===owner") && realMounts.includes("record?
 check(sessions.includes("Win11RealMounts?.purgeOwnerMounts"), "Account deletion purges mount references");
 check(realFiles.includes("RealNotepadPending"), "Notepad consumes mounted real file handles");
 check(desktopIntegration.includes("value instanceof Blob"), "Desktop integration accepts direct mounted files");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.js?v=7.1.0"), "Real folder mounts precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.css?v=7.1.0"), "Real folder mounts CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.js?v=7.2.0"), "Real folder mounts precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.css?v=7.2.0"), "Real folder mounts CSS precached");
+const edgeInternet=readFileSync(resolve(root, "src/features/edge-internet-v720.js"), "utf8");
+check(index.includes("./src/features/edge-internet-v720.js?v=7.2.0"), "Edge Internet module loaded");
+check(index.includes("./styles/edge-internet-v720.css?v=7.2.0"), "Edge Internet styles loaded");
+check(edgeInternet.includes("www.google.com/search?igu=1&q="), "Google search integration present");
+check(edgeInternet.includes('url.searchParams.set("igu","1")'), "Google iframe compatibility flag present");
+check(edgeInternet.includes("youtube.com/embed/"), "YouTube official video embed present");
+check(edgeInternet.includes("youtube.com/embed/videoseries"), "YouTube playlist embed present");
+check(edgeInternet.includes('["shorts","embed","live"]'), "YouTube shorts/embed/live URL parsing present");
+check(edgeInternet.includes("youtu.be"), "YouTube short URL support present");
+check(edgeInternet.includes("KNOWN_FRAME_BLOCKERS"), "Known iframe blocker compatibility mode present");
+check(edgeInternet.includes("X-Frame-Options") || readFileSync(resolve(root, "SECURITY.md"), "utf8").includes("X-Frame-Options"), "Frame-policy disclosure present");
+check(edgeInternet.includes("data-edge-shortcut"), "Edge new-tab Web shortcuts present");
+check(edgeInternet.includes("data-youtube-external"), "YouTube external fallback present");
+check(edgeInternet.includes("data-compat-open"), "Blocked-site external fallback present");
+check(edgeInternet.includes('sandbox","allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads"'), "Generic Web iframe remains sandboxed");
+check(edgeInternet.includes("allowfullscreen"), "YouTube player fullscreen allowed");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.js?v=7.2.0"), "Edge Internet module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.css?v=7.2.0"), "Edge Internet CSS precached");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

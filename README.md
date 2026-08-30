@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.1 Real Folder Mounts** — montar pastas reais no Explorador com leitura/escrita explícita e persistência por perfil quando suportada.
+**V7.2 Edge Internet Compatibility** — Google integrado, YouTube com player oficial, atalhos Web e fallback explícito para sites que bloqueiam iframe.
 
 ## Funcionalidades
 
@@ -208,3 +208,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Partilhar, Imprimir e Abrir com funcionam também nos ficheiros montados
 - montagens aparecem em Este PC e na navegação do Explorador
 - quando o File System Access API não existe, o Explorador mantém o modo Importar pasta como fallback
+
+## V7.2 Edge Internet Compatibility
+
+- pesquisa Google diretamente pela barra do Edge
+- Google homepage/search com modo de incorporação compatível
+- página YouTube própria dentro do Edge
+- URLs youtube.com/watch, youtu.be, shorts, live e embed são convertidas para o player oficial
+- playlists YouTube usam o player oficial videoseries
+- pesquisa YouTube oferece abertura dos resultados no site real
+- atalhos Google, YouTube, Wikipedia e GitHub no novo separador
+- sites conhecidos por bloquear iframe recebem uma página de compatibilidade em vez de um ecrã vazio
+- botão Abrir site real preservado em todos os modos
+- o simulador não contorna X-Frame-Options nem Content-Security-Policy dos sites

@@ -46,3 +46,7 @@ A partilha nativa só é iniciada após ação explícita do utilizador e usa `n
 ## Pastas reais montadas
 
 A V7.1 só acede a diretórios escolhidos explicitamente pelo utilizador através da File System Access API. A montagem nunca concede acesso automático ao resto do sistema. Operações de criar, renomear, escrever e eliminar afetam diretamente a pasta selecionada e são apresentadas como operações reais na interface. Handles persistidos ficam associados ao ownerId da conta local; ao eliminar uma conta, as referências de montagem desse perfil são removidas.
+
+## Compatibilidade Web do Edge
+
+A V7.2 continua a respeitar as políticas de incorporação dos sites. O simulador não tenta contornar X-Frame-Options ou Content-Security-Policy. O YouTube completo não é incorporado; vídeos e playlists específicos usam o player oficial em `youtube.com/embed`. Quando um site bloqueia iframe, a interface apresenta um botão explícito para abrir o endereço real num separador externo do navegador.
