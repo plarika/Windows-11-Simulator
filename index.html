@@ -4,28 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#151a26">
-<title>Windows 11 Simulator V6.7</title>
+<title>Windows 11 Simulator V6.7.1</title>
 <meta name="theme-color" content="#0f7fc9">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="manifest" href="./manifest.webmanifest?v=6.7.0">
-<link rel="icon" href="./favicon.svg?v=6.7.0" type="image/svg+xml">
+<link rel="manifest" href="./manifest.webmanifest?v=6.7.1">
+<link rel="icon" href="./favicon.svg?v=6.7.1" type="image/svg+xml">
 
-<link rel="stylesheet" href="./styles/base.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/system-v4.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/system-suite-v5.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/realism-v62.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/app-realism-v63.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/real-files-v640.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/real-clipboard-v650.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/real-content-v660.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/real-platform-v660.css?v=6.7.0">
-<link rel="stylesheet" href="./styles/local-accounts-v670.css?v=6.7.0">
+<link rel="stylesheet" href="./styles/base.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/system-v4.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/system-suite-v5.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/realism-v62.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/app-realism-v63.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/real-files-v640.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/real-clipboard-v650.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/real-content-v660.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/real-platform-v660.css?v=6.7.1">
+<link rel="stylesheet" href="./styles/local-accounts-v670.css?v=6.7.1">
 </head>
 <body>
 <div id="app">
   <div id="boot"><div class="boot-logo"><i></i><i></i><i></i><i></i></div><div class="spinner"></div></div>
   <div id="shutdown" class="hidden"><div class="boot-logo"><i></i><i></i><i></i><i></i></div><div id="shutdown-text">A encerrar...</div></div>
-  <div id="lock" class="hidden"><div><div class="lock-time" id="lock-time">09:48</div><div class="lock-date" id="lock-date">domingo, 30 de agosto</div></div><div class="lock-hint">Toque ou clique para iniciar sessão</div></div>
+  <div id="lock"><div><div class="lock-time" id="lock-time">09:48</div><div class="lock-date" id="lock-date">domingo, 30 de agosto</div></div><div class="lock-hint">A preparar sessão...</div></div>
   <main id="desktop" tabindex="0"><div class="desktop-icons" id="desktop-icons"></div></main>
   <section id="start-menu" class="overlay"><div class="searchbox">⌕ <input id="start-search" placeholder="Escreva aqui para pesquisar" autocomplete="off"></div><div class="section-head"><h3>Afixadas</h3><button class="link-btn" id="all-apps-btn">Todas as aplicações ›</button></div><div class="start-grid" id="start-grid"></div><div class="start-recommended"><div class="section-head"><h3>Recomendado</h3></div><div class="recommended-list" id="recommended-list"></div></div><div class="start-footer"><span>Utilizador</span><button class="power-btn" id="power-btn">⏻</button></div></section>
   <section id="calendar-panel" class="overlay"><div class="panel-pad"><div class="panel-title"><h3 id="calendar-title">Agosto 2026</h3><button class="close-panel" data-close-overlay>✕</button></div><div class="calendar-grid" id="calendar-grid"></div></div></section>
@@ -67,34 +67,34 @@
   <nav id="taskbar"><div class="task-left"><button class="tray-btn" id="widgets-btn" title="Widgets">☁️ 22°</button></div><div class="task-center" id="task-center"><button class="task-btn" id="start-btn" title="Iniciar"><span class="start-logo"><i></i><i></i><i></i><i></i></span></button><button class="task-btn" id="search-btn" title="Pesquisar">⌕</button><button class="task-btn" id="taskview-btn" title="Vista de tarefas">▣</button></div><div class="task-right"><button class="tray-btn" id="notify-btn" title="Notificações">🔔</button><button class="tray-btn" id="quick-btn" title="Definições rápidas">📶 🔊</button><button class="clock-btn" id="clock-btn"><span id="clock">09:48</span><small id="date">30/08/2026</small></button></div></nav>
 </div>
 
-<script src="./src/core/runtime.js?v=6.7.0"></script>
-<script src="./src/features/system-v4.js?v=6.7.0"></script>
-<script src="./src/apps/v5-runtime.js?v=6.7.0"></script>
-<script src="./src/apps/explorer-v5.js?v=6.7.0"></script>
-<script src="./src/apps/settings-v5.js?v=6.7.0"></script>
-<script src="./src/apps/windows-tools.js?v=6.7.0"></script>
-<script src="./src/apps/services.js?v=6.7.0"></script>
-<script src="./src/apps/disk-management.js?v=6.7.0"></script>
-<script src="./src/apps/task-scheduler.js?v=6.7.0"></script>
-<script src="./src/apps/system-info.js?v=6.7.0"></script>
-<script src="./src/apps/resource-monitor.js?v=6.7.0"></script>
-<script src="./src/apps/powershell.js?v=6.7.0"></script>
-<script src="./src/apps/optional-features.js?v=6.7.0"></script>
-<script src="./src/apps/backup-recovery.js?v=6.7.0"></script>
-<script src="./src/apps/sticky-notes.js?v=6.7.0"></script>
-<script src="./src/apps/onedrive.js?v=6.7.0"></script>
-<script src="./src/apps/remote-desktop.js?v=6.7.0"></script>
-<script src="./src/apps/sound-recorder.js?v=6.7.0"></script>
-<script src="./src/apps/get-help.js?v=6.7.0"></script>
-<script src="./src/apps/shell-integration.js?v=6.7.0"></script>
-<script src="./src/apps/search-v5.js?v=6.7.0"></script>
-<script src="./src/features/realism-v62.js?v=6.7.0"></script>
-<script src="./src/features/app-realism-v63.js?v=6.7.0"></script>
-<script src="./src/features/real-files-v640.js?v=6.7.0"></script>
-<script src="./src/features/real-clipboard-v650.js?v=6.7.0"></script>
-<script src="./src/features/real-content-v660.js?v=6.7.0"></script>
-<script src="./src/features/real-platform-v660.js?v=6.7.0"></script>
-<script src="./src/features/local-accounts-v670.js?v=6.7.0"></script>
-<script src="./src/core/boot.js?v=6.7.0"></script>
+<script src="./src/core/runtime.js?v=6.7.1"></script>
+<script src="./src/features/system-v4.js?v=6.7.1"></script>
+<script src="./src/apps/v5-runtime.js?v=6.7.1"></script>
+<script src="./src/apps/explorer-v5.js?v=6.7.1"></script>
+<script src="./src/apps/settings-v5.js?v=6.7.1"></script>
+<script src="./src/apps/windows-tools.js?v=6.7.1"></script>
+<script src="./src/apps/services.js?v=6.7.1"></script>
+<script src="./src/apps/disk-management.js?v=6.7.1"></script>
+<script src="./src/apps/task-scheduler.js?v=6.7.1"></script>
+<script src="./src/apps/system-info.js?v=6.7.1"></script>
+<script src="./src/apps/resource-monitor.js?v=6.7.1"></script>
+<script src="./src/apps/powershell.js?v=6.7.1"></script>
+<script src="./src/apps/optional-features.js?v=6.7.1"></script>
+<script src="./src/apps/backup-recovery.js?v=6.7.1"></script>
+<script src="./src/apps/sticky-notes.js?v=6.7.1"></script>
+<script src="./src/apps/onedrive.js?v=6.7.1"></script>
+<script src="./src/apps/remote-desktop.js?v=6.7.1"></script>
+<script src="./src/apps/sound-recorder.js?v=6.7.1"></script>
+<script src="./src/apps/get-help.js?v=6.7.1"></script>
+<script src="./src/apps/shell-integration.js?v=6.7.1"></script>
+<script src="./src/apps/search-v5.js?v=6.7.1"></script>
+<script src="./src/features/realism-v62.js?v=6.7.1"></script>
+<script src="./src/features/app-realism-v63.js?v=6.7.1"></script>
+<script src="./src/features/real-files-v640.js?v=6.7.1"></script>
+<script src="./src/features/real-clipboard-v650.js?v=6.7.1"></script>
+<script src="./src/features/real-content-v660.js?v=6.7.1"></script>
+<script src="./src/features/real-platform-v660.js?v=6.7.1"></script>
+<script src="./src/features/local-accounts-v670.js?v=6.7.1"></script>
+<script src="./src/core/boot.js?v=6.7.1"></script>
 </body>
 </html>

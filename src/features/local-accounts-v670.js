@@ -675,7 +675,7 @@
   bootResumePromise=Promise.resolve();
 
   globalThis.Win11SessionManager=Object.freeze({
-    version:"6.7.0",
+    version:"6.7.1",
     get activeUserId(){return activeAccount?.id||null},
     get activeUser(){return activeAccount?{id:activeAccount.id,displayName:activeAccount.displayName}:null},
     get isLocked(){return locked},
@@ -691,7 +691,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.7.0",
+    version:"6.7.1",
     step:6,
     features:[
       "real-file-open","real-file-save","download-fallback",

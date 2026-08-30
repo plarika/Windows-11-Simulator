@@ -3,10 +3,10 @@
   const required = ["openApp","applyState","renderRecommended","buildExplorerV5","buildSettingsV5","buildServices","buildDiskManagement","buildPowerShell"];
   const missing = required.filter((name) => typeof globalThis[name] !== "function");
   globalThis.Win11SimDiagnostics = {
-    version: "6.7.0",
+    version: "6.7.1",
     run() {
       return {
-        version: "6.7.0",
+        version: "6.7.1",
         missingFunctions: required.filter((name) => typeof globalThis[name] !== "function"),
         windowCount: document.querySelectorAll(".window").length,
         currentDesktop: Number(state.currentDesktop) || 0,
@@ -23,17 +23,23 @@
   state.currentDesktop = clamp(Number(state.currentDesktop) || 0, 0, state.desktops.length - 1);
   applyState();
   renderRecommended();
+
+  const sessionBoot = globalThis.Win11SessionManager?.handleBootComplete
+    ? Promise.resolve().then(() => globalThis.Win11SessionManager.handleBootComplete())
+    : Promise.resolve(false);
+
   setTimeout(async () => {
-    document.getElementById("boot")?.classList.add("hidden");
-    if(globalThis.Win11SessionManager?.handleBootComplete){
-      try{
-        await globalThis.Win11SessionManager.handleBootComplete();
-        return;
-      }catch(err){
-        console.error("[V6.7] Session boot failed",err);
-      }
+    let sessionHandled = false;
+    try {
+      await sessionBoot;
+      sessionHandled = Boolean(globalThis.Win11SessionManager);
+    } catch (err) {
+      console.error("[V6.7.1] Session boot failed", err);
     }
-    document.getElementById("lock")?.classList.remove("hidden");
-  }, 1000);
+    if (!sessionHandled) {
+      document.getElementById("lock")?.classList.remove("hidden");
+    }
+    document.getElementById("boot")?.classList.add("hidden");
+  }, 650);
 })();
 

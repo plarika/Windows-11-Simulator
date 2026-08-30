@@ -5,7 +5,10 @@ const PROFILE_STORAGE_PREFIX="win11-sim-profile-v67:";
 function activeProfileStorageKey(){
   try{
     const id=sessionStorage.getItem(SESSION_STORAGE_KEY);
-    return id?PROFILE_STORAGE_PREFIX+id:STORAGE_KEY;
+    if(id)return PROFILE_STORAGE_PREFIX+id;
+    const accounts=JSON.parse(localStorage.getItem("win11-sim-accounts-v67")||"[]");
+    if(Array.isArray(accounts)&&accounts.length)return null;
+    return STORAGE_KEY;
   }catch{return STORAGE_KEY}
 }
 const APPS={explorer:{name:"Explorador",icon:"📁",w:800,h:540},notepad:{name:"Notas",icon:"📝",w:720,h:500},calc:{name:"Calculadora",icon:"🧮",w:360,h:520},terminal:{name:"Terminal",icon:"⌨️",w:720,h:460},settings:{name:"Definições",icon:"⚙️",w:780,h:540},taskmanager:{name:"Gestor de Tarefas",icon:"📊",w:760,h:470},recycle:{name:"Reciclagem",icon:"🗑️",w:690,h:470},photos:{name:"Fotografias",icon:"🖼️",w:700,h:500},paint:{name:"Pintar",icon:"🖌️",w:760,h:540},edge:{name:"Microsoft Edge",icon:"🌐",w:900,h:600},
@@ -42,7 +45,7 @@ devices:{bluetooth:true,camera:true,audio:true,network:true,gpu:true},
 storeInstalled:{terminal:true,photos:true,paint:true},
 security:{lastScan:0,threats:0},
 events:[]}}
-function loadState(){try{const raw=localStorage.getItem(activeProfileStorageKey());return raw?Object.assign(defaultState(),JSON.parse(raw)):defaultState()}catch{return defaultState()}}const state=loadState();function saveState(){try{localStorage.setItem(activeProfileStorageKey(),JSON.stringify(state))}catch{}}
+function loadState(){try{const key=activeProfileStorageKey();if(!key)return defaultState();const raw=localStorage.getItem(key);return raw?Object.assign(defaultState(),JSON.parse(raw)):defaultState()}catch{return defaultState()}}const state=loadState();function saveState(){try{const key=activeProfileStorageKey();if(!key)return;localStorage.setItem(key,JSON.stringify(state))}catch{}}
 let zCounter=200,pidCounter=1000,drag=null,resize=null,altIndex=0;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],clamp=(v,a,b)=>Math.min(Math.max(v,a),b),isMobile=()=>innerWidth<=720;
 function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}

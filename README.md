@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.7 Local Accounts & Sessions** — contas locais, perfis isolados, login, bloqueio, troca de utilizador e persistência por sessão.
+**V6.7.1 Session Boot Fix** — login e registo preparados durante o boot, sem depender de refresh, mantendo contas e perfis isolados.
 
 ## Funcionalidades
 
@@ -120,3 +120,11 @@ Primeiro passo de integração com funções reais do dispositivo:
 - deteção de sessão concorrente da mesma conta via BroadcastChannel
 - takeover explícito termina a sessão da outra janela
 - contas ficam guardadas apenas neste dispositivo/browser
+
+## V6.7.1 Session Boot Fix
+
+- o gestor de sessões é preparado antes de o ecrã de boot desaparecer
+- o ecrã de login/registo fica disponível na primeira abertura sem refresh
+- quando já existem contas, o runtime deixa de carregar ou gravar estado fora de uma sessão autenticada
+- cache PWA/service worker atualizada para forçar a nova sequência de arranque
+- o ecrã de bloqueio inicial fica preparado sob o boot para evitar um estado intermédio clicável
