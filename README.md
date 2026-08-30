@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.0 Desktop Integration** — aplicações predefinidas, Abrir com, partilha nativa, impressão e Definições Rápidas ligadas ao dispositivo.
+**V7.1 Real Folder Mounts** — montar pastas reais no Explorador com leitura/escrita explícita e persistência por perfil quando suportada.
 
 ## Funcionalidades
 
@@ -192,3 +192,19 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Fullscreen e Wake Lock reais diretamente nas Definições Rápidas
 - a página deixa de fingir que consegue ligar/desligar o Wi-Fi real
 - Definições > Rede distingue claramente rede real de redes virtuais simuladas
+
+## V7.1 Real Folder Mounts
+
+- montar uma pasta real escolhida explicitamente pelo utilizador
+- handle de diretório guardado em IndexedDB quando o navegador permite
+- montagens isoladas por conta local
+- reautorização após refresh quando o browser exigir
+- navegação real sem copiar previamente a pasta para o filesystem virtual
+- abrir ficheiros reais com Bloco de Notas, Fotografias, Pintar e Media Player
+- Bloco de Notas escreve de volta no mesmo ficheiro montado
+- criar pastas e documentos de texto reais
+- mudar nome de ficheiros e pastas reais
+- eliminar diretamente dentro da pasta autorizada
+- Partilhar, Imprimir e Abrir com funcionam também nos ficheiros montados
+- montagens aparecem em Este PC e na navegação do Explorador
+- quando o File System Access API não existe, o Explorador mantém o modo Importar pasta como fallback

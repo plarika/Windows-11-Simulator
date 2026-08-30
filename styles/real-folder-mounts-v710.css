@@ -1,0 +1,57 @@
+/* Windows 11 Simulator V7.1 — Real Folder Mounts */
+.real-mount-nav{margin-top:8px;padding-top:8px;border-top:1px solid rgba(120,130,140,.18)}
+.real-mount-nav>small{display:block;padding:4px 12px 6px;color:#75808a;font-size:9px;text-transform:uppercase;letter-spacing:.45px}
+.real-mount-nav-item{width:100%;display:flex!important;gap:8px;align-items:center}
+.real-mount-nav-empty{padding:7px 12px;color:#8a949e;font-size:10px}
+.real-mount-view{height:100%;min-height:0;overflow:auto;padding:10px;box-sizing:border-box}
+.real-mount-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.real-mount-badge{
+  display:inline-flex;align-items:center;min-height:28px;padding:0 9px;border-radius:999px;
+  background:#eaf6ed;border:1px solid #c8e5ce;color:#2d6b39;font-size:10px;font-weight:600
+}
+.real-mount-spacer{flex:1}
+.real-mount-security-note{
+  margin:0 0 10px;padding:7px 9px;border:1px solid #ead9ad;border-radius:7px;
+  background:#fff9e9;color:#776025;font-size:10px;line-height:1.4
+}
+.real-mount-list{display:grid;gap:2px}
+.real-mount-row{
+  width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) minmax(90px,160px) 90px;
+  align-items:center;text-align:left;gap:8px;padding:8px 10px;border:0;border-radius:6px;
+  background:transparent;color:#252c33;cursor:default
+}
+.real-mount-row:hover{background:rgba(0,120,215,.08)}
+.real-mount-item-icon{font-size:20px;text-align:center}
+.real-mount-item-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.real-mount-item-type,.real-mount-item-size{font-size:10px;color:#78828c}
+.real-mount-item-size{text-align:right}
+.real-mount-empty,.real-mount-error,.real-mount-permission{
+  min-height:220px;display:grid;place-items:center;align-content:center;text-align:center;gap:8px;color:#6e7882
+}
+.real-mount-permission h3,.real-mount-error strong{margin:0;color:#252c33}
+.real-mount-permission p,.real-mount-error p{max-width:500px;margin:0 0 5px;font-size:11px;line-height:1.45}
+.real-mount-lock{font-size:42px}
+.real-drive-card{border-color:#a9d4b2!important;background:linear-gradient(145deg,rgba(226,247,231,.75),rgba(255,255,255,.7))}
+.real-drive-meta{font-size:11px;color:#587064;margin-top:4px}
+.real-drive-bar{height:4px;margin-top:10px;border-radius:5px;background:#d9e7dc;overflow:hidden}
+.real-drive-bar i{display:block;width:100%;height:100%;background:#3aa357}
+.real-mount-settings{grid-column:1/-1}
+.real-mount-settings-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.real-mount-mode .explorer-command{display:none}
+#app.theme-dark .real-mount-nav{border-color:rgba(255,255,255,.08)}
+#app.theme-dark .real-mount-row{color:#edf1f4}
+#app.theme-dark .real-mount-row:hover{background:rgba(50,150,220,.14)}
+#app.theme-dark .real-mount-item-type,#app.theme-dark .real-mount-item-size{color:#aeb8c1}
+#app.theme-dark .real-mount-security-note{background:rgba(155,113,20,.12);border-color:rgba(218,171,59,.28);color:#e7c978}
+#app.theme-dark .real-mount-badge{background:rgba(44,130,64,.16);border-color:rgba(86,170,104,.3);color:#9bd5a8}
+#app.theme-dark .real-mount-permission h3,#app.theme-dark .real-mount-error strong{color:#eef2f5}
+#app.theme-dark .real-drive-card{background:linear-gradient(145deg,rgba(45,115,61,.15),rgba(255,255,255,.025));border-color:rgba(88,166,104,.28)!important}
+@media(max-width:720px){
+  .real-mount-view{padding:7px}
+  .real-mount-row{grid-template-columns:30px minmax(0,1fr);gap:6px;padding:8px 6px}
+  .real-mount-item-type,.real-mount-item-size{display:none}
+  .real-mount-toolbar .sys-button{font-size:9px}
+  .real-mount-badge{width:100%;justify-content:center}
+  .real-mount-spacer{display:none}
+  .real-mount-settings-actions{display:grid;grid-template-columns:1fr}
+}

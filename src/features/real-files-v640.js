@@ -93,7 +93,7 @@
   }
 
   globalThis.RealFileBridge=Object.freeze({
-    version:"7.0.0",
+    version:"7.1.0",
     nativeOpenSupported,
     nativeSaveSupported,
     pickTextFile,
@@ -127,7 +127,21 @@
     let realCurrent=null;
     let dirty=false;
 
-    ta.value=state.notepadText||"";
+    const pendingReal=globalThis.RealNotepadPending||null;
+    if(pendingReal){
+      try{delete globalThis.RealNotepadPending}catch{}
+      ta.value=String(pendingReal.text??"");
+      realCurrent={
+        name:pendingReal.name||"Documento.txt",
+        handle:pendingReal.handle||null,
+        source:pendingReal.source||"mounted"
+      };
+      virtualCurrent={path:"C:/Documents",name:realCurrent.name};
+      state.notepadText=ta.value;
+      saveState();
+    }else{
+      ta.value=state.notepadText||"";
+    }
 
     function setDirty(value){
       dirty=Boolean(value);
@@ -275,7 +289,7 @@
   };
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.0.0",
+    version:"7.1.0",
     step:1,
     features:["real-file-open","real-file-save","download-fallback"]
   });

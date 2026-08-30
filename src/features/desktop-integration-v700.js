@@ -84,6 +84,15 @@
   }
 
   async function materializeFile(path,name,value){
+    if(value instanceof Blob){
+      return {
+        name,
+        blob:value,
+        type:value.type||"application/octet-stream",
+        text:async()=>value.text(),
+        source:"direct-blob"
+      };
+    }
     if(value?.__realBlobId){
       const rec=await RealContentBridge.getRecord(value);
       if(!rec)throw new Error("O conteúdo do ficheiro não está disponível nesta sessão.");
@@ -117,6 +126,12 @@
     return {name,blob,type:"text/plain",text:async()=>text,source:"virtual"};
   }
 
+  function openDocumentApp(appId,initialPath){
+    const existing=$$(".window").find(w=>w.dataset.app===appId&&Number(w.dataset.desktop||0)===(Number(state.currentDesktop)||0));
+    if(existing&&typeof makeWindow==="function")return makeWindow(appId,initialPath);
+    return openApp(appId,initialPath);
+  }
+
   async function openWithApp(appId,path,name,value){
     const item=await materializeFile(path,name,value);
     const category=categoryOf(name,value,item.type);
@@ -126,14 +141,14 @@
       state.notepadText=await item.text();
       state.notepadFile={path,name};
       saveState();
-      openApp("notepad");
+      openDocumentApp("notepad");
       return true;
     }
 
     if(appId==="photos"){
       if(category!=="image")throw new Error("Fotografias só pode abrir imagens.");
       globalThis.RealPhotosPending={name,blob:item.blob};
-      openApp("photos");
+      openDocumentApp("photos");
       return true;
     }
 
@@ -160,7 +175,7 @@
     if(appId==="mediaplayer"){
       if(!["audio","video"].includes(category))throw new Error("Media Player só pode abrir áudio ou vídeo.");
       globalThis.RealMediaPending={name,blob:item.blob,type:item.type};
-      openApp("mediaplayer");
+      openDocumentApp("mediaplayer");
       return true;
     }
 
@@ -464,13 +479,14 @@
   installQuickSettings();
 
   globalThis.Win11DesktopIntegration=Object.freeze({
-    version:"7.0.0",
+    version:"7.1.0",
     extensionOf,
     categoryOf,
     defaultAppFor,
     setDefaultApp,
     candidateApps,
     materializeFile,
+    openDocumentApp,
     openWithApp,
     showOpenWith,
     shareFile,
@@ -482,7 +498,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.0.0",
+    version:"7.1.0",
     step:9,
     features:[
       "real-file-open","real-file-save","download-fallback",

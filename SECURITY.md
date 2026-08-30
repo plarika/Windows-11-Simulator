@@ -42,3 +42,7 @@ Os ficheiros `.win11profile` não incluem a credencial local, o hash PBKDF2 nem 
 ## Partilha e impressão
 
 A partilha nativa só é iniciada após ação explícita do utilizador e usa `navigator.share` quando disponível. O simulador não envia ficheiros para um servidor próprio. A impressão cria apenas uma vista temporária local do ficheiro e chama o diálogo de impressão do browser/sistema. Conteúdo de texto é escapado antes da vista de impressão para evitar execução de HTML fornecido pelo utilizador.
+
+## Pastas reais montadas
+
+A V7.1 só acede a diretórios escolhidos explicitamente pelo utilizador através da File System Access API. A montagem nunca concede acesso automático ao resto do sistema. Operações de criar, renomear, escrever e eliminar afetam diretamente a pasta selecionada e são apresentadas como operações reais na interface. Handles persistidos ficam associados ao ownerId da conta local; ao eliminar uma conta, as referências de montagem desse perfil são removidas.
