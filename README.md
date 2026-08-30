@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.6 Real Integrations** — Explorer com ficheiros reais, Fotos e Media Player reais, notificações do dispositivo e PWA instalável.
+**V6.7 Local Accounts & Sessions** — contas locais, perfis isolados, login, bloqueio, troca de utilizador e persistência por sessão.
 
 ## Funcionalidades
 
@@ -107,3 +107,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - PWA instalável no Windows/Android
 - service worker para cache offline da interface local do simulador
 - todas as permissões reais continuam dependentes de ação explícita do utilizador
+
+## V6.7 Local Accounts & Sessions
+
+- contas locais separadas por utilizador
+- PIN/palavra-passe protegido com PBKDF2-SHA-256 e salt aleatório
+- estado do simulador guardado numa chave própria por perfil
+- sessão ativa em sessionStorage para sobreviver a refresh sem misturar contas
+- bloquear, terminar sessão e mudar de utilizador
+- primeiro perfil migra os dados existentes e guarda backup da chave legada
+- blobs IndexedDB passam a ter ownerId por utilizador
+- deteção de sessão concorrente da mesma conta via BroadcastChannel
+- takeover explícito termina a sessão da outra janela
+- contas ficam guardadas apenas neste dispositivo/browser

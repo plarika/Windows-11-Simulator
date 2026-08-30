@@ -1,0 +1,302 @@
+/* Windows 11 Simulator V6.7 — Local Accounts & Sessions */
+#lock.session-lock{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:7vh 22px 28px;
+  overflow:auto;
+  color:white;
+  background:
+    linear-gradient(180deg,rgba(6,12,24,.08),rgba(6,12,24,.46)),
+    radial-gradient(circle at 74% 15%,rgba(255,199,118,.78),transparent 24%),
+    radial-gradient(circle at 18% 18%,rgba(87,68,175,.92),transparent 34%),
+    linear-gradient(145deg,#35326b,#bc628f 54%,#ef8969);
+  backdrop-filter:none;
+}
+.session-lock-clock{
+  text-align:center;
+  text-shadow:0 2px 12px rgba(0,0,0,.32);
+  margin-bottom:34px;
+}
+.session-lock-clock .lock-time{
+  font-size:72px;
+  font-weight:300;
+  line-height:1;
+  letter-spacing:-2px;
+}
+.session-lock-clock .lock-date{
+  font-size:17px;
+  margin-top:8px;
+}
+.session-auth-host{
+  width:min(760px,100%);
+  display:flex;
+  justify-content:center;
+}
+.session-login-layout{
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(180px,230px) minmax(300px,1fr);
+  gap:18px;
+}
+.session-account-list{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  padding:9px;
+  border-radius:14px;
+  background:rgba(12,18,31,.28);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(22px);
+  box-shadow:0 20px 50px rgba(0,0,0,.18);
+  align-self:start;
+}
+.session-account{
+  width:100%;
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+  text-align:left;
+  font:13px "Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+}
+.session-account:hover,
+.session-account.selected{
+  background:rgba(255,255,255,.13);
+}
+.session-card{
+  color:#202124;
+  background:rgba(247,249,252,.94);
+  border:1px solid rgba(255,255,255,.78);
+  border-radius:16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.26);
+  backdrop-filter:blur(30px) saturate(130%);
+  padding:28px;
+  min-height:330px;
+}
+.session-card h2{
+  margin:12px 0 4px;
+  text-align:center;
+  font-size:22px;
+  font-weight:500;
+}
+.session-subtitle{
+  margin:0 auto 18px;
+  max-width:430px;
+  text-align:center;
+  color:#68717b;
+  font-size:12px;
+  line-height:1.45;
+}
+.session-avatar{
+  flex:none;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:white;
+  background:linear-gradient(145deg,#1689d8,#5cb9ee);
+  font-weight:600;
+  font-size:12px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);
+}
+.session-avatar.large{
+  width:78px;
+  height:78px;
+  margin:0 auto;
+  font-size:23px;
+}
+.session-avatar.small{
+  width:34px;
+  height:34px;
+  font-size:11px;
+}
+.session-card label{
+  display:block;
+  margin:11px 0 0;
+  color:#4f5963;
+  font-size:11px;
+  font-weight:500;
+}
+.session-card input{
+  width:100%;
+  height:38px;
+  margin-top:5px;
+  padding:0 11px;
+  border:1px solid #c9d1d8;
+  border-bottom:2px solid #1689d8;
+  border-radius:6px;
+  outline:none;
+  background:white;
+  color:#202124;
+  font:13px "Segoe UI",system-ui,sans-serif;
+}
+.session-card input:focus{
+  border-color:#1689d8;
+  box-shadow:0 0 0 1px #1689d8;
+}
+.session-primary,
+.session-secondary,
+.session-link{
+  min-height:36px;
+  border-radius:6px;
+  cursor:pointer;
+  font:12px "Segoe UI",system-ui,sans-serif;
+}
+.session-primary{
+  width:100%;
+  border:1px solid #0c74b7;
+  background:#0f83cd;
+  color:white;
+  padding:0 14px;
+  margin-top:14px;
+}
+.session-primary:hover{background:#0874b9}
+.session-primary:disabled{opacity:.65;cursor:default}
+.session-secondary{
+  border:1px solid #cbd2d8;
+  background:#f6f8fa;
+  color:#2a3138;
+  padding:0 14px;
+}
+.session-link{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#0868aa;
+  margin-top:8px;
+}
+.session-link:hover{background:#eaf4fb}
+.session-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:16px;
+}
+.session-actions .session-primary{
+  width:auto;
+  margin:0;
+}
+.session-message{
+  padding:8px 10px;
+  margin:8px 0 10px;
+  border-radius:6px;
+  background:#eef5fb;
+  color:#3c5d73;
+  font-size:11px;
+}
+.session-message.error{
+  background:#fff0ef;
+  color:#8f2b21;
+}
+.session-message.warning{
+  background:#fff7df;
+  color:#765600;
+}
+.session-migration-note{
+  margin:10px 0 14px;
+  padding:10px;
+  border-radius:7px;
+  background:#eef7ff;
+  border:1px solid #cfe6f7;
+  color:#315e7a;
+  font-size:11px;
+  line-height:1.4;
+}
+.session-conflict{
+  max-width:430px;
+  text-align:center;
+}
+.session-create-card{
+  width:min(470px,100%);
+}
+.session-settings-card{
+  grid-column:1/-1;
+}
+.session-settings-users{
+  display:grid;
+  gap:7px;
+  margin:12px 0;
+}
+.session-settings-users>div{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:8px;
+  border:1px solid #e0e4e8;
+  border-radius:8px;
+  background:rgba(255,255,255,.52);
+}
+.session-settings-users>div>span:last-child{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.session-settings-users small{
+  color:#6d7680;
+  font-size:10px;
+}
+.session-settings-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+#app.theme-dark .session-settings-users>div{
+  background:rgba(255,255,255,.04);
+  border-color:rgba(255,255,255,.09);
+}
+#app.theme-dark .session-settings-users small{
+  color:#b8c0c8;
+}
+@media(max-width:720px){
+  #lock.session-lock{
+    padding:5vh 10px 18px;
+  }
+  .session-lock-clock{
+    margin-bottom:20px;
+  }
+  .session-lock-clock .lock-time{
+    font-size:52px;
+  }
+  .session-lock-clock .lock-date{
+    font-size:14px;
+  }
+  .session-login-layout{
+    grid-template-columns:1fr;
+  }
+  .session-account-list{
+    flex-direction:row;
+    overflow-x:auto;
+    padding:7px;
+  }
+  .session-account{
+    min-width:150px;
+  }
+  .session-card{
+    padding:20px;
+    min-height:0;
+  }
+}
+@media(max-width:420px){
+  .session-card{
+    padding:17px;
+  }
+  .session-actions{
+    flex-direction:column-reverse;
+  }
+  .session-actions .session-primary,
+  .session-actions .session-secondary{
+    width:100%;
+  }
+}

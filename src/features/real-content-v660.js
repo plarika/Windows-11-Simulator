@@ -26,11 +26,14 @@
     return dbPromise;
   }
 
+  function currentOwnerId(){return globalThis.Win11SessionManager?.activeUserId||null}
+
   async function putBlob(file){
     const db=await openDB();
     const id="real-"+Date.now()+"-"+Math.random().toString(36).slice(2);
     const record={
       id,
+      ownerId:currentOwnerId(),
       blob:file instanceof Blob?file:new Blob([file]),
       name:file.name||"ficheiro",
       type:file.type||"application/octet-stream",
@@ -59,13 +62,21 @@
     return new Promise((resolve,reject)=>{
       const tx=db.transaction(STORE,"readonly");
       const req=tx.objectStore(STORE).get(ref.__realBlobId);
-      req.onsuccess=()=>resolve(req.result||null);
+      req.onsuccess=()=>{
+        const record=req.result||null;
+        if(!record){resolve(null);return}
+        const owner=currentOwnerId();
+        if(record.ownerId&&record.ownerId!==owner){resolve(null);return}
+        resolve(record);
+      };
       req.onerror=()=>reject(req.error||new Error("Falha ao ler ficheiro real."));
     });
   }
 
   async function deleteRecord(ref){
     if(!ref?.__realBlobId)return false;
+    const record=await getRecord(ref);
+    if(!record)return false;
     const db=await openDB();
     await new Promise((resolve,reject)=>{
       const tx=db.transaction(STORE,"readwrite");
@@ -74,6 +85,49 @@
       tx.onerror=()=>reject(tx.error||new Error("Falha ao remover ficheiro real."));
     });
     return true;
+  }
+
+  async function claimLegacyBlobs(ownerId){
+    if(!ownerId)return 0;
+    const db=await openDB();
+    let count=0;
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,"readwrite");
+      const store=tx.objectStore(STORE);
+      const req=store.openCursor();
+      req.onsuccess=()=>{
+        const cursor=req.result;
+        if(!cursor)return;
+        const record=cursor.value;
+        if(!record.ownerId){record.ownerId=ownerId;cursor.update(record);count++}
+        cursor.continue();
+      };
+      req.onerror=()=>reject(req.error||new Error("Falha ao migrar ficheiros reais."));
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error||new Error("Falha ao migrar ficheiros reais."));
+    });
+    return count;
+  }
+
+  async function purgeOwnerBlobs(ownerId){
+    if(!ownerId)return 0;
+    const db=await openDB();
+    let count=0;
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,"readwrite");
+      const store=tx.objectStore(STORE);
+      const req=store.openCursor();
+      req.onsuccess=()=>{
+        const cursor=req.result;
+        if(!cursor)return;
+        if(cursor.value?.ownerId===ownerId){cursor.delete();count++}
+        cursor.continue();
+      };
+      req.onerror=()=>reject(req.error||new Error("Falha ao limpar ficheiros do utilizador."));
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error||new Error("Falha ao limpar ficheiros do utilizador."));
+    });
+    return count;
   }
 
   function uniqueName(folder,name){
@@ -423,10 +477,12 @@
   }
 
   globalThis.RealContentBridge=Object.freeze({
-    version:"6.6.0",
+    version:"6.7.0",
     putBlob,
     getRecord,
     deleteRecord,
+    claimLegacyBlobs,
+    purgeOwnerBlobs,
     cleanupVirtualValue,
     cleanupVirtualFolder,
     importFileToVirtual,
@@ -593,7 +649,7 @@
   };
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.6.0",
+    version:"6.7.0",
     step:5,
     features:[
       "real-file-open","real-file-save","download-fallback",

@@ -93,7 +93,7 @@
   }
 
   globalThis.RealFileBridge=Object.freeze({
-    version:"6.6.0",
+    version:"6.7.0",
     nativeOpenSupported,
     nativeSaveSupported,
     pickTextFile,
@@ -275,7 +275,7 @@
   };
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.6.0",
+    version:"6.7.0",
     step:1,
     features:["real-file-open","real-file-save","download-fallback"]
   });

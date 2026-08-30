@@ -3,10 +3,10 @@
   const required = ["openApp","applyState","renderRecommended","buildExplorerV5","buildSettingsV5","buildServices","buildDiskManagement","buildPowerShell"];
   const missing = required.filter((name) => typeof globalThis[name] !== "function");
   globalThis.Win11SimDiagnostics = {
-    version: "6.6.0",
+    version: "6.7.0",
     run() {
       return {
-        version: "6.6.0",
+        version: "6.7.0",
         missingFunctions: required.filter((name) => typeof globalThis[name] !== "function"),
         windowCount: document.querySelectorAll(".window").length,
         currentDesktop: Number(state.currentDesktop) || 0,
@@ -23,8 +23,16 @@
   state.currentDesktop = clamp(Number(state.currentDesktop) || 0, 0, state.desktops.length - 1);
   applyState();
   renderRecommended();
-  setTimeout(() => {
+  setTimeout(async () => {
     document.getElementById("boot")?.classList.add("hidden");
+    if(globalThis.Win11SessionManager?.handleBootComplete){
+      try{
+        await globalThis.Win11SessionManager.handleBootComplete();
+        return;
+      }catch(err){
+        console.error("[V6.7] Session boot failed",err);
+      }
+    }
     document.getElementById("lock")?.classList.remove("hidden");
   }, 1000);
 })();
