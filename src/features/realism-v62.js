@@ -1,5 +1,5 @@
-﻿"use strict";
-/* Windows 11 Simulator V6.2 â€” Realism Layer */
+"use strict";
+/* Windows 11 Simulator V6.2 — Realism Layer */
 (function installRealismLayer(){
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 
@@ -80,8 +80,8 @@
     });
     const title=$("#start-menu .section-head h3");
     const all=$("#all-apps-btn");
-    if(title)title.textContent=showAll?"Todas as aplicaÃ§Ãµes":"Afixadas";
-    if(all)all.textContent=showAll?"â€¹ Voltar":"Todas as aplicaÃ§Ãµes â€º";
+    if(title)title.textContent=showAll?"Todas as aplicações":"Afixadas";
+    if(all)all.textContent=showAll?"‹ Voltar":"Todas as aplicações ›";
     const rec=$("#start-menu .start-recommended");
     if(rec)rec.style.display=showAll?"none":"";
   }
@@ -124,9 +124,9 @@
     const titleIcon=win.querySelector(".win-title span:first-child");
     if(titleIcon)titleIcon.outerHTML=iconFor(win.dataset.app||"default");
     const min=win.querySelector(".win-control.min"),max=win.querySelector(".win-control.max"),close=win.querySelector(".win-control.close");
-    if(min){min.textContent="â€”";min.setAttribute("aria-label","Minimizar")}
-    if(max){max.textContent="â–¡";max.setAttribute("aria-label","Maximizar")}
-    if(close){close.textContent="Ã—";close.setAttribute("aria-label","Fechar")}
+    if(min){min.textContent="—";min.setAttribute("aria-label","Minimizar")}
+    if(max){max.textContent="□";max.setAttribute("aria-label","Maximizar")}
+    if(close){close.textContent="×";close.setAttribute("aria-label","Fechar")}
     setTimeout(()=>win.classList.remove("win-enter"),220);
   }
 
@@ -162,7 +162,7 @@
       notify.innerHTML='<span class="tray-glyph">'+svg('<path fill="currentColor" d="M16 3a6 6 0 0 0-6 6v3.5c0 3-1.1 5.2-3 7.5h18c-1.9-2.3-3-4.5-3-7.5V9a6 6 0 0 0-6-6zm-3 20a3 3 0 0 0 6 0z"/>')+'</span>';
     }
     const widgets=$("#widgets-btn");
-    if(widgets)widgets.innerHTML='<span style="font-size:18px">â˜</span><span><strong style="font-size:12px;font-weight:500">22Â°</strong><br><small style="font-size:9px">Parcialmente nublado</small></span>';
+    if(widgets)widgets.innerHTML='<span style="font-size:18px">☁</span><span><strong style="font-size:12px;font-weight:500">22°</strong><br><small style="font-size:9px">Parcialmente nublado</small></span>';
   }
 
   const observer=new MutationObserver(mutations=>{
@@ -183,9 +183,9 @@
   $$(".window").forEach(decorateWindow);
   decorateSearch(document);
 
-  document.documentElement.dataset.simVersion="6.3.1";
+  document.documentElement.dataset.simVersion="6.3.2";
   globalThis.Win11Realism={
-    version:"6.3.1",
+    version:"6.3.2",
     iconFor,
     refresh(){populateDesktop();populateStart();setupTray();$$(".window").forEach(decorateWindow);decorateSearch(document)}
   };

@@ -114,6 +114,10 @@ await evaluate(`closeOverlays(); toggleOverlay("start"); true`);
 await wait(160);
 await check("Mobile start inside viewport",async()=>await evaluate(`(()=>{const r=document.querySelector("#start-menu").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&r.top>=0&&r.bottom<=innerHeight+1})()`));
 await check("Mobile no page overflow",async()=>await evaluate(`document.documentElement.scrollWidth<=innerWidth+1`));
+await check("Rendered text no mojibake",async()=>await evaluate(`(()=>{const t=document.body.innerText;const bad=["\\uFFFD","\\u00C3\\u00A3","\\u00C3\\u00A7","\\u00C3\\u00B5","\\u00C2\\u00B0","\\u00E2\\u20AC\\u201D","\\u00E2\\u20AC\\u00B9","\\u00E2\\u20AC\\u00BA"];return !/[\\u0080-\\u009F]/.test(t)&&!bad.some(x=>t.includes(x))})()`));
+await check("Start applications text encoding",async()=>await evaluate(`document.querySelector("#all-apps-btn")?.textContent.includes("Todas as aplica\\u00E7\\u00F5es")`));
+await check("Window control glyph encoding",async()=>await evaluate(`(()=>{const w=document.querySelector('.window');return w?.querySelector('.win-control.min')?.textContent==="\\u2014"&&w?.querySelector('.win-control.max')?.textContent==="\\u25A1"&&w?.querySelector('.win-control.close')?.textContent==="\\u00D7"})()`));
+await check("Widget temperature encoding",async()=>await evaluate(`document.querySelector("#widgets-btn")?.textContent.includes("22\\u00B0")`));
 
 await wait(250);
 const failed=checks.filter(c=>!c.ok);
