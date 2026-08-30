@@ -1,12 +1,12 @@
-"use strict";
+﻿"use strict";
 (function bootWindowsSimulatorV6() {
   const required = ["openApp","applyState","renderRecommended","buildExplorerV5","buildSettingsV5","buildServices","buildDiskManagement","buildPowerShell"];
   const missing = required.filter((name) => typeof globalThis[name] !== "function");
   globalThis.Win11SimDiagnostics = {
-    version: "6.0.0",
+    version: "6.1.0",
     run() {
       return {
-        version: "6.0.0",
+        version: "6.1.0",
         missingFunctions: required.filter((name) => typeof globalThis[name] !== "function"),
         windowCount: document.querySelectorAll(".window").length,
         currentDesktop: Number(state.currentDesktop) || 0,
@@ -28,3 +28,4 @@
     document.getElementById("lock")?.classList.remove("hidden");
   }, 1000);
 })();
+

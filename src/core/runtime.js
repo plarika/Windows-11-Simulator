@@ -159,32 +159,143 @@ function cycleDesktop(dir){
 function buildEdge(wrap){
   wrap.className="edge";
   wrap.innerHTML=`<div class="edge-tabs"><button class="edge-tab">Novo separador</button></div>
-  <div class="edge-bar"><button data-back>←</button><button data-home>⌂</button><input class="edge-address" value="edge://newtab" aria-label="Barra de endereço"><button data-go>Ir</button></div>
+  <div class="edge-bar">
+    <button data-back title="Voltar">←</button>
+    <button data-forward title="Avançar">→</button>
+    <button data-reload title="Atualizar">↻</button>
+    <button data-home title="Página inicial">⌂</button>
+    <input class="edge-address" value="edge://newtab" aria-label="Barra de endereço">
+    <button data-go>Ir</button>
+    <button data-external title="Abrir no navegador real">↗</button>
+  </div>
   <div class="edge-page"></div>`;
-  const address=wrap.querySelector(".edge-address"),page=wrap.querySelector(".edge-page");
-  function home(){
-    address.value="edge://newtab";page.innerHTML=`<div class="edge-home"><div class="edge-logo">🌐</div><h1>Microsoft Edge</h1><p>Navegador virtual isolado do sistema real.</p>
-      <div class="edge-search"><input placeholder="Pesquisar no Windows Simulator"><button>Pesquisar</button></div>
-      <div class="edge-cards"><div class="edge-card"><strong>Documentos</strong><p>Pesquise ficheiros locais da simulação.</p></div><div class="edge-card"><strong>Segurança</strong><p>Sites externos não são incorporados automaticamente.</p></div><div class="edge-card"><strong>Privacidade</strong><p>Sem acesso ao sistema operativo real.</p></div></div></div>`;
-    const inp=page.querySelector(".edge-search input"),btn=page.querySelector(".edge-search button");
-    const go=()=>{address.value="search:"+inp.value;renderAddress()};btn.onclick=go;inp.onkeydown=e=>{if(e.key==="Enter")go()};
+
+  const address=wrap.querySelector(".edge-address");
+  const page=wrap.querySelector(".edge-page");
+  let history=["edge://newtab"];
+  let historyIndex=0;
+  let currentUrl="edge://newtab";
+
+  function setAddress(v){ currentUrl=v; address.value=v; }
+
+  function normalizeInput(raw){
+    const v=raw.trim();
+    if(!v) return "edge://newtab";
+    if(v==="edge://newtab" || v.startsWith("local:")) return v;
+    if(/^https?:\/\//i.test(v)) return v;
+    if(/^[a-z]+:/i.test(v)) return "blocked:"+v;
+    if(!/\s/.test(v) && /^[\w.-]+\.[a-z]{2,}(\/.*)?$/i.test(v)) return "https://"+v;
+    return "https://www.google.com/search?igu=1&q="+encodeURIComponent(v);
   }
-  function renderAddress(){
-    const v=address.value.trim();
-    if(!v||v==="edge://newtab"){home();return}
-    if(v.startsWith("search:")){
-      const q=v.slice(7),rs=collectSearchResults(q);
-      page.innerHTML=`<h2>Resultados locais para “${escapeHTML(q)}”</h2><p>Pesquisa feita apenas dentro do Windows Simulator.</p><div class="search-results" style="color:inherit"></div>`;
-      const box=page.querySelector(".search-results");
-      rs.forEach(r=>{const b=document.createElement("button");b.className="search-result";b.style.color="inherit";b.innerHTML=`<span class="sr-icon">${r.icon}</span><span><strong>${escapeHTML(r.name)}</strong><small>${escapeHTML(r.detail)}</small></span>`;b.onclick=()=>launchSearchResult(r);box.appendChild(b)});
-      if(!rs.length)box.innerHTML="<p>Sem resultados.</p>";return;
-    }
-    if(/^https?:\/\//i.test(v)){
-      page.innerHTML=`<h2>Site externo</h2><div class="edge-warning"><strong>Navegação externa isolada.</strong><br>Por segurança e compatibilidade, esta simulação não incorpora arbitrariamente páginas externas em iframe.</div><p>Endereço:</p><p><code>${escapeHTML(v)}</code></p><p>Pode continuar a usar páginas internas e pesquisa local do simulador.</p>`;return;
-    }
-    address.value="search:"+v;renderAddress();
+
+  function pushHistory(url){
+    history=history.slice(0,historyIndex+1);
+    history.push(url);
+    historyIndex=history.length-1;
   }
-  wrap.querySelector("[data-home]").onclick=home;wrap.querySelector("[data-go]").onclick=renderAddress;address.onkeydown=e=>{if(e.key==="Enter")renderAddress()};wrap.querySelector("[data-back]").onclick=home;home();
+
+  function home(push=true){
+    setAddress("edge://newtab");
+    if(push && history[historyIndex]!=="edge://newtab") pushHistory("edge://newtab");
+    page.innerHTML=`<div class="edge-home">
+      <div class="edge-logo">🌐</div>
+      <h1>Microsoft Edge</h1>
+      <p>Internet ativada no Windows 11 Simulator.</p>
+      <div class="edge-search"><input placeholder="Pesquisar na Web ou introduzir endereço"><button>Pesquisar</button></div>
+      <div class="edge-cards">
+        <div class="edge-card"><strong>Internet</strong><p>Abra páginas HTTPS diretamente dentro do Edge quando o site permitir incorporação.</p></div>
+        <div class="edge-card"><strong>Pesquisa Web</strong><p>Pesquisas normais são enviadas para a Internet.</p></div>
+        <div class="edge-card"><strong>Pesquisa local</strong><p>Use <code>local: termo</code> para procurar apenas no simulador.</p></div>
+      </div>
+    </div>`;
+    const input=page.querySelector(".edge-search input");
+    const button=page.querySelector(".edge-search button");
+    const go=()=>navigate(normalizeInput(input.value));
+    button.onclick=go;
+    input.onkeydown=e=>{if(e.key==="Enter")go()};
+  }
+
+  function localSearch(q,push=true){
+    const url="local:"+q;
+    setAddress(url);
+    if(push) pushHistory(url);
+    const rs=collectSearchResults(q);
+    page.innerHTML=`<div class="edge-local-results"><h2>Resultados locais para “${escapeHTML(q)}”</h2><p>Resultados do Windows Simulator.</p><div class="search-results" style="color:inherit"></div></div>`;
+    const box=page.querySelector(".search-results");
+    rs.forEach(r=>{
+      const b=document.createElement("button");
+      b.className="search-result";
+      b.style.color="inherit";
+      b.innerHTML=`<span class="sr-icon">${r.icon}</span><span><strong>${escapeHTML(r.name)}</strong><small>${escapeHTML(r.detail)}</small></span>`;
+      b.onclick=()=>launchSearchResult(r);
+      box.appendChild(b);
+    });
+    if(!rs.length) box.innerHTML="<p>Sem resultados locais.</p>";
+  }
+
+  function showBlocked(url,push=true){
+    setAddress(url.replace(/^blocked:/,""));
+    if(push) pushHistory(url);
+    page.innerHTML=`<div class="edge-web-message"><h2>Endereço bloqueado</h2><p>Por segurança, o simulador só permite endereços <strong>http://</strong> e <strong>https://</strong>.</p><code>${escapeHTML(url.replace(/^blocked:/,""))}</code></div>`;
+  }
+
+  function showWeb(url,push=true){
+    setAddress(url);
+    if(push) pushHistory(url);
+    page.innerHTML="";
+    const shell=document.createElement("div");
+    shell.className="edge-web-shell";
+    const notice=document.createElement("div");
+    notice.className="edge-web-notice";
+    notice.innerHTML='<span>🔒 Navegação Web isolada</span><span>Alguns sites podem bloquear incorporação.</span>';
+    const frame=document.createElement("iframe");
+    frame.className="edge-web-frame";
+    frame.src=url;
+    frame.title="Conteúdo Web";
+    frame.referrerPolicy="no-referrer";
+    frame.setAttribute("sandbox","allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads");
+    const fallback=document.createElement("div");
+    fallback.className="edge-web-fallback";
+    fallback.innerHTML='<span>Se a página não aparecer, o próprio site poderá estar a bloquear iframes.</span><button class="sys-button primary" data-open-external>Abrir externamente ↗</button>';
+    shell.append(notice,frame,fallback);
+    page.appendChild(shell);
+    fallback.querySelector("[data-open-external]").onclick=()=>openExternal(url);
+  }
+
+  function navigate(input,push=true){
+    const url=normalizeInput(input);
+    if(url==="edge://newtab"){home(push);return}
+    if(url.startsWith("local:")){localSearch(url.slice(6).trim(),push);return}
+    if(url.startsWith("blocked:")){showBlocked(url,push);return}
+    showWeb(url,push);
+  }
+
+  function openExternal(url=currentUrl){
+    if(!/^https?:\/\//i.test(url)){
+      notify("Microsoft Edge","Abra primeiro um endereço HTTP ou HTTPS.");
+      return;
+    }
+    const w=window.open(url,"_blank","noopener,noreferrer");
+    if(!w) notify("Microsoft Edge","O browser bloqueou a nova janela. Autorize pop-ups para este site.");
+  }
+
+  wrap.querySelector("[data-home]").onclick=()=>home(true);
+  wrap.querySelector("[data-go]").onclick=()=>navigate(address.value,true);
+  wrap.querySelector("[data-external]").onclick=()=>openExternal();
+  wrap.querySelector("[data-reload]").onclick=()=>navigate(currentUrl,false);
+  address.onkeydown=e=>{if(e.key==="Enter")navigate(address.value,true)};
+  wrap.querySelector("[data-back]").onclick=()=>{
+    if(historyIndex<=0)return;
+    historyIndex--;
+    navigate(history[historyIndex],false);
+  };
+  wrap.querySelector("[data-forward]").onclick=()=>{
+    if(historyIndex>=history.length-1)return;
+    historyIndex++;
+    navigate(history[historyIndex],false);
+  };
+
+  home(false);
 }
 
 function buildPaint(wrap){wrap.className='paint';wrap.innerHTML='<div class="paint-toolbar"><button data-pencil>Lápis</button><button data-eraser>Borracha</button><input data-color type="color" value="#111111"><button data-clear>Limpar</button><button data-save>Guardar</button></div><div class="paint-canvas-wrap"><canvas width="900" height="560"></canvas></div>';const c=wrap.querySelector('canvas'),ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);let drawing=false,eraser=false,color='#111';function pos(e){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}c.onpointerdown=e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);c.setPointerCapture?.(e.pointerId)};c.onpointermove=e=>{if(!drawing)return;const p=pos(e);ctx.strokeStyle=eraser?'#fff':color;ctx.lineWidth=eraser?18:4;ctx.lineCap='round';ctx.lineTo(p.x,p.y);ctx.stroke()};c.onpointerup=()=>drawing=false;wrap.querySelector('[data-pencil]').onclick=()=>eraser=false;wrap.querySelector('[data-eraser]').onclick=()=>eraser=true;wrap.querySelector('[data-color]').oninput=e=>color=e.target.value;wrap.querySelector('[data-clear]').onclick=()=>{ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height)};wrap.querySelector('[data-save]').onclick=()=>{const name='Desenho-'+Date.now()+'.png';ensureFolder('C:/Pictures')[name]=c.toDataURL('image/png');saveState();notify('Pintar',`${name} guardado em Imagens.`)}}
