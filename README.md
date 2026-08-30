@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.9 Profile & Recovery** — gestão avançada de contas, avatar, alteração de credencial, backup/restauro e bloqueio automático.
+**V7.0 Desktop Integration** — aplicações predefinidas, Abrir com, partilha nativa, impressão e Definições Rápidas ligadas ao dispositivo.
 
 ## Funcionalidades
 
@@ -179,3 +179,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - bloqueio automático configurável por inatividade
 - bloqueio de sessão encerra Câmara e finaliza de forma segura o Gravador
 - terminar sessão interrompe streams sensíveis e descarta gravações ainda não concluídas
+
+## V7.0 Desktop Integration
+
+- associações de ficheiros por extensão, persistentes por perfil
+- Abrir com... no Explorador
+- Aplicações predefinidas em Definições > Aplicações
+- partilha real através de `navigator.share` quando suportada
+- fallback de partilha para clipboard ou exportação
+- impressão real de texto e imagens através do diálogo do navegador/sistema
+- Definições Rápidas mostram o estado real online/offline
+- Fullscreen e Wake Lock reais diretamente nas Definições Rápidas
+- a página deixa de fingir que consegue ligar/desligar o Wi-Fi real
+- Definições > Rede distingue claramente rede real de redes virtuais simuladas

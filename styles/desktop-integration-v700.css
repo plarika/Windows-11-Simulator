@@ -1,0 +1,57 @@
+/* Windows 11 Simulator V7.0 — Desktop Integration */
+.openwith-dialog{display:grid;gap:12px}
+.openwith-dialog>p{margin:0;color:#4b5560}
+.openwith-list{display:grid;gap:7px}
+.openwith-app{
+  display:grid!important;grid-template-columns:auto auto minmax(0,1fr);gap:10px;align-items:center;
+  margin:0!important;padding:10px;border:1px solid #dfe5ea;border-radius:9px;background:rgba(255,255,255,.6);
+  cursor:pointer;color:#20262c!important
+}
+.openwith-app:has(input:checked){border-color:#1689d8;background:#eef7fd}
+.openwith-app input{width:auto!important;height:auto!important;margin:0!important;box-shadow:none!important}
+.openwith-icon{font-size:24px}
+.openwith-app span:last-child{display:flex;flex-direction:column;gap:2px}
+.openwith-app small{font-size:10px;color:#6d7781}
+.openwith-always{display:flex!important;align-items:center;gap:8px;margin-top:2px!important}
+.openwith-always input{width:auto!important;height:auto!important;margin:0!important}
+.default-apps-card{grid-column:1/-1}
+.default-apps-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.default-apps-head p{margin:4px 0 0;color:#6a7480;font-size:11px}
+.default-apps-list{display:grid;gap:7px}
+.default-app-row{
+  display:flex!important;align-items:center;justify-content:space-between;gap:16px;
+  margin:0!important;padding:8px 0;border-bottom:1px solid #edf0f2;color:#313941!important
+}
+.default-app-row:last-child{border-bottom:0}
+.default-app-row>span{display:flex;flex-direction:column;gap:2px}
+.default-app-row small{font-size:10px;color:#74808a}
+.default-app-row select{
+  min-width:180px;height:34px;padding:0 9px;border:1px solid #cbd3da;border-radius:6px;
+  background:#fff;color:#20262c
+}
+.quick-real-note{
+  margin-top:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.48);
+  border:1px solid rgba(128,140,154,.18);color:#69747e;font-size:10px;line-height:1.4
+}
+.real-quick-tile.offline{opacity:.7}
+.real-network-card{margin-bottom:12px;border-left:3px solid #1689d8}
+.real-network-card small{color:#69747e;font-size:10px;line-height:1.4}
+.desktop-print-frame{
+  position:fixed!important;left:-200vw!important;top:-200vh!important;
+  width:1px!important;height:1px!important;border:0!important;opacity:0!important;pointer-events:none!important
+}
+#app.theme-dark .openwith-app{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.09);color:#edf1f4!important}
+#app.theme-dark .openwith-app:has(input:checked){background:rgba(22,137,216,.16);border-color:#1689d8}
+#app.theme-dark .openwith-app small,
+#app.theme-dark .default-apps-head p,
+#app.theme-dark .default-app-row small,
+#app.theme-dark .real-network-card small{color:#bbc4cc}
+#app.theme-dark .default-app-row{color:#edf1f4!important;border-color:rgba(255,255,255,.07)}
+#app.theme-dark .default-app-row select{background:#292f36;color:#f4f6f8;border-color:#505962}
+#app.theme-dark .quick-real-note{background:rgba(255,255,255,.04);color:#bcc5cd;border-color:rgba(255,255,255,.07)}
+@media(max-width:720px){
+  .default-app-row{align-items:stretch;flex-direction:column;gap:6px}
+  .default-app-row select{width:100%;min-width:0}
+  .default-apps-head{align-items:stretch;flex-direction:column}
+  .default-apps-head .sys-button{align-self:flex-start}
+}

@@ -95,6 +95,11 @@ function buildExplorerV5(wrap,win,startPath){
           menu.push(["Restaurar",()=>{restoreFile(item.name);render()}],["Eliminar permanentemente",async()=>{const bin=ensureFolder("Recycle Bin"),doomed=bin[item.name]?.content;if(doomed&&globalThis.RealContentBridge?.cleanupVirtualValue)await RealContentBridge.cleanupVirtualValue(doomed);delete bin[item.name];saveState();render()}],["Propriedades",()=>showFileProperties(item.value?.originalPath||"",item.name,item.value?.content)]);
         }else{
           menu.push(["Abrir",()=>item.type==="folder"?nav(path+"/"+item.name):openFile(path,item.name,item.value)]);
+          if(item.type==="file"&&globalThis.Win11DesktopIntegration){
+            menu.push(["Abrir com...",()=>Win11DesktopIntegration.showOpenWith(path,item.name,item.value)]);
+            menu.push(["Partilhar",()=>Win11DesktopIntegration.shareFile(path,item.name,item.value)]);
+            menu.push(["Imprimir",()=>Win11DesktopIntegration.printFile(path,item.name,item.value)]);
+          }
           menu.push(["Copiar",()=>{state.fileClipboard={mode:"copy",path,name:item.name,type:item.type};saveState();notify("Explorador","Copiado para a área de transferência de ficheiros.")}]);
           menu.push(["Cortar",()=>{state.fileClipboard={mode:"cut",path,name:item.name,type:item.type};saveState();notify("Explorador","Pronto para mover.")}]);
           menu.push(["Mudar nome",()=>renameSelected()]);
