@@ -49,7 +49,7 @@ A V7.1 só acede a diretórios escolhidos explicitamente pelo utilizador atravé
 
 ## Compatibilidade Web do Edge
 
-A V7.2 continua a respeitar as políticas de incorporação dos sites. O simulador não tenta contornar X-Frame-Options ou Content-Security-Policy. O YouTube completo não é incorporado; vídeos e playlists específicos usam o player oficial em `youtube.com/embed`. Quando um site bloqueia iframe, a interface apresenta um botão explícito para abrir o endereço real num separador externo do navegador.
+A camada Web do Edge continua a respeitar as políticas de incorporação dos sites. O simulador não tenta contornar X-Frame-Options ou Content-Security-Policy. A V8.1.1 substitui a integração especial do YouTube por `https://www.ouvirmusica.com.br/`, carregada como conteúdo Web real num iframe sandboxed. O iframe recebe apenas as permissões necessárias para navegação e reprodução (`autoplay; encrypted-media`), e mantém um botão explícito para abrir o endereço real externamente caso o site altere as suas políticas de incorporação.
 
 ## Downloads do Edge
 

@@ -3,9 +3,11 @@
 (function installEdgeAdvancedV730(){
   const BASE=globalThis.Win11EdgeInternet;
   if(!BASE)throw new Error("Edge Internet V7.2 must load before V7.3.");
+  const OUVIR_MUSICA_URL=BASE.OUVIR_MUSICA_URL||"https://www.ouvirmusica.com.br/";
+  const OUVIR_MUSICA_HOSTS=BASE.OUVIR_MUSICA_HOSTS||new Set(["ouvirmusica.com.br","www.ouvirmusica.com.br"]);
 
   const INTERNAL_PAGES=new Set([
-    "edge://newtab","edge://favorites","edge://history","edge://downloads","edge://settings","edge://youtube"
+    "edge://newtab","edge://favorites","edge://history","edge://downloads","edge://settings"
   ]);
 
   function clone(value){
@@ -27,7 +29,7 @@
     current.closedTabs=Array.isArray(current.closedTabs)?current.closedTabs.slice(0,20):[];
     current.restoreTabs=current.restoreTabs!==false;
     current.showFavoritesBar=current.showFavoritesBar!==false;
-    current.startupPage=typeof current.startupPage==="string"?current.startupPage:"edge://newtab";
+    current.startupPage=normalize(typeof current.startupPage==="string"?current.startupPage:"edge://newtab");
     state.edgeBrowser=current;
     return current;
   }
@@ -49,8 +51,8 @@
   function normalize(raw){
     const value=String(raw||"").trim();
     if(!value)return "edge://newtab";
+    if(value.startsWith("edge://youtube")||value==="edge://ouvirmusica")return OUVIR_MUSICA_URL;
     if(INTERNAL_PAGES.has(value))return value;
-    if(value.startsWith("edge://youtube/"))return value;
     return BASE.normalize(value);
   }
 
@@ -60,14 +62,12 @@
     if(url==="edge://history")return "Histórico";
     if(url==="edge://downloads")return "Downloads";
     if(url==="edge://settings")return "Definições";
-    if(url==="edge://youtube")return "YouTube";
-    if(url.startsWith("edge://youtube/watch"))return "YouTube · vídeo";
-    if(url.startsWith("edge://youtube/playlist"))return "YouTube · playlist";
-    if(url.startsWith("edge://youtube/search"))return "YouTube · pesquisa";
     if(url.startsWith("local:"))return "Pesquisa local";
     try{
       const u=new URL(url);
+      const host=u.hostname.toLowerCase();
       if(u.hostname.includes("google."))return "Google";
+      if(OUVIR_MUSICA_HOSTS.has(host))return "Ouvir Música";
       return u.hostname.replace(/^www\./,"");
     }catch{return "Microsoft Edge"}
   }
@@ -77,12 +77,13 @@
     if(url==="edge://history")return "🕘";
     if(url==="edge://downloads")return "↓";
     if(url==="edge://settings")return "⚙";
-    if(url.startsWith("edge://youtube"))return "▶";
     if(url==="edge://newtab")return "🌐";
     if(url.startsWith("local:"))return "🔎";
     try{
       const u=new URL(url);
+      const host=u.hostname.toLowerCase();
       if(u.hostname.includes("google."))return "G";
+      if(OUVIR_MUSICA_HOSTS.has(host))return "♪";
       if(u.hostname.includes("github.com"))return "◆";
       if(u.hostname.includes("wikipedia.org"))return "W";
       return "🌐";
@@ -516,18 +517,18 @@
     function renderHome(){
       page.innerHTML=
         '<div class="edge-home edge-v720-home edge-v730-home">'+
-          '<div class="edge-v720-brand"><div class="edge-logo">🌐</div><h1>Microsoft Edge</h1><p>Google, YouTube, favoritos, histórico e sessão persistente.</p></div>'+
+          '<div class="edge-v720-brand"><div class="edge-logo">🌐</div><h1>Microsoft Edge</h1><p>Google, Ouvir Música, favoritos, histórico e sessão persistente.</p></div>'+
           '<div class="edge-search edge-v720-search"><input placeholder="Pesquisar no Google"><button>Pesquisar</button></div>'+
           '<div class="edge-v720-shortcuts">'+
             '<button data-edge-shortcut="https://www.google.com/webhp?igu=1"><span class="edge-shortcut-icon google">G</span><strong>Google</strong></button>'+
-            '<button data-edge-shortcut="edge://youtube"><span class="edge-shortcut-icon youtube">▶</span><strong>YouTube</strong></button>'+
+            '<button data-edge-shortcut="'+OUVIR_MUSICA_URL+'"><span class="edge-shortcut-icon ouvir">♪</span><strong>Ouvir Música</strong></button>'+
             '<button data-edge-shortcut="edge://favorites"><span class="edge-shortcut-icon">★</span><strong>Favoritos</strong></button>'+
             '<button data-edge-shortcut="edge://history"><span class="edge-shortcut-icon">🕘</span><strong>Histórico</strong></button>'+
           '</div>'+
           '<div class="edge-v730-dashboard">'+
             '<button data-edge-dashboard="edge://downloads"><span>↓</span><strong>Downloads</strong><small>'+edgeState.downloads.length+' item(ns)</small></button>'+
             '<button data-edge-dashboard="edge://settings"><span>⚙</span><strong>Definições</strong><small>Arranque e barra de favoritos</small></button>'+
-            '<button data-edge-dashboard="edge://youtube"><span>▶</span><strong>YouTube</strong><small>Player oficial incorporado</small></button>'+
+            '<button data-edge-dashboard="'+OUVIR_MUSICA_URL+'"><span>♪</span><strong>Ouvir Música</strong><small>Músicas e playlists no site real</small></button>'+
           '</div>'+
         '</div>';
       const input=page.querySelector(".edge-search input");
@@ -660,7 +661,7 @@
             '<label class="edge-setting-row vertical"><span><strong>Página ao iniciar</strong><small>Utilizada quando não existe sessão anterior.</small></span><select data-setting-startup>'+
               '<option value="edge://newtab" '+(edgeState.startupPage==="edge://newtab"?"selected":"")+'>Novo separador</option>'+
               '<option value="https://www.google.com/webhp?igu=1" '+(edgeState.startupPage.includes("google.com")?"selected":"")+'>Google</option>'+
-              '<option value="edge://youtube" '+(edgeState.startupPage==="edge://youtube"?"selected":"")+'>YouTube</option>'+
+              '<option value="'+OUVIR_MUSICA_URL+'" '+(edgeState.startupPage.includes("ouvirmusica.com.br")?"selected":"")+'>Ouvir Música</option>'+
             '</select></label>'+
           '</div>'+
           '<div class="edge-settings-actions"><button class="sys-button" data-reset-edge-session>Repor separadores guardados</button><button class="sys-button" data-clear-edge-data>Limpar histórico e downloads</button></div>'+
@@ -692,50 +693,6 @@
       });
     }
 
-    function renderYouTubePortal(edgeUrl){
-      const parsed=edgeUrl==="edge://youtube"?null:new URL(edgeUrl);
-      const q=parsed?.searchParams.get("q")||"";
-      page.innerHTML=
-        '<div class="edge-youtube-portal">'+
-          '<div class="edge-youtube-head"><span class="edge-youtube-logo">▶</span><strong>YouTube</strong><span>modo compatibilidade</span></div>'+
-          '<div class="edge-youtube-search"><input data-youtube-search placeholder="Pesquisar no YouTube" value="'+escapeHTML(q)+'"><button class="sys-button primary" data-youtube-search-go>Pesquisar</button></div>'+
-          '<div class="edge-youtube-linkbox"><label>Abrir vídeo por URL</label><div><input data-youtube-url placeholder="https://youtu.be/..."><button class="sys-button" data-youtube-url-go>Abrir vídeo</button></div></div>'+
-          (q?'<div class="edge-youtube-search-state"><strong>Pesquisa: '+escapeHTML(q)+'</strong><p>O site completo do YouTube bloqueia incorporação. Abra os resultados no YouTube real ou cole aqui o URL de um vídeo.</p><button class="sys-button primary" data-youtube-external-search>Abrir resultados no YouTube ↗</button></div>':
-          '<div class="edge-youtube-info"><h2>YouTube dentro do Edge</h2><p>Vídeos e playlists específicas são reproduzidos pelo player oficial.</p><div class="edge-youtube-actions"><button class="sys-button primary" data-youtube-external>Abrir YouTube real ↗</button><button class="sys-button" data-youtube-sample>Testar player oficial</button></div></div>')+
-        '</div>';
-      const searchInput=page.querySelector("[data-youtube-search]");
-      const searchGo=()=>{const term=searchInput.value.trim();if(term)navigate("edge://youtube/search?q="+encodeURIComponent(term))};
-      page.querySelector("[data-youtube-search-go]").onclick=searchGo;
-      searchInput.onkeydown=e=>{if(e.key==="Enter")searchGo()};
-      const urlInput=page.querySelector("[data-youtube-url]");
-      const urlGo=()=>{
-        const value=urlInput.value.trim();
-        if(!value)return;
-        const n=normalize(value);
-        if(n.startsWith("edge://youtube/watch")||n.startsWith("edge://youtube/playlist"))navigate(n);
-        else notify("YouTube","Cole um link de vídeo ou playlist válido do YouTube.");
-      };
-      page.querySelector("[data-youtube-url-go]").onclick=urlGo;
-      urlInput.onkeydown=e=>{if(e.key==="Enter")urlGo()};
-      page.querySelector("[data-youtube-external]")?.addEventListener("click",()=>openExternal("edge://youtube"));
-      page.querySelector("[data-youtube-external-search]")?.addEventListener("click",()=>openExternal(edgeUrl));
-      page.querySelector("[data-youtube-sample]")?.addEventListener("click",()=>navigate("https://www.youtube.com/watch?v=M7lc1UVf-VE"));
-    }
-
-    function renderYouTubePlayer(edgeUrl){
-      const embed=BASE.youtubeEmbedUrl(edgeUrl);
-      const isPlaylist=edgeUrl.startsWith("edge://youtube/playlist");
-      page.innerHTML=
-        '<div class="edge-youtube-player-shell">'+
-          '<div class="edge-site-note edge-youtube-note"><span>▶ YouTube · player oficial incorporado</span><div><button data-youtube-home>YouTube</button><button data-ext>Abrir no YouTube ↗</button></div></div>'+
-          '<div class="edge-youtube-frame-wrap"><iframe class="edge-tab-frame edge-youtube-frame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>'+
-          '<div class="edge-youtube-player-foot">'+(isPlaylist?"Playlist YouTube":"Vídeo YouTube")+' · se a incorporação estiver desativada, utilize “Abrir no YouTube”.</div>'+
-        '</div>';
-      page.querySelector("iframe").src=embed;
-      page.querySelector("[data-ext]").onclick=()=>openExternal(edgeUrl);
-      page.querySelector("[data-youtube-home]").onclick=()=>navigate("edge://youtube");
-    }
-
     function renderCompatibility(url,reason="Este site bloqueia a incorporação em aplicações Web."){
       let host="site";
       try{host=new URL(url).hostname}catch{}
@@ -760,7 +717,8 @@
       frame.className="edge-tab-frame";
       frame.src=url;
       frame.referrerPolicy="strict-origin-when-cross-origin";
-      frame.setAttribute("sandbox","allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads");
+      if(OUVIR_MUSICA_HOSTS.has(new URL(url).hostname.toLowerCase()))frame.setAttribute("allow","autoplay; encrypted-media");
+      frame.setAttribute("sandbox","allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads allow-storage-access-by-user-activation");
       shell.append(note,frame);
       page.appendChild(shell);
       note.querySelector("[data-ext]").onclick=()=>openExternal(url);
@@ -780,8 +738,7 @@
       if(t.url==="edge://downloads"){renderDownloadsPage();return}
       if(t.url==="edge://settings"){renderSettingsPage();return}
       if(t.url.startsWith("local:")){renderLocal(t.url);return}
-      if(t.url==="edge://youtube"||t.url.startsWith("edge://youtube/search")){renderYouTubePortal(t.url);return}
-      if(t.url.startsWith("edge://youtube/watch")||t.url.startsWith("edge://youtube/playlist")){renderYouTubePlayer(t.url);return}
+      if(t.url.startsWith("edge://youtube")){navigate(OUVIR_MUSICA_URL);return}
       renderWeb(t.url);
     }
 
@@ -870,7 +827,7 @@
   globalThis.buildEdge=buildEdgeV730;
 
   globalThis.Win11EdgeAdvanced=Object.freeze({
-    version:"8.1.0",
+    version:"8.1.1",
     ensureEdgeState,
     normalize,
     addHistory,

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.1.0 Start, Search & Taskbar Experience** — Menu Iniciar persistente por perfil, pesquisa local categorizada e jump lists da barra de tarefas.
+**V8.1.1 Ouvir Música Integration** — o atalho e a experiência YouTube do Edge foram substituídos por https://www.ouvirmusica.com.br/, mantendo migração de sessões antigas.
 
 ## Funcionalidades
 
@@ -213,11 +213,11 @@ Primeiro passo de integração com funções reais do dispositivo:
 
 - pesquisa Google diretamente pela barra do Edge
 - Google homepage/search com modo de incorporação compatível
-- página YouTube própria dentro do Edge
-- URLs youtube.com/watch, youtu.be, shorts, live e embed são convertidas para o player oficial
-- playlists YouTube usam o player oficial videoseries
-- pesquisa YouTube oferece abertura dos resultados no site real
-- atalhos Google, YouTube, Wikipedia e GitHub no novo separador
+- integração Web real com fallback quando um site bloqueia iframe
+- o atalho principal de música abre https://www.ouvirmusica.com.br/
+- Ouvir Música é carregado num iframe sandboxed com permissão explícita para reprodução de áudio
+- sessões antigas com rotas `edge://youtube` são migradas automaticamente para Ouvir Música
+- atalhos Google, Ouvir Música, Wikipedia e GitHub no novo separador
 - sites conhecidos por bloquear iframe recebem uma página de compatibilidade em vez de um ecrã vazio
 - botão Abrir site real preservado em todos os modos
 - o simulador não contorna X-Frame-Options nem Content-Security-Policy dos sites
@@ -236,7 +236,7 @@ Primeiro passo de integração com funções reais do dispositivo:
 - fechar outros / fechar à direita
 - reabrir separador fechado
 - atalhos Ctrl+T, Ctrl+W, Ctrl+Shift+T, Ctrl+L, Ctrl+R e Ctrl+Tab
-- Google e YouTube V7.2 mantidos
+- Google V7.2 mantido; Ouvir Música substitui a integração YouTube a partir da V8.1.1
 
 ## V7.4 Explorer Pro
 
@@ -387,3 +387,10 @@ Primeiro passo de integração com funções reais do dispositivo:
 - jump lists da taskbar para Explorer, Notepad e Photos
 - menus da taskbar permitem afixar/remover do Iniciar e fechar a janela
 - nenhuma pesquisa lê pastas reais montadas sem ação explícita
+## V8.1.1 Ouvir Música Integration
+
+- Ouvir Música substitui o atalho e a experiência especial do YouTube no Edge
+- URL principal: https://www.ouvirmusica.com.br/
+- carregamento em iframe Web sandboxed com permissões de media limitadas
+- botão Abrir site real continua disponível como fallback
+- rotas antigas `edge://youtube` são migradas automaticamente
