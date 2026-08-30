@@ -1,0 +1,16 @@
+/* Windows 11 Simulator V6.6 — Real Platform */
+.real-notification-tools{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px;margin-bottom:9px;border:1px solid rgba(0,0,0,.08);
+  border-radius:8px;background:rgba(255,255,255,.56)
+}
+.real-notification-tools>div:first-child{display:flex;flex-direction:column;gap:2px}
+.real-notification-tools small{font-size:10px;color:#6b7580}
+.real-notification-actions{display:flex;gap:6px}
+.real-pwa-card{border-style:dashed}
+#app.theme-dark .real-notification-tools{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.09)}
+#app.theme-dark .real-notification-tools small{color:#bbc3cc}
+@media(max-width:720px){
+  .real-notification-tools{align-items:stretch;flex-direction:column}
+  .real-notification-actions .sys-button{flex:1}
+}

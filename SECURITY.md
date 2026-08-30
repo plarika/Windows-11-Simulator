@@ -6,6 +6,19 @@ O Windows 11 Simulator corre no navegador e mantém todas as operações adminis
 camada virtual. Interfaces como CMD, PowerShell, Registry Editor, Device Manager, Disk Management,
 Windows Update e Remote Desktop não devem executar ações no sistema operativo real.
 
+## Funções reais autorizadas
+
+Algumas áreas podem interagir com capacidades reais do navegador, mas apenas após ação explícita do utilizador:
+
+- abertura e gravação de ficheiros reais;
+- importação de ficheiros e pastas para o Explorer virtual;
+- área de transferência real;
+- reprodução de imagens, áudio e vídeo escolhidos pelo utilizador;
+- notificações do navegador;
+- instalação como PWA.
+
+Estas integrações não devem ler ficheiros, pastas, clipboard, microfone, câmara ou outros recursos em segundo plano. Os ficheiros importados para o Explorer são guardados como cópias controladas no IndexedDB do site. CMD, PowerShell, Registry, Serviços, Gestão de Discos e restantes ferramentas administrativas continuam virtuais.
+
 ## Reportar problemas
 
 Se encontrar uma função que consiga escapar da simulação, executar comandos reais, aceder ao

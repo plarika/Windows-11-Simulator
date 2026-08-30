@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=6.5.0"),
+  index.includes("./favicon.svg?v=6.6.0"),
   "Versioned favicon reference"
 );
 
@@ -109,8 +109,8 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=6.5.0"), "Real file bridge loaded");
-check(index.includes("./styles/real-files-v640.css?v=6.5.0"), "Real file bridge styles loaded");
+check(index.includes("./src/features/real-files-v640.js?v=6.6.0"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=6.6.0"), "Real file bridge styles loaded");
 
 
 
@@ -123,8 +123,43 @@ check(realClipboard.includes("Ler do dispositivo"), "Win+V real clipboard read c
 check(realClipboard.includes("Copiar para dispositivo"), "Win+V real clipboard write control present");
 check(realClipboard.includes("Copiar dispositivo"), "Notepad real clipboard copy control present");
 check(realClipboard.includes("Colar dispositivo"), "Notepad real clipboard paste control present");
-check(index.includes("./src/features/real-clipboard-v650.js?v=6.5.0"), "Real clipboard bridge loaded");
-check(index.includes("./styles/real-clipboard-v650.css?v=6.5.0"), "Real clipboard styles loaded");
+check(index.includes("./src/features/real-clipboard-v650.js?v=6.6.0"), "Real clipboard bridge loaded");
+check(index.includes("./styles/real-clipboard-v650.css?v=6.6.0"), "Real clipboard styles loaded");
+
+
+
+const realContent = readFileSync(resolve(root, "src/features/real-content-v660.js"), "utf8");
+check(realContent.includes("indexedDB.open"), "IndexedDB real file store present");
+check(realContent.includes("showDirectoryPicker"), "Real folder picker integration present");
+check(realContent.includes("webkitdirectory"), "Folder picker fallback present");
+check(realContent.includes("dragenter"), "Explorer drag and drop integration present");
+check(realContent.includes("data-import-files"), "Explorer real import control present");
+check(realContent.includes("data-export-file"), "Explorer real export control present");
+check(realContent.includes("Abrir imagem do dispositivo"), "Photos real image control present");
+check(realContent.includes("Abrir multimédia"), "Media Player real media control present");
+check(index.includes("./src/features/real-content-v660.js?v=6.6.0"), "Real content module loaded");
+check(index.includes("./styles/real-content-v660.css?v=6.6.0"), "Real content styles loaded");
+
+const realPlatform = readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8");
+check(realPlatform.includes("Notification.requestPermission"), "Real notification permission integration present");
+check(realPlatform.includes("new Notification"), "Real browser notification integration present");
+check(realPlatform.includes("serviceWorker.register"), "PWA service worker registration present");
+check(realPlatform.includes("beforeinstallprompt"), "PWA install prompt integration present");
+check(index.includes("./manifest.webmanifest?v=6.6.0"), "PWA manifest loaded");
+check(index.includes("./src/features/real-platform-v660.js?v=6.6.0"), "Real platform module loaded");
+check(existsSync(resolve(root, "manifest.webmanifest")), "PWA manifest exists");
+check(existsSync(resolve(root, "service-worker.js")), "Service worker exists");
+check(existsSync(resolve(root, "icons/icon-192.png")), "PWA 192 icon exists");
+check(existsSync(resolve(root, "icons/icon-512.png")), "PWA 512 icon exists");
+const swCheck = spawnSync(process.execPath, ["--check", resolve(root, "service-worker.js")], { encoding: "utf8" });
+check(swCheck.status === 0, "Service worker syntax");
+let manifestOk = false;
+try {
+  const manifest = JSON.parse(readFileSync(resolve(root, "manifest.webmanifest"), "utf8"));
+  manifestOk = manifest.name === "Windows 11 Simulator" && manifest.start_url === "./" && Array.isArray(manifest.icons) && manifest.icons.length >= 2;
+} catch {}
+check(manifestOk, "PWA manifest JSON and required fields");
+check(realContent.includes("cleanupVirtualFolder"), "IndexedDB cleanup integration present");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

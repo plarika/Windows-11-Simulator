@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.5 Real Functions — Step 2** — área de transferência real integrada com o histórico Win+V e o Bloco de Notas.
+**V6.6 Real Integrations** — Explorer com ficheiros reais, Fotos e Media Player reais, notificações do dispositivo e PWA instalável.
 
 ## Funcionalidades
 
@@ -93,3 +93,17 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Clipboard API em contexto HTTPS quando disponível
 - fallback de cópia e de colagem manual quando o navegador restringe leitura direta
 - sem leitura da área de transferência em segundo plano
+
+## V6.6 Real Integrations
+
+- Explorer: importar ficheiros reais para o filesystem virtual
+- Explorer: importar pastas autorizadas preservando subpastas
+- Explorer: arrastar e largar ficheiros reais
+- Explorer: exportar ficheiros virtuais/importados para o dispositivo
+- blobs reais guardados em IndexedDB em vez de localStorage
+- Fotos: abrir imagens reais do dispositivo
+- Media Player: reproduzir áudio e vídeo reais
+- notificações reais opcionais através da Notification API
+- PWA instalável no Windows/Android
+- service worker para cache offline da interface local do simulador
+- todas as permissões reais continuam dependentes de ação explícita do utilizador

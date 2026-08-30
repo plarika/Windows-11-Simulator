@@ -1,0 +1,44 @@
+/* Windows 11 Simulator V6.6 — Real Content */
+.real-explorer-command-group{display:flex;gap:2px;margin-left:4px;padding-left:5px;border-left:1px solid #dfe3e7}
+.real-explorer-drop{
+  position:absolute;inset:12px;z-index:20;display:none;place-items:center;align-content:center;
+  border:2px dashed #1689d8;border-radius:12px;background:rgba(231,244,253,.94);
+  color:#145f91;pointer-events:none;text-align:center;gap:5px
+}
+.real-explorer-drop.visible{display:grid}
+.real-explorer-drop small{font-size:11px;color:#557286}
+.real-app-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.real-app-header h2{margin:0;font-size:22px;font-weight:500}
+.real-app-header small{color:#6a7480}
+.real-photos{padding:16px;overflow:auto}
+.real-photo-viewer{
+  min-height:240px;display:grid;place-items:center;border:1px solid #e1e5e9;border-radius:10px;
+  background:#111820;margin-bottom:16px;overflow:hidden
+}
+.real-photo-viewer img{display:block;max-width:100%;max-height:56vh;object-fit:contain}
+.real-photo-viewer.has-image{position:relative}
+.real-photo-caption{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.62);color:white;padding:5px 8px;border-radius:5px;font-size:11px}
+.real-photo-empty{color:#cbd2d9;text-align:center;padding:28px}
+.real-imported-photo{border:1px solid #dfe4e8}
+.real-photo-placeholder{height:90px;display:grid;place-items:center;font-size:32px;background:#eef4f8}
+.real-media-player{height:100%;display:grid;grid-template-columns:190px minmax(0,1fr)}
+.real-media-player aside{background:#f1f3f6;border-right:1px solid #e0e4e8;padding:8px}
+.real-media-player .media-main{padding:16px;min-width:0;overflow:auto}
+.real-media-stage{min-height:300px;display:grid;place-items:center;background:#11161d;border-radius:12px;overflow:hidden}
+.real-media-stage .album-art{font-size:72px;color:#dfe8ef}
+.real-video{width:100%;max-height:58vh;background:#000}
+.real-audio{width:min(680px,90%)}
+.real-media-meta{text-align:center;margin-top:14px;display:flex;flex-direction:column;gap:4px}
+.real-media-meta small{color:#6e7882}
+#app.theme-dark .real-explorer-command-group{border-color:#454b53}
+#app.theme-dark .real-explorer-drop{background:rgba(31,59,78,.96);color:#8dd0fb;border-color:#5eb7ef}
+#app.theme-dark .real-photo-placeholder{background:#30353d}
+#app.theme-dark .real-media-player aside{background:#292c33;border-color:#41464e}
+@media(max-width:720px){
+  .real-explorer-command-group{margin-left:2px;padding-left:2px}
+  .real-explorer-command-group .cmd-label{display:none}
+  .real-app-header{align-items:stretch;flex-direction:column}
+  .real-media-player{grid-template-columns:1fr}
+  .real-media-player aside{display:none}
+  .real-media-stage{min-height:220px}
+}

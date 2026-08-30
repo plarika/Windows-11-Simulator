@@ -92,7 +92,7 @@ function buildExplorerV5(wrap,win,startPath){
       };
       el.oncontextmenu=e=>{e.preventDefault();selected=item;const menu=[];
         if(item.type==="recycle"){
-          menu.push(["Restaurar",()=>{restoreFile(item.name);render()}],["Eliminar permanentemente",()=>{delete ensureFolder("Recycle Bin")[item.name];saveState();render()}],["Propriedades",()=>showFileProperties(item.value?.originalPath||"",item.name,item.value?.content)]);
+          menu.push(["Restaurar",()=>{restoreFile(item.name);render()}],["Eliminar permanentemente",async()=>{const bin=ensureFolder("Recycle Bin"),doomed=bin[item.name]?.content;if(doomed&&globalThis.RealContentBridge?.cleanupVirtualValue)await RealContentBridge.cleanupVirtualValue(doomed);delete bin[item.name];saveState();render()}],["Propriedades",()=>showFileProperties(item.value?.originalPath||"",item.name,item.value?.content)]);
         }else{
           menu.push(["Abrir",()=>item.type==="folder"?nav(path+"/"+item.name):openFile(path,item.name,item.value)]);
           menu.push(["Copiar",()=>{state.fileClipboard={mode:"copy",path,name:item.name,type:item.type};saveState();notify("Explorador","Copiado para a área de transferência de ficheiros.")}]);
@@ -118,11 +118,22 @@ function buildExplorerV5(wrap,win,startPath){
     }
     selected=null;saveState();render();
   }
-  function deleteSelected(){
+  async function deleteSelected(){
     if(!selected)return;
-    if(selected.type==="recycle"){delete ensureFolder("Recycle Bin")[selected.name];saveState();render();return}
-    if(selected.type==="file"){const files=ensureFolder(path),bin=ensureFolder("Recycle Bin");let name=selected.name,i=1;while(bin[name])name=`${selected.name} (${++i})`;bin[name]={content:files[selected.name],originalPath:path};delete files[selected.name]}
-    else{deleteFolder(path+"/"+selected.name,path,grid,nav)}
+    if(selected.type==="recycle"){
+      const bin=ensureFolder("Recycle Bin"),doomed=bin[selected.name]?.content;
+      if(doomed&&globalThis.RealContentBridge?.cleanupVirtualValue)await RealContentBridge.cleanupVirtualValue(doomed);
+      delete bin[selected.name];saveState();render();return;
+    }
+    if(selected.type==="file"){
+      const files=ensureFolder(path),bin=ensureFolder("Recycle Bin");let name=selected.name,i=1;
+      while(bin[name])name=`${selected.name} (${++i})`;
+      bin[name]={content:files[selected.name],originalPath:path};delete files[selected.name];
+    }else{
+      const folder=path+"/"+selected.name;
+      if(globalThis.RealContentBridge?.cleanupVirtualFolder)await RealContentBridge.cleanupVirtualFolder(folder);
+      deleteFolder(folder,path,grid,nav);
+    }
     selected=null;saveState();render();
   }
   function paste(){

@@ -1,0 +1,27 @@
+{
+  "name": "Windows 11 Simulator",
+  "short_name": "Win11 Simulator",
+  "description": "Simulador interativo do Windows 11 com funções web reais autorizadas pelo utilizador.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#101722",
+  "theme_color": "#0f7fc9",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

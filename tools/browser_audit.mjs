@@ -49,7 +49,11 @@ function send(method,params={}){
 
 async function evaluate(expression){
   const r=await send("Runtime.evaluate",{expression,returnByValue:true,awaitPromise:true});
-  if(r.exceptionDetails)throw new Error(r.exceptionDetails.text||"Evaluation failed");
+  if(r.exceptionDetails){
+    const ex=r.exceptionDetails;
+    const detail=ex.exception?.description||ex.exception?.value||ex.text||"Evaluation failed";
+    throw new Error(String(detail));
+  }
   return r.result?.value;
 }
 
@@ -107,16 +111,32 @@ await evaluate(`document.querySelector('[data-dialog-name]').value="AuditFile"; 
 await wait(120);
 await check("Save extension .txt",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(state.files["C:/Documents"],"AuditFile.txt")`));
 await evaluate(`delete state.files["C:/Documents"]["AuditFile.txt"]; saveState(); true`);
-await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="6.5.0"`));
+await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="6.6.0"`));
 await check("Notepad real file controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-open-device]') && !!document.querySelector('.window[data-app="notepad"] [data-save-device]')`));
 await check("Real file handle write path",async()=>await evaluate(`(async()=>{const test={text:null,closed:false};const handle={name:"audit.txt",async createWritable(){return {async write(v){test.text=v},async close(){test.closed=true}}}};await RealFileBridge.writeHandle(handle,"conteúdo real");return test.text==="conteúdo real"&&test.closed})()`));
-await check("Real functions step marker",async()=>await evaluate(`Win11RealFunctions?.step===2 && Win11RealFunctions.features.includes("real-file-save") && Win11RealFunctions.features.includes("real-clipboard-read") && Win11RealFunctions.features.includes("real-clipboard-write")`));
-await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="6.5.0"`));
+await check("Real functions step marker",async()=>await evaluate(`Win11RealFunctions?.step===5 && Win11RealFunctions.features.includes("real-file-save") && Win11RealFunctions.features.includes("real-clipboard-read") && Win11RealFunctions.features.includes("real-clipboard-write") && Win11RealFunctions.features.includes("explorer-real-import") && Win11RealFunctions.features.includes("media-real-playback")`));
+await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="6.6.0"`));
 await check("Notepad real clipboard controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-copy-device]') && !!document.querySelector('.window[data-app="notepad"] [data-paste-device]')`));
 await evaluate(`closeOverlays(); toggleOverlay("clipboard"); renderClipboard(); true`); await wait(120);
 await check("Win+V real clipboard controls",async()=>await evaluate(`!!document.querySelector("#clipboard-list [data-real-clip-read]") && !!document.querySelector("#clipboard-list [data-real-clip-write]")`));
 await check("Manual paste fallback",async()=>await evaluate(`(async()=>{const p=RealClipboardBridge.manualPasteDialog();await new Promise(r=>setTimeout(r,30));const box=document.querySelector("[data-real-paste-box]");if(!box)return false;box.value="clipboard audit";document.querySelector("#system-dialog-ok").click();return (await p)==="clipboard audit"})()`));
 await evaluate(`closeOverlays(); true`);
+await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="6.6.0"`));
+await check("IndexedDB import and read",async()=>await evaluate(`(async()=>{const imported=await RealContentBridge.importFileToVirtual(new File(["conteúdo indexeddb"],"browser-audit-real.txt",{type:"text/plain"}),"C:/Documents");const rec=await RealContentBridge.getRecord(imported.ref);const ok=rec&&await rec.blob.text()==="conteúdo indexeddb"&&state.files["C:/Documents"][imported.name]?.__realBlobId;delete state.files["C:/Documents"][imported.name];saveState();await RealContentBridge.cleanupVirtualValue(imported.ref);const gone=!(await RealContentBridge.getRecord(imported.ref));return !!ok&&gone})()`));
+await check("Real folder import preserves subfolders",async()=>await evaluate(`(async()=>{const f=new File(["subfile"],"one.txt",{type:"text/plain"});Object.defineProperty(f,"_relativePath",{value:"Sub/one.txt"});const result=await RealContentBridge.importDirectoryToVirtual({name:"AuditFolder",files:[f]},"C:/Downloads");const ref=state.files[result.root+"/Sub"]?.["one.txt"];const ok=!!ref?.__realBlobId;await RealContentBridge.cleanupVirtualFolder(result.root);Object.keys(state.files).filter(p=>p===result.root||p.startsWith(result.root+"/")).forEach(p=>delete state.files[p]);saveState();return ok})()`));
+await check("Explorer real content controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="explorer"] [data-import-files]') && !!document.querySelector('.window[data-app="explorer"] [data-import-folder]') && !!document.querySelector('.window[data-app="explorer"] [data-export-file]')`));
+await evaluate(`globalThis.RealPhotosPending={name:"audit.svg",blob:new Blob(['<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="red"/></svg>'],{type:"image/svg+xml"})}; openApp("photos"); true`); await wait(160);
+await check("Photos real viewer",async()=>await evaluate(`!!document.querySelector('.window[data-app="photos"] [data-open-real-photo]') && document.querySelector('.window[data-app="photos"] .real-photo-viewer img')?.src.startsWith("blob:")`));
+await evaluate(`globalThis.RealMediaPending={name:"audit.wav",blob:new Blob([new Uint8Array([82,73,70,70,36,0,0,0,87,65,86,69,102,109,116,32,16,0,0,0,1,0,1,0,64,31,0,0,128,62,0,0,2,0,16,0,100,97,116,97,0,0,0,0])],{type:"audio/wav"}),type:"audio/wav"}; openApp("mediaplayer"); true`); await wait(160);
+await check("Media Player real media",async()=>await evaluate(`!!document.querySelector('.window[data-app="mediaplayer"] [data-open-media]') && !!document.querySelector('.window[data-app="mediaplayer"] audio')`));
+await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="6.6.0"`));
+await evaluate(`renderNotifications(); true`); await wait(80);
+await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notification-tools [data-notify-enable]") && !!document.querySelector("#notification-list [data-notify-test]")`));
+await check("PWA manifest link",async()=>await evaluate(`document.querySelector('link[rel="manifest"]')?.getAttribute("href").includes("manifest.webmanifest")`));
+await check("PWA service worker registration",async()=>await evaluate(`(async()=>{if(!("serviceWorker" in navigator))return false;for(let i=0;i<20;i++){const r=await navigator.serviceWorker.getRegistration();if(r)return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<20;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v6.6.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await evaluate(`state.settingsPage="system"; const sw=document.querySelector('.window[data-app="settings"]'); if(sw){sw.querySelector(".win-body").innerHTML=""; sw.querySelector(".win-body").appendChild(renderApp("settings",sw));} true`); await wait(140);
+await check("PWA settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-pwa-card] [data-install-pwa]')`));
 
 await send("Emulation.setDeviceMetricsOverride",{width:412,height:915,deviceScaleFactor:2,mobile:true});
 await wait(180);
