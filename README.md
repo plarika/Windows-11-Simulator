@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.0.0 Shell Icons Fix** — ícones SVG consistentes no Ambiente de Trabalho e botão de energia independente de fontes.
+**V8.1.0 Start, Search & Taskbar Experience** — Menu Iniciar persistente por perfil, pesquisa local categorizada e jump lists da barra de tarefas.
 
 ## Funcionalidades
 
@@ -370,3 +370,20 @@ Primeiro passo de integração com funções reais do dispositivo:
 - cartão Windows Update nas Definições
 - recuperação do shell após BFCache/retoma de visibilidade
 - refresh de tray, notificações e Device Center na recuperação
+
+## V8.1 Start, Search & Taskbar Experience
+
+- aplicações afixadas no Iniciar persistem por perfil local
+- afixar/remover aplicações pelo menu de contexto
+- reordenar pins por drag and drop
+- Todas as aplicações em lista alfabética
+- recomendados combinam ficheiros e aplicações recentes
+- pesquisa por aplicações, definições, nomes/caminhos e conteúdo textual do VFS
+- pesquisa ignora acentos para melhorar correspondências
+- resultados categorizados com painel de detalhes e ações
+- navegação de pesquisa por teclado
+- pesquisa do Iniciar integrada sem abrir uma segunda UI desnecessariamente
+- histórico local de pesquisas por perfil
+- jump lists da taskbar para Explorer, Notepad e Photos
+- menus da taskbar permitem afixar/remover do Iniciar e fechar a janela
+- nenhuma pesquisa lê pastas reais montadas sem ação explícita

@@ -89,3 +89,9 @@ Volume, brilho, Bluetooth e luz noturna são controlos virtuais do simulador. Fu
 O Windows Hello da V8.0 é exclusivamente visual e não usa WebAuthn, reconhecimento facial, impressão digital ou dados biométricos. A autenticação continua a usar a credencial local PBKDF2 já existente.
 
 As atualizações PWA deixam de ativar silenciosamente uma nova Service Worker quando já existe uma versão ativa. A nova worker aguarda até o utilizador escolher Atualizar agora; só então recebe a mensagem SKIP_WAITING. O reload automático ocorre apenas após essa confirmação e após controllerchange. A opção Depois mantém a versão atual durante a sessão.
+
+## Start and Search V8.1
+
+A pesquisa V8.1 indexa apenas aplicações, definições e o sistema de ficheiros virtual pertencente ao perfil ativo. Não percorre pastas reais montadas, não lê o conteúdo da área de transferência e não envia consultas para serviços externos. A pesquisa por conteúdo limita a análise de cada valor textual virtual para evitar trabalho excessivo no UI thread.
+
+Pins, aplicações recentes e histórico de pesquisa são guardados apenas no estado do perfil local ativo. As jump lists operam sobre aplicações e ficheiros do simulador; não executam comandos do sistema anfitrião.

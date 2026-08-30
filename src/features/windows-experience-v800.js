@@ -1,7 +1,7 @@
 "use strict";
 /* Windows 11 Simulator V8.0 — Windows Experience & Reliability */
 (function installWindowsExperienceV800(){
-  const VERSION="8.0.0";
+  const VERSION="8.1.0";
   const RELOAD_KEY="win11-update-reload-v800";
   let revealUntil=0;
   let lastLockHidden=true;

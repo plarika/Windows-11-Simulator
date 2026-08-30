@@ -357,7 +357,7 @@
   function sanitizedReport(s){
     return {
       schema:"win11-simulator-device-report-v1",
-      version:"8.0.0",
+      version:"8.1.0",
       generatedAt:new Date().toISOString(),
       online:s.online,secureContext:s.secureContext,platform:s.platform,mobile:s.mobile,
       language:s.language,languages:s.languages,hardware:s.hardware,screen:s.screen,
@@ -508,7 +508,7 @@
   }
 
   globalThis.Win11DeviceCenter=Object.freeze({
-    version:"8.0.0",
+    version:"8.1.0",
     collectSnapshot,
     permissionSnapshot,
     storageSnapshot,
@@ -523,7 +523,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.0.0",
+    version:"8.1.0",
     step:15,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

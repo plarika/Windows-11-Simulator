@@ -146,7 +146,7 @@
   window.addEventListener("offline",()=>notify("Rede","O dispositivo ficou offline."));
 
   globalThis.RealDeviceBridge=Object.freeze({
-    version:"8.0.0",
+    version:"8.1.0",
     formatBytes,
     getStorageInfo,
     requestPersistentStorage,
@@ -747,7 +747,7 @@
   }
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.0.0",
+    version:"8.1.0",
     step:8,
     features:[
       "real-file-open","real-file-save","download-fallback",

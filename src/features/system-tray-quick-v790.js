@@ -384,7 +384,7 @@
   collect().then(()=>{renderTray();renderQuickPanel()}).catch(()=>{});
 
   globalThis.Win11SystemTray=Object.freeze({
-    version:"8.0.0",
+    version:"8.1.0",
     refresh:async()=>{await collect();installTaskbar();renderTray();renderQuickPanel();privacyActivity();return snapshot},
     toggleQuick:()=>{toggleOverlay("quick");if(overlays.quick.classList.contains("open"))renderQuickPanel()},
     toggleOverflow,
@@ -394,7 +394,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.0.0",
+    version:"8.1.0",
     step:18,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),
