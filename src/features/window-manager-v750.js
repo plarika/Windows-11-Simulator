@@ -697,7 +697,7 @@
   populateDesktopV750();
 
   globalThis.Win11WindowManager=Object.freeze({
-    version:"7.6.0",
+    version:"7.7.0",
     layouts:LAYOUTS,
     applyLayoutSlot,
     restoreFloating,
@@ -713,7 +713,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.6.0",
+    version:"7.7.0",
     step:14,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

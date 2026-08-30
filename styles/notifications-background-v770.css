@@ -1,0 +1,215 @@
+/* Windows 11 Simulator V7.7 — Notifications, Action Center & Background Services */
+#notification-panel{
+  width:min(430px,calc(100vw - 28px));
+}
+#notification-panel .panel-pad{padding:14px}
+#notification-panel .panel-title{margin-bottom:10px}
+#notification-list.notification-list{
+  max-height:min(650px,calc(100vh - var(--taskbar-h) - 120px));
+  gap:0;
+}
+.action-center-v77{display:grid;gap:10px}
+.notification-toolbar-v77{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:2px 2px 8px;border-bottom:1px solid rgba(255,255,255,.08)
+}
+.notification-toolbar-v77>div:first-child{display:grid;gap:2px}
+.notification-toolbar-v77 strong{font-size:12px}
+.notification-toolbar-v77 small{font-size:9px;color:var(--muted)}
+.notification-toolbar-v77>div:last-child{display:flex;gap:5px}
+.notification-toolbar-v77 button,
+.focus-buttons-v77 button,
+.real-notify-strip-v77 button{
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);
+  color:inherit;border-radius:7px;padding:6px 8px;font-size:9px;cursor:pointer
+}
+.notification-toolbar-v77 button:hover,
+.focus-buttons-v77 button:hover,
+.real-notify-strip-v77 button:hover{background:rgba(255,255,255,.11)}
+.focus-strip-v77{
+  display:grid;gap:9px;padding:10px;border:1px solid rgba(255,255,255,.09);
+  border-radius:11px;background:rgba(255,255,255,.045)
+}
+.focus-strip-v77>div:first-child{display:flex;align-items:center;gap:9px}
+.focus-strip-v77>div:first-child>span{
+  width:31px;height:31px;border-radius:9px;display:grid;place-items:center;
+  background:rgba(74,164,222,.17);font-size:16px
+}
+.focus-strip-v77>div:first-child>div{display:grid;gap:1px}
+.focus-strip-v77 strong{font-size:11px}
+.focus-strip-v77 small{font-size:9px;color:var(--muted)}
+.focus-buttons-v77{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.focus-buttons-v77 button.active{
+  background:rgba(0,120,212,.28);border-color:rgba(66,166,232,.62)
+}
+.real-notify-strip-v77{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:8px 10px;border-radius:9px;background:rgba(255,255,255,.035);
+  font-size:9px;color:var(--muted)
+}
+.real-notify-strip-v77 strong{color:inherit}
+.notification-groups-v77{display:grid;gap:10px}
+.notification-group-v77{display:grid;gap:6px}
+.notification-group-v77>header{
+  display:flex;align-items:center;justify-content:space-between;padding:0 3px;
+  color:var(--muted)
+}
+.notification-group-v77>header strong{font-size:9px;text-transform:uppercase;letter-spacing:.45px}
+.notification-group-v77>header span{
+  min-width:18px;height:18px;padding:0 5px;border-radius:999px;
+  display:grid;place-items:center;background:rgba(255,255,255,.07);font-size:8px
+}
+.notification-v77{
+  display:grid;grid-template-columns:34px minmax(0,1fr) 25px;gap:8px;
+  padding:10px;border:1px solid rgba(255,255,255,.09);border-radius:11px;
+  background:rgba(255,255,255,.05);position:relative;transition:.1s ease
+}
+.notification-v77:hover{background:rgba(255,255,255,.075)}
+.notification-v77.unread{
+  border-color:rgba(65,164,229,.45);box-shadow:inset 3px 0 0 rgba(52,151,218,.9)
+}
+.notification-v77.priority-high{border-color:rgba(83,172,231,.5)}
+.notification-v77.priority-low{opacity:.9}
+.notification-icon-v77{
+  width:32px;height:32px;display:grid;place-items:center;border-radius:9px;
+  background:rgba(255,255,255,.07);font-size:15px
+}
+.notification-content-v77{min-width:0;cursor:pointer}
+.notification-title-v77{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.notification-title-v77 strong{
+  font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.notification-title-v77 small{font-size:8px;color:var(--muted);flex:none}
+.notification-content-v77 p{
+  margin:4px 0 0;font-size:9px;line-height:1.35;color:var(--muted);overflow-wrap:anywhere
+}
+.notification-menu-v77{display:grid;align-content:start;gap:3px}
+.notification-menu-v77 button{
+  width:24px;height:24px;border:0;border-radius:6px;background:transparent;
+  color:var(--muted);cursor:pointer;padding:0
+}
+.notification-menu-v77 button:hover{background:rgba(255,255,255,.09);color:inherit}
+.notification-actions-v77{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.notification-actions-v77 button{
+  border:1px solid rgba(89,171,225,.38);background:rgba(0,120,212,.14);
+  color:inherit;border-radius:6px;padding:5px 7px;font-size:8px;cursor:pointer
+}
+.notification-actions-v77 button:hover{background:rgba(0,120,212,.23)}
+.notification-empty-v77{
+  min-height:150px;display:grid;place-items:center;align-content:center;gap:4px;
+  color:var(--muted);text-align:center;border:1px dashed rgba(255,255,255,.09);border-radius:11px
+}
+.notification-empty-v77>span{font-size:28px;color:#69ba80}
+.notification-empty-v77 strong{font-size:12px;color:inherit}
+.notification-empty-v77 p{margin:0;font-size:9px}
+
+#notify-btn{position:relative}
+.notification-badge-v77{
+  position:absolute;right:2px;top:1px;min-width:15px;height:15px;padding:0 3px;
+  display:grid;place-items:center;border-radius:999px;background:#c42b1c;color:#fff;
+  border:1px solid rgba(255,255,255,.85);font-size:7px;font-weight:700;line-height:1
+}
+.notification-badge-v77[hidden]{display:none!important}
+#notify-btn.has-unread-v77{background:rgba(255,255,255,.075)}
+
+.notification-toast-v77{
+  padding:0!important;overflow:hidden;cursor:pointer;border-radius:12px!important
+}
+.toast-v77-head{
+  min-height:36px;display:grid;grid-template-columns:22px minmax(0,1fr) 25px;
+  align-items:center;gap:5px;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.08)
+}
+.toast-v77-head>span{display:grid;place-items:center}
+.toast-v77-head strong{margin:0!important;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast-v77-head button{
+  width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#d8dde2;cursor:pointer
+}
+.toast-v77-head button:hover{background:rgba(255,255,255,.08)}
+.toast-v77-body{padding:9px 10px;font-size:9px;color:#d4dae0;line-height:1.35}
+.toast-v77-actions{display:flex;gap:5px;padding:0 10px 9px}
+.toast-v77-actions button{
+  border:1px solid rgba(96,181,235,.42);background:rgba(0,120,212,.2);
+  color:#fff;border-radius:6px;padding:5px 8px;font-size:8px;cursor:pointer
+}
+.notification-toast-v77.priority-high{border-color:rgba(80,176,237,.6)}
+
+.notification-settings-v77{
+  display:flex!important;align-items:center;justify-content:space-between;gap:16px
+}
+.notification-settings-v77>div:first-child{min-width:0}
+.notification-settings-v77 p{margin:4px 0 0;color:#6e7881;font-size:10px}
+.notification-settings-v77>div:last-child{display:flex;gap:7px;flex:none}
+
+.admin-page-head-v77{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px
+}
+.admin-page-head-v77 h2{margin:0}
+.admin-page-head-v77 p{margin:3px 0 0;color:#6a747e;font-size:10px}
+.service-detail-v77,.task-detail-v77{
+  margin-top:10px;padding:10px;border:1px solid #dfe4e8;border-radius:9px;
+  display:grid;gap:3px;background:#fff
+}
+.service-detail-v77 strong,.task-detail-v77 strong{font-size:11px}
+.service-detail-v77 span,.task-detail-v77 span{font-size:10px}
+.service-detail-v77 small,.task-detail-v77 small{font-size:9px;color:#6f7982}
+.scheduler-engine-state-v77{
+  display:grid;gap:3px;margin-top:auto;padding:10px;border-top:1px solid rgba(0,0,0,.08)
+}
+.scheduler-engine-state-v77 strong{font-size:10px}
+.scheduler-engine-state-v77 small{font-size:9px;color:#68737d}
+.scheduler-engine-state-v77 button{
+  margin-top:4px;border:1px solid #cbd2d8;background:#fff;border-radius:7px;padding:6px;cursor:pointer;font-size:9px
+}
+.background-history-v77{margin-top:14px;border-top:1px solid #e3e7ea;padding-top:10px}
+.background-history-v77 h3{margin:0 0 7px;font-size:11px}
+.background-history-v77>div{
+  display:grid;grid-template-columns:52px 145px minmax(0,1fr);gap:8px;
+  align-items:center;padding:6px 2px;border-bottom:1px solid #eef1f3
+}
+.background-history-v77>div span{font-size:9px;color:#7a858e}
+.background-history-v77>div strong{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.background-history-v77>div small{font-size:8px;color:#6d7780;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+#app:not(.theme-dark) #notification-panel{
+  background:rgba(245,247,250,.96);color:#252a30
+}
+#app:not(.theme-dark) .notification-toolbar-v77{border-color:#dde3e8}
+#app:not(.theme-dark) .notification-toolbar-v77 button,
+#app:not(.theme-dark) .focus-buttons-v77 button,
+#app:not(.theme-dark) .real-notify-strip-v77 button{
+  border-color:#d4dce2;background:#fff;color:#26313a
+}
+#app:not(.theme-dark) .focus-strip-v77,
+#app:not(.theme-dark) .notification-v77{
+  background:#fff;border-color:#dce3e8
+}
+#app:not(.theme-dark) .notification-v77:hover{background:#f7fafc}
+#app:not(.theme-dark) .notification-icon-v77{background:#eef3f6}
+#app:not(.theme-dark) .notification-group-v77>header span{background:#e9eef2}
+#app:not(.theme-dark) .real-notify-strip-v77{background:#f2f5f7}
+#app:not(.theme-dark) .notification-empty-v77{border-color:#dce2e6}
+#app:not(.theme-dark) .notification-actions-v77 button{color:#17496b}
+#app.theme-dark .service-detail-v77,
+#app.theme-dark .task-detail-v77{background:#292e34;border-color:#454d54}
+#app.theme-dark .admin-page-head-v77 p,
+#app.theme-dark .service-detail-v77 small,
+#app.theme-dark .task-detail-v77 small,
+#app.theme-dark .scheduler-engine-state-v77 small,
+#app.theme-dark .background-history-v77>div small,
+#app.theme-dark .background-history-v77>div span{color:#abb4bc}
+#app.theme-dark .scheduler-engine-state-v77{border-color:#41484f}
+#app.theme-dark .scheduler-engine-state-v77 button{background:#30363c;border-color:#4b545c;color:#eef2f5}
+#app.theme-dark .background-history-v77{border-color:#434a51}
+#app.theme-dark .background-history-v77>div{border-color:#363d43}
+
+@media(max-width:720px){
+  #notification-panel .panel-title{display:none}
+  #notification-panel .panel-pad{padding:10px}
+  #notification-list.notification-list{max-height:calc(100vh - var(--taskbar-h) - 45px)}
+  .notification-toolbar-v77{align-items:flex-start;flex-direction:column}
+  .focus-buttons-v77{grid-template-columns:1fr 1fr}
+  .notification-settings-v77{align-items:flex-start;flex-direction:column}
+  .notification-settings-v77>div:last-child{width:100%}
+  .notification-settings-v77 .sys-button{flex:1}
+  .background-history-v77>div{grid-template-columns:45px minmax(90px,.7fr) minmax(0,1fr)}
+}

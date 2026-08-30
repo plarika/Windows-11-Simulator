@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.6 Real Device Integration** — Centro do dispositivo real, estado em tempo real, permissões, armazenamento e diagnóstico exportável.
+**V7.7 Notifications, Action Center & Background Services** — notificações agrupadas, Não incomodar, ações, snooze, motor de tarefas e serviços integrados.
 
 ## Funcionalidades
 
@@ -286,3 +286,24 @@ Primeiro passo de integração com funções reais do dispositivo:
 - estado reativo para bateria, rede, fullscreen, visibilidade e dispositivos media
 - relatório JSON de diagnóstico sem coordenadas de localização, conteúdo do clipboard ou credenciais
 - novo Diagnóstico V7.6 em Informações do Sistema
+
+## V7.7 Notifications, Action Center & Background Services
+
+- Centro de Notificações V2 com grupos por origem
+- badge de notificações não lidas na taskbar
+- marcar todas como lidas e limpar tudo
+- adiar notificações por 15 minutos
+- ações dentro das notificações
+- abertura da aplicação associada ao tocar na notificação
+- prioridades normal, baixa e alta
+- modo Não incomodar: desligado, prioridade ou apenas alarmes
+- opção temporária de Não incomodar por uma hora
+- regras persistentes por origem
+- Quick Settings com tile de Não incomodar
+- integração com notificações reais do browser quando autorizadas
+- motor de background para tarefas agendadas
+- nextRun, lastRun, resultado e contador de execuções
+- histórico de atividade em background
+- Serviços V2 com arranque, paragem, reinício e Event Log
+- Agendador de Tarefas V2 com execução manual e por intervalo
+- ações internas para Windows Update, Storage Sense e manutenção automática

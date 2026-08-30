@@ -871,7 +871,7 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerPro=Object.freeze({
-    version:"7.6.0",
+    version:"7.7.0",
     currentVirtualPath,
     itemType,
     copyFileAdvanced,
@@ -884,7 +884,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.6.0",
+    version:"7.7.0",
     step:13,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

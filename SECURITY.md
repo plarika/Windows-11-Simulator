@@ -66,3 +66,7 @@ Os previews de Alt+Tab, Task View e taskbar são clones visuais sanitizados da i
 ## Real Device Integration V7.6
 
 O Centro do dispositivo mostra apenas dados que o navegador expõe à aplicação. Não tenta obter identificadores ocultos nem contorna permissões. Câmara, microfone, notificações e localização só são solicitados após uma ação explícita do utilizador. O relatório de diagnóstico não inclui coordenadas de localização, conteúdo da área de transferência, credenciais, PINs ou palavras-passe. Métricas de rede como downlink e RTT são estimativas da Network Information API quando o browser as disponibiliza.
+
+## Notifications and Background V7.7
+
+O motor de tarefas da V7.7 é interno ao simulador e apenas executa ações JavaScript previamente definidas pelo projeto; não executa comandos do sistema operativo, scripts externos, child processes, eval ou código introduzido pelo utilizador. O modo Não incomodar apenas controla banners do simulador e notificações reais já autorizadas. As tarefas continuam limitadas ao estado virtual do perfil ativo.

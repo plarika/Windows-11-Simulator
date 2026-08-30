@@ -98,7 +98,7 @@ await send("Page.enable");
 await wait(250);
 
 await check("boot diagnostics",async()=>await evaluate(`typeof Win11SimDiagnostics==="object" && Win11SimDiagnostics.run().missingFunctions.length===0`));
-await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="7.6.0"`));
+await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="7.7.0"`));
 await check("first account setup visible",async()=>await evaluate(`!!document.querySelector("[data-new-user-name]") && !!document.querySelector("[data-create-user]")`));
 
 await evaluate(`(()=>{
@@ -128,7 +128,7 @@ await check("credential hash metadata",async()=>await evaluate(`(()=>{
 await check("per-user profile created",async()=>await evaluate(`!!localStorage.getItem("win11-sim-profile-v67:"+Win11SessionManager.activeUserId)`));
 await check("legacy state moved out of active key",async()=>await evaluate(`!localStorage.getItem("win11-sim-v4") && !!localStorage.getItem("win11-sim-legacy-backup-v67")`));
 await check("active session stored in sessionStorage",async()=>await evaluate(`sessionStorage.getItem("win11-sim-active-session-v67")===Win11SessionManager.activeUserId`));
-await evaluate(`(async()=>{const accounts=JSON.parse(localStorage.getItem("win11-sim-accounts-v67"));const a=accounts.find(x=>x.id===Win11SessionManager.activeUserId);const salt=crypto.getRandomValues(new Uint8Array(16));const to64=b=>{let s="";for(const x of b)s+=String.fromCharCode(x);return btoa(s)};const key=await crypto.subtle.importKey("raw",new TextEncoder().encode("2468"),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt,iterations:180000,hash:"SHA-256"},key,256);a.credential={type:"local-secret",algorithm:"PBKDF2-SHA-256",iterations:180000,salt:to64(salt),hash:to64(new Uint8Array(bits))};localStorage.setItem("win11-sim-accounts-v67",JSON.stringify(accounts));return true})()`);
+await check("prepare legacy 180k credential",async()=>await evaluate(`(async()=>{const accounts=JSON.parse(localStorage.getItem("win11-sim-accounts-v67")||"[]");const a=accounts.find(x=>x.id===Win11SessionManager.activeUserId);if(!a)return false;const salt=crypto.getRandomValues(new Uint8Array(16));const to64=b=>{let s="";for(const x of b)s+=String.fromCharCode(x);return btoa(s)};const key=await crypto.subtle.importKey("raw",new TextEncoder().encode("2468"),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt,iterations:180000,hash:"SHA-256"},key,256);a.credential={type:"local-secret",algorithm:"PBKDF2-SHA-256",iterations:180000,salt:to64(salt),hash:to64(new Uint8Array(bits))};localStorage.setItem("win11-sim-accounts-v67",JSON.stringify(accounts));return true})()`));
 await evaluate(`Win11SessionManager.signOut();true`);
 await check("legacy 180k credential login through worker",async()=>await uiLogin(user1Id,"2468"));
 await check("legacy credential upgraded to 120k",async()=>await evaluate(`JSON.parse(localStorage.getItem("win11-sim-accounts-v67")).find(x=>x.id===Win11SessionManager.activeUserId)?.credential?.iterations===120000`));
@@ -202,7 +202,7 @@ await check("Explorer status",async()=>await evaluate(`!!document.querySelector(
 await evaluate(`document.querySelector('.window[data-app="explorer"] .file,.window[data-app="explorer"] .file-row:not(.header)')?.click();true`);
 await wait(120);
 await check("Explorer selected count",async()=>await evaluate(`document.querySelector('.window[data-app="explorer"] .explorer-status')?.textContent.includes("selecionado")`));
-await check("Explorer Pro bridge",async()=>await evaluate(`Win11ExplorerPro?.version==="7.6.0"`));
+await check("Explorer Pro bridge",async()=>await evaluate(`Win11ExplorerPro?.version==="7.7.0"`));
 await evaluate(`(()=>{
   const root="C:/Documents/V74Audit";
   ensureFolder(root)["alpha.txt"]="A";
@@ -241,7 +241,7 @@ await check("Explorer folder restore",async()=>await evaluate(`Win11ExplorerPro.
 await evaluate(`ensureFolder("C:/Documents/V74Audit")["DeleteMe.txt"]="delete";true`);
 await check("Explorer permanent delete",async()=>await evaluate(`(async()=>await Win11ExplorerPro.permanentlyDeleteVirtual("C:/Documents/V74Audit","DeleteMe.txt","file") && !("DeleteMe.txt" in ensureFolder("C:/Documents/V74Audit")))()`));
 await evaluate(`(async()=>{const root="C:/Documents/V74Audit";try{await RealContentBridge.cleanupVirtualFolder(root)}catch{}Object.keys(state.files).filter(p=>p===root||p.startsWith(root+"/")).sort((a,b)=>b.length-a.length).forEach(p=>delete state.files[p]);state.fileClipboardV74=null;saveState();const w=document.querySelector('.window[data-app="explorer"]');w.dispatchEvent(new CustomEvent("navigate",{detail:"C:/Documents"}));return true})()`); await wait(180);
-await check("Window Manager V7.5 bridge",async()=>await evaluate(`Win11WindowManager?.version==="7.6.0" && Object.keys(Win11WindowManager.layouts||{}).length===6`));
+await check("Window Manager V7.5 bridge",async()=>await evaluate(`Win11WindowManager?.version==="7.7.0" && Object.keys(Win11WindowManager.layouts||{}).length===6`));
 await check("Window Manager decorates existing window",async()=>await evaluate(`(()=>{const w=document.querySelector('.window[data-app="explorer"]');return w?.dataset.wmV750==="1"&&w.querySelectorAll(".wm-layout-choice").length===6})()`));
 await evaluate(`openApp("notepad");openApp("calc");true`); await wait(220);
 await evaluate(`(()=>{const ex=document.querySelector('.window[data-app="explorer"]'),np=document.querySelector('.window[data-app="notepad"]');Win11WindowManager.applyLayoutSlot(ex,"halves",0,{assist:false});Win11WindowManager.applyLayoutSlot(np,"halves",1,{assist:false});return true})()`); await wait(100);
@@ -267,7 +267,7 @@ await check("Move window between virtual desktops",async()=>await evaluate(`Numb
 await evaluate(`Win11WindowManager.closeDesktop(Number(state.currentDesktop));document.querySelector("#task-view").classList.remove("open");true`); await wait(100);
 await check("Virtual desktop close restores count",async()=>await evaluate(`state.desktops.length===__v75DesktopCount && Number(state.currentDesktop)<state.desktops.length`));
 await evaluate(`(()=>{const ex=document.querySelector('.window[data-app="explorer"]'),np=document.querySelector('.window[data-app="notepad"]'),calc=document.querySelector('.window[data-app="calc"]');Win11WindowManager.restoreFloating(ex);if(np)closeWindow(np);if(calc)closeWindow(calc);delete ensureFolder("C:/Desktop")["V75 Desktop Audit.txt"];delete state.windowManagerV75.desktopIconPositions["file:V75 Desktop Audit.txt"];saveState();Win11WindowManager.populateDesktop();return true})()`); await wait(100);
-await check("Desktop integration bridge",async()=>await evaluate(`typeof Win11DesktopIntegration==="object" && Win11DesktopIntegration.version==="7.6.0"`));
+await check("Desktop integration bridge",async()=>await evaluate(`typeof Win11DesktopIntegration==="object" && Win11DesktopIntegration.version==="7.7.0"`));
 await check("Default file associations",async()=>await evaluate(`Win11DesktopIntegration.defaultAppFor("teste.txt")==="notepad" && Win11DesktopIntegration.defaultAppFor("imagem.png")==="photos"`));
 await check("Image has multiple Open With apps",async()=>await evaluate(`(()=>{const ids=Win11DesktopIntegration.candidateApps("imagem.png").map(a=>a.id);return ids.includes("photos")&&ids.includes("paint")})()`));
 await evaluate(`(()=>{const c=document.createElement("canvas");c.width=16;c.height=16;const x=c.getContext("2d");x.fillStyle="#3366cc";x.fillRect(0,0,16,16);ensureFolder("C:/Pictures")["V7Audit.png"]=c.toDataURL("image/png");Win11DesktopIntegration.setDefaultApp(".png","paint");return true})()`);
@@ -295,7 +295,7 @@ await check("Edge multi tab",async()=>await evaluate(`document.querySelectorAll(
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="wikipedia.org";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`);
 await wait(180);
 await check("Edge URL normalization",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-tab-frame')?.src.startsWith("https://wikipedia.org")`));
-await check("Edge Internet bridge",async()=>await evaluate(`Win11EdgeInternet?.version==="7.6.0"`));
+await check("Edge Internet bridge",async()=>await evaluate(`Win11EdgeInternet?.version==="7.7.0"`));
 await evaluate(`document.querySelector('.window[data-app="edge"] [data-home]').click();true`); await wait(100);
 await check("Edge Web shortcuts",async()=>await evaluate(`document.querySelectorAll('.window[data-app="edge"] [data-edge-shortcut]').length===4`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="google.com";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(160);
@@ -317,7 +317,7 @@ await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .
 await check("Edge YouTube playlist player",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("youtube.com/embed/videoseries") && document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("PLC77007E23FF423C6")`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="https://x.com/";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(100);
 await check("Edge blocked-site compatibility page",async()=>await evaluate(`!!document.querySelector('.window[data-app="edge"] .edge-compat-page [data-compat-open]')`));
-await check("Edge Advanced bridge",async()=>await evaluate(`Win11EdgeAdvanced?.version==="7.6.0"`));
+await check("Edge Advanced bridge",async()=>await evaluate(`Win11EdgeAdvanced?.version==="7.7.0"`));
 await evaluate(`(()=>{const w=document.querySelector('.window[data-app="edge"]');focusWindow(w);w.querySelector("[data-favorite]").click();return true})()`); await wait(80);
 await check("Edge favorite stored",async()=>await evaluate(`state.edgeBrowser?.favorites?.some(f=>f.url==="https://x.com/") && document.querySelectorAll('.window[data-app="edge"] .edge-favorite-chip').length>=1`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="edge://favorites";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(90);
@@ -382,12 +382,12 @@ await wait(120);
 await check("Save extension .txt",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(state.files["C:/Documents"],"AuditFile.txt")`));
 await evaluate(`delete state.files["C:/Documents"]["AuditFile.txt"];saveState();true`);
 
-await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="7.6.0"`));
+await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="7.7.0"`));
 await check("Notepad real file controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-open-device]') && !!document.querySelector('.window[data-app="notepad"] [data-save-device]')`));
 await check("Real file handle write path",async()=>await evaluate(`(async()=>{const test={text:null,closed:false};const handle={name:"audit.txt",async createWritable(){return {async write(v){test.text=v},async close(){test.closed=true}}}};await RealFileBridge.writeHandle(handle,"conteúdo real");return test.text==="conteúdo real"&&test.closed})()`));
-await check("Real functions Device Center marker",async()=>await evaluate(`Win11RealFunctions?.step===15 && Win11RealFunctions.features.includes("explorer-multiselect") && Win11RealFunctions.features.includes("snap-groups") && Win11RealFunctions.features.includes("device-center") && Win11RealFunctions.features.includes("permission-center") && Win11RealFunctions.features.includes("device-diagnostic-export") && Win11RealFunctions.features.includes("device-quick-settings")`));
+await check("Real functions Notifications Background marker",async()=>await evaluate(`Win11RealFunctions?.step===16 && Win11RealFunctions.features.includes("device-center") && Win11RealFunctions.features.includes("notification-center-v2") && Win11RealFunctions.features.includes("notification-actions") && Win11RealFunctions.features.includes("focus-assist") && Win11RealFunctions.features.includes("background-task-engine") && Win11RealFunctions.features.includes("service-state-runtime")`));
 
-await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="7.6.0"`));
+await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="7.7.0"`));
 await check("Notepad real clipboard controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-copy-device]') && !!document.querySelector('.window[data-app="notepad"] [data-paste-device]')`));
 await evaluate(`closeOverlays();toggleOverlay("clipboard");renderClipboard();true`);
 await wait(120);
@@ -395,7 +395,7 @@ await check("Win+V real clipboard controls",async()=>await evaluate(`!!document.
 await check("Manual paste fallback",async()=>await evaluate(`(async()=>{const p=RealClipboardBridge.manualPasteDialog();await new Promise(r=>setTimeout(r,30));const box=document.querySelector("[data-real-paste-box]");if(!box)return false;box.value="clipboard audit";document.querySelector("#system-dialog-ok").click();return (await p)==="clipboard audit"})()`));
 await evaluate(`closeOverlays();true`);
 
-await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="7.6.0"`));
+await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="7.7.0"`));
 await check("IndexedDB import and cleanup",async()=>await evaluate(`(async()=>{const imported=await RealContentBridge.importFileToVirtual(new File(["conteúdo indexeddb"],"browser-audit-real.txt",{type:"text/plain"}),"C:/Documents");const rec=await RealContentBridge.getRecord(imported.ref);const ok=rec&&await rec.blob.text()==="conteúdo indexeddb"&&rec.ownerId===Win11SessionManager.activeUserId;delete state.files["C:/Documents"][imported.name];saveState();await RealContentBridge.cleanupVirtualValue(imported.ref);const gone=!(await RealContentBridge.getRecord(imported.ref));return !!ok&&gone})()`));
 await check("Real folder import preserves subfolders",async()=>await evaluate(`(async()=>{const f=new File(["subfile"],"one.txt",{type:"text/plain"});Object.defineProperty(f,"_relativePath",{value:"Sub/one.txt"});const result=await RealContentBridge.importDirectoryToVirtual({name:"AuditFolder",files:[f]},"C:/Downloads");const ref=state.files[result.root+"/Sub"]?.["one.txt"];const ok=!!ref?.__realBlobId;await RealContentBridge.cleanupVirtualFolder(result.root);Object.keys(state.files).filter(p=>p===result.root||p.startsWith(result.root+"/")).forEach(p=>delete state.files[p]);saveState();return ok})()`));
 await evaluate(`openApp("explorer","C:/Documents");true`); await wait(180);
@@ -409,20 +409,20 @@ await evaluate(`globalThis.RealMediaPending={name:"audit.wav",blob:new Blob([new
 await wait(160);
 await check("Media Player real media",async()=>await evaluate(`!!document.querySelector('.window[data-app="mediaplayer"] [data-open-media]') && !!document.querySelector('.window[data-app="mediaplayer"] audio')`));
 
-await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="7.6.0"`));
+await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="7.7.0"`));
 await evaluate(`renderNotifications();true`);
 await wait(80);
-await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notification-tools [data-notify-enable]") && !!document.querySelector("#notification-list [data-notify-test]")`));
+await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notify-strip-v77 [data-real-notify]") && typeof RealPlatformBridge?.requestNotificationPermission==="function"`));
 await check("PWA manifest link",async()=>await evaluate(`document.querySelector('link[rel="manifest"]')?.getAttribute("href").includes("manifest.webmanifest")`));
 await check("PWA service worker registration",async()=>await evaluate(`(async()=>{if(!("serviceWorker" in navigator))return false;for(let i=0;i<20;i++){const r=await navigator.serviceWorker.getRegistration();if(r)return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
-await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v7.6.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v7.7.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
 await evaluate(`(()=>{state.settingsPage="system";const settingsWin=document.querySelector('.window[data-app="settings"]');if(settingsWin){settingsWin.querySelector(".win-body").innerHTML="";settingsWin.querySelector(".win-body").appendChild(renderApp("settings",settingsWin));}return true})()`);
 await wait(140);
 await check("PWA settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-pwa-card] [data-install-pwa]')`));
-await check("Real device bridge available",async()=>await evaluate(`typeof RealDeviceBridge==="object" && RealDeviceBridge.version==="7.6.0"`));
+await check("Real device bridge available",async()=>await evaluate(`typeof RealDeviceBridge==="object" && RealDeviceBridge.version==="7.7.0"`));
 await check("Real device diagnostics",async()=>await evaluate(`(async()=>{const i=await RealDeviceBridge.getDeviceInfo();return typeof i.online==="boolean"&&i.storage&&typeof i.secureContext==="boolean"})()`));
 await check("Real device settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-real-device-settings]') && !!document.querySelector('.window[data-app="settings"] [data-persist-storage]') && !!document.querySelector('.window[data-app="settings"] [data-wake-lock]')`));
-await check("Device Center bridge available",async()=>await evaluate(`Win11DeviceCenter?.version==="7.6.0" && typeof Win11DeviceCenter.collectSnapshot==="function" && typeof Win11DeviceCenter.buildReport==="function"`));
+await check("Device Center bridge available",async()=>await evaluate(`Win11DeviceCenter?.version==="7.7.0" && typeof Win11DeviceCenter.collectSnapshot==="function" && typeof Win11DeviceCenter.buildReport==="function"`));
 await check("Device Center snapshot shape",async()=>await evaluate(`(async()=>{const s=await Win11DeviceCenter.collectSnapshot();globalThis.__device760=s;return typeof s.online==="boolean"&&!!s.hardware&&!!s.screen&&!!s.storage&&!!s.capabilities&&Array.isArray(s.permissions)&&s.permissions.length===6})()`));
 await check("Device Center permission states",async()=>await evaluate(`__device760.permissions.every(p=>["granted","denied","prompt","unsupported","unknown"].includes(p.state))`));
 await check("Device Center storage shape",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(__device760.storage,"usage")&&Object.prototype.hasOwnProperty.call(__device760.storage,"quota")&&Object.prototype.hasOwnProperty.call(__device760.storage,"persisted")`));
@@ -434,12 +434,41 @@ await check("Device Center panel opens",async()=>await evaluate(`document.queryS
 await check("Device Center capability matrix",async()=>await evaluate(`document.querySelectorAll("#device-center-v760 .device-cap").length>=10`));
 await check("Device Center permission UI",async()=>await evaluate(`document.querySelectorAll("#device-center-v760 .device-permission-row").length===6 && document.querySelectorAll("#device-center-v760 [data-request-permission]").length===4`));
 await check("Device Center control actions",async()=>await evaluate(`!!document.querySelector("#device-center-v760 [data-persist]") && !!document.querySelector("#device-center-v760 [data-wake]") && !!document.querySelector("#device-center-v760 [data-fullscreen]")`));
-await check("Device diagnostic report sanitized",async()=>await evaluate(`(async()=>{const r=await Win11DeviceCenter.buildReport();const text=JSON.stringify(r).toLowerCase();return r.schema==="win11-simulator-device-report-v1"&&r.version==="7.6.0"&&!text.includes("latitude")&&!text.includes("longitude")&&!text.includes("clipboardtext")&&!text.includes("clipboardcontent")&&!text.includes("password")&&!text.includes("credential")&&!text.includes("\\"pin\\"")})()`));
+await check("Device diagnostic report sanitized",async()=>await evaluate(`(async()=>{const r=await Win11DeviceCenter.buildReport();const text=JSON.stringify(r).toLowerCase();return r.schema==="win11-simulator-device-report-v1"&&r.version==="7.7.0"&&!text.includes("latitude")&&!text.includes("longitude")&&!text.includes("clipboardtext")&&!text.includes("clipboardcontent")&&!text.includes("password")&&!text.includes("credential")&&!text.includes("\\"pin\\"")})()`));
 await evaluate(`Win11DeviceCenter.close();openApp("systeminfo");true`); await wait(180);
 await check("System Information V7.6 diagnostic tab",async()=>await evaluate(`!!document.querySelector('.window[data-app="systeminfo"] [data-device-center-info-v760]')`));
 await evaluate(`document.querySelector('.window[data-app="systeminfo"] [data-device-center-info-v760]')?.click();true`); await wait(220);
 await check("System Information V7.6 diagnostic content",async()=>await evaluate(`document.querySelector('.window[data-app="systeminfo"] .info-main')?.textContent.includes("Diagnóstico V7.6") && !!document.querySelector('.window[data-app="systeminfo"] .device-systeminfo-summary')`));
 await evaluate(`(()=>{const w=document.querySelector('.window[data-app="systeminfo"]');if(w)closeWindow(w);return true})()`); await wait(60);
+await check("Notification Center V7.7 bridge",async()=>await evaluate(`Win11NotificationCenter?.version==="7.7.0" && Win11BackgroundEngine?.version==="7.7.0"`));
+await evaluate(`(()=>{Win11NotificationCenter.setFocusMode("off");state.notificationCenterV77.quietUntil=0;state.notifications=state.notifications.filter(n=>!String(n.source||"").startsWith("Audit V77"));saveState();renderNotifications();return true})()`);
+await evaluate(`(()=>{globalThis.__auditNotifId=Win11NotificationCenter.push("Audit V77","Notificação rica de teste",{source:"Audit V77",appId:"notepad",priority:"high",real:false,actions:[{label:"Abrir Bloco de Notas",type:"open-app",appId:"notepad"}]});return true})()`); await wait(80);
+await check("Rich notification stored",async()=>await evaluate(`(()=>{const n=Win11NotificationCenter.active().find(x=>x.id===__auditNotifId);return !!n&&n.source==="Audit V77"&&n.priority==="high"&&n.actions?.length===1&&!n.read})()`));
+await check("Unread notification badge",async()=>await evaluate(`(()=>{const b=document.querySelector("#notify-btn .notification-badge-v77");return !!b&&!b.hidden&&Number(state.notificationCenterV77.unread)>=1})()`));
+await evaluate(`toggleOverlay("notifications");renderNotifications();true`); await wait(100);
+await check("Grouped Action Center UI",async()=>await evaluate(`document.querySelector("#notification-panel").classList.contains("open") && [...document.querySelectorAll(".notification-group-v77>header strong")].some(x=>x.textContent==="Audit V77") && !!document.querySelector('[data-notification-id="'+__auditNotifId+'"] [data-notification-action]')`));
+await check("Notification Settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-notification-settings-v77]')`));
+await evaluate(`(()=>{globalThis.__auditSnoozeId=Win11NotificationCenter.push("Audit V77 Snooze","Adiar",{source:"Audit V77 Snooze",real:false});Win11NotificationCenter.snooze(__auditSnoozeId,15);return true})()`);
+await check("Notification snooze hides active item",async()=>await evaluate(`!Win11NotificationCenter.active().some(x=>x.id===__auditSnoozeId) && state.notifications.find(x=>x.id===__auditSnoozeId)?.snoozedUntil>Date.now()`));
+await evaluate(`Win11NotificationCenter.setFocusMode("priority");globalThis.__auditNormalId=Win11NotificationCenter.push("Audit V77 Normal","Sem banner",{source:"Audit V77 Normal",priority:"normal",real:false});true`); await wait(80);
+await check("Do Not Disturb suppresses normal banner",async()=>await evaluate(`Win11NotificationCenter.active().some(x=>x.id===__auditNormalId) && !document.querySelector('.notification-toast-v77[data-notification-id="'+__auditNormalId+'"]')`));
+await evaluate(`globalThis.__auditHighId=Win11NotificationCenter.push("Audit V77 Priority","Com banner",{source:"Audit V77 Priority",priority:"high",real:false});true`); await wait(80);
+await check("Priority notification bypasses Do Not Disturb",async()=>await evaluate(`!!document.querySelector('.notification-toast-v77[data-notification-id="'+__auditHighId+'"]')`));
+await evaluate(`Win11NotificationCenter.setFocusMode("off");const r=Win11NotificationCenter.ruleFor("Audit V77 Muted");r.enabled=false;globalThis.__auditMuted=Win11NotificationCenter.push("Audit V77 Muted","Não deve entrar",{source:"Audit V77 Muted",real:false});saveState();true`);
+await check("Per-source notification rule blocks source",async()=>await evaluate(`__auditMuted===null && !state.notifications.some(n=>n.source==="Audit V77 Muted")`));
+await evaluate(`Win11NotificationCenter.runAction(__auditNotifId,0);true`); await wait(80);
+await check("Notification action opens application",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"]:not(.hidden)')`));
+await evaluate(`closeOverlays();openApp("services");true`); await wait(160);
+await check("Services V7.7 UI",async()=>await evaluate(`!!document.querySelector('.window[data-app="services"] .services-v77')`));
+await evaluate(`(()=>{globalThis.__auditBits=state.services.find(s=>s.name==="BITS");globalThis.__auditBitsBefore={status:__auditBits.status,pid:__auditBits.pid,restarts:__auditBits.restarts};return Win11BackgroundEngine.changeService("BITS","start")})()`); await wait(60);
+await check("Service runtime start and Event Log",async()=>await evaluate(`__auditBits.status==="Running" && __auditBits.pid>0 && state.events.some(e=>e.source==="Service Control Manager"&&String(e.message).includes("Background Intelligent Transfer Service"))`));
+await evaluate(`Win11BackgroundEngine.changeService("BITS","stop");true`);
+await check("Service runtime stop",async()=>await evaluate(`__auditBits.status==="Stopped" && __auditBits.pid===0`));
+await evaluate(`openApp("taskscheduler");true`); await wait(160);
+await check("Task Scheduler V7.7 UI",async()=>await evaluate(`!!document.querySelector('.window[data-app="taskscheduler"] .scheduler-v77 [data-engine-state]') && !!document.querySelector('.window[data-app="taskscheduler"] .background-history-v77')`));
+await check("Background engine executes due task",async()=>await evaluate(`(async()=>{state.backgroundActivityV77.enabled=true;const t={id:"task-v77-audit",name:"V77 Audit Background Task",folder:"\\\\FantaMK",enabled:true,status:"Ready",lastRun:0,lastResult:"Nunca executada",runCount:0,intervalMinutes:30,action:"notification",nextRun:Date.now()-10};state.scheduledTasks.push(t);saveState();const ran=await Win11BackgroundEngine.tick();globalThis.__auditTask=t;return ran>=1&&t.runCount===1&&t.lastRun>0&&t.nextRun>Date.now()&&Win11BackgroundEngine.history.some(r=>r.taskId===t.id)})()`));
+await check("Background task creates integrated notification",async()=>await evaluate(`state.notifications.some(n=>n.source==="Agendador de Tarefas"&&n.message.includes("V77 Audit Background Task"))`));
+await evaluate(`(()=>{state.scheduledTasks=state.scheduledTasks.filter(t=>t.id!=="task-v77-audit");state.notifications=state.notifications.filter(n=>!String(n.source||"").startsWith("Audit V77")&&!String(n.message||"").includes("V77 Audit Background Task")&&n.replaceKey!=="service:BITS");state.notificationHistoryV77=state.notificationHistoryV77.filter(n=>!String(n.source||"").startsWith("Audit V77")&&!String(n.message||"").includes("V77 Audit Background Task"));delete state.notificationCenterV77.appRules["Audit V77 Muted"];state.notificationCenterV77.focusMode="off";state.notificationCenterV77.quietUntil=0;const s=document.querySelector('.window[data-app="services"]');if(s)closeWindow(s);const t=document.querySelector('.window[data-app="taskscheduler"]');if(t)closeWindow(t);saveState();renderNotifications();return true})()`); await wait(80);
 await evaluate(`globalThis.__auditMusicBefore=Object.keys(ensureFolder("C:/Music"));openApp("soundrecorder");true`); await wait(160);
 await check("Sound Recorder real controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="soundrecorder"] [data-rec-toggle]') && !!document.querySelector('.window[data-app="soundrecorder"] [data-rec-audio]')`));
 await evaluate(`document.querySelector('.window[data-app="soundrecorder"] [data-rec-toggle]').click();true`);
