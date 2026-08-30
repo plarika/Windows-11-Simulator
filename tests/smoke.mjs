@@ -13,7 +13,7 @@ const check = (ok, name) => {
 check(!/<style[ >]/i.test(index), "No inline style block");
 check(!/<script(?![^>]*src=)[^>]*>/i.test(index), "No inline script block");
 
-const refs = [...index.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)].map(m => m[1]);
+const refs = [...index.matchAll(/(?:src|href)="(\.\/[^"#?]+)(?:\?[^"]*)?"/g)].map(m => m[1]);
 for (const ref of refs) {
   check(existsSync(resolve(root, ref.slice(2))), "Asset " + ref);
 }
