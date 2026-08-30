@@ -3,10 +3,10 @@
   const required = ["openApp","applyState","renderRecommended","buildExplorerV5","buildSettingsV5","buildServices","buildDiskManagement","buildPowerShell"];
   const missing = required.filter((name) => typeof globalThis[name] !== "function");
   globalThis.Win11SimDiagnostics = {
-    version: "6.7.3",
+    version: "6.7.4",
     run() {
       return {
-        version: "6.7.3",
+        version: "6.7.4",
         missingFunctions: required.filter((name) => typeof globalThis[name] !== "function"),
         windowCount: document.querySelectorAll(".window").length,
         currentDesktop: Number(state.currentDesktop) || 0,
@@ -34,7 +34,7 @@
       await sessionBoot;
       sessionHandled = Boolean(globalThis.Win11SessionManager);
     } catch (err) {
-      console.error("[V6.7.3] Session boot failed", err);
+      console.error("[V6.7.4] Session boot failed", err);
     }
     if (!sessionHandled) {
       document.getElementById("lock")?.classList.remove("hidden");

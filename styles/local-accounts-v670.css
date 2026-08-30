@@ -1,4 +1,6 @@
 /* Windows 11 Simulator V6.7 — Local Accounts & Sessions */
+#lock.session-lock.hidden{display:none!important}
+
 #lock.session-lock{
   position:fixed;
   inset:0;

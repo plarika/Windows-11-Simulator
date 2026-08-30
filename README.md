@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.7.3 Android Login Fix** — autenticação PBKDF2 em Web Worker, timeout de segurança e migração de credenciais antigas.
+**V6.7.4 Login Overlay Fix** — login bem-sucedido fecha corretamente o ecrã de autenticação no Android.
 
 ## Funcionalidades
 
@@ -145,3 +145,10 @@ Primeiro passo de integração com funções reais do dispositivo:
 - botão de login não permite submissões duplicadas
 - contas antigas com 180000 iterações são migradas após login válido para 120000 iterações
 - o PIN/palavra-passe continua sem ser persistido em texto simples
+
+## V6.7.4 Login Overlay Fix
+
+- corrigido conflito CSS entre #lock.hidden e #lock.session-lock
+- após login válido o ecrã de autenticação fica realmente com display:none
+- auditoria passa a validar getComputedStyle em vez de apenas a classe hidden
+- cache PWA atualizada para 6.7.4
