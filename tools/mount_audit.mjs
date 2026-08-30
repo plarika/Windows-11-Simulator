@@ -2,7 +2,7 @@ const port=Number(process.argv[2]||9227);
 const wait=(ms)=>new Promise(r=>setTimeout(r,ms));
 
 const targets=await fetch(`http://127.0.0.1:${port}/json`).then(r=>r.json());
-const target=targets.find(t=>/^http:\/\/127\.0\.0\.1:8767\//.test(t.url));
+const target=targets.find(t=>t.type==="page"&&/^http:\/\/127\.0\.0\.1:\d+\//.test(t.url));
 if(!target)throw new Error("Simulator target not found");
 
 const ws=new WebSocket(target.webSocketDebuggerUrl);
@@ -71,7 +71,7 @@ async function waitFor(fn,timeout=4000,step=80){
 await send("Runtime.enable");
 await send("Log.enable");
 
-await check("real mounts bridge",async()=>await evaluate(`typeof Win11RealMounts==="object" && Win11RealMounts.version==="7.7.0"`));
+await check("real mounts bridge",async()=>await evaluate(`typeof Win11RealMounts==="object" && Win11RealMounts.version==="7.8.0"`));
 await check("active session exists",async()=>await evaluate(`!!Win11SessionManager?.activeUserId`));
 
 await evaluate(`(()=>{

@@ -70,3 +70,10 @@ O Centro do dispositivo mostra apenas dados que o navegador expõe à aplicaçã
 ## Notifications and Background V7.7
 
 O motor de tarefas da V7.7 é interno ao simulador e apenas executa ações JavaScript previamente definidas pelo projeto; não executa comandos do sistema operativo, scripts externos, child processes, eval ou código introduzido pelo utilizador. O modo Não incomodar apenas controla banners do simulador e notificações reais já autorizadas. As tarefas continuam limitadas ao estado virtual do perfil ativo.
+
+
+## Settings and Windows Security V7.8
+
+O Windows Security V7.8 é um subsistema interno do simulador. As verificações analisam exclusivamente o filesystem virtual guardado no estado do perfil e procuram apenas o marcador inofensivo `WIN11_SIMULATOR_TEST_THREAT`, criado pelo próprio simulador para testes. Não são lidos ficheiros do Windows anfitrião, pastas montadas pelo File System Access API, processos, Registry, Microsoft Defender, TPM, Secure Boot ou regras reais do Windows Firewall.
+
+Os controlos de firewall, SmartScreen, proteção em tempo real, cloud, tamper e ransomware são estados virtuais persistentes. Nenhuma destas opções modifica políticas ou definições do sistema operativo real. O diagnóstico do ambiente web limita-se a sinais expostos pelo browser, como `isSecureContext`, `navigator.onLine` e disponibilidade de IndexedDB.

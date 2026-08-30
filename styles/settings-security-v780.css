@@ -1,0 +1,335 @@
+/* Windows 11 Simulator V7.8 — Settings, Personalization & Windows Security */
+.settings-page-v78{display:grid;gap:14px}
+.settings-page-title-v78{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.settings-page-title-v78 h1{margin:0;font-size:28px}
+.settings-page-title-v78 p{margin:5px 0 0;color:#6a747e;font-size:11px}
+.personalization-preview-v78{
+  height:180px;border-radius:14px;position:relative;overflow:hidden;
+  border:1px solid rgba(0,0,0,.09);box-shadow:0 12px 28px rgba(0,0,0,.14)
+}
+.preview-window-v78{
+  position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);
+  width:42%;height:48%;border-radius:9px;background:rgba(248,249,252,.94);
+  border:1px solid rgba(255,255,255,.65);box-shadow:0 12px 24px rgba(0,0,0,.22);padding:9px
+}
+.preview-window-v78 div{height:8px;border-radius:4px;background:#d8dde3;margin-bottom:9px}
+.preview-window-v78 span{display:block;height:5px;border-radius:3px;background:#e4e8ec;margin:6px 0}
+.preview-taskbar-v78{
+  position:absolute;left:12px;right:12px;bottom:10px;height:30px;border-radius:10px;
+  background:rgba(27,31,44,.76);backdrop-filter:blur(18px);
+  display:flex;align-items:center;gap:5px;padding:0 10px
+}
+.preview-taskbar-v78.center{justify-content:center}
+.preview-taskbar-v78.left{justify-content:flex-start}
+.preview-taskbar-v78 i{width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,.8)}
+.settings-section-v78{
+  background:#fff;border:1px solid #e0e5e9;border-radius:11px;padding:14px
+}
+.settings-section-v78 h3{margin:0 0 10px;font-size:12px}
+.segmented-v78{
+  display:flex;gap:5px;padding:4px;border:1px solid #d8dfe4;border-radius:9px;background:#f4f6f8
+}
+.segmented-v78 button{
+  flex:1;border:0;background:transparent;border-radius:7px;padding:8px;color:#26313a;cursor:pointer;font-size:10px
+}
+.segmented-v78 button.active{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:600}
+.accent-grid-v78{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.accent-grid-v78 button{
+  aspect-ratio:1;border-radius:8px;border:2px solid transparent;background:var(--swatch);cursor:pointer;position:relative
+}
+.accent-grid-v78 button.active{border-color:#15191d;box-shadow:0 0 0 2px #fff inset}
+.wallpaper-grid-v78{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wallpaper-grid-v78 button{
+  aspect-ratio:16/9;border:2px solid transparent;border-radius:9px;cursor:pointer;position:relative;overflow:hidden
+}
+.wallpaper-grid-v78 button.active{border-color:var(--accent-strong)}
+.wallpaper-grid-v78 span{
+  position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:6px;
+  display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;font-size:8px
+}
+.settings-list-v78{
+  background:#fff;border:1px solid #e0e5e9;border-radius:11px;overflow:hidden
+}
+.settings-row-v78{
+  min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 13px;
+  border-bottom:1px solid #edf0f2
+}
+.settings-row-v78:last-child{border-bottom:0}
+.settings-row-v78>div{display:grid;gap:3px}
+.settings-row-v78 strong{font-size:11px}
+.settings-row-v78 small{font-size:9px;color:#6d7780}
+
+.taskbar-left-v78 #taskbar .task-center{
+  position:static;left:auto;transform:none;margin-right:auto;margin-left:6px
+}
+.taskbar-left-v78 #taskbar .task-left{flex:none}
+.no-transparency-v78 #taskbar,
+.no-transparency-v78 .overlay,
+.no-transparency-v78 #task-view,
+.no-transparency-v78 #alt-tab{
+  backdrop-filter:none!important
+}
+.no-transparency-v78 #taskbar{background:#202532}
+.no-transparency-v78 .overlay{background:#282e3a}
+.no-animations-v78 *,
+.no-animations-v78 *::before,
+.no-animations-v78 *::after{
+  animation-duration:.001ms!important;transition-duration:.001ms!important
+}
+
+.security-settings-hero-v78{
+  display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:12px;
+  border:1px solid #dfe5e9;background:#fff;border-radius:12px;padding:12px;cursor:pointer
+}
+.security-settings-hero-v78:hover{background:#f8fafb}
+.security-settings-hero-v78.warning{border-color:#e7c96b}
+.security-settings-hero-v78.danger{border-color:#d98d88}
+.security-score-ring-v78{
+  --p:calc(var(--score)*1%);width:54px;height:54px;border-radius:50%;
+  display:grid;place-items:center;
+  background:conic-gradient(var(--accent-strong) var(--p),#e4e9ed var(--p));
+  position:relative
+}
+.security-score-ring-v78::after{
+  content:"";position:absolute;inset:6px;border-radius:50%;background:#fff
+}
+.security-score-ring-v78 span{position:relative;z-index:1;font-size:13px;font-weight:700}
+.security-settings-hero-v78>div:nth-child(2){display:grid;gap:3px}
+.security-settings-hero-v78 strong{font-size:12px}
+.security-settings-hero-v78 p{margin:0;font-size:10px}
+.security-settings-hero-v78 small{font-size:8px;color:#6d7780}
+.security-settings-hero-v78>button{
+  border:1px solid #cbd4da;background:#fff;border-radius:8px;padding:7px 10px;color:#27313a;cursor:pointer;font-size:9px
+}
+.privacy-browser-v78{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:#fff;border:1px solid #e0e5e9;border-radius:11px;padding:12px
+}
+.privacy-browser-v78>div{display:grid;gap:3px}
+.privacy-browser-v78 strong{font-size:11px}
+.privacy-browser-v78 small{font-size:9px;color:#6e7881}
+
+.security-v78{
+  height:100%;display:grid;grid-template-columns:210px minmax(0,1fr);color:#1e252c;background:#f6f8fa
+}
+.security-nav-v78{
+  min-width:0;background:#edf1f4;border-right:1px solid #d7dde2;padding:10px 8px;
+  display:flex;flex-direction:column;gap:3px
+}
+.security-brand-v78{display:flex;align-items:center;gap:9px;padding:8px 7px 13px;margin-bottom:2px}
+.security-brand-v78>span{font-size:22px}
+.security-brand-v78>div{display:grid;gap:1px;min-width:0}
+.security-brand-v78 strong{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.security-brand-v78 small{font-size:8px;color:#68737c}
+.security-nav-v78>button{
+  border:0;background:transparent;border-radius:8px;padding:8px 9px;color:#27313a;
+  display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-size:9px
+}
+.security-nav-v78>button:hover{background:#e1e7eb}
+.security-nav-v78>button.active{background:#d9e9f4;color:#153b56}
+.security-nav-v78>button span:first-child{width:20px;text-align:center;font-size:13px}
+.security-safe-note-v78{
+  margin-top:auto;padding:9px;border-top:1px solid #d8dee3;color:#6a747d;font-size:9px;line-height:1.35
+}
+.security-safe-note-v78 small{font-size:8px}
+.security-main-v78{overflow:auto;padding:18px}
+.security-home-v78,.security-page-v78{display:grid;gap:14px}
+.security-hero-v78{
+  display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:14px;
+  border:1px solid #dce3e8;border-radius:13px;background:#fff;padding:15px
+}
+.security-hero-v78.warning{border-color:#e7c96b}
+.security-hero-v78.danger{border-color:#d78f88}
+.security-shield-v78{
+  width:56px;height:56px;border-radius:14px;display:grid;place-items:center;
+  font-size:28px;background:#eaf5fb
+}
+.security-hero-v78 h2{margin:0;font-size:18px}
+.security-hero-v78 p{margin:4px 0 0;font-size:10px}
+.security-hero-v78 small{display:block;margin-top:5px;color:#6a747d;font-size:8px}
+.security-health-score-v78{display:flex;align-items:baseline;gap:2px}
+.security-health-score-v78 strong{font-size:26px}
+.security-health-score-v78 span{font-size:9px;color:#6d7780}
+.security-card-grid-v78{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.security-card-v78{
+  border:1px solid #dde4e8;background:#fff;border-radius:11px;padding:12px;text-align:left;color:#25303a;
+  cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 16px;gap:5px;align-items:center
+}
+.security-card-v78:hover{background:#f8fafb}
+.security-card-v78>div{display:flex;align-items:center;gap:7px}
+.security-card-v78 strong{font-size:10px}
+.security-card-v78 p{grid-column:1/2;margin:0;font-size:9px;color:#66717a}
+.security-card-v78>span{grid-column:2;grid-row:1/3;font-size:18px;color:#7a858e}
+.security-status-dot-v78{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.security-status-dot-v78.ok{background:#107c10;box-shadow:0 0 0 3px rgba(16,124,16,.11)}
+.security-status-dot-v78.warn{background:#c27b00;box-shadow:0 0 0 3px rgba(194,123,0,.11)}
+.security-page-head-v78{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.security-page-head-v78 h2{margin:0;font-size:19px}
+.security-page-head-v78 p{margin:4px 0 0;color:#69747d;font-size:9px}
+.security-section-v78{
+  background:#fff;border:1px solid #dde4e8;border-radius:11px;padding:13px
+}
+.security-section-v78 h3{margin:0 0 9px;font-size:11px}
+.security-empty-v78{
+  min-height:52px;display:flex;align-items:center;padding:10px;border:1px dashed #d6dee4;
+  border-radius:9px;color:#4e6d57;font-size:10px;background:#fbfdfb
+}
+.security-action-grid-v78{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.security-action-grid-v78 button{
+  border:1px solid #d6dee4;background:#f8fafb;border-radius:9px;padding:10px;text-align:left;color:#27323b;cursor:pointer
+}
+.security-action-grid-v78 button:hover{background:#edf4f8}
+.security-action-grid-v78 strong{display:block;font-size:10px}
+.security-action-grid-v78 small{display:block;margin-top:3px;color:#6b7680;font-size:8px}
+.security-scan-running-v78{
+  border:1px solid #c7deec;background:#eef8fe;border-radius:10px;padding:11px;display:grid;gap:7px
+}
+.security-scan-running-v78>div:first-child{display:flex;justify-content:space-between;gap:10px}
+.security-scan-running-v78 strong{font-size:10px}
+.security-scan-running-v78 span{font-size:9px;color:#326684}
+.security-scan-running-v78 small{font-size:8px;color:#61798a}
+.scan-bar-v78{height:7px;border-radius:999px;background:#dce8ef;overflow:hidden}
+.scan-bar-v78 i{display:block;height:100%;border-radius:inherit;background:var(--accent-strong)}
+.threat-row-v78{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;
+  border:1px solid #edd7a6;background:#fffaf0;border-radius:9px;margin-bottom:7px
+}
+.threat-row-v78:last-child{margin-bottom:0}
+.threat-row-v78>div:first-child{display:grid;gap:3px;min-width:0}
+.threat-row-v78 strong{font-size:10px}
+.threat-row-v78 small{font-size:8px;color:#7a6845;overflow-wrap:anywhere}
+.threat-row-v78>div:last-child{display:flex;gap:5px}
+.threat-row-v78 button{
+  border:1px solid #d5c28e;background:#fff;border-radius:7px;padding:6px 8px;color:#3c3527;cursor:pointer;font-size:8px
+}
+.scan-history-row-v78{
+  display:grid;grid-template-columns:140px 150px minmax(0,1fr);gap:8px;align-items:center;
+  padding:7px 0;border-bottom:1px solid #edf0f2
+}
+.scan-history-row-v78:last-child{border-bottom:0}
+.scan-history-row-v78 span,.scan-history-row-v78 small{font-size:8px;color:#6e7881}
+.scan-history-row-v78 strong{font-size:9px}
+.security-muted-v78{font-size:9px;color:#6c7780;margin:0}
+.security-account-v78{display:flex;align-items:center;gap:10px}
+.security-user-avatar-v78{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  background:#dcecf7;color:#194968;font-size:16px;font-weight:700
+}
+.security-account-v78>div:last-child{display:grid;gap:3px}
+.security-account-v78 strong{font-size:11px}
+.security-account-v78 small{font-size:8px;color:#69747d}
+.security-disclosure-v78{
+  border:1px dashed #d3dce2;border-radius:9px;padding:10px;color:#66727b;background:#fafcfd;font-size:8px;line-height:1.45
+}
+.kv-v78{display:grid;grid-template-columns:1fr auto;gap:8px 14px}
+.kv-v78 span{font-size:9px;color:#6b7680}
+.kv-v78 strong{font-size:9px}
+.health-pill-v78{border-radius:999px;padding:6px 9px;font-size:9px;font-weight:700;background:#e8f4eb;color:#28643a}
+.health-pill-v78.warning{background:#fff4d8;color:#815a00}
+.health-pill-v78.danger{background:#fbe5e3;color:#8d312b}
+.health-grid-v78{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.health-grid-v78>div{
+  display:grid;grid-template-columns:13px minmax(0,1fr) auto;align-items:center;gap:7px;
+  background:#fff;border:1px solid #dde4e8;border-radius:9px;padding:9px
+}
+.health-grid-v78 span{font-size:9px}
+.health-grid-v78 strong{font-size:8px;color:#5e6972}
+.security-history-v78{display:grid;gap:7px}
+.security-history-v78>div{
+  display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:9px;
+  background:#fff;border:1px solid #dde4e8;border-radius:9px;padding:9px
+}
+.security-history-v78>div>div{display:grid;gap:2px;min-width:0}
+.security-history-v78 strong{font-size:9px}
+.security-history-v78 small{font-size:8px;color:#68737d;overflow-wrap:anywhere}
+.security-history-v78 time{font-size:8px;color:#79838b}
+.history-status-v78{
+  border-radius:999px;padding:4px 7px;text-align:center;font-size:8px;background:#fff4d8;color:#805800
+}
+.history-status-v78.removed{background:#e7f4ea;color:#2a693a}
+.history-status-v78.allowed{background:#edf0f3;color:#4e5a64}
+
+#app.theme-dark .settings-page-title-v78 p,
+#app.theme-dark .settings-row-v78 small,
+#app.theme-dark .privacy-browser-v78 small,
+#app.theme-dark .security-settings-hero-v78 small{color:#aab4bc}
+#app.theme-dark .settings-section-v78,
+#app.theme-dark .settings-list-v78,
+#app.theme-dark .privacy-browser-v78,
+#app.theme-dark .security-settings-hero-v78{
+  background:#292f35;border-color:#444d55;color:#f1f4f6
+}
+#app.theme-dark .segmented-v78{background:#22272c;border-color:#444d55}
+#app.theme-dark .segmented-v78 button{color:#eaf0f3}
+#app.theme-dark .segmented-v78 button.active{background:#394149}
+#app.theme-dark .accent-grid-v78 button.active{border-color:#fff;box-shadow:0 0 0 2px #20252a inset}
+#app.theme-dark .security-score-ring-v78{background:conic-gradient(var(--accent) var(--p),#4c555d var(--p))}
+#app.theme-dark .security-score-ring-v78::after{background:#292f35}
+#app.theme-dark .security-v78{background:#20252a;color:#eef2f5}
+#app.theme-dark .security-nav-v78{background:#252b31;border-color:#424a51}
+#app.theme-dark .security-brand-v78 small,
+#app.theme-dark .security-safe-note-v78{color:#a8b1b9}
+#app.theme-dark .security-nav-v78>button{color:#e7ecef}
+#app.theme-dark .security-nav-v78>button:hover{background:#333b42}
+#app.theme-dark .security-nav-v78>button.active{background:#29475a;color:#f3f8fb}
+#app.theme-dark .security-safe-note-v78{border-color:#414950}
+#app.theme-dark .security-hero-v78,
+#app.theme-dark .security-card-v78,
+#app.theme-dark .security-section-v78,
+#app.theme-dark .settings-list-v78,
+#app.theme-dark .health-grid-v78>div,
+#app.theme-dark .security-history-v78>div{
+  background:#292f35;border-color:#444d55;color:#edf2f5
+}
+#app.theme-dark .security-card-v78:hover{background:#323940}
+#app.theme-dark .security-card-v78 p,
+#app.theme-dark .security-page-head-v78 p,
+#app.theme-dark .security-hero-v78 small,
+#app.theme-dark .security-health-score-v78 span,
+#app.theme-dark .security-account-v78 small,
+#app.theme-dark .scan-history-row-v78 span,
+#app.theme-dark .scan-history-row-v78 small,
+#app.theme-dark .security-muted-v78,
+#app.theme-dark .kv-v78 span,
+#app.theme-dark .health-grid-v78 strong,
+#app.theme-dark .security-history-v78 small,
+#app.theme-dark .security-history-v78 time{color:#a8b2ba}
+#app.theme-dark .security-action-grid-v78 button{background:#323940;border-color:#4a535b;color:#edf2f5}
+#app.theme-dark .security-action-grid-v78 button:hover{background:#3a434b}
+#app.theme-dark .security-action-grid-v78 small{color:#aab4bc}
+#app.theme-dark .security-scan-running-v78{background:#253a47;border-color:#3f6176}
+#app.theme-dark .scan-bar-v78{background:#3c4e59}
+#app.theme-dark .security-empty-v78{background:#26342a;border-color:#3e5944;color:#a8d7b1}
+#app.theme-dark .threat-row-v78{background:#3a3325;border-color:#66593d;color:#f2ead7}
+#app.theme-dark .threat-row-v78 small{color:#c7b998}
+#app.theme-dark .threat-row-v78 button{background:#463e2f;border-color:#6b5f45;color:#f6edd9}
+#app.theme-dark .security-disclosure-v78{background:#242b30;border-color:#4b555d;color:#aeb8c0}
+#app.theme-dark .scan-history-row-v78{border-color:#3f474e}
+
+@media(max-width:820px){
+  .accent-grid-v78{grid-template-columns:repeat(4,1fr)}
+  .wallpaper-grid-v78{grid-template-columns:repeat(2,1fr)}
+  .security-v78{grid-template-columns:168px minmax(0,1fr)}
+  .security-card-grid-v78{grid-template-columns:1fr}
+  .security-hero-v78{grid-template-columns:52px minmax(0,1fr)}
+  .security-health-score-v78{grid-column:2}
+}
+@media(max-width:720px){
+  .taskbar-left-v78 #taskbar .task-center{margin-left:0}
+  .security-v78{display:block;position:relative}
+  .security-nav-v78{
+    position:sticky;top:0;z-index:3;display:flex;flex-direction:row;overflow:auto;
+    border-right:0;border-bottom:1px solid #d7dde2;padding:6px
+  }
+  .security-brand-v78,.security-safe-note-v78{display:none}
+  .security-nav-v78>button{flex:none;padding:7px 8px}
+  .security-nav-v78>button span:last-child{display:none}
+  .security-main-v78{padding:12px}
+  .security-card-grid-v78{grid-template-columns:1fr}
+  .security-action-grid-v78{grid-template-columns:1fr}
+  .scan-history-row-v78{grid-template-columns:1fr;gap:3px}
+  .health-grid-v78{grid-template-columns:1fr}
+  .security-settings-hero-v78{grid-template-columns:52px minmax(0,1fr)}
+  .security-settings-hero-v78>button{grid-column:2}
+  .privacy-browser-v78{align-items:flex-start;flex-direction:column}
+}

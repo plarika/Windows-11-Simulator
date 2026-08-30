@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.7 Notifications, Action Center & Background Services** — notificações agrupadas, Não incomodar, ações, snooze, motor de tarefas e serviços integrados.
+**V7.8 Settings, Personalization & Windows Security** — Personalização V2, Segurança do Windows V2, verificações virtuais, firewall e estado de proteção.
 
 ## Funcionalidades
 
@@ -307,3 +307,22 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Serviços V2 com arranque, paragem, reinício e Event Log
 - Agendador de Tarefas V2 com execução manual e por intervalo
 - ações internas para Windows Update, Storage Sense e manutenção automática
+
+
+## V7.8 Settings, Personalization & Windows Security
+
+- Personalização V2 com tema Claro, Escuro ou Sistema
+- cor de destaque persistente por perfil
+- efeitos de transparência e animações configuráveis
+- alinhamento da barra de tarefas ao Centro ou à Esquerda
+- oito wallpapers integrados no simulador
+- Windows Security V2 com navegação por áreas
+- verificações Rápida, Completa e Personalizada apenas no filesystem virtual
+- item de teste inofensivo para validar deteções sem malware real
+- histórico de verificações e histórico de proteção
+- proteção em tempo real, cloud, tamper e ransomware representadas como controlos virtuais
+- firewall virtual com perfis domínio, privado e público
+- SmartScreen e PUA protection virtuais
+- pontuação de saúde calculada a partir do estado do simulador
+- integração das deteções e alterações críticas com o Centro de Notificações V7.7
+- indicadores do browser como Secure Context, rede e IndexedDB identificados explicitamente como ambiente web

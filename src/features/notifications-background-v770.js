@@ -607,7 +607,7 @@
   startScheduler();
 
   globalThis.Win11NotificationCenter=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     push:pushNotification,
     active:()=>clone(activeNotifications()),
     history:()=>clone(state.notificationHistoryV77),
@@ -619,7 +619,7 @@
     ruleFor
   });
   globalThis.Win11BackgroundEngine=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     tick:schedulerTick,
     runTask:async idOrIndex=>{
       const t=typeof idOrIndex==="number"?state.scheduledTasks[idOrIndex]:state.scheduledTasks.find(x=>x.id===idOrIndex);
@@ -632,7 +632,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     step:16,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

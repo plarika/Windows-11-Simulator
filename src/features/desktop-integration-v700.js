@@ -479,7 +479,7 @@
   installQuickSettings();
 
   globalThis.Win11DesktopIntegration=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     extensionOf,
     categoryOf,
     defaultAppFor,
@@ -498,7 +498,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     step:9,
     features:[
       "real-file-open","real-file-save","download-fallback",

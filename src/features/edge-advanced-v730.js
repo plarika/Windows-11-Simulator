@@ -870,7 +870,7 @@
   globalThis.buildEdge=buildEdgeV730;
 
   globalThis.Win11EdgeAdvanced=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     ensureEdgeState,
     normalize,
     addHistory,
@@ -883,7 +883,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     step:12,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

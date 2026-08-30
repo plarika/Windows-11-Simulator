@@ -8,7 +8,7 @@
   const LEGACY_BACKUP_KEY="win11-sim-legacy-backup-v67";
   const CHANNEL_PREFIX="win11-sim-session-v67:";
   const ITERATIONS=120000;
-  const AUTH_WORKER_URL="./src/workers/auth-crypto-v673.js?v=7.7.0";
+  const AUTH_WORKER_URL="./src/workers/auth-crypto-v673.js?v=7.8.0";
   const tabId=crypto.randomUUID?.()||("tab-"+Date.now()+"-"+Math.random().toString(36).slice(2));
 
   let activeAccount=null;
@@ -835,7 +835,7 @@
     return {
       schema:"win11-simulator-profile",
       schemaVersion:1,
-      simulatorVersion:"7.7.0",
+      simulatorVersion:"7.8.0",
       exportedAt:new Date().toISOString(),
       account:{
         displayName:activeAccount.displayName,
@@ -1171,7 +1171,7 @@
   bootResumePromise=Promise.resolve();
 
   globalThis.Win11SessionManager=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     get activeUserId(){return activeAccount?.id||null},
     get activeUser(){return activeAccount?{id:activeAccount.id,displayName:activeAccount.displayName}:null},
     get isLocked(){return locked},
@@ -1196,7 +1196,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.7.0",
+    version:"7.8.0",
     step:8,
     features:[
       "real-file-open","real-file-save","download-fallback",
