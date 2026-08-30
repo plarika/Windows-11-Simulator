@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.3.2 Encoding Fix** — revisão de UTF-8/mojibake, estabilidade V6.3.1 e aplicações realistas.
+**V6.4 Real Functions — Step 1** — Bloco de Notas com abertura e gravação de ficheiros reais mediante autorização do utilizador.
 
 ## Funcionalidades
 
@@ -72,3 +72,14 @@ A V6.2 melhora Taskbar, Start, janelas, ícones, system tray, lock screen, menus
 - corrigidos Versão, aplicações, módulos, Segurança e outros textos
 - restaurados símbolos —, □, ×, ‹, ›, ☁ e °
 - adicionada proteção automática contra regressões de codificação
+
+## V6.4 Real Functions — Step 1
+
+Primeiro passo de integração com funções reais do dispositivo:
+
+- abrir ficheiros TXT, Markdown, LOG e CSV reais no Bloco de Notas
+- editar conteúdo real dentro do simulador
+- guardar novamente no ficheiro através da File System Access API quando disponível
+- fallback de upload/download em browsers sem essa API
+- acesso sempre depende de uma ação e autorização explícita do utilizador
+- filesystem virtual continua separado dos ficheiros reais

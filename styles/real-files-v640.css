@@ -1,0 +1,17 @@
+/* Windows 11 Simulator V6.4 — Real File Bridge */
+.notepad-toolbar-real{overflow-x:auto;overflow-y:hidden;white-space:nowrap;flex:none}
+.notepad-toolbar-real .toolbar-divider{width:1px;height:22px;background:#d9dde2;margin:0 2px;flex:none}
+.notepad-real-status{height:27px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 10px;border-top:1px solid #e1e5e9;background:#f8f9fb;color:#65707b;font-size:10.5px;flex:none}
+.notepad-real-status [data-dirty].dirty{color:#8b5f00;font-weight:600}
+.notepad-toolbar-real [data-open-device],
+.notepad-toolbar-real [data-save-device]{font-weight:500}
+.notepad-toolbar-real [data-open-device]::before{content:"↥";margin-right:5px}
+.notepad-toolbar-real [data-save-device]::before{content:"↧";margin-right:5px}
+#app.theme-dark .notepad-toolbar-real .toolbar-divider{background:#484d55}
+#app.theme-dark .notepad-real-status{background:#25282e;color:#b8c0c9;border-color:#41464e}
+#app.theme-dark .notepad-real-status [data-dirty].dirty{color:#f2c25e}
+@media(max-width:720px){
+  .notepad-toolbar-real{height:42px;padding-right:12px}
+  .notepad-toolbar-real button{padding:6px 8px;font-size:11px;flex:none}
+  .notepad-real-status{font-size:9.5px}
+}

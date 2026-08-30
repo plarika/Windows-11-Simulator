@@ -107,6 +107,10 @@ await evaluate(`document.querySelector('[data-dialog-name]').value="AuditFile"; 
 await wait(120);
 await check("Save extension .txt",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(state.files["C:/Documents"],"AuditFile.txt")`));
 await evaluate(`delete state.files["C:/Documents"]["AuditFile.txt"]; saveState(); true`);
+await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="6.4.0"`));
+await check("Notepad real file controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-open-device]') && !!document.querySelector('.window[data-app="notepad"] [data-save-device]')`));
+await check("Real file handle write path",async()=>await evaluate(`(async()=>{const test={text:null,closed:false};const handle={name:"audit.txt",async createWritable(){return {async write(v){test.text=v},async close(){test.closed=true}}}};await RealFileBridge.writeHandle(handle,"conteúdo real");return test.text==="conteúdo real"&&test.closed})()`));
+await check("Real functions step marker",async()=>await evaluate(`Win11RealFunctions?.step===1 && Win11RealFunctions.features.includes("real-file-save")`));
 
 await send("Emulation.setDeviceMetricsOverride",{width:412,height:915,deviceScaleFactor:2,mobile:true});
 await wait(180);

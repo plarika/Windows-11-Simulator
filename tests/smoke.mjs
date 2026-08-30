@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=6.3.2"),
+  index.includes("./favicon.svg?v=6.4.0"),
   "Versioned favicon reference"
 );
 
@@ -98,6 +98,19 @@ for (const rel of [...new Set(encodingTargets)]) {
     "No classic mojibake: " + rel
   );
 }
+
+
+
+const realFiles = readFileSync(resolve(root, "src/features/real-files-v640.js"), "utf8");
+check(realFiles.includes("showOpenFilePicker"), "Real file native open integration present");
+check(realFiles.includes("showSaveFilePicker"), "Real file native save integration present");
+check(realFiles.includes('input.type="file"'), "Real file open fallback present");
+check(realFiles.includes("URL.createObjectURL"), "Real file download fallback present");
+check(realFiles.includes("createWritable"), "Real file writable handle support present");
+check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
+check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
+check(index.includes("./src/features/real-files-v640.js?v=6.4.0"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=6.4.0"), "Real file bridge styles loaded");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");
