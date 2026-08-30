@@ -1,0 +1,77 @@
+/* Windows 11 Simulator V6.3 — App Realism */
+.explorer-real{height:100%;display:grid;grid-template-columns:205px minmax(0,1fr);background:#fff;color:#202124}
+.explorer-real aside{background:rgba(245,247,250,.96);border-right:1px solid #e1e5e9;padding:8px;overflow:auto}
+.explorer-real main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff}
+.explorer-tabs{height:38px;display:flex;align-items:end;gap:3px;padding:5px 8px 0;background:#eef1f5;border-bottom:1px solid #dfe3e7}
+.explorer-tab{height:32px;min-width:165px;max-width:240px;border:0;border-radius:7px 7px 0 0;background:#fff;color:#202124;padding:0 10px;display:flex;align-items:center;gap:8px;box-shadow:0 -1px 2px rgba(0,0,0,.04)}
+.explorer-tab span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.explorer-command.real{min-height:48px;padding:6px 10px;gap:2px;background:#fff;border-bottom:1px solid #e6e8eb}
+.explorer-command.real button{height:34px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border-radius:5px}
+.explorer-command .cmd-icon{font-size:16px;line-height:1}
+.explorer-address.real{min-height:46px;padding:6px 10px;background:#fff;align-items:center}
+.explorer-address.real button{height:32px;width:34px;padding:0;display:grid;place-items:center}
+.explorer-address.real .pathbar{min-height:32px;display:flex;align-items:center;gap:2px;padding:0 9px;border:1px solid #d9dee3;border-radius:6px;background:#fff;overflow:auto;white-space:nowrap}
+.crumb{border:0;background:transparent;padding:3px 5px;border-radius:4px;cursor:pointer;color:inherit}.crumb:hover{background:#eef2f5}.crumb-sep{color:#89919a}
+.explorer-search.real{height:32px;width:min(260px,35%);background:#fff}
+.explorer-files.real{position:relative;flex:1;min-height:0;padding:10px 12px 34px}
+.explorer-status{position:absolute;left:0;right:0;bottom:0;height:28px;border-top:1px solid #e6e8eb;background:rgba(250,251,252,.94);display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:11px;color:#68717a}
+.explorer-real .file-grid{grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:5px}
+.explorer-real .file{min-height:88px;padding:8px 5px;border-radius:5px}
+.explorer-real .file .icon{font-size:29px}
+.explorer-real .file-row{grid-template-columns:minmax(200px,1fr) 150px 95px 155px;padding:7px 8px}
+.explorer-real .file-row.header{position:sticky;top:0;background:#fff;z-index:3;border-bottom:1px solid #e3e6e9;color:#555f69;font-size:11px;cursor:default}
+.explorer-real .file-row.header:hover{background:#fff}
+.explorer-nav-section{font-size:10px;color:#7b838d;padding:10px 8px 4px;text-transform:uppercase;letter-spacing:.5px}
+.explorer-real .nav-item{font-size:12px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:5px}
+
+.edge-real{height:100%;display:flex;flex-direction:column;background:#fff;color:#202124}
+.edge-real-tabs{height:40px;display:flex;align-items:end;gap:2px;background:#e9edf2;padding:5px 7px 0;overflow:hidden}
+.edge-real-tab{height:34px;min-width:140px;max-width:220px;flex:0 1 210px;border:0;border-radius:8px 8px 0 0;background:#dde2e8;color:#27303a;padding:0 7px 0 10px;display:flex;align-items:center;gap:7px;cursor:pointer}
+.edge-real-tab.active{background:#fff}
+.edge-real-tab .tab-favicon{width:16px;height:16px;display:grid;place-items:center;font-size:13px}
+.edge-real-tab .tab-label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;font-size:11px}
+.edge-real-tab .tab-close{width:22px;height:22px;border:0;background:transparent;border-radius:4px;padding:0;cursor:pointer}.edge-real-tab .tab-close:hover{background:rgba(0,0,0,.08)}
+.edge-new-tab{width:32px;height:32px;border:0;background:transparent;border-radius:5px;margin-bottom:1px;cursor:pointer;font-size:18px}.edge-new-tab:hover{background:rgba(0,0,0,.07)}
+.edge-real-bar{height:48px;display:flex;align-items:center;gap:3px;padding:6px 8px;background:#fff;border-bottom:1px solid #e1e5e9}
+.edge-real-bar>button{width:34px;height:34px;border:0;background:transparent;border-radius:6px;color:#303840;cursor:pointer}.edge-real-bar>button:hover{background:#edf1f4}
+.edge-real-address{flex:1;height:34px;border:1px solid transparent;background:#f1f3f5;border-radius:17px;padding:0 14px;outline:none;color:#242a30;font-size:12px}.edge-real-address:focus{background:#fff;border-color:#6aaada;box-shadow:0 0 0 1px #6aaada}
+.edge-real-page{flex:1;min-height:0;overflow:hidden;background:#fff}
+.edge-real-page .edge-home{overflow:auto;height:100%}
+.edge-tab-frame{width:100%;height:100%;border:0;background:#fff}
+.edge-site-shell{height:100%;display:flex;flex-direction:column}.edge-site-note{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 9px;background:#f7f9fa;border-bottom:1px solid #e4e8eb;font-size:10px;color:#64707b}.edge-site-note button{border:0;background:transparent;color:#0868aa;cursor:pointer;font-size:10px}
+
+.tm-real{height:100%;display:grid;grid-template-columns:210px minmax(0,1fr);background:#f8f9fb;color:#202124}
+.tm-real-nav{background:#f0f2f5;border-right:1px solid #e0e4e8;padding:10px 7px;overflow:auto}
+.tm-brand{font-size:14px;font-weight:600;padding:7px 9px 14px}.tm-real-nav button{width:100%;height:36px;border:0;background:transparent;border-radius:6px;padding:0 10px;text-align:left;cursor:pointer;color:inherit;font-size:12px}.tm-real-nav button:hover,.tm-real-nav button.active{background:#dfe9f2}
+.tm-real-main{display:flex;flex-direction:column;min-width:0;min-height:0}.tm-real-head{height:58px;display:flex;align-items:center;gap:8px;padding:0 18px;border-bottom:1px solid #e3e6e9}.tm-real-head h2{font-size:20px;font-weight:500;margin:0 auto 0 0}.tm-real-head button{height:32px;border:0;background:transparent;border-radius:5px;padding:0 10px;cursor:pointer}.tm-real-head button:hover{background:#e9edf1}
+.tm-real-content{flex:1;overflow:auto;padding:0 14px 14px}.tm-process-table{width:100%;border-collapse:collapse;font-size:11.5px}.tm-process-table th{position:sticky;top:0;background:#f8f9fb;z-index:2;height:42px;font-weight:500;color:#5f6872;border-bottom:1px solid #e2e5e8}.tm-process-table th,.tm-process-table td{text-align:left;padding:7px 8px;border-bottom:1px solid #edf0f2}.tm-process-table tbody tr:hover{background:#eef5fb}.usage-cell{background:rgba(244,196,71,.15)}.usage-hi{background:rgba(244,174,71,.25)}.process-name{display:flex;align-items:center;gap:8px;min-width:180px}.process-name .real-app-icon{width:18px;height:18px}
+.tm-summary{display:flex;gap:12px;margin:12px 0}.tm-summary-card{min-width:120px;padding:10px;border:1px solid #e0e4e8;border-radius:8px;background:#fff}.tm-summary-card strong{font-size:22px;font-weight:400;display:block}
+
+.settings-real-top{display:flex;align-items:center;gap:12px;margin-bottom:20px}.settings-real-top h1{margin:0 auto 0 0;font-size:28px;font-weight:500}.settings-searchbox{width:min(330px,45%);height:36px;border:1px solid #cfd6dc;border-bottom:2px solid #1689d8;border-radius:6px;padding:0 11px;background:#fff;outline:none}
+.settings-device-card{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid #dfe4e8;border-radius:12px;background:#fff;margin-bottom:18px}.settings-device-icon{width:64px;height:48px;border-radius:7px;background:linear-gradient(145deg,#227abd,#5fb9eb);display:grid;place-items:center;color:#fff;font-size:25px}.settings-device-card strong{display:block;font-size:15px}.settings-device-card small{color:#68717a}
+
+.file-dialog-list{border:1px solid #dbe0e5;border-radius:7px;overflow:auto;max-height:270px;margin:10px 0}.file-dialog-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-bottom:1px solid #eef0f2;cursor:pointer}.file-dialog-row:last-child{border-bottom:0}.file-dialog-row:hover,.file-dialog-row.selected{background:#eaf3fb}.file-dialog-name{flex:1}.file-dialog-path{font-size:10px;color:#75808b}.file-dialog-field{width:100%;height:34px;border:1px solid #cfd6dc;border-radius:6px;padding:0 9px;outline:none}
+
+#app.theme-dark .explorer-real,#app.theme-dark .explorer-real main,#app.theme-dark .explorer-command.real,#app.theme-dark .explorer-address.real,#app.theme-dark .explorer-real .file-row.header,#app.theme-dark .edge-real,#app.theme-dark .edge-real-bar,#app.theme-dark .edge-real-page,#app.theme-dark .tm-real,#app.theme-dark .tm-real-content,#app.theme-dark .tm-process-table th,#app.theme-dark .settings-device-card{background:#202228;color:#f2f3f5}
+#app.theme-dark .explorer-real aside,#app.theme-dark .explorer-tabs,#app.theme-dark .tm-real-nav,#app.theme-dark .edge-real-tabs{background:#292c33;border-color:#41464e}
+#app.theme-dark .explorer-tab,#app.theme-dark .edge-real-tab.active{background:#202228;color:#f2f3f5}
+#app.theme-dark .edge-real-tab{background:#30343b;color:#eef1f4}
+#app.theme-dark .explorer-command.real,#app.theme-dark .explorer-address.real,#app.theme-dark .tm-real-head{border-color:#41464e}
+#app.theme-dark .explorer-address.real .pathbar,#app.theme-dark .explorer-search.real,#app.theme-dark .edge-real-address,#app.theme-dark .settings-searchbox{background:#292c33;color:#f2f3f5;border-color:#454a52}
+#app.theme-dark .tm-real-nav button:hover,#app.theme-dark .tm-real-nav button.active{background:#383e47}
+#app.theme-dark .tm-summary-card{background:#292d34;border-color:#41464e}
+#app.theme-dark .tm-process-table td{border-color:#333840}
+#app.theme-dark .usage-cell{background:rgba(198,150,37,.12)}
+#app.theme-dark .usage-hi{background:rgba(198,112,37,.22)}
+#app.theme-dark .file-dialog-row{border-color:#3a3f46}
+@media(max-width:720px){
+  .explorer-real,.tm-real{grid-template-columns:1fr}.explorer-real aside,.tm-real-nav{display:none}
+  .explorer-tabs{height:35px}.explorer-tab{min-width:130px}
+  .explorer-command.real{overflow-x:auto;flex-wrap:nowrap}.explorer-command.real button span.cmd-label{display:none}
+  .explorer-address.real{flex-wrap:wrap}.explorer-search.real{width:100%;order:10}
+  .explorer-real .file-row{grid-template-columns:minmax(160px,1fr) 90px}.explorer-real .file-row>*:nth-child(n+3){display:none}
+  .edge-real-tab{min-width:105px}.edge-real-bar>button:nth-of-type(2){display:none}
+  .tm-real-head{padding:0 10px}.tm-real-head button span{display:none}
+  .tm-real-content{padding:0 5px 10px}.tm-process-table th:nth-child(4),.tm-process-table td:nth-child(4),.tm-process-table th:nth-child(5),.tm-process-table td:nth-child(5){display:none}
+  .settings-real-top{align-items:flex-start;flex-direction:column}.settings-searchbox{width:100%}
+}

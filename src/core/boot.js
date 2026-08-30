@@ -3,10 +3,10 @@
   const required = ["openApp","applyState","renderRecommended","buildExplorerV5","buildSettingsV5","buildServices","buildDiskManagement","buildPowerShell"];
   const missing = required.filter((name) => typeof globalThis[name] !== "function");
   globalThis.Win11SimDiagnostics = {
-    version: "6.2.0",
+    version: "6.3.0",
     run() {
       return {
-        version: "6.2.0",
+        version: "6.3.0",
         missingFunctions: required.filter((name) => typeof globalThis[name] !== "function"),
         windowCount: document.querySelectorAll(".window").length,
         currentDesktop: Number(state.currentDesktop) || 0,

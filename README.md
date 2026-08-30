@@ -47,3 +47,11 @@ Windows e Windows 11 sÃ£o marcas da Microsoft Corporation.
 ## V6.2 Realism Layer
 
 A V6.2 melhora Taskbar, Start, janelas, ícones, system tray, lock screen, menus e animações sem alterar o modelo de segurança do simulador.
+
+## V6.3 App Realism
+
+- Edge com vários separadores e Internet
+- Explorer com chrome, breadcrumbs e barra de estado mais realistas
+- Task Manager moderno com processos, desempenho, arranque, utilizadores, detalhes e serviços
+- Notepad com diálogos virtuais Abrir e Guardar como
+- Settings com identidade do dispositivo e pesquisa integrada
