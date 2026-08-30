@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.8 Settings, Personalization & Windows Security** — Personalização V2, Segurança do Windows V2, verificações virtuais, firewall e estado de proteção.
+**V7.8.1 Shell Icons Fix** — ícones SVG consistentes no Ambiente de Trabalho e botão de energia independente de fontes.
 
 ## Funcionalidades
 
@@ -326,3 +326,13 @@ Primeiro passo de integração com funções reais do dispositivo:
 - pontuação de saúde calculada a partir do estado do simulador
 - integração das deteções e alterações críticas com o Centro de Notificações V7.7
 - indicadores do browser como Secure Context, rede e IndexedDB identificados explicitamente como ambiente web
+
+## V7.8.1 Shell Icons Fix
+
+- substituição dos emoji do Ambiente de Trabalho por SVGs internos
+- ícones distintos para Este PC, Documentos, Edge, Reciclagem e Definições
+- ícones próprios para pastas, ficheiros de texto, imagens e multimédia
+- preservação de drag, posições persistentes, duplo clique e menu de contexto
+- botão de energia redesenhado em CSS sem depender do glifo Unicode U+23FB
+- aria-label no botão de energia
+- testes contra regressão para SVGs e menu de energia

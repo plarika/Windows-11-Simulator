@@ -492,18 +492,19 @@
   try{renderTaskView=renderTaskViewV750}catch{}
 
   function desktopItemList(){
+    const icon=kind=>globalThis.desktopIconSvg?globalThis.desktopIconSvg(kind):"";
     const system=[
-      {id:"system-thispc",label:"Este PC",icon:"🖥️",launch:()=>openApp("explorer","This PC"),system:true},
-      {id:"system-documents",label:"Documentos",icon:"📁",launch:()=>openApp("explorer","C:/Documents"),system:true},
-      {id:"system-edge",label:"Microsoft Edge",icon:"🌐",launch:()=>openApp("edge"),system:true},
-      {id:"system-recycle",label:"Reciclagem",icon:"🗑️",launch:()=>openApp("recycle"),system:true},
-      {id:"system-settings",label:"Definições",icon:"⚙️",launch:()=>openApp("settings"),system:true}
+      {id:"system-thispc",label:"Este PC",icon:icon("thispc"),launch:()=>openApp("explorer","This PC"),system:true},
+      {id:"system-documents",label:"Documentos",icon:icon("folder"),launch:()=>openApp("explorer","C:/Documents"),system:true},
+      {id:"system-edge",label:"Microsoft Edge",icon:icon("edge"),launch:()=>openApp("edge"),system:true},
+      {id:"system-recycle",label:"Reciclagem",icon:icon("recycle"),launch:()=>openApp("recycle"),system:true},
+      {id:"system-settings",label:"Definições",icon:icon("settings"),launch:()=>openApp("settings"),system:true}
     ];
     const folders=(globalThis.vfsImmediateFolders?globalThis.vfsImmediateFolders("C:/Desktop"):[])
-      .map(name=>({id:"folder:"+name,label:name,icon:"📁",name,type:"folder",launch:()=>openApp("explorer","C:/Desktop/"+name)}));
+      .map(name=>({id:"folder:"+name,label:name,icon:icon("folder"),name,type:"folder",launch:()=>openApp("explorer","C:/Desktop/"+name)}));
     const files=Object.entries(ensureFolder("C:/Desktop")).map(([name,value])=>({
       id:"file:"+name,label:name,
-      icon:/\.(png|jpe?g|webp|gif|bmp|svg)$/i.test(name)?"🖼️":/\.(mp3|wav|ogg|m4a|mp4|webm)$/i.test(name)?"🎵":"📄",
+      icon:/\.(png|jpe?g|webp|gif|bmp|svg)$/i.test(name)?icon("image"):/\.(mp3|wav|ogg|m4a|mp4|webm)$/i.test(name)?icon("media"):icon("text"),
       name,value,type:"file",launch:()=>openFile("C:/Desktop",name,value)
     }));
     return [...system,...folders,...files];
@@ -563,7 +564,7 @@
       const b=document.createElement("button");
       b.className="desktop-icon wm-desktop-icon";
       b.dataset.desktopItem=item.id;
-      b.innerHTML='<span class="icon">'+item.icon+'</span><span class="label">'+escapeHTML(item.label)+'</span>';
+      b.innerHTML='<span class="icon desktop-icon-art">'+item.icon+'</span><span class="label">'+escapeHTML(item.label)+'</span>';
       const pos=iconPosition(item,index);
       b.style.left=pos.x+"px";b.style.top=pos.y+"px";
       let down=null,moved=false,lastClick=0;
@@ -697,7 +698,7 @@
   populateDesktopV750();
 
   globalThis.Win11WindowManager=Object.freeze({
-    version:"7.8.0",
+    version:"7.8.1",
     layouts:LAYOUTS,
     applyLayoutSlot,
     restoreFloating,
@@ -713,7 +714,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"7.8.0",
+    version:"7.8.1",
     step:14,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

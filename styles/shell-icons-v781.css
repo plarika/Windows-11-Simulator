@@ -1,0 +1,71 @@
+/* Windows 11 Simulator V7.8.1 — Shell Icons Fix */
+.desktop-icon .desktop-icon-art,
+.desktop-v750 .wm-desktop-icon .desktop-icon-art{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center;
+  font-size:0!important;
+  line-height:1;
+  flex:none;
+}
+.desktop-icon .desktop-icon-art svg,
+.desktop-v750 .wm-desktop-icon .desktop-icon-art svg{
+  width:42px;
+  height:42px;
+  display:block;
+  overflow:visible;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.22));
+}
+.desktop-icon.selected .desktop-icon-art svg{
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.22)) brightness(1.08);
+}
+.desktop-icon:hover .desktop-icon-art svg{
+  transform:translateY(-1px);
+}
+.desktop-icon .desktop-icon-art svg{
+  transition:transform .08s ease,filter .08s ease;
+}
+.power-btn{
+  width:40px;
+  height:40px;
+  padding:0!important;
+  display:grid!important;
+  place-items:center;
+  color:inherit;
+}
+.power-symbol-v781{
+  position:relative;
+  width:18px;
+  height:18px;
+  display:block;
+  border:2px solid currentColor;
+  border-top-color:transparent;
+  border-radius:50%;
+}
+.power-symbol-v781::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-5px;
+  width:2px;
+  height:10px;
+  transform:translateX(-50%);
+  border-radius:2px;
+  background:currentColor;
+}
+.power-btn:hover .power-symbol-v781{
+  filter:drop-shadow(0 0 4px rgba(255,255,255,.24));
+}
+@media(max-width:720px){
+  .desktop-icon .desktop-icon-art,
+  .desktop-v750 .wm-desktop-icon .desktop-icon-art{
+    width:40px!important;
+    height:40px!important;
+  }
+  .desktop-icon .desktop-icon-art svg,
+  .desktop-v750 .wm-desktop-icon .desktop-icon-art svg{
+    width:40px;
+    height:40px;
+  }
+}
