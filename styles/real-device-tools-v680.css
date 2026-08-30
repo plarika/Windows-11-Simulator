@@ -1,0 +1,66 @@
+/* Windows 11 Simulator V6.8 — Real Device Tools */
+.real-device-badge{
+  display:inline-flex;align-items:center;justify-content:center;min-height:26px;
+  padding:4px 9px;border-radius:999px;background:#eef5fa;color:#4d6372;
+  font-size:10px;border:1px solid #dae5ec;white-space:nowrap
+}
+.real-device-note{font-size:11px;line-height:1.45;color:#6b7580}
+.real-soundrec{height:100%;overflow:auto;padding:16px}
+.real-soundrec-card{max-width:760px;margin:0 auto}
+.real-mic-button{border:0;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+.real-mic-button:hover{transform:scale(1.03)}
+.real-mic-button.recording{
+  animation:realMicPulse 1.2s ease-in-out infinite;
+  box-shadow:0 0 0 10px rgba(210,50,50,.11),0 8px 30px rgba(200,40,40,.22)
+}
+@keyframes realMicPulse{50%{transform:scale(1.07)}}
+.real-rec-time{font-size:30px;font-variant-numeric:tabular-nums;margin:10px 0 6px}
+.real-wave{min-height:74px}
+.real-rec-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.real-soundrec audio{width:min(620px,100%);margin:14px auto 0;display:block}
+.real-camera{height:100%;overflow:auto;background:#121820;color:#f6f8fa}
+.real-camera-shell{min-height:100%;padding:16px;display:flex;flex-direction:column}
+.real-camera .real-app-header small{color:#aeb7c0}
+.real-camera .real-device-badge{background:#27313d;color:#cfd8df;border-color:#394654}
+.real-camera-stage{
+  position:relative;flex:1;min-height:280px;display:grid;place-items:center;
+  overflow:hidden;border-radius:14px;background:#05070a;border:1px solid #2b343e
+}
+.real-camera-stage video{width:100%;height:100%;max-height:62vh;object-fit:contain;background:#000}
+.real-camera-placeholder{
+  position:absolute;inset:0;display:grid;place-items:center;align-content:center;
+  gap:10px;font-size:62px;color:#c2ccd5;background:radial-gradient(circle at center,#1c2630,#090d12)
+}
+.real-camera-placeholder span{font-size:13px;font-weight:400}
+.real-camera-placeholder[hidden]{display:none}
+.real-camera-actions{
+  display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0
+}
+.real-shutter{
+  width:58px;height:58px;border-radius:50%;border:4px solid #fff;background:#fff;
+  box-shadow:inset 0 0 0 4px #202932,0 3px 14px rgba(0,0,0,.3);cursor:pointer
+}
+.real-shutter:disabled{opacity:.35;cursor:default}
+.real-camera-last{
+  display:flex;align-items:center;gap:10px;min-height:0;margin-top:4px;
+  padding:0 4px;color:#c7d0d8;font-size:11px
+}
+.real-camera-last:empty{display:none}
+.real-camera-last img{width:58px;height:44px;object-fit:cover;border-radius:6px;border:1px solid #45515d}
+.real-snipping .snip-toolbar{gap:7px;flex-wrap:wrap}
+.real-snipping .real-device-badge{margin-left:auto}
+.real-device-settings{grid-column:1/-1}
+.real-device-settings-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+#app.theme-dark .real-device-badge{background:#313942;color:#d2d9df;border-color:#454f59}
+#app.theme-dark .real-device-note{color:#bcc4cc}
+@media(max-width:720px){
+  .real-soundrec{padding:10px}
+  .real-rec-actions{display:grid;grid-template-columns:1fr 1fr}
+  .real-rec-actions .sys-button:first-child{grid-column:1/-1}
+  .real-camera-shell{padding:10px}
+  .real-camera-stage{min-height:240px}
+  .real-camera-actions{gap:7px}
+  .real-camera-actions .sys-button{font-size:10px}
+  .real-snipping .snip-toolbar .real-device-badge{width:100%;margin:0}
+  .real-device-settings-actions{display:grid;grid-template-columns:1fr}
+}

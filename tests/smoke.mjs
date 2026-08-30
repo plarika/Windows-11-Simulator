@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=6.7.4"),
+  index.includes("./favicon.svg?v=6.8.0"),
   "Versioned favicon reference"
 );
 
@@ -109,8 +109,8 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=6.7.4"), "Real file bridge loaded");
-check(index.includes("./styles/real-files-v640.css?v=6.7.4"), "Real file bridge styles loaded");
+check(index.includes("./src/features/real-files-v640.js?v=6.8.0"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=6.8.0"), "Real file bridge styles loaded");
 
 
 
@@ -123,8 +123,8 @@ check(realClipboard.includes("Ler do dispositivo"), "Win+V real clipboard read c
 check(realClipboard.includes("Copiar para dispositivo"), "Win+V real clipboard write control present");
 check(realClipboard.includes("Copiar dispositivo"), "Notepad real clipboard copy control present");
 check(realClipboard.includes("Colar dispositivo"), "Notepad real clipboard paste control present");
-check(index.includes("./src/features/real-clipboard-v650.js?v=6.7.4"), "Real clipboard bridge loaded");
-check(index.includes("./styles/real-clipboard-v650.css?v=6.7.4"), "Real clipboard styles loaded");
+check(index.includes("./src/features/real-clipboard-v650.js?v=6.8.0"), "Real clipboard bridge loaded");
+check(index.includes("./styles/real-clipboard-v650.css?v=6.8.0"), "Real clipboard styles loaded");
 
 
 
@@ -137,16 +137,16 @@ check(realContent.includes("data-import-files"), "Explorer real import control p
 check(realContent.includes("data-export-file"), "Explorer real export control present");
 check(realContent.includes("Abrir imagem do dispositivo"), "Photos real image control present");
 check(realContent.includes("Abrir multimédia"), "Media Player real media control present");
-check(index.includes("./src/features/real-content-v660.js?v=6.7.4"), "Real content module loaded");
-check(index.includes("./styles/real-content-v660.css?v=6.7.4"), "Real content styles loaded");
+check(index.includes("./src/features/real-content-v660.js?v=6.8.0"), "Real content module loaded");
+check(index.includes("./styles/real-content-v660.css?v=6.8.0"), "Real content styles loaded");
 
 const realPlatform = readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8");
 check(realPlatform.includes("Notification.requestPermission"), "Real notification permission integration present");
 check(realPlatform.includes("new Notification"), "Real browser notification integration present");
 check(realPlatform.includes("serviceWorker.register"), "PWA service worker registration present");
 check(realPlatform.includes("beforeinstallprompt"), "PWA install prompt integration present");
-check(index.includes("./manifest.webmanifest?v=6.7.4"), "PWA manifest loaded");
-check(index.includes("./src/features/real-platform-v660.js?v=6.7.4"), "Real platform module loaded");
+check(index.includes("./manifest.webmanifest?v=6.8.0"), "PWA manifest loaded");
+check(index.includes("./src/features/real-platform-v660.js?v=6.8.0"), "Real platform module loaded");
 check(existsSync(resolve(root, "manifest.webmanifest")), "PWA manifest exists");
 check(existsSync(resolve(root, "service-worker.js")), "Service worker exists");
 check(existsSync(resolve(root, "icons/icon-192.png")), "PWA 192 icon exists");
@@ -174,12 +174,12 @@ check(sessions.includes("Terminar sessão"), "Sign out control present");
 check(sessions.includes("Mudar de utilizador"), "Switch user control present");
 check(sessions.includes("legacy-backup-v67"), "Legacy migration backup present");
 check(!/localStorage\.setItem\([^;]*secret/i.test(sessions), "Secrets are not stored directly");
-check(index.includes("./src/features/local-accounts-v670.js?v=6.7.4"), "Session module loaded");
-check(index.includes("./styles/local-accounts-v670.css?v=6.7.4"), "Session styles loaded");
+check(index.includes("./src/features/local-accounts-v670.js?v=6.8.0"), "Session module loaded");
+check(index.includes("./styles/local-accounts-v670.css?v=6.8.0"), "Session styles loaded");
 check(realContent.includes("ownerId:currentOwnerId()"), "IndexedDB blobs record ownerId");
 check(realContent.includes("claimLegacyBlobs"), "Legacy IndexedDB ownership migration present");
 check(realContent.includes("record.ownerId&&record.ownerId!==owner"), "IndexedDB owner isolation enforced");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=6.7.4"), "Session module precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=6.8.0"), "Session module precached by service worker");
 check(existsSync(resolve(root, "src/workers/auth-crypto-v673.js")), "Auth crypto worker exists");
 const authWorkerSource=readFileSync(resolve(root, "src/workers/auth-crypto-v673.js"), "utf8");
 const authWorkerCheck=spawnSync(process.execPath, ["--check", resolve(root, "src/workers/auth-crypto-v673.js")], {encoding:"utf8"});
@@ -189,7 +189,7 @@ check(sessions.includes("new Worker(AUTH_WORKER_URL)"), "Session login uses auth
 check(sessions.includes("const ITERATIONS=120000"), "New credentials use mobile-optimized PBKDF2 cost");
 check(sessions.includes("upgradeCredentialIfNeeded"), "Legacy credential upgrade present");
 check(sessions.includes("A verificar no dispositivo..."), "Slow auth progress state present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=6.7.4"), "Auth worker precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=6.8.0"), "Auth worker precached by service worker");
 
 const runtimeSource = readFileSync(resolve(root, "src/core/runtime.js"), "utf8");
 const bootSource = readFileSync(resolve(root, "src/core/boot.js"), "utf8");
@@ -209,6 +209,24 @@ check(index.includes('id="boot-status">A preparar sessão...</div>'), "Boot show
 const sessionCss=readFileSync(resolve(root, "styles/local-accounts-v670.css"), "utf8");
 check(sessionCss.includes("#lock.session-lock.hidden{display:none!important}"), "Session lock hidden CSS override present");
 check(readFileSync(resolve(root, "tools/browser_audit.mjs"), "utf8").includes('getComputedStyle(lock).display==="none"'), "Browser audit checks computed lock visibility");
+const realDevice=readFileSync(resolve(root, "src/features/real-device-tools-v680.js"), "utf8");
+check(realDevice.includes("navigator.mediaDevices.getUserMedia({audio:true,video:false})"), "Real microphone capture integration present");
+check(realDevice.includes("new MediaRecorder"), "MediaRecorder integration present");
+check(realDevice.includes("video:{facingMode:{ideal:facing}}"), "Real camera integration present");
+check(realDevice.includes("navigator.mediaDevices.getDisplayMedia"), "Real screen capture integration present");
+check(realDevice.includes("navigator.storage.persist()"), "Persistent storage integration present");
+check(realDevice.includes('navigator.wakeLock.request("screen")'), "Wake Lock integration present");
+check(realDevice.includes("document.documentElement.requestFullscreen"), "Fullscreen integration present");
+check(realDevice.includes("navigator.storage.estimate()"), "Real storage diagnostics present");
+check(realDevice.includes("navigator.hardwareConcurrency"), "Real CPU diagnostics present");
+check(realDevice.includes("navigator.deviceMemory"), "Real memory diagnostics present");
+check(realDevice.includes('RealContentBridge.importFileToVirtual(file,"C:/Music")'), "Recorder stores audio in user filesystem");
+check(realDevice.includes('RealContentBridge.importFileToVirtual(file,"C:/Pictures")'), "Camera and snipping store images in user filesystem");
+check(index.includes("./src/features/real-device-tools-v680.js?v=6.8.0"), "Real device tools module loaded");
+check(index.includes("./styles/real-device-tools-v680.css?v=6.8.0"), "Real device tools styles loaded");
+check(readFileSync(resolve(root, "src/core/runtime.js"), "utf8").includes('camera:{name:"Câmara"'), "Camera app registered");
+check(readFileSync(resolve(root, "src/apps/v5-runtime.js"), "utf8").includes('if(appId==="camera"){buildCamera(wrap);return wrap}'), "Camera renderer registered");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-tools-v680.js?v=6.8.0"), "Real device tools precached");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

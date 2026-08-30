@@ -471,7 +471,7 @@ function runVirtualCommand(raw,out){
   const cmd=raw.trim();if(!cmd)return;
   const q=document.createElement("div");q.className="term-line";q.textContent=`C:\\Users\\User>${cmd}`;out.appendChild(q);
   const [op,...args]=cmd.split(/\s+/);const command=(op||"").toLowerCase();let r="";
-  const launch={notepad:"notepad",calc:"calc",explorer:"explorer",taskmgr:"taskmanager",control:"controlpanel",regedit:"registry",devmgmt:"devicemanager",eventvwr:"eventviewer",mspaint:"paint",msedge:"edge",store:"store","ms-settings:":"settings"};
+  const launch={notepad:"notepad",calc:"calc",explorer:"explorer",taskmgr:"taskmanager",control:"controlpanel",regedit:"registry",devmgmt:"devicemanager",eventvwr:"eventviewer",mspaint:"paint",camera:"camera",soundrecorder:"soundrecorder",snippingtool:"snipping",msedge:"edge",store:"store","ms-settings:":"settings"};
   if(command==="start"&&args[0]){const target=launch[args[0].toLowerCase()]||args[0].toLowerCase();if(APPS[target]){openApp(target);r="Aplicação virtual iniciada."}else r="Aplicação virtual não encontrada."}
   else if(launch[command]){openApp(launch[command]);r="Aplicação virtual iniciada."}
   else switch(command){
@@ -497,7 +497,7 @@ function runVirtualCommand(raw,out){
 
 function executeRun(){
   const cmd=$("#run-input").value.trim().toLowerCase();
-  const map={notepad:"notepad",calc:"calc",calculator:"calc",explorer:"explorer",cmd:"terminal",terminal:"terminal",settings:"settings",taskmgr:"taskmanager",paint:"paint",mspaint:"paint",photos:"photos",edge:"edge",msedge:"edge",control:"controlpanel",regedit:"registry",devmgmt:"devicemanager",eventvwr:"eventviewer",security:"security",clock:"clock",snippingtool:"snipping",mediaplayer:"mediaplayer",store:"store"};
+  const map={notepad:"notepad",calc:"calc",calculator:"calc",explorer:"explorer",cmd:"terminal",terminal:"terminal",settings:"settings",taskmgr:"taskmanager",paint:"paint",mspaint:"paint",photos:"photos",camera:"camera",soundrecorder:"soundrecorder",edge:"edge",msedge:"edge",control:"controlpanel",regedit:"registry",devmgmt:"devicemanager",eventvwr:"eventviewer",security:"security",clock:"clock",snippingtool:"snipping",mediaplayer:"mediaplayer",store:"store"};
   if(map[cmd]){openApp(map[cmd]);closeRun();return}
   if(cmd==="winver"){showSystemDialog("Acerca do Windows",`<h2>Windows 11 Simulator V4</h2><p>Versão 24H2 virtual</p><p>Compilação ${escapeHTML(state.update.version)}</p><p>Executado integralmente no navegador.</p>`);closeRun();return}
   notify("Executar",`Não foi possível localizar "${cmd}".`);

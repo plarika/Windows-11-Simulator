@@ -477,7 +477,7 @@
   }
 
   globalThis.RealContentBridge=Object.freeze({
-    version:"6.7.4",
+    version:"6.8.0",
     putBlob,
     getRecord,
     deleteRecord,
@@ -649,7 +649,7 @@
   };
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"6.7.4",
+    version:"6.8.0",
     step:5,
     features:[
       "real-file-open","real-file-save","download-fallback",

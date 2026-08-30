@@ -4,7 +4,7 @@ function executeRun(){
   const cmd=$("#run-input").value.trim().toLowerCase();
   const map={
     notepad:"notepad",calc:"calc",calculator:"calc",explorer:"explorer",cmd:"terminal",terminal:"terminal",powershell:"powershell",
-    settings:"settings",taskmgr:"taskmanager",paint:"paint",mspaint:"paint",photos:"photos",edge:"edge",msedge:"edge",
+    settings:"settings",taskmgr:"taskmanager",paint:"paint",mspaint:"paint",photos:"photos",camera:"camera",soundrecorder:"soundrecorder",snippingtool:"snipping",edge:"edge",msedge:"edge",
     control:"controlpanel",regedit:"registry","regedit.exe":"registry","devmgmt.msc":"devicemanager",devmgmt:"devicemanager",
     "eventvwr.msc":"eventviewer",eventvwr:"eventviewer","services.msc":"services",services:"services",
     "diskmgmt.msc":"diskmgmt",diskmgmt:"diskmgmt","taskschd.msc":"taskscheduler",taskschd:"taskscheduler",
@@ -19,7 +19,7 @@ function executeRun(){
 function runVirtualCommand(raw,out){
   const cmd=raw.trim();if(!cmd)return;const q=document.createElement("div");q.className="term-line";q.textContent=`C:\\Users\\User>${cmd}`;out.appendChild(q);
   const parts=cmd.split(/\s+/),command=(parts.shift()||"").toLowerCase(),args=parts;let r="";
-  const launch={notepad:"notepad",calc:"calc",explorer:"explorer",taskmgr:"taskmanager",control:"controlpanel",regedit:"registry","devmgmt.msc":"devicemanager","eventvwr.msc":"eventviewer","services.msc":"services","diskmgmt.msc":"diskmgmt","taskschd.msc":"taskscheduler",msinfo32:"systeminfo",resmon:"resmon",powershell:"powershell",msedge:"edge",mstsc:"remotedesktop",optionalfeatures:"optionalfeatures"};
+  const launch={notepad:"notepad",calc:"calc",explorer:"explorer",taskmgr:"taskmanager",control:"controlpanel",regedit:"registry","devmgmt.msc":"devicemanager","eventvwr.msc":"eventviewer","services.msc":"services","diskmgmt.msc":"diskmgmt","taskschd.msc":"taskscheduler",msinfo32:"systeminfo",resmon:"resmon",powershell:"powershell",camera:"camera",soundrecorder:"soundrecorder",snippingtool:"snipping",msedge:"edge",mstsc:"remotedesktop",optionalfeatures:"optionalfeatures"};
   if(command==="start"&&args[0]){const x=launch[args[0].toLowerCase()]||args[0].toLowerCase();if(APPS[x]){openApp(x);r="Aplicação virtual iniciada."}else r="Aplicação não encontrada."}
   else if(launch[command]){openApp(launch[command]);r="Aplicação virtual iniciada."}
   else switch(command){

@@ -73,6 +73,7 @@ function renderApp(appId,win,initialPath){
   if(appId==="taskmanager"){renderTaskManager(wrap);return wrap}
   if(appId==="paint"){buildPaint(wrap);return wrap}
   if(appId==="photos"){buildPhotos(wrap);return wrap}
+  if(appId==="camera"){buildCamera(wrap);return wrap}
   if(appId==="security"){buildSecurity(wrap);return wrap}
   if(appId==="devicemanager"){buildDeviceManager(wrap);return wrap}
   if(appId==="registry"){buildRegistry(wrap);return wrap}

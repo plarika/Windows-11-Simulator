@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V6.7.4 Login Overlay Fix** — login bem-sucedido fecha corretamente o ecrã de autenticação no Android.
+**V6.8 Real Device Tools** — microfone, câmara, captura de ecrã, informações reais do dispositivo e armazenamento persistente.
 
 ## Funcionalidades
 
@@ -152,3 +152,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - após login válido o ecrã de autenticação fica realmente com display:none
 - auditoria passa a validar getComputedStyle em vez de apenas a classe hidden
 - cache PWA atualizada para 6.7.4
+
+## V6.8 Real Device Tools
+
+- Gravador de Som com microfone real e MediaRecorder
+- gravações guardadas no filesystem do perfil através do IndexedDB
+- Câmara real com preview, troca frontal/traseira e fotografia para Imagens
+- Ferramenta de Recorte com getDisplayMedia quando suportado
+- Informações do Sistema com dados reais expostos pelo navegador
+- armazenamento persistente via Storage API
+- Wake Lock opcional para manter o ecrã ativo
+- modo ecrã completo real
+- rede online/offline refletida através de eventos reais do browser
+- todas as permissões sensíveis continuam a exigir ação explícita do utilizador
