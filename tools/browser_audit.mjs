@@ -88,6 +88,8 @@ async function isolatedTargetUrls(){
 async function uiLogin(id,secret){
   await evaluate(`(()=>{const id=${JSON.stringify(id)};const b=document.querySelector('[data-account="'+id+'"]');if(!b)return false;b.click();return true})()`);
   await wait(80);
+  await evaluate(`Win11Experience?.revealSignIn?.(false);true`);
+  await wait(40);
   await evaluate(`(()=>{const i=document.querySelector("[data-login-secret]");const b=document.querySelector("[data-login]");if(!i||!b)return false;i.value=${JSON.stringify(secret)};b.click();return true})()`);
   return waitFor(async()=>await evaluate(`(()=>{const lock=document.querySelector("#lock");return Win11SessionManager?.activeUserId===${JSON.stringify(id)} && lock?.classList.contains("hidden") && getComputedStyle(lock).display==="none"})()`),12000,120);
 }
@@ -98,8 +100,9 @@ await send("Page.enable");
 await wait(250);
 
 await check("boot diagnostics",async()=>await evaluate(`typeof Win11SimDiagnostics==="object" && Win11SimDiagnostics.run().missingFunctions.length===0`));
-await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="7.9.0"`));
+await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="8.0.0"`));
 await check("first account setup visible",async()=>await evaluate(`!!document.querySelector("[data-new-user-name]") && !!document.querySelector("[data-create-user]")`));
+await check("first account setup bypasses lock staging",async()=>await evaluate(`!document.querySelector("#lock").classList.contains("lock-clock-stage-v800") && !document.querySelector("[data-hello-v800]")`));
 
 await evaluate(`(()=>{
   const n=document.querySelector("[data-new-user-name]");
@@ -191,7 +194,13 @@ await check("same-account BroadcastChannel probe",async()=>await evaluate(`(asyn
   return occupied;
 })()`));
 
-await evaluate(`Win11SessionManager.lock();true`);
+await evaluate(`Win11SessionManager.lock();true`); await wait(120);
+await check("V8 lock starts in clock stage",async()=>await evaluate(`(()=>{const lock=document.querySelector("#lock");return Win11SessionManager.isLocked && lock.classList.contains("lock-clock-stage-v800") && !!lock.querySelector("[data-lock-hint-v800]") && !!lock.querySelector("[data-lock-status-v800]")})()`));
+await check("V8 lock keeps credential hidden visually",async()=>await evaluate(`document.querySelector("#lock .session-auth-host")?.getAttribute("aria-hidden")==="true" && !!document.querySelector("[data-login-secret]")`));
+await evaluate(`Win11Experience.revealSignIn();true`); await wait(100);
+await check("V8 reveal shows authentication stage",async()=>await evaluate(`document.querySelector("#lock").classList.contains("lock-auth-stage-v800") && document.querySelector("#lock .session-auth-host")?.getAttribute("aria-hidden")==="false"`));
+await check("Windows Hello visual present",async()=>await evaluate(`!!document.querySelector("[data-hello-v800]") && document.querySelector("[data-hello-v800]")?.textContent.includes("Windows Hello")`));
+await check("Sign-in options disclose visual-only biometrics",async()=>await evaluate(`(()=>{document.querySelector("[data-signin-options-v800]")?.click();const p=document.querySelector("[data-signin-options-panel-v800]");return !!p&&!p.hidden&&p.textContent.includes("sem acesso biométrico")})()`));
 await check("lock requires credential",async()=>await evaluate(`(()=>{const lock=document.querySelector("#lock");return Win11SessionManager.isLocked && !lock?.classList.contains("hidden") && getComputedStyle(lock).display!=="none" && !!document.querySelector("[data-login-secret]")})()`));
 await check("unlock current account",async()=>await uiLogin(user1Id,"2468"));
 
@@ -203,7 +212,7 @@ await check("Explorer status",async()=>await evaluate(`!!document.querySelector(
 await evaluate(`document.querySelector('.window[data-app="explorer"] .file,.window[data-app="explorer"] .file-row:not(.header)')?.click();true`);
 await wait(120);
 await check("Explorer selected count",async()=>await evaluate(`document.querySelector('.window[data-app="explorer"] .explorer-status')?.textContent.includes("selecionado")`));
-await check("Explorer Pro bridge",async()=>await evaluate(`Win11ExplorerPro?.version==="7.9.0"`));
+await check("Explorer Pro bridge",async()=>await evaluate(`Win11ExplorerPro?.version==="8.0.0"`));
 await evaluate(`(()=>{
   const root="C:/Documents/V74Audit";
   ensureFolder(root)["alpha.txt"]="A";
@@ -242,7 +251,7 @@ await check("Explorer folder restore",async()=>await evaluate(`Win11ExplorerPro.
 await evaluate(`ensureFolder("C:/Documents/V74Audit")["DeleteMe.txt"]="delete";true`);
 await check("Explorer permanent delete",async()=>await evaluate(`(async()=>await Win11ExplorerPro.permanentlyDeleteVirtual("C:/Documents/V74Audit","DeleteMe.txt","file") && !("DeleteMe.txt" in ensureFolder("C:/Documents/V74Audit")))()`));
 await evaluate(`(async()=>{const root="C:/Documents/V74Audit";try{await RealContentBridge.cleanupVirtualFolder(root)}catch{}Object.keys(state.files).filter(p=>p===root||p.startsWith(root+"/")).sort((a,b)=>b.length-a.length).forEach(p=>delete state.files[p]);state.fileClipboardV74=null;saveState();const w=document.querySelector('.window[data-app="explorer"]');w.dispatchEvent(new CustomEvent("navigate",{detail:"C:/Documents"}));return true})()`); await wait(180);
-await check("Window Manager V7.5 bridge",async()=>await evaluate(`Win11WindowManager?.version==="7.9.0" && Object.keys(Win11WindowManager.layouts||{}).length===6`));
+await check("Window Manager V7.5 bridge",async()=>await evaluate(`Win11WindowManager?.version==="8.0.0" && Object.keys(Win11WindowManager.layouts||{}).length===6`));
 await check("Window Manager decorates existing window",async()=>await evaluate(`(()=>{const w=document.querySelector('.window[data-app="explorer"]');return w?.dataset.wmV750==="1"&&w.querySelectorAll(".wm-layout-choice").length===6})()`));
 await evaluate(`openApp("notepad");openApp("calc");true`); await wait(220);
 await evaluate(`(()=>{const ex=document.querySelector('.window[data-app="explorer"]'),np=document.querySelector('.window[data-app="notepad"]');Win11WindowManager.applyLayoutSlot(ex,"halves",0,{assist:false});Win11WindowManager.applyLayoutSlot(np,"halves",1,{assist:false});return true})()`); await wait(100);
@@ -271,7 +280,7 @@ await check("Move window between virtual desktops",async()=>await evaluate(`Numb
 await evaluate(`Win11WindowManager.closeDesktop(Number(state.currentDesktop));document.querySelector("#task-view").classList.remove("open");true`); await wait(100);
 await check("Virtual desktop close restores count",async()=>await evaluate(`state.desktops.length===__v75DesktopCount && Number(state.currentDesktop)<state.desktops.length`));
 await evaluate(`(()=>{const ex=document.querySelector('.window[data-app="explorer"]'),np=document.querySelector('.window[data-app="notepad"]'),calc=document.querySelector('.window[data-app="calc"]');Win11WindowManager.restoreFloating(ex);if(np)closeWindow(np);if(calc)closeWindow(calc);delete ensureFolder("C:/Desktop")["V75 Desktop Audit.txt"];delete state.windowManagerV75.desktopIconPositions["file:V75 Desktop Audit.txt"];saveState();Win11WindowManager.populateDesktop();return true})()`); await wait(100);
-await check("Desktop integration bridge",async()=>await evaluate(`typeof Win11DesktopIntegration==="object" && Win11DesktopIntegration.version==="7.9.0"`));
+await check("Desktop integration bridge",async()=>await evaluate(`typeof Win11DesktopIntegration==="object" && Win11DesktopIntegration.version==="8.0.0"`));
 await check("Default file associations",async()=>await evaluate(`Win11DesktopIntegration.defaultAppFor("teste.txt")==="notepad" && Win11DesktopIntegration.defaultAppFor("imagem.png")==="photos"`));
 await check("Image has multiple Open With apps",async()=>await evaluate(`(()=>{const ids=Win11DesktopIntegration.candidateApps("imagem.png").map(a=>a.id);return ids.includes("photos")&&ids.includes("paint")})()`));
 await evaluate(`(()=>{const c=document.createElement("canvas");c.width=16;c.height=16;const x=c.getContext("2d");x.fillStyle="#3366cc";x.fillRect(0,0,16,16);ensureFolder("C:/Pictures")["V7Audit.png"]=c.toDataURL("image/png");Win11DesktopIntegration.setDefaultApp(".png","paint");return true})()`);
@@ -288,7 +297,7 @@ await check("Real print path for text file",async()=>await evaluate(`(async()=>a
 await evaluate(`delete ensureFolder("C:/Pictures")["V7Audit.png"];delete ensureFolder("C:/Documents")["ShareV7.txt"];Win11DesktopIntegration.setDefaultApp(".png","paint");saveState();true`);
 await check("Quick Settings V7.9 replaces legacy tiles",async()=>await evaluate(`document.querySelector("#quick-panel")?.classList.contains("quick-panel-v79") && document.querySelectorAll("#quick-panel [data-quick-v79]").length===6 && !document.querySelector('#quick-panel [data-quick="wifi"]') && !document.querySelector("#quick-panel [data-real-network]")`));
 await check("System Tray V7.9 reflects navigator network",async()=>await evaluate(`(()=>{const t=document.querySelector("#quick-btn .tray-network-v79");return !!t && (navigator.onLine?!t.classList.contains("offline"):t.classList.contains("offline"))})()`));
-await check("System Tray V7.9 bridge",async()=>await evaluate(`Win11SystemTray?.version==="7.9.0" && typeof Win11SystemTray.refresh==="function" && typeof Win11SystemTray.toggleOverflow==="function"`));
+await check("System Tray V7.9 bridge",async()=>await evaluate(`Win11SystemTray?.version==="8.0.0" && typeof Win11SystemTray.refresh==="function" && typeof Win11SystemTray.toggleOverflow==="function"`));
 await check("System Tray cluster uses stable SVG icons",async()=>await evaluate(`(()=>{const q=document.querySelector("#quick-btn");return q?.getAttribute("aria-label")==="Rede, volume e bateria"&&q.querySelectorAll(".tray-svg-v79").length>=2&&!/[📶🔊🔔]/u.test(q.textContent)})()`));
 await check("Legacy device tray button hidden",async()=>await evaluate(`document.querySelector("#device-center-btn")?.hidden===true`));
 await check("Quick Settings V7.9 status cards",async()=>await evaluate(`document.querySelectorAll("#quick-panel .quick-status-v79 > button").length===2 && !!document.querySelector("#quick-panel [data-network-detail-v79]") && !!document.querySelector("#quick-panel [data-battery-detail-v79]")`));
@@ -339,12 +348,12 @@ await check("Edge multi tab",async()=>await evaluate(`document.querySelectorAll(
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="wikipedia.org";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`);
 await wait(180);
 await check("Edge URL normalization",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-tab-frame')?.src.startsWith("https://wikipedia.org")`));
-await check("Edge Internet bridge",async()=>await evaluate(`Win11EdgeInternet?.version==="7.9.0"`));
+await check("Edge Internet bridge",async()=>await evaluate(`Win11EdgeInternet?.version==="8.0.0"`));
 await evaluate(`document.querySelector('.window[data-app="edge"] [data-home]').click();true`); await wait(100);
 await check("Edge Web shortcuts",async()=>await evaluate(`document.querySelectorAll('.window[data-app="edge"] [data-edge-shortcut]').length===4`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="google.com";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(160);
 await check("Edge Google home iframe",async()=>await evaluate(`(()=>{const f=document.querySelector('.window[data-app="edge"] .edge-tab-frame');return !!f && f.src.includes("google.com/webhp") && f.src.includes("igu=1")})()`));
-await check("Edge Google cross-origin iframe target",async()=>await waitFor(async()=>{const urls=await isolatedTargetUrls();return urls.some(u=>u.includes("google.com/webhp")&&u.includes("igu=1"))},6000,180));
+await check("Edge Google cross-origin iframe target",async()=>await waitFor(async()=>{const urls=await isolatedTargetUrls();return urls.some(u=>u.includes("google.com/webhp")&&u.includes("igu=1"))},12000,200));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="Windows 11";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(160);
 await check("Edge Google search",async()=>await evaluate(`(()=>{const f=document.querySelector('.window[data-app="edge"] .edge-tab-frame');return !!f && f.src.includes("google.com/search") && f.src.includes("igu=1") && f.src.includes("Windows")})()`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="youtube.com";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(120);
@@ -361,7 +370,7 @@ await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .
 await check("Edge YouTube playlist player",async()=>await evaluate(`document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("youtube.com/embed/videoseries") && document.querySelector('.window[data-app="edge"] .edge-youtube-frame')?.src.includes("PLC77007E23FF423C6")`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="https://x.com/";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(100);
 await check("Edge blocked-site compatibility page",async()=>await evaluate(`!!document.querySelector('.window[data-app="edge"] .edge-compat-page [data-compat-open]')`));
-await check("Edge Advanced bridge",async()=>await evaluate(`Win11EdgeAdvanced?.version==="7.9.0"`));
+await check("Edge Advanced bridge",async()=>await evaluate(`Win11EdgeAdvanced?.version==="8.0.0"`));
 await evaluate(`(()=>{const w=document.querySelector('.window[data-app="edge"]');focusWindow(w);w.querySelector("[data-favorite]").click();return true})()`); await wait(80);
 await check("Edge favorite stored",async()=>await evaluate(`state.edgeBrowser?.favorites?.some(f=>f.url==="https://x.com/") && document.querySelectorAll('.window[data-app="edge"] .edge-favorite-chip').length>=1`));
 await evaluate(`(()=>{const a=document.querySelector('.window[data-app="edge"] .edge-real-address');a.value="edge://favorites";document.querySelector('.window[data-app="edge"] [data-go]').click();return true})()`); await wait(90);
@@ -420,7 +429,7 @@ await check("Settings Default Apps UI",async()=>await evaluate(`!!document.query
 await evaluate(`(()=>{state.settingsPage="network";const w=document.querySelector('.window[data-app="settings"]');if(w){w.querySelector(".win-body").innerHTML="";w.querySelector(".win-body").appendChild(renderApp("settings",w));}return true})()`); await wait(140);
 await check("Settings real network disclosure",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-real-network-card]') && document.querySelector('.window[data-app="settings"] [data-real-network-card]')?.textContent.includes("redes Wi‑Fi listadas abaixo pertencem à simulação")`));
 
-await check("Personalization V7.8 bridge",async()=>await evaluate(`Win11Personalization?.version==="7.9.0" && Win11Personalization.wallpaperCount===8 && Win11Personalization.accents.length===8`));
+await check("Personalization V7.8 bridge",async()=>await evaluate(`Win11Personalization?.version==="8.0.0" && Win11Personalization.wallpaperCount===8 && Win11Personalization.accents.length===8`));
 await evaluate(`(()=>{globalThis.__personalV78Before=Win11Personalization.state;state.settingsPage="personalization";const w=document.querySelector('.window[data-app="settings"]');if(w){w.querySelector(".win-body").innerHTML="";w.querySelector(".win-body").appendChild(renderApp("settings",w));}return true})()`); await wait(120);
 await check("Personalization V7.8 settings UI",async()=>await evaluate(`document.querySelectorAll('.window[data-app="settings"] [data-theme-mode]').length===3 && document.querySelectorAll('.window[data-app="settings"] [data-accent]').length===8 && document.querySelectorAll('.window[data-app="settings"] [data-wallpaper-v78]').length===8`));
 await check("System theme preference",async()=>await evaluate(`Win11Personalization.set("themeMode","system") && state.personalizationV78.themeMode==="system"`));
@@ -434,7 +443,7 @@ await evaluate(`(()=>{const p=__personalV78Before;for(const k of ["themeMode","a
 await evaluate(`(()=>{state.settingsPage="privacy";const w=document.querySelector('.window[data-app="settings"]');if(w){w.querySelector(".win-body").innerHTML="";w.querySelector(".win-body").appendChild(renderApp("settings",w));}return true})()`); await wait(100);
 await check("Privacy Security V7.8 settings UI",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-open-security-v78]') && document.querySelector('.window[data-app="settings"] [data-open-security-v78]')?.textContent.includes("não ao Windows anfitrião")`));
 
-await check("Security Center V7.8 bridge",async()=>await evaluate(`Win11SecurityCenter?.version==="7.9.0" && typeof Win11SecurityCenter.runScan==="function" && typeof Win11SecurityCenter.healthScore==="function"`));
+await check("Security Center V7.8 bridge",async()=>await evaluate(`Win11SecurityCenter?.version==="8.0.0" && typeof Win11SecurityCenter.runScan==="function" && typeof Win11SecurityCenter.healthScore==="function"`));
 await evaluate(`openApp("security");true`); await wait(140);
 await check("Windows Security V7.8 shell",async()=>await evaluate(`document.querySelectorAll('.window[data-app="security"] .security-nav-v78 [data-security-page]').length===8 && !!document.querySelector('.window[data-app="security"] .security-health-score-v78')`));
 await check("Security health score baseline",async()=>await evaluate(`Win11SecurityCenter.healthScore()===100`));
@@ -458,12 +467,12 @@ await wait(120);
 await check("Save extension .txt",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(state.files["C:/Documents"],"AuditFile.txt")`));
 await evaluate(`delete state.files["C:/Documents"]["AuditFile.txt"];saveState();true`);
 
-await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="7.9.0"`));
+await check("Real file bridge available",async()=>await evaluate(`typeof RealFileBridge==="object" && RealFileBridge.version==="8.0.0"`));
 await check("Notepad real file controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-open-device]') && !!document.querySelector('.window[data-app="notepad"] [data-save-device]')`));
 await check("Real file handle write path",async()=>await evaluate(`(async()=>{const test={text:null,closed:false};const handle={name:"audit.txt",async createWritable(){return {async write(v){test.text=v},async close(){test.closed=true}}}};await RealFileBridge.writeHandle(handle,"conteúdo real");return test.text==="conteúdo real"&&test.closed})()`));
-await check("Real functions System Tray marker",async()=>await evaluate(`Win11RealFunctions?.step===18 && Win11RealFunctions.features.includes("notification-center-v2") && Win11RealFunctions.features.includes("security-center-v2") && Win11RealFunctions.features.includes("system-tray-v2") && Win11RealFunctions.features.includes("quick-settings-v2") && Win11RealFunctions.features.includes("real-network-tray-state") && Win11RealFunctions.features.includes("privacy-media-indicator")`));
+await check("Real functions Windows Experience marker",async()=>await evaluate(`Win11RealFunctions?.step===19 && Win11RealFunctions.features.includes("system-tray-v2") && Win11RealFunctions.features.includes("windows-experience-v8") && Win11RealFunctions.features.includes("two-stage-lock-screen") && Win11RealFunctions.features.includes("windows-hello-visual") && Win11RealFunctions.features.includes("pwa-update-coordinator") && Win11RealFunctions.features.includes("bfcache-session-recovery")`));
 
-await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="7.9.0"`));
+await check("Real clipboard bridge available",async()=>await evaluate(`typeof RealClipboardBridge==="object" && RealClipboardBridge.version==="8.0.0"`));
 await check("Notepad real clipboard controls",async()=>await evaluate(`!!document.querySelector('.window[data-app="notepad"] [data-copy-device]') && !!document.querySelector('.window[data-app="notepad"] [data-paste-device]')`));
 await evaluate(`closeOverlays();toggleOverlay("clipboard");renderClipboard();true`);
 await wait(120);
@@ -471,7 +480,7 @@ await check("Win+V real clipboard controls",async()=>await evaluate(`!!document.
 await check("Manual paste fallback",async()=>await evaluate(`(async()=>{const p=RealClipboardBridge.manualPasteDialog();await new Promise(r=>setTimeout(r,30));const box=document.querySelector("[data-real-paste-box]");if(!box)return false;box.value="clipboard audit";document.querySelector("#system-dialog-ok").click();return (await p)==="clipboard audit"})()`));
 await evaluate(`closeOverlays();true`);
 
-await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="7.9.0"`));
+await check("Real content bridge available",async()=>await evaluate(`typeof RealContentBridge==="object" && RealContentBridge.version==="8.0.0"`));
 await check("IndexedDB import and cleanup",async()=>await evaluate(`(async()=>{const imported=await RealContentBridge.importFileToVirtual(new File(["conteúdo indexeddb"],"browser-audit-real.txt",{type:"text/plain"}),"C:/Documents");const rec=await RealContentBridge.getRecord(imported.ref);const ok=rec&&await rec.blob.text()==="conteúdo indexeddb"&&rec.ownerId===Win11SessionManager.activeUserId;delete state.files["C:/Documents"][imported.name];saveState();await RealContentBridge.cleanupVirtualValue(imported.ref);const gone=!(await RealContentBridge.getRecord(imported.ref));return !!ok&&gone})()`));
 await check("Real folder import preserves subfolders",async()=>await evaluate(`(async()=>{const f=new File(["subfile"],"one.txt",{type:"text/plain"});Object.defineProperty(f,"_relativePath",{value:"Sub/one.txt"});const result=await RealContentBridge.importDirectoryToVirtual({name:"AuditFolder",files:[f]},"C:/Downloads");const ref=state.files[result.root+"/Sub"]?.["one.txt"];const ok=!!ref?.__realBlobId;await RealContentBridge.cleanupVirtualFolder(result.root);Object.keys(state.files).filter(p=>p===result.root||p.startsWith(result.root+"/")).forEach(p=>delete state.files[p]);saveState();return ok})()`));
 await evaluate(`openApp("explorer","C:/Documents");true`); await wait(180);
@@ -485,20 +494,29 @@ await evaluate(`globalThis.RealMediaPending={name:"audit.wav",blob:new Blob([new
 await wait(160);
 await check("Media Player real media",async()=>await evaluate(`!!document.querySelector('.window[data-app="mediaplayer"] [data-open-media]') && !!document.querySelector('.window[data-app="mediaplayer"] audio')`));
 
-await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="7.9.0"`));
+await check("Real platform bridge available",async()=>await evaluate(`typeof RealPlatformBridge==="object" && RealPlatformBridge.version==="8.0.0"`));
 await evaluate(`renderNotifications();true`);
 await wait(80);
 await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notify-strip-v77 [data-real-notify]") && typeof RealPlatformBridge?.requestNotificationPermission==="function"`));
 await check("PWA manifest link",async()=>await evaluate(`document.querySelector('link[rel="manifest"]')?.getAttribute("href").includes("manifest.webmanifest")`));
 await check("PWA service worker registration",async()=>await evaluate(`(async()=>{if(!("serviceWorker" in navigator))return false;for(let i=0;i<20;i++){const r=await navigator.serviceWorker.getRegistration();if(r)return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
-await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v7.9.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v8.0.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
 await evaluate(`(()=>{state.settingsPage="system";const settingsWin=document.querySelector('.window[data-app="settings"]');if(settingsWin){settingsWin.querySelector(".win-body").innerHTML="";settingsWin.querySelector(".win-body").appendChild(renderApp("settings",settingsWin));}return true})()`);
 await wait(140);
 await check("PWA settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-pwa-card] [data-install-pwa]')`));
-await check("Real device bridge available",async()=>await evaluate(`typeof RealDeviceBridge==="object" && RealDeviceBridge.version==="7.9.0"`));
+await check("Windows Experience V8.0 bridge",async()=>await evaluate(`Win11Experience?.version==="8.0.0" && typeof Win11Experience.revealSignIn==="function" && typeof Win11Experience.recoverShell==="function"`));
+await check("Update Coordinator V8.0 bridge",async()=>await evaluate(`Win11UpdateCoordinator?.version==="8.0.0" && typeof Win11UpdateCoordinator.checkForUpdate==="function" && typeof Win11UpdateCoordinator.activateUpdate==="function"`));
+await check("Windows Update V8.0 settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-update-card-v800] [data-check-update-v800]')`));
+await evaluate(`Win11UpdateCoordinator.showPrompt();true`); await wait(70);
+await check("V8 update banner opens",async()=>await evaluate(`document.querySelector("#update-banner-v800")?.classList.contains("open") && document.querySelector("#update-banner-v800")?.textContent.includes("Nova versão disponível") && !!document.querySelector("#update-banner-v800 [data-update-now-v800]")`));
+await evaluate(`document.querySelector("#update-banner-v800 [data-update-later-v800]")?.click();true`); await wait(50);
+await check("V8 update banner can defer",async()=>await evaluate(`!document.querySelector("#update-banner-v800")?.classList.contains("open")`));
+await check("V8 update check is callable",async()=>await evaluate(`(async()=>{const r=await Win11UpdateCoordinator.checkForUpdate();return r&&r.supported===true&&["checking","current","available","error"].includes(Win11UpdateCoordinator.state)})()`));
+await check("V8 shell recovery callable",async()=>await evaluate(`Win11Experience.recoverShell()===true`));
+await check("Real device bridge available",async()=>await evaluate(`typeof RealDeviceBridge==="object" && RealDeviceBridge.version==="8.0.0"`));
 await check("Real device diagnostics",async()=>await evaluate(`(async()=>{const i=await RealDeviceBridge.getDeviceInfo();return typeof i.online==="boolean"&&i.storage&&typeof i.secureContext==="boolean"})()`));
 await check("Real device settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-real-device-settings]') && !!document.querySelector('.window[data-app="settings"] [data-persist-storage]') && !!document.querySelector('.window[data-app="settings"] [data-wake-lock]')`));
-await check("Device Center bridge available",async()=>await evaluate(`Win11DeviceCenter?.version==="7.9.0" && typeof Win11DeviceCenter.collectSnapshot==="function" && typeof Win11DeviceCenter.buildReport==="function"`));
+await check("Device Center bridge available",async()=>await evaluate(`Win11DeviceCenter?.version==="8.0.0" && typeof Win11DeviceCenter.collectSnapshot==="function" && typeof Win11DeviceCenter.buildReport==="function"`));
 await check("Device Center snapshot shape",async()=>await evaluate(`(async()=>{const s=await Win11DeviceCenter.collectSnapshot();globalThis.__device760=s;return typeof s.online==="boolean"&&!!s.hardware&&!!s.screen&&!!s.storage&&!!s.capabilities&&Array.isArray(s.permissions)&&s.permissions.length===6})()`));
 await check("Device Center permission states",async()=>await evaluate(`__device760.permissions.every(p=>["granted","denied","prompt","unsupported","unknown"].includes(p.state))`));
 await check("Device Center storage shape",async()=>await evaluate(`Object.prototype.hasOwnProperty.call(__device760.storage,"usage")&&Object.prototype.hasOwnProperty.call(__device760.storage,"quota")&&Object.prototype.hasOwnProperty.call(__device760.storage,"persisted")`));
@@ -510,13 +528,13 @@ await check("Device Center panel opens",async()=>await evaluate(`document.queryS
 await check("Device Center capability matrix",async()=>await evaluate(`document.querySelectorAll("#device-center-v760 .device-cap").length>=10`));
 await check("Device Center permission UI",async()=>await evaluate(`document.querySelectorAll("#device-center-v760 .device-permission-row").length===6 && document.querySelectorAll("#device-center-v760 [data-request-permission]").length===4`));
 await check("Device Center control actions",async()=>await evaluate(`!!document.querySelector("#device-center-v760 [data-persist]") && !!document.querySelector("#device-center-v760 [data-wake]") && !!document.querySelector("#device-center-v760 [data-fullscreen]")`));
-await check("Device diagnostic report sanitized",async()=>await evaluate(`(async()=>{const r=await Win11DeviceCenter.buildReport();const text=JSON.stringify(r).toLowerCase();return r.schema==="win11-simulator-device-report-v1"&&r.version==="7.9.0"&&!text.includes("latitude")&&!text.includes("longitude")&&!text.includes("clipboardtext")&&!text.includes("clipboardcontent")&&!text.includes("password")&&!text.includes("credential")&&!text.includes("\\"pin\\"")})()`));
+await check("Device diagnostic report sanitized",async()=>await evaluate(`(async()=>{const r=await Win11DeviceCenter.buildReport();const text=JSON.stringify(r).toLowerCase();return r.schema==="win11-simulator-device-report-v1"&&r.version==="8.0.0"&&!text.includes("latitude")&&!text.includes("longitude")&&!text.includes("clipboardtext")&&!text.includes("clipboardcontent")&&!text.includes("password")&&!text.includes("credential")&&!text.includes("\\"pin\\"")})()`));
 await evaluate(`Win11DeviceCenter.close();openApp("systeminfo");true`); await wait(180);
 await check("System Information V7.6 diagnostic tab",async()=>await evaluate(`!!document.querySelector('.window[data-app="systeminfo"] [data-device-center-info-v760]')`));
 await evaluate(`document.querySelector('.window[data-app="systeminfo"] [data-device-center-info-v760]')?.click();true`); await wait(220);
 await check("System Information V7.6 diagnostic content",async()=>await evaluate(`document.querySelector('.window[data-app="systeminfo"] .info-main')?.textContent.includes("Diagnóstico V7.6") && !!document.querySelector('.window[data-app="systeminfo"] .device-systeminfo-summary')`));
 await evaluate(`(()=>{const w=document.querySelector('.window[data-app="systeminfo"]');if(w)closeWindow(w);return true})()`); await wait(60);
-await check("Notification Center V7.7 bridge",async()=>await evaluate(`Win11NotificationCenter?.version==="7.9.0" && Win11BackgroundEngine?.version==="7.9.0"`));
+await check("Notification Center V7.7 bridge",async()=>await evaluate(`Win11NotificationCenter?.version==="8.0.0" && Win11BackgroundEngine?.version==="8.0.0"`));
 await evaluate(`(()=>{Win11NotificationCenter.setFocusMode("off");state.notificationCenterV77.quietUntil=0;state.notifications=state.notifications.filter(n=>!String(n.source||"").startsWith("Audit V77"));saveState();renderNotifications();return true})()`);
 await evaluate(`(()=>{globalThis.__auditNotifId=Win11NotificationCenter.push("Audit V77","Notificação rica de teste",{source:"Audit V77",appId:"notepad",priority:"high",real:false,actions:[{label:"Abrir Bloco de Notas",type:"open-app",appId:"notepad"}]});return true})()`); await wait(80);
 await check("Rich notification stored",async()=>await evaluate(`(()=>{const n=Win11NotificationCenter.active().find(x=>x.id===__auditNotifId);return !!n&&n.source==="Audit V77"&&n.priority==="high"&&n.actions?.length===1&&!n.read})()`));

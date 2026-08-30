@@ -2,6 +2,7 @@
 /* Windows 11 Simulator V6.6 — Real Notifications + PWA */
 (function installRealPlatformV660(){
   let installPrompt=null;
+  let swRegistration=null;
   const notificationSupported="Notification" in window;
 
   async function requestNotificationPermission(){
@@ -82,7 +83,8 @@
   async function registerServiceWorker(){
     if(!("serviceWorker" in navigator))return {supported:false};
     try{
-      const registration=await navigator.serviceWorker.register("./service-worker.js?v=6.6.0",{scope:"./"});
+      const registration=await navigator.serviceWorker.register("./service-worker.js?v=8.0.0",{scope:"./"});
+      swRegistration=registration;
       return {supported:true,registration};
     }catch(err){
       console.warn("[PWA] Service worker registration failed",err);
@@ -138,12 +140,13 @@
   registerServiceWorker();
 
   globalThis.RealPlatformBridge=Object.freeze({
-    version:"7.9.0",
+    version:"8.0.0",
     notificationSupported,
     requestNotificationPermission,
     sendRealNotification,
     installApp,
     registerServiceWorker,
+    get registration(){return swRegistration},
     get installAvailable(){return Boolean(installPrompt)}
   });
 })();

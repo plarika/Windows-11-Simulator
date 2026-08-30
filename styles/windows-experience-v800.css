@@ -1,0 +1,328 @@
+/* Windows 11 Simulator V8.0 — Windows Experience & Reliability */
+#lock.lock-v800{
+  overflow:hidden;
+}
+#lock.lock-v800 .session-lock-clock{
+  transition:transform .35s ease,opacity .28s ease;
+}
+#lock.lock-v800 .session-auth-host{
+  transition:transform .36s cubic-bezier(.2,.8,.2,1),opacity .28s ease;
+}
+#lock.lock-clock-stage-v800 .session-lock-clock{
+  transform:translateY(10vh) scale(1.06);
+}
+#lock.lock-clock-stage-v800 .session-auth-host{
+  opacity:0;
+  transform:translateY(42px) scale(.98);
+  pointer-events:none;
+}
+#lock.lock-auth-stage-v800 .session-lock-clock{
+  transform:translateY(-16px) scale(.86);
+  opacity:.72;
+}
+#lock.lock-auth-stage-v800 .session-auth-host{
+  opacity:1;
+  transform:none;
+}
+.lock-hint-v800{
+  position:absolute;
+  left:50%;
+  bottom:54px;
+  transform:translateX(-50%);
+  font-size:11px;
+  color:rgba(255,255,255,.88);
+  text-shadow:0 2px 10px rgba(0,0,0,.4);
+  transition:opacity .2s ease,transform .2s ease;
+  pointer-events:none;
+}
+#lock.lock-auth-stage-v800 .lock-hint-v800{
+  opacity:0;
+  transform:translate(-50%,12px);
+}
+.lock-status-v800{
+  position:absolute;
+  right:24px;
+  bottom:25px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  z-index:3;
+}
+.lock-status-v800>span{
+  min-height:30px;
+  padding:0 9px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  color:white;
+  background:rgba(7,12,22,.22);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(15px);
+}
+.lock-status-v800 svg{
+  width:15px;
+  height:15px;
+}
+.lock-status-v800 small{
+  font-size:8px;
+}
+.hello-v800{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:-2px 0 9px;
+}
+.hello-face-v800{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#e8f4fb;
+  color:#1674b3;
+}
+.hello-face-v800 svg{
+  width:22px;
+  height:22px;
+}
+.hello-v800>div{
+  display:grid;
+  gap:2px;
+  text-align:left;
+}
+.hello-v800 strong{
+  font-size:10px;
+  font-weight:600;
+}
+.hello-v800 small{
+  font-size:8px;
+  color:#6d7780;
+}
+.hello-verifying-v800 .hello-face-v800{
+  animation:helloPulseV800 .9s ease-in-out infinite alternate;
+}
+@keyframes helloPulseV800{
+  from{box-shadow:0 0 0 0 rgba(22,116,179,.05)}
+  to{box-shadow:0 0 0 7px rgba(22,116,179,.12)}
+}
+.signin-options-btn-v800{
+  width:100%;
+  min-height:32px;
+  margin-top:7px;
+  border:0;
+  background:transparent;
+  color:#176d9f;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:9px;
+}
+.signin-options-btn-v800:hover{
+  background:#edf6fb;
+}
+.signin-options-v800{
+  display:grid;
+  gap:5px;
+  margin-top:5px;
+}
+.signin-options-v800>div{
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  padding:7px;
+  border:1px solid #dde4e8;
+  border-radius:8px;
+  background:#fafcfd;
+}
+.signin-options-v800>div.disabled{
+  opacity:.58;
+}
+.signin-options-v800 span{
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:7px;
+  background:#edf5fa;
+  color:#277eae;
+}
+.signin-options-v800 svg{
+  width:18px;
+  height:18px;
+}
+.signin-options-v800>div>div{
+  display:grid;
+  gap:2px;
+}
+.signin-options-v800 strong{
+  font-size:9px;
+}
+.signin-options-v800 small{
+  font-size:8px;
+  color:#6c7780;
+}
+.update-banner-v800{
+  position:absolute;
+  left:50%;
+  top:18px;
+  z-index:21000;
+  width:min(570px,calc(100vw - 28px));
+  min-height:64px;
+  padding:10px 12px;
+  border:1px solid rgba(60,75,88,.2);
+  border-radius:13px;
+  background:rgba(249,251,253,.97);
+  color:#20262c;
+  box-shadow:0 18px 55px rgba(0,0,0,.28);
+  backdrop-filter:blur(26px);
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:9px;
+  transform:translate(-50%,-110px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .28s ease,opacity .22s ease;
+}
+.update-banner-v800.open{
+  transform:translate(-50%,0);
+  opacity:1;
+  pointer-events:auto;
+}
+.update-icon-v800{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#e9f5fc;
+  color:#1477b7;
+  font-size:20px;
+}
+.update-banner-v800>div:nth-child(2){
+  display:grid;
+  gap:3px;
+}
+.update-banner-v800 strong{
+  font-size:11px;
+}
+.update-banner-v800 small{
+  color:#69747d;
+  font-size:8px;
+}
+.update-banner-v800 button{
+  min-height:32px;
+  padding:0 11px;
+  border:1px solid #ccd5db;
+  border-radius:7px;
+  background:#fff;
+  color:#27313a;
+  cursor:pointer;
+  font-size:9px;
+}
+.update-banner-v800 button.primary{
+  background:#0f79bd;
+  border-color:#0c6da9;
+  color:#fff;
+}
+.update-settings-card-v800{
+  display:flex!important;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.update-settings-card-v800>div{
+  min-width:0;
+}
+.update-settings-card-v800 p{
+  margin:4px 0 0;
+  color:#6c7780;
+  font-size:9px;
+}
+#app.theme-dark .hello-face-v800{
+  background:#284456;
+  color:#91d2f2;
+}
+#app.theme-dark .hello-v800 small,
+#app.theme-dark .signin-options-v800 small{
+  color:#aeb7be;
+}
+#app.theme-dark .signin-options-btn-v800{
+  color:#9cd8f8;
+}
+#app.theme-dark .signin-options-btn-v800:hover{
+  background:#30383f;
+}
+#app.theme-dark .signin-options-v800>div{
+  background:#2d3339;
+  border-color:#454d54;
+}
+#app.theme-dark .signin-options-v800 span{
+  background:#344550;
+  color:#9bd9f6;
+}
+#app.theme-dark .update-banner-v800{
+  background:rgba(38,43,49,.98);
+  color:#f0f3f5;
+  border-color:#515a62;
+}
+#app.theme-dark .update-icon-v800{
+  background:#294557;
+  color:#9bdafa;
+}
+#app.theme-dark .update-banner-v800 small,
+#app.theme-dark .update-settings-card-v800 p{
+  color:#adb6bd;
+}
+#app.theme-dark .update-banner-v800 button{
+  background:#30363c;
+  border-color:#4e5760;
+  color:#eef2f5;
+}
+#app.theme-dark .update-banner-v800 button.primary{
+  background:#147fbd;
+  border-color:#1b8bc9;
+}
+@media(max-width:720px){
+  #lock.lock-clock-stage-v800 .session-lock-clock{
+    transform:translateY(16vh) scale(1.03);
+  }
+  #lock.lock-auth-stage-v800 .session-lock-clock{
+    transform:translateY(-8px) scale(.76);
+  }
+  .lock-status-v800{
+    right:12px;
+    bottom:12px;
+  }
+  .lock-hint-v800{
+    bottom:58px;
+    width:90%;
+    text-align:center;
+  }
+  .update-banner-v800{
+    top:10px;
+    grid-template-columns:34px minmax(0,1fr);
+  }
+  .update-banner-v800 button{
+    grid-row:2;
+  }
+  .update-banner-v800 button[data-update-later-v800]{
+    grid-column:1;
+  }
+  .update-banner-v800 button[data-update-now-v800]{
+    grid-column:2;
+  }
+  .update-settings-card-v800{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #lock.lock-v800 .session-lock-clock,
+  #lock.lock-v800 .session-auth-host,
+  .update-banner-v800{
+    transition:none!important;
+  }
+}

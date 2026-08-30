@@ -299,5 +299,5 @@
     newTab();
   };
 
-  globalThis.Win11AppRealism={version:"7.9.0"};
+  globalThis.Win11AppRealism={version:"8.0.0"};
 })();

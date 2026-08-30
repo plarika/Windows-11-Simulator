@@ -71,7 +71,7 @@ async function waitFor(fn,timeout=4000,step=80){
 await send("Runtime.enable");
 await send("Log.enable");
 
-await check("real mounts bridge",async()=>await evaluate(`typeof Win11RealMounts==="object" && Win11RealMounts.version==="7.9.0"`));
+await check("real mounts bridge",async()=>await evaluate(`typeof Win11RealMounts==="object" && Win11RealMounts.version==="8.0.0"`));
 await check("active session exists",async()=>await evaluate(`!!Win11SessionManager?.activeUserId`));
 
 await evaluate(`(()=>{

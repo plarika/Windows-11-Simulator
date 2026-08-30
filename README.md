@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V7.9.0 Shell Icons Fix** — ícones SVG consistentes no Ambiente de Trabalho e botão de energia independente de fontes.
+**V8.0.0 Shell Icons Fix** — ícones SVG consistentes no Ambiente de Trabalho e botão de energia independente de fontes.
 
 ## Funcionalidades
 
@@ -327,7 +327,7 @@ Primeiro passo de integração com funções reais do dispositivo:
 - integração das deteções e alterações críticas com o Centro de Notificações V7.7
 - indicadores do browser como Secure Context, rede e IndexedDB identificados explicitamente como ambiente web
 
-## V7.9.0 Shell Icons Fix
+## V8.0.0 Shell Icons Fix
 
 - substituição dos emoji do Ambiente de Trabalho por SVGs internos
 - ícones distintos para Este PC, Documentos, Edge, Reciclagem e Definições
@@ -355,3 +355,18 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Win+A abre Definições rápidas
 - Win+N abre Notificações
 - estados reais e virtuais identificados separadamente no painel
+
+## V8.0 Windows Experience & Reliability
+
+- lock screen em duas fases: relógio primeiro, autenticação após clique/tecla
+- criação da primeira conta continua direta
+- Windows Hello visual sem acesso biométrico real
+- opções de início de sessão com indicação explícita do método local
+- estado online/offline e bateria no lock screen quando expostos pelo browser
+- atualização PWA coordenada com aviso Nova versão disponível
+- Service Worker deixa de forçar skipWaiting em atualizações
+- Atualizar agora ativa explicitamente a nova Service Worker
+- opção Depois mantém a sessão atual intacta
+- cartão Windows Update nas Definições
+- recuperação do shell após BFCache/retoma de visibilidade
+- refresh de tray, notificações e Device Center na recuperação

@@ -144,8 +144,12 @@
   function setupTray(){
     const quick=$("#quick-btn");
     if(quick){
-      quick.innerHTML='<span class="win11-tray"><span class="tray-glyph" title="Rede">'+svg('<path fill="currentColor" d="M3 19a18 18 0 0 1 26 0l-2.3 2.2a14.8 14.8 0 0 0-21.4 0zM8 23a11 11 0 0 1 16 0l-2.3 2.2a7.8 7.8 0 0 0-11.4 0zM13 27a4.2 4.2 0 0 1 6 0l-3 3z"/>')+'</span><span class="tray-glyph" title="Volume">'+svg('<path fill="currentColor" d="M5 13h6l6-5v16l-6-5H5zm15-2a8 8 0 0 1 0 10l2 1.6a10.6 10.6 0 0 0 0-13.2z"/>')+'</span><span class="tray-glyph" title="Bateria 82%">'+svg('<rect x="4" y="9" width="22" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="27" y="13" width="2" height="6" rx="1" fill="currentColor"/><rect x="7" y="12" width="15" height="8" rx="1" fill="currentColor"/>')+'</span></span>';
-      quick.setAttribute("aria-label","Rede, volume e bateria");
+      if(globalThis.Win11SystemTray?.refresh){
+        globalThis.Win11SystemTray.refresh().catch(()=>{});
+      }else{
+        quick.innerHTML='<span class="win11-tray"><span class="tray-glyph" title="Rede">'+svg('<path fill="currentColor" d="M3 19a18 18 0 0 1 26 0l-2.3 2.2a14.8 14.8 0 0 0-21.4 0zM8 23a11 11 0 0 1 16 0l-2.3 2.2a7.8 7.8 0 0 0-11.4 0zM13 27a4.2 4.2 0 0 1 6 0l-3 3z"/>')+'</span><span class="tray-glyph" title="Volume">'+svg('<path fill="currentColor" d="M5 13h6l6-5v16l-6-5H5zm15-2a8 8 0 0 1 0 10l2 1.6a10.6 10.6 0 0 0 0-13.2z"/>')+'</span><span class="tray-glyph" title="Bateria 82%">'+svg('<rect x="4" y="9" width="22" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="27" y="13" width="2" height="6" rx="1" fill="currentColor"/><rect x="7" y="12" width="15" height="8" rx="1" fill="currentColor"/>')+'</span></span>';
+        quick.setAttribute("aria-label","Rede, volume e bateria");
+      }
     }
     const search=$("#search-btn");
     if(search){
@@ -158,7 +162,7 @@
       taskview.setAttribute("aria-label","Vista de tarefas");
     }
     const notify=$("#notify-btn");
-    if(notify){
+    if(notify&&!globalThis.Win11SystemTray){
       notify.innerHTML='<span class="tray-glyph">'+svg('<path fill="currentColor" d="M16 3a6 6 0 0 0-6 6v3.5c0 3-1.1 5.2-3 7.5h18c-1.9-2.3-3-4.5-3-7.5V9a6 6 0 0 0-6-6zm-3 20a3 3 0 0 0 6 0z"/>')+'</span>';
     }
     const widgets=$("#widgets-btn");
@@ -183,9 +187,9 @@
   $$(".window").forEach(decorateWindow);
   decorateSearch(document);
 
-  document.documentElement.dataset.simVersion="7.9.0";
+  document.documentElement.dataset.simVersion="8.0.0";
   globalThis.Win11Realism={
-    version:"7.9.0",
+    version:"8.0.0",
     iconFor,
     refresh(){populateDesktop();populateStart();setupTray();$$(".window").forEach(decorateWindow);decorateSearch(document)}
   };

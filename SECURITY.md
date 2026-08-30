@@ -83,3 +83,9 @@ Os controlos de firewall, SmartScreen, proteção em tempo real, cloud, tamper e
 O System Tray V7.9 apenas observa sinais que o navegador disponibiliza explicitamente. O estado de rede usa `navigator.onLine` e, quando disponível, a Network Information API. O estado de bateria usa a Battery Status API quando exposta pelo navegador. Nenhum destes controlos liga/desliga Wi-Fi, Bluetooth, interfaces de rede ou bateria do dispositivo.
 
 Volume, brilho, Bluetooth e luz noturna são controlos virtuais do simulador. Fullscreen e Wake Lock usam APIs Web reais apenas após uma ação do utilizador e quando suportadas pelo navegador. O indicador de privacidade apenas observa streams MediaStream já autorizados e ativos dentro da própria página; não enumera nem captura dispositivos em segundo plano.
+
+## Windows Experience and Updates V8.0
+
+O Windows Hello da V8.0 é exclusivamente visual e não usa WebAuthn, reconhecimento facial, impressão digital ou dados biométricos. A autenticação continua a usar a credencial local PBKDF2 já existente.
+
+As atualizações PWA deixam de ativar silenciosamente uma nova Service Worker quando já existe uma versão ativa. A nova worker aguarda até o utilizador escolher Atualizar agora; só então recebe a mensagem SKIP_WAITING. O reload automático ocorre apenas após essa confirmação e após controllerchange. A opção Depois mantém a versão atual durante a sessão.

@@ -57,7 +57,7 @@ check(
   "Save dialog appends required extension"
 );
 check(
-  index.includes("./favicon.svg?v=7.9.0"),
+  index.includes("./favicon.svg?v=8.0.0"),
   "Versioned favicon reference"
 );
 
@@ -109,8 +109,8 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=7.9.0"), "Real file bridge loaded");
-check(index.includes("./styles/real-files-v640.css?v=7.9.0"), "Real file bridge styles loaded");
+check(index.includes("./src/features/real-files-v640.js?v=8.0.0"), "Real file bridge loaded");
+check(index.includes("./styles/real-files-v640.css?v=8.0.0"), "Real file bridge styles loaded");
 
 
 
@@ -123,8 +123,8 @@ check(realClipboard.includes("Ler do dispositivo"), "Win+V real clipboard read c
 check(realClipboard.includes("Copiar para dispositivo"), "Win+V real clipboard write control present");
 check(realClipboard.includes("Copiar dispositivo"), "Notepad real clipboard copy control present");
 check(realClipboard.includes("Colar dispositivo"), "Notepad real clipboard paste control present");
-check(index.includes("./src/features/real-clipboard-v650.js?v=7.9.0"), "Real clipboard bridge loaded");
-check(index.includes("./styles/real-clipboard-v650.css?v=7.9.0"), "Real clipboard styles loaded");
+check(index.includes("./src/features/real-clipboard-v650.js?v=8.0.0"), "Real clipboard bridge loaded");
+check(index.includes("./styles/real-clipboard-v650.css?v=8.0.0"), "Real clipboard styles loaded");
 
 
 
@@ -137,16 +137,16 @@ check(realContent.includes("data-import-files"), "Explorer real import control p
 check(realContent.includes("data-export-file"), "Explorer real export control present");
 check(realContent.includes("Abrir imagem do dispositivo"), "Photos real image control present");
 check(realContent.includes("Abrir multimédia"), "Media Player real media control present");
-check(index.includes("./src/features/real-content-v660.js?v=7.9.0"), "Real content module loaded");
-check(index.includes("./styles/real-content-v660.css?v=7.9.0"), "Real content styles loaded");
+check(index.includes("./src/features/real-content-v660.js?v=8.0.0"), "Real content module loaded");
+check(index.includes("./styles/real-content-v660.css?v=8.0.0"), "Real content styles loaded");
 
 const realPlatform = readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8");
 check(realPlatform.includes("Notification.requestPermission"), "Real notification permission integration present");
 check(realPlatform.includes("new Notification"), "Real browser notification integration present");
 check(realPlatform.includes("serviceWorker.register"), "PWA service worker registration present");
 check(realPlatform.includes("beforeinstallprompt"), "PWA install prompt integration present");
-check(index.includes("./manifest.webmanifest?v=7.9.0"), "PWA manifest loaded");
-check(index.includes("./src/features/real-platform-v660.js?v=7.9.0"), "Real platform module loaded");
+check(index.includes("./manifest.webmanifest?v=8.0.0"), "PWA manifest loaded");
+check(index.includes("./src/features/real-platform-v660.js?v=8.0.0"), "Real platform module loaded");
 check(existsSync(resolve(root, "manifest.webmanifest")), "PWA manifest exists");
 check(existsSync(resolve(root, "service-worker.js")), "Service worker exists");
 check(existsSync(resolve(root, "icons/icon-192.png")), "PWA 192 icon exists");
@@ -174,12 +174,12 @@ check(sessions.includes("Terminar sessão"), "Sign out control present");
 check(sessions.includes("Mudar de utilizador"), "Switch user control present");
 check(sessions.includes("legacy-backup-v67"), "Legacy migration backup present");
 check(!/localStorage\.setItem\([^;]*secret/i.test(sessions), "Secrets are not stored directly");
-check(index.includes("./src/features/local-accounts-v670.js?v=7.9.0"), "Session module loaded");
-check(index.includes("./styles/local-accounts-v670.css?v=7.9.0"), "Session styles loaded");
+check(index.includes("./src/features/local-accounts-v670.js?v=8.0.0"), "Session module loaded");
+check(index.includes("./styles/local-accounts-v670.css?v=8.0.0"), "Session styles loaded");
 check(realContent.includes("ownerId:currentOwnerId()"), "IndexedDB blobs record ownerId");
 check(realContent.includes("claimLegacyBlobs"), "Legacy IndexedDB ownership migration present");
 check(realContent.includes("record.ownerId&&record.ownerId!==owner"), "IndexedDB owner isolation enforced");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=7.9.0"), "Session module precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=8.0.0"), "Session module precached by service worker");
 check(existsSync(resolve(root, "src/workers/auth-crypto-v673.js")), "Auth crypto worker exists");
 const authWorkerSource=readFileSync(resolve(root, "src/workers/auth-crypto-v673.js"), "utf8");
 const authWorkerCheck=spawnSync(process.execPath, ["--check", resolve(root, "src/workers/auth-crypto-v673.js")], {encoding:"utf8"});
@@ -189,7 +189,7 @@ check(sessions.includes("new Worker(AUTH_WORKER_URL)"), "Session login uses auth
 check(sessions.includes("const ITERATIONS=120000"), "New credentials use mobile-optimized PBKDF2 cost");
 check(sessions.includes("upgradeCredentialIfNeeded"), "Legacy credential upgrade present");
 check(sessions.includes("A verificar no dispositivo..."), "Slow auth progress state present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=7.9.0"), "Auth worker precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("auth-crypto-v673.js?v=8.0.0"), "Auth worker precached by service worker");
 
 const runtimeSource = readFileSync(resolve(root, "src/core/runtime.js"), "utf8");
 const bootSource = readFileSync(resolve(root, "src/core/boot.js"), "utf8");
@@ -222,11 +222,11 @@ check(realDevice.includes("navigator.hardwareConcurrency"), "Real CPU diagnostic
 check(realDevice.includes("navigator.deviceMemory"), "Real memory diagnostics present");
 check(realDevice.includes('RealContentBridge.importFileToVirtual(file,"C:/Music")'), "Recorder stores audio in user filesystem");
 check(realDevice.includes('RealContentBridge.importFileToVirtual(file,"C:/Pictures")'), "Camera and snipping store images in user filesystem");
-check(index.includes("./src/features/real-device-tools-v680.js?v=7.9.0"), "Real device tools module loaded");
-check(index.includes("./styles/real-device-tools-v680.css?v=7.9.0"), "Real device tools styles loaded");
+check(index.includes("./src/features/real-device-tools-v680.js?v=8.0.0"), "Real device tools module loaded");
+check(index.includes("./styles/real-device-tools-v680.css?v=8.0.0"), "Real device tools styles loaded");
 check(readFileSync(resolve(root, "src/core/runtime.js"), "utf8").includes('camera:{name:"Câmara"'), "Camera app registered");
 check(readFileSync(resolve(root, "src/apps/v5-runtime.js"), "utf8").includes('if(appId==="camera"){buildCamera(wrap);return wrap}'), "Camera renderer registered");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-tools-v680.js?v=7.9.0"), "Real device tools precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-tools-v680.js?v=8.0.0"), "Real device tools precached");
 check(sessions.includes("updateAccountName"), "Account rename integration present");
 check(sessions.includes("setAccountAvatar"), "Profile avatar integration present");
 check(sessions.includes("changeCurrentCredential"), "Credential change integration present");
@@ -244,8 +244,8 @@ check(readFileSync(resolve(root, "styles/local-accounts-v670.css"), "utf8").incl
 check(readFileSync(resolve(root, "styles/local-accounts-v670.css"), "utf8").includes(".profile-management-card"), "Profile management styles present");
 check(realDevice.includes('"profile-backup"') && realDevice.includes('"auto-lock"'), "V6.9 profile capabilities registered");
 const desktopIntegration=readFileSync(resolve(root, "src/features/desktop-integration-v700.js"), "utf8");
-check(index.includes("./src/features/desktop-integration-v700.js?v=7.9.0"), "Desktop integration module loaded");
-check(index.includes("./styles/desktop-integration-v700.css?v=7.9.0"), "Desktop integration styles loaded");
+check(index.includes("./src/features/desktop-integration-v700.js?v=8.0.0"), "Desktop integration module loaded");
+check(index.includes("./styles/desktop-integration-v700.css?v=8.0.0"), "Desktop integration styles loaded");
 check(desktopIntegration.includes("DEFAULT_ASSOCIATIONS"), "Default file associations present");
 check(desktopIntegration.includes("showOpenWith"), "Open With integration present");
 check(desktopIntegration.includes("navigator.share"), "Native share integration present");
@@ -262,11 +262,11 @@ check(desktopIntegration.includes("browser não pode alterar o Wi‑Fi real"), "
 check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes('["Abrir com...",()=>Win11DesktopIntegration.showOpenWith'), "Explorer Open With action present");
 check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes('["Partilhar",()=>Win11DesktopIntegration.shareFile'), "Explorer Share action present");
 check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes('["Imprimir",()=>Win11DesktopIntegration.printFile'), "Explorer Print action present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.js?v=7.9.0"), "Desktop integration precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.css?v=7.9.0"), "Desktop integration CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.js?v=8.0.0"), "Desktop integration precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("desktop-integration-v700.css?v=8.0.0"), "Desktop integration CSS precached");
 const realMounts=readFileSync(resolve(root, "src/features/real-folder-mounts-v710.js"), "utf8");
-check(index.includes("./src/features/real-folder-mounts-v710.js?v=7.9.0"), "Real folder mounts module loaded");
-check(index.includes("./styles/real-folder-mounts-v710.css?v=7.9.0"), "Real folder mounts styles loaded");
+check(index.includes("./src/features/real-folder-mounts-v710.js?v=8.0.0"), "Real folder mounts module loaded");
+check(index.includes("./styles/real-folder-mounts-v710.css?v=8.0.0"), "Real folder mounts styles loaded");
 check(realMounts.includes('showDirectoryPicker({mode:"readwrite"})'), "Directory picker requests read/write access");
 check(realMounts.includes('indexedDB.open(DB_NAME,DB_VERSION)'), "Mount handles use IndexedDB persistence");
 check(realMounts.includes('store.createIndex("ownerId","ownerId"'), "Mount persistence indexed by ownerId");
@@ -286,11 +286,11 @@ check(realMounts.includes("mem.ownerId===owner") && realMounts.includes("record?
 check(sessions.includes("Win11RealMounts?.purgeOwnerMounts"), "Account deletion purges mount references");
 check(realFiles.includes("RealNotepadPending"), "Notepad consumes mounted real file handles");
 check(desktopIntegration.includes("value instanceof Blob"), "Desktop integration accepts direct mounted files");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.js?v=7.9.0"), "Real folder mounts precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.css?v=7.9.0"), "Real folder mounts CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.js?v=8.0.0"), "Real folder mounts precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.css?v=8.0.0"), "Real folder mounts CSS precached");
 const edgeInternet=readFileSync(resolve(root, "src/features/edge-internet-v720.js"), "utf8");
-check(index.includes("./src/features/edge-internet-v720.js?v=7.9.0"), "Edge Internet module loaded");
-check(index.includes("./styles/edge-internet-v720.css?v=7.9.0"), "Edge Internet styles loaded");
+check(index.includes("./src/features/edge-internet-v720.js?v=8.0.0"), "Edge Internet module loaded");
+check(index.includes("./styles/edge-internet-v720.css?v=8.0.0"), "Edge Internet styles loaded");
 check(edgeInternet.includes("www.google.com/search?igu=1&q="), "Google search integration present");
 check(edgeInternet.includes('url.searchParams.set("igu","1")'), "Google iframe compatibility flag present");
 check(edgeInternet.includes("youtube.com/embed/"), "YouTube official video embed present");
@@ -304,11 +304,11 @@ check(edgeInternet.includes("data-youtube-external"), "YouTube external fallback
 check(edgeInternet.includes("data-compat-open"), "Blocked-site external fallback present");
 check(edgeInternet.includes('sandbox","allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads"'), "Generic Web iframe remains sandboxed");
 check(edgeInternet.includes("allowfullscreen"), "YouTube player fullscreen allowed");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.js?v=7.9.0"), "Edge Internet module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.css?v=7.9.0"), "Edge Internet CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.js?v=8.0.0"), "Edge Internet module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.css?v=8.0.0"), "Edge Internet CSS precached");
 const edgeAdvanced=readFileSync(resolve(root, "src/features/edge-advanced-v730.js"), "utf8");
-check(index.includes("./src/features/edge-advanced-v730.js?v=7.9.0"), "Edge Advanced module loaded");
-check(index.includes("./styles/edge-advanced-v730.css?v=7.9.0"), "Edge Advanced styles loaded");
+check(index.includes("./src/features/edge-advanced-v730.js?v=8.0.0"), "Edge Advanced module loaded");
+check(index.includes("./styles/edge-advanced-v730.css?v=8.0.0"), "Edge Advanced styles loaded");
 check(edgeAdvanced.includes("edge://favorites"), "Edge Favorites page present");
 check(edgeAdvanced.includes("edge://history"), "Edge History page present");
 check(edgeAdvanced.includes("edge://downloads"), "Edge Downloads page present");
@@ -331,11 +331,11 @@ check(edgeAdvanced.includes('key==="tab"'), "Edge Ctrl+Tab shortcut present");
 check(edgeAdvanced.includes('fetch(normalized,{mode:"cors"'), "Edge direct downloads respect CORS");
 check(edgeAdvanced.includes("showSaveFilePicker"), "Edge downloads use File System Access when available");
 check(edgeAdvanced.includes("recordDownload"), "Edge download history present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.js?v=7.9.0"), "Edge Advanced module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.css?v=7.9.0"), "Edge Advanced CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.js?v=8.0.0"), "Edge Advanced module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.css?v=8.0.0"), "Edge Advanced CSS precached");
 const explorerPro=readFileSync(resolve(root, "src/features/explorer-pro-v740.js"), "utf8");
-check(index.includes("./src/features/explorer-pro-v740.js?v=7.9.0"), "Explorer Pro module loaded");
-check(index.includes("./styles/explorer-pro-v740.css?v=7.9.0"), "Explorer Pro styles loaded");
+check(index.includes("./src/features/explorer-pro-v740.js?v=8.0.0"), "Explorer Pro module loaded");
+check(index.includes("./styles/explorer-pro-v740.css?v=8.0.0"), "Explorer Pro styles loaded");
 check(explorerPro.includes("explorer-multiselect"), "Explorer multi-select capability registered");
 check(explorerPro.includes("event.shiftKey&&anchorName"), "Explorer Shift range selection present");
 check(explorerPro.includes("selectionBox"), "Explorer selection rectangle present");
@@ -354,11 +354,11 @@ check(explorerPro.includes("showSelectedProperties"), "Explorer advanced propert
 check(explorerPro.includes("type:") && explorerPro.includes("ext:") && explorerPro.includes("size:"), "Explorer advanced search filters present");
 check(explorerPro.includes("explorer-pro-thumb"), "Explorer image thumbnails present");
 check(explorerPro.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Pro guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=7.9.0"), "Explorer Pro module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.css?v=7.9.0"), "Explorer Pro CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=8.0.0"), "Explorer Pro module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.css?v=8.0.0"), "Explorer Pro CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
-check(index.includes("./src/features/window-manager-v750.js?v=7.9.0"), "Window Manager V7.5 module loaded");
-check(index.includes("./styles/window-manager-v750.css?v=7.9.0"), "Window Manager V7.5 styles loaded");
+check(index.includes("./src/features/window-manager-v750.js?v=8.0.0"), "Window Manager V7.5 module loaded");
+check(index.includes("./styles/window-manager-v750.css?v=8.0.0"), "Window Manager V7.5 styles loaded");
 check(windowManager.includes("halves:") && windowManager.includes("thirds:") && windowManager.includes("quarters:"), "Window Manager multiple Snap layouts present");
 check(windowManager.includes("showSnapAssist"), "Snap Assist present");
 check(windowManager.includes("refreshSnapGroups"), "Snap Groups present");
@@ -375,11 +375,11 @@ check(windowManager.includes('ensureFolder("C:/Desktop")'), "Desktop virtual fil
 check(windowManager.includes("desktopIconPositions"), "Desktop icon positions persist");
 check(windowManager.includes("Novo documento de texto"), "Desktop context menu V2 present");
 check(windowManager.includes("iframe,video,audio,canvas"), "Window previews strip active media embeds");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("window-manager-v750.js?v=7.9.0"), "Window Manager V7.5 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("window-manager-v750.css?v=7.9.0"), "Window Manager V7.5 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("window-manager-v750.js?v=8.0.0"), "Window Manager V7.5 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("window-manager-v750.css?v=8.0.0"), "Window Manager V7.5 CSS precached");
 const deviceCenter=readFileSync(resolve(root, "src/features/real-device-integration-v760.js"), "utf8");
-check(index.includes("./src/features/real-device-integration-v760.js?v=7.9.0"), "Real Device Integration V7.6 module loaded");
-check(index.includes("./styles/real-device-integration-v760.css?v=7.9.0"), "Real Device Integration V7.6 styles loaded");
+check(index.includes("./src/features/real-device-integration-v760.js?v=8.0.0"), "Real Device Integration V7.6 module loaded");
+check(index.includes("./styles/real-device-integration-v760.css?v=8.0.0"), "Real Device Integration V7.6 styles loaded");
 check(deviceCenter.includes("collectSnapshot"), "Device Center snapshot collector present");
 check(deviceCenter.includes("permissionSnapshot"), "Device permission center present");
 check(deviceCenter.includes("navigator.permissions.query"), "Permissions API integration present");
@@ -397,11 +397,11 @@ check(deviceCenter.includes("sanitizedReport"), "Sanitized diagnostic report pre
 check(!deviceCenter.includes("coords.latitude") && !deviceCenter.includes("coords.longitude"), "Diagnostic report does not collect location coordinates");
 check(!deviceCenter.includes("navigator.clipboard.readText()"), "Diagnostic report does not read clipboard contents");
 check(deviceCenter.includes("devicechange") && deviceCenter.includes("online") && deviceCenter.includes("offline"), "Live device event monitoring present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-integration-v760.js?v=7.9.0"), "Real Device Integration V7.6 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-integration-v760.css?v=7.9.0"), "Real Device Integration V7.6 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-integration-v760.js?v=8.0.0"), "Real Device Integration V7.6 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-integration-v760.css?v=8.0.0"), "Real Device Integration V7.6 CSS precached");
 const notificationBg=readFileSync(resolve(root, "src/features/notifications-background-v770.js"), "utf8");
-check(index.includes("./src/features/notifications-background-v770.js?v=7.9.0"), "Notifications Background V7.7 module loaded");
-check(index.includes("./styles/notifications-background-v770.css?v=7.9.0"), "Notifications Background V7.7 styles loaded");
+check(index.includes("./src/features/notifications-background-v770.js?v=8.0.0"), "Notifications Background V7.7 module loaded");
+check(index.includes("./styles/notifications-background-v770.css?v=8.0.0"), "Notifications Background V7.7 styles loaded");
 check(notificationBg.includes("Win11NotificationCenter"), "Notification Center V7.7 bridge present");
 check(notificationBg.includes("notification-groups"), "Grouped notification capability registered");
 check(notificationBg.includes("snoozeNotification"), "Notification snooze present");
@@ -420,11 +420,11 @@ check(notificationBg.includes("Service Control Manager"), "Service Event Log int
 check(notificationBg.includes("backgroundActivityV77.runs"), "Background activity history present");
 check(!/function ensureState\(\)[\s\S]*?syncUnread\(/.test(notificationBg.match(/function ensureState\(\)[\s\S]*?\n  }/m)?.[0]||""), "Notification state initialization avoids unread recursion");
 check(!notificationBg.includes("child_process") && !notificationBg.includes("new Function") && !notificationBg.includes("eval("), "Background engine cannot execute arbitrary host code");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.js?v=7.9.0"), "Notifications Background V7.7 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.css?v=7.9.0"), "Notifications Background V7.7 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.js?v=8.0.0"), "Notifications Background V7.7 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.css?v=8.0.0"), "Notifications Background V7.7 CSS precached");
 const settingsSecurity=readFileSync(resolve(root, "src/features/settings-security-v780.js"), "utf8");
-check(index.includes("./src/features/settings-security-v780.js?v=7.9.0"), "Settings Security V7.8 module loaded");
-check(index.includes("./styles/settings-security-v780.css?v=7.9.0"), "Settings Security V7.8 styles loaded");
+check(index.includes("./src/features/settings-security-v780.js?v=8.0.0"), "Settings Security V7.8 module loaded");
+check(index.includes("./styles/settings-security-v780.css?v=8.0.0"), "Settings Security V7.8 styles loaded");
 check(settingsSecurity.includes("Win11Personalization"), "Personalization V7.8 bridge present");
 check(settingsSecurity.includes("Win11SecurityCenter"), "Security Center V7.8 bridge present");
 check(settingsSecurity.includes('["light","dark","system"]') || settingsSecurity.includes('"system"'), "System theme mode present");
@@ -443,11 +443,11 @@ check(settingsSecurity.includes("healthScore"), "Security health score present")
 check(settingsSecurity.includes('source:"Segurança do Windows"'), "Security notification integration present");
 check(!settingsSecurity.includes("showDirectoryPicker") && !settingsSecurity.includes("showOpenFilePicker") && !settingsSecurity.includes("RealFolderMounts"), "Security scanner cannot traverse mounted or host folders");
 check(!settingsSecurity.includes("child_process") && !settingsSecurity.includes("new Function") && !settingsSecurity.includes("eval("), "Security center cannot execute arbitrary host code");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-security-v780.js?v=7.9.0"), "Settings Security V7.8 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-security-v780.css?v=7.9.0"), "Settings Security V7.8 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-security-v780.js?v=8.0.0"), "Settings Security V7.8 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-security-v780.css?v=8.0.0"), "Settings Security V7.8 CSS precached");
 const runtimeShell=readFileSync(resolve(root, "src/core/runtime.js"), "utf8");
 const wmShell=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
-check(index.includes("./styles/shell-icons-v781.css?v=7.9.0"), "Shell Icons V7.9.0 styles loaded");
+check(index.includes("./styles/shell-icons-v781.css?v=8.0.0"), "Shell Icons V8.0.0 styles loaded");
 check(runtimeShell.includes("function desktopIconSvg(kind)"), "Desktop SVG icon library present");
 check(runtimeShell.includes('globalThis.desktopIconSvg=desktopIconSvg'), "Desktop SVG icon library exported");
 check(runtimeShell.includes('desktopIconSvg(iconKind)'), "Base desktop uses SVG icon library");
@@ -458,10 +458,10 @@ check(index.includes('id="power-btn" title="Energia" aria-label="Energia"'), "Po
 check(index.includes('class="power-symbol-v781"'), "Power button uses CSS power symbol");
 check(!index.includes('id="power-btn">⏻'), "Power button no longer depends on Unicode power glyph");
 check(readFileSync(resolve(root, "styles/shell-icons-v781.css"), "utf8").includes(".power-symbol-v781::before"), "CSS power symbol present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("shell-icons-v781.css?v=7.9.0"), "Shell Icons V7.9.0 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("shell-icons-v781.css?v=8.0.0"), "Shell Icons V8.0.0 CSS precached");
 const trayQuick=readFileSync(resolve(root, "src/features/system-tray-quick-v790.js"), "utf8");
-check(index.includes("./src/features/system-tray-quick-v790.js?v=7.9.0"), "System Tray V7.9 module loaded");
-check(index.includes("./styles/system-tray-quick-v790.css?v=7.9.0"), "System Tray V7.9 styles loaded");
+check(index.includes("./src/features/system-tray-quick-v790.js?v=8.0.0"), "System Tray V7.9 module loaded");
+check(index.includes("./styles/system-tray-quick-v790.css?v=8.0.0"), "System Tray V7.9 styles loaded");
 check(trayQuick.includes("Win11SystemTray"), "System Tray V7.9 bridge present");
 check(trayQuick.includes("system-tray-v2") && trayQuick.includes("quick-settings-v2"), "System Tray and Quick Settings V2 capabilities registered");
 check(trayQuick.includes("navigator.onLine") && trayQuick.includes("navigator.connection"), "Real browser network status integration present");
@@ -477,9 +477,30 @@ check(trayQuick.includes('e.key.toLowerCase()==="a"') && trayQuick.includes('e.k
 check(trayQuick.includes("Rede/bateria: browser") && trayQuick.includes("Som/brilho/Bluetooth/luz noturna: simulador"), "Real versus virtual Quick Settings disclosure present");
 check(!trayQuick.includes("navigator.bluetooth.requestDevice") && !trayQuick.includes("getUserMedia({audio:true") && !trayQuick.includes("getUserMedia({video:true"), "System Tray does not request Bluetooth or media permissions automatically");
 check(!trayQuick.includes("child_process") && !trayQuick.includes("new Function") && !trayQuick.includes("eval("), "System Tray cannot execute arbitrary host code");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-tray-quick-v790.js?v=7.9.0"), "System Tray V7.9 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-tray-quick-v790.css?v=7.9.0"), "System Tray V7.9 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-tray-quick-v790.js?v=8.0.0"), "System Tray V7.9 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-tray-quick-v790.css?v=8.0.0"), "System Tray V7.9 CSS precached");
 check(readFileSync(resolve(root, "src/features/desktop-integration-v700.js"), "utf8").includes("globalThis.Win11SystemTray?.refresh"), "Legacy Quick Settings delegates tray updates to V7.9");
+const winExp=readFileSync(resolve(root, "src/features/windows-experience-v800.js"), "utf8");
+const swV8=readFileSync(resolve(root, "service-worker.js"), "utf8");
+check(index.includes("./src/features/windows-experience-v800.js?v=8.0.0"), "Windows Experience V8.0 module loaded");
+check(index.includes("./styles/windows-experience-v800.css?v=8.0.0"), "Windows Experience V8.0 styles loaded");
+check(winExp.includes("Win11Experience"), "Windows Experience V8.0 bridge present");
+check(winExp.includes("two-stage-lock-screen") && winExp.includes("windows-hello-visual"), "Two-stage lock and Windows Hello visual capabilities registered");
+check(winExp.includes("lock-clock-stage-v800") && winExp.includes("revealSignIn"), "Two-stage sign-in implementation present");
+check(winExp.includes("Visual apenas · sem acesso biométrico"), "Windows Hello biometric boundary disclosure present");
+check(!winExp.includes("PublicKeyCredential") && !winExp.includes("credentials.create") && !winExp.includes("credentials.get"), "Windows Hello visual does not invoke biometric/WebAuthn APIs");
+check(winExp.includes("navigator.onLine") && (winExp.includes("batterySnapshot") || winExp.includes("navigator.getBattery")), "Lock screen browser status integration present");
+check(winExp.includes("Win11UpdateCoordinator"), "PWA Update Coordinator bridge present");
+check(winExp.includes("checkForUpdate") && winExp.includes("activateUpdate"), "Explicit PWA update actions present");
+check(winExp.includes('postMessage({type:"SKIP_WAITING"})'), "Update activation sends SKIP_WAITING after explicit action");
+check(!swV8.includes(".then(()=>self.skipWaiting())"), "Service Worker install does not force skipWaiting");
+check(swV8.includes('event.data?.type==="SKIP_WAITING"' ) && swV8.includes("self.skipWaiting()"), "Service Worker accepts explicit SKIP_WAITING message");
+check(winExp.includes("data-update-card-v800"), "Windows Update Settings card present");
+check(winExp.includes("pageshow") && winExp.includes("visibilitychange") && winExp.includes("recoverShell"), "Shell recovery hooks present");
+check(readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8").includes('service-worker.js?v=8.0.0'), "PWA registration references V8.0 Service Worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows-experience-v800.js?v=8.0.0"), "Windows Experience V8.0 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows-experience-v800.css?v=8.0.0"), "Windows Experience V8.0 CSS precached");
+check(readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("globalThis.Win11SystemTray?.refresh") && readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("notify&&!globalThis.Win11SystemTray"), "Legacy V6.2 tray delegates to modern System Tray");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");
