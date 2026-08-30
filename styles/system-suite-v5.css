@@ -1,0 +1,94 @@
+/* ============================================================
+   V5 — Windows System Suite
+   ============================================================ */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:11px}
+.tool-card{border:1px solid #dfe4e8;background:#fff;border-radius:12px;padding:14px;cursor:pointer;min-height:112px}
+.tool-card:hover{background:#f4f8fb}.tool-card .tool-icon{font-size:31px;margin-bottom:9px}.tool-card strong{display:block}.tool-card p{font-size:12px;color:#68717b;margin:6px 0 0;line-height:1.35}
+
+.services-toolbar,.admin-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:11px}
+.services-table,.admin-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.services-table th,.services-table td,.admin-table th,.admin-table td{padding:8px 9px;border-bottom:1px solid #e4e7ea;text-align:left;vertical-align:middle}
+.services-table tbody tr:hover,.admin-table tbody tr:hover{background:#f3f7fa}
+.services-table tr.selected,.admin-table tr.selected{background:#e8f2fa}
+.status-running{color:#087443;font-weight:650}.status-stopped{color:#777}.status-disabled{color:#9b5f00;font-weight:600}
+
+.disk-canvas{display:flex;flex-direction:column;gap:14px}
+.disk-row-v5{display:grid;grid-template-columns:145px 1fr;border:1px solid #cfd6dc;border-radius:9px;overflow:hidden;background:#fff}
+.disk-label{padding:12px;background:#edf0f3;border-right:1px solid #cfd6dc;font-size:12px}
+.disk-label strong{display:block;font-size:13px;margin-bottom:5px}
+.partition-strip{display:flex;min-height:104px;padding:8px;gap:5px;align-items:stretch;overflow:auto}
+.partition{min-width:105px;border:1px solid #8b9baa;border-top:5px solid #1769aa;background:#fafcff;padding:9px;cursor:pointer;font-size:11px;position:relative}
+.partition:hover,.partition.selected{background:#eaf4fb;border-color:#337fae}.partition strong{display:block;font-size:12px;margin-bottom:5px}
+.partition.unallocated{border-top-color:#222;background:#f4f4f4}
+
+.scheduler-tree{display:grid;grid-template-columns:205px 1fr;height:100%}
+.scheduler-nav{background:#f2f4f6;border-right:1px solid #dfe3e7;padding:11px;overflow:auto}
+.scheduler-nav button{width:100%;border:0;background:transparent;text-align:left;border-radius:7px;padding:8px 9px;cursor:pointer}
+.scheduler-nav button:hover,.scheduler-nav button.active{background:#e2eaf1}
+.scheduler-main{padding:17px;overflow:auto;background:#fff}
+
+.info-layout{display:grid;grid-template-columns:210px 1fr;height:100%}
+.info-nav{background:#f2f4f6;border-right:1px solid #dfe3e7;padding:10px;overflow:auto}
+.info-nav button{width:100%;border:0;background:transparent;text-align:left;padding:8px;border-radius:7px;cursor:pointer}.info-nav button:hover,.info-nav button.active{background:#dfe8f0}
+.info-main{overflow:auto;padding:16px;background:#fff}
+.info-table{width:100%;border-collapse:collapse;font-size:12.5px}.info-table td{padding:8px;border-bottom:1px solid #e5e7ea}.info-table td:first-child{width:220px;color:#5f6771}
+
+.resmon{height:100%;display:flex;flex-direction:column;background:#f7f8fa}
+.resmon-tabs{display:flex;gap:3px;padding:8px;border-bottom:1px solid #dce1e6;background:#eef1f5}
+.resmon-tabs button{border:0;background:transparent;border-radius:7px;padding:8px 11px;cursor:pointer}.resmon-tabs button.active{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.resmon-body{flex:1;overflow:auto;padding:14px}
+.resmon-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-bottom:12px}
+.resmon-card{border:1px solid #dce1e6;background:#fff;border-radius:9px;padding:11px}.resmon-card .value{font-size:25px;margin:5px 0}
+.spark{display:flex;align-items:flex-end;height:62px;gap:2px;margin-top:8px}.spark i{flex:1;background:#58a6d8;min-width:2px;border-radius:1px 1px 0 0}
+
+.ps-terminal{height:100%;display:flex;flex-direction:column;background:#012456;color:#f5f5f5;font-family:Consolas,monospace}
+.ps-toolbar{height:35px;background:#152c4a;display:flex;align-items:center;padding:0 9px;gap:7px;border-bottom:1px solid rgba(255,255,255,.12)}
+.ps-tab{border:0;background:#012456;color:white;border-radius:6px 6px 0 0;padding:6px 12px}
+.ps-body{flex:1;overflow:auto;padding:12px;font-size:13px}.ps-inputrow{display:flex;gap:7px}.ps-inputrow input{flex:1;background:transparent;border:0;outline:0;color:#fff;font:inherit}.ps-line{white-space:pre-wrap;word-break:break-word}
+
+.optional-list{display:flex;flex-direction:column;gap:7px}.optional-feature{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;border:1px solid #dfe3e7;background:#fff;border-radius:9px;padding:11px}.optional-feature strong{display:block}.optional-feature p{font-size:12px;color:#69717b;margin:4px 0 0}
+.check-v5{width:18px;height:18px;accent-color:#0067c0}
+
+.backup-hero,.recovery-hero{padding:18px;border:1px solid #dce4eb;border-radius:13px;background:linear-gradient(135deg,#eff8ff,#fff);margin-bottom:14px}
+.snapshot-list{display:flex;flex-direction:column;gap:8px}.snapshot{border:1px solid #dde2e7;background:#fff;border-radius:9px;padding:11px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+
+.sticky-app{height:100%;background:#202124;padding:12px;overflow:auto}
+.sticky-toolbar{display:flex;gap:6px;margin-bottom:10px}.sticky-toolbar button{border:0;background:#34363a;color:white;border-radius:7px;padding:8px 11px;cursor:pointer}
+.sticky-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.sticky-note{min-height:180px;border-radius:6px;background:#fff3a6;color:#252525;box-shadow:0 6px 18px rgba(0,0,0,.22);display:flex;flex-direction:column;overflow:hidden}
+.sticky-note header{display:flex;justify-content:flex-end;padding:5px}.sticky-note header button{border:0;background:transparent;cursor:pointer}
+.sticky-note textarea{flex:1;border:0;outline:0;resize:none;background:transparent;padding:8px 12px 14px;color:#252525;font:14px "Segoe UI"}
+
+.onedrive{height:100%;display:grid;grid-template-columns:190px 1fr;background:#fff}
+.onedrive aside{background:#f2f5f8;border-right:1px solid #dfe4e8;padding:11px}.onedrive main{padding:18px;overflow:auto}
+.cloud-hero{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid #dce5ed;border-radius:13px;background:#f3f9ff;margin-bottom:14px}.cloud-icon{font-size:42px}
+.sync-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px;border-bottom:1px solid #edf0f2;font-size:13px}
+
+.remote-v5{height:100%;display:grid;place-items:center;background:linear-gradient(145deg,#eaf4ff,#fff)}
+.remote-card{width:min(500px,calc(100% - 30px));background:#fff;border:1px solid #dce2e7;border-radius:13px;padding:22px;box-shadow:0 15px 45px rgba(0,0,0,.12)}
+.remote-card input{width:100%;padding:10px 12px;border:1px solid #d2d9e0;border-radius:8px;outline:0;margin:8px 0 12px}
+.remote-preview{margin-top:14px;border:1px dashed #b9c3cc;border-radius:9px;padding:13px;background:#f7f9fb;font-size:12px;color:#5f6872}
+
+.soundrec{height:100%;display:grid;place-items:center;background:#f7f8fa}.soundrec-card{text-align:center;width:min(500px,90%)}.mic-circle{width:104px;height:104px;border-radius:50%;background:#0067c0;color:#fff;display:grid;place-items:center;font-size:42px;margin:0 auto 20px;cursor:pointer}.wave{height:75px;display:flex;align-items:center;justify-content:center;gap:3px}.wave i{width:4px;background:#2582c5;border-radius:3px;transition:.2s}
+
+.help-v5{padding:22px;overflow:auto;height:100%;background:#fff}.help-search{display:flex;gap:8px;margin:14px 0}.help-search input{flex:1;padding:10px 12px;border:1px solid #d5dce2;border-radius:9px}.faq{border:1px solid #dfe4e8;border-radius:10px;padding:12px;margin-bottom:8px}.faq strong{display:block;margin-bottom:5px}
+
+.wifi-list,.bt-list{display:flex;flex-direction:column;gap:7px;margin-top:10px}.network-item{display:flex;align-items:center;justify-content:space-between;gap:11px;border:1px solid #dfe4e8;background:#fff;border-radius:9px;padding:11px}.network-item strong{display:block}.network-item small{color:#68717a}
+
+.power-meter{display:flex;align-items:center;gap:12px}.battery-shell{width:90px;height:36px;border:3px solid currentColor;border-radius:6px;position:relative;padding:3px}.battery-shell:after{content:"";position:absolute;right:-8px;top:8px;width:5px;height:14px;background:currentColor;border-radius:0 3px 3px 0}.battery-fill{height:100%;background:#1c9b57;border-radius:2px}
+.storage-bar-v5{height:16px;display:flex;border-radius:5px;overflow:hidden;background:#e4e7ea;margin:9px 0}.storage-bar-v5 i:nth-child(1){background:#4b9bd1}.storage-bar-v5 i:nth-child(2){background:#9b74d1}.storage-bar-v5 i:nth-child(3){background:#d1994b}.storage-bar-v5 i:nth-child(4){background:#63a66f}
+
+#app.theme-dark .tool-card,#app.theme-dark .disk-row-v5,#app.theme-dark .scheduler-main,#app.theme-dark .info-main,#app.theme-dark .resmon-card,#app.theme-dark .optional-feature,#app.theme-dark .snapshot,#app.theme-dark .onedrive,#app.theme-dark .remote-card,#app.theme-dark .help-v5,#app.theme-dark .network-item{background:#292d34;color:#f2f3f5;border-color:#41464f}
+#app.theme-dark .scheduler-nav,#app.theme-dark .info-nav,#app.theme-dark .onedrive aside,#app.theme-dark .resmon-tabs{background:#252930;border-color:#41464f}
+#app.theme-dark .scheduler-nav button,#app.theme-dark .info-nav button{color:#f2f3f5}
+#app.theme-dark .scheduler-nav button:hover,#app.theme-dark .scheduler-nav button.active,#app.theme-dark .info-nav button:hover,#app.theme-dark .info-nav button.active{background:#383d46}
+#app.theme-dark .tool-card p,#app.theme-dark .optional-feature p,#app.theme-dark .remote-preview,#app.theme-dark .network-item small{color:#b6bec8}
+#app.theme-dark .remote-v5,#app.theme-dark .soundrec{background:#202228}
+#app.theme-dark .cloud-hero,#app.theme-dark .backup-hero,#app.theme-dark .recovery-hero{background:#2b3138;border-color:#414b56}
+#app.theme-dark .file-row{color:#f2f3f5}
+
+@media(max-width:720px){
+  .disk-row-v5{grid-template-columns:105px 1fr}.disk-label{padding:8px}
+  .scheduler-tree,.info-layout,.onedrive{grid-template-columns:1fr}.scheduler-nav,.info-nav,.onedrive aside{display:none}
+  .services-table th:nth-child(3),.services-table td:nth-child(3),.services-table th:nth-child(5),.services-table td:nth-child(5){display:none}
+}
