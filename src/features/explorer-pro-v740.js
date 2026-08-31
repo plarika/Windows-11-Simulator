@@ -310,7 +310,7 @@
     wrap.dataset.explorerProV740="1";
     wrap.classList.add("explorer-pro-v740");
 
-    const grid=wrap.querySelector(".file-grid");
+    const grid=wrap.querySelector(".file-grid,.file-list,.thispc-grid");
     const search=wrap.querySelector(".explorer-search");
     const filesHost=wrap.querySelector(".explorer-files");
     const command=wrap.querySelector(".explorer-command");
@@ -582,6 +582,13 @@
       wrap.querySelector(active)?.click();
       setTimeout(decorate,0);
     }
+
+    const integrationApi=Object.freeze({
+      refresh:()=>setTimeout(decorate,0),
+      forceRender
+    });
+    wrap.__explorerProV740=integrationApi;
+    if(win)win.__explorerProV740=integrationApi;
 
     function copySelection(mode){
       const items=selectedItems().filter(x=>x.type!=="recycle");
@@ -871,7 +878,7 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerPro=Object.freeze({
-    version:"8.1.0",
+    version:"8.2.1",
     currentVirtualPath,
     itemType,
     copyFileAdvanced,
@@ -884,7 +891,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.1.0",
+    version:"8.2.1",
     step:13,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

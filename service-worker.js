@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v8.2.0";
+const CACHE_NAME="win11-simulator-v8.2.1";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -63,8 +63,8 @@ const PRECACHE=[
   "./src/features/real-folder-mounts-v710.js?v=8.1.0",
   "./src/features/edge-internet-v720.js?v=8.1.2",
   "./src/features/edge-advanced-v730.js?v=8.1.2",
-  "./src/features/explorer-pro-v740.js?v=8.1.0",
-  "./src/features/explorer-navigation-v820.js?v=8.2.0",
+  "./src/features/explorer-pro-v740.js?v=8.2.1",
+  "./src/features/explorer-navigation-v820.js?v=8.2.1",
   "./src/features/window-manager-v750.js?v=8.1.0",
   "./src/features/real-device-integration-v760.js?v=8.1.0",
   "./src/features/notifications-background-v770.js?v=8.1.0",

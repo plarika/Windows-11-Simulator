@@ -103,3 +103,7 @@ A integração Google mantém o iframe sandboxed e não concede `allow-top-navig
 ## Explorer Navigation V8.2.0
 
 A barra de endereço V8.2 valida caminhos contra o filesystem virtual antes de navegar e não cria pastas implícitas a partir de texto introduzido pelo utilizador. A camada de separadores também suspende operações de navegação virtual enquanto o Explorer está em `real-mount-mode`, evitando misturar estado de separadores virtuais com handles de pastas reais autorizadas pelo browser.
+
+## Explorer Tab Persistence V8.2.1
+
+A persistência de separadores usa exclusivamente o objeto `state` do perfil ativo e armazena apenas caminhos e histórico do filesystem virtual. Handles de File System Access, referências de mounts reais e conteúdo de ficheiros reais não entram no estado dos separadores. A gravação ocorre no momento das alterações de navegação/tabs, evitando callbacks tardios após a janela desaparecer que pudessem coincidir com uma troca de conta.

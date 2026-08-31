@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.2.0 Explorer Navigation** — o Explorador de Ficheiros ganha separadores reais na mesma janela, histórico independente, barra de endereço editável e atalhos de navegação.
+**V8.2.1 Explorer Tab Persistence** — os separadores do Explorador passam a restaurar a sessão por perfil, com reabrir separador fechado, duplicação e menu de contexto avançado.
 
 ## Funcionalidades
 
@@ -415,3 +415,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - caminhos inválidos são rejeitados sem criar pastas virtuais por acidente
 - pastas de sistema virtuais vazias continuam reconhecidas como destinos válidos
 - navegação por separadores fica protegida enquanto uma pasta real montada está aberta
+
+## V8.2.1 Explorer Tab Persistence
+
+- sessão de separadores guardada no estado do perfil local
+- restauração dos separadores e do separador ativo ao reabrir o Explorer por `This PC`
+- histórico de cada separador preservado na sessão
+- stack local dos últimos 20 separadores fechados
+- `Ctrl+Shift+T` reabre o último separador fechado
+- menu de contexto com Novo, Duplicar, Reabrir fechado, Fechar, Fechar outros e Fechar à direita
+- duplicação preserva caminho e histórico do separador original
+- estado persistente contém apenas caminhos virtuais; nunca guarda handles de pastas reais montadas
+- corrigida a instalação do Explorer Pro quando a janela arranca em `This PC` (`.thispc-grid`)
+- Explorer Pro expõe um refresh idempotente para integração segura após restauração/navegação de tabs

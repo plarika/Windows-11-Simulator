@@ -41,6 +41,23 @@
     return p.split("/").filter(Boolean).pop()||"Explorador";
   }
 
+  function ensureNavigationState(){
+    if(!state.explorerNavigationV821||typeof state.explorerNavigationV821!=="object"){
+      state.explorerNavigationV821={lastSession:null,closedTabs:[]};
+    }
+    const s=state.explorerNavigationV821;
+    if(!Array.isArray(s.closedTabs))s.closedTabs=[];
+    return s;
+  }
+
+  function sanitizeHistory(history,fallback){
+    const clean=(Array.isArray(history)?history:[])
+      .map(normalizePath).filter(p=>p&&pathExists(p)).slice(-80);
+    const safe=normalizePath(fallback);
+    if(!clean.length)clean.push(pathExists(safe)?safe:"This PC");
+    return clean;
+  }
+
   function currentPath(wrap){
     try{
       const p=globalThis.Win11ExplorerPro?.currentVirtualPath?.(wrap);
@@ -61,15 +78,56 @@
     let suppressPathRecord=false;
     let pathTimer=0,suppressTimer=0;
     const initial=normalizePath(currentPath(wrap)||startPath)||"This PC";
-    const tabs=[makeTab(initial)];
+    const navState=ensureNavigationState();
+    let tabs=[];
+    let restoredSession=false;
 
-    function makeTab(path){
-      const p=normalizePath(path)||"This PC";
-      return {id:"explorer-tab-"+(++seq),path:p,history:[p],index:0,title:titleForPath(p)};
+    function makeTab(path,snapshot=null){
+      const fallback=normalizePath(path)||"This PC";
+      const history=sanitizeHistory(snapshot?.history,fallback);
+      let index=Number.isInteger(snapshot?.index)?snapshot.index:history.length-1;
+      index=Math.max(0,Math.min(index,history.length-1));
+      let current=normalizePath(snapshot?.path);
+      if(!pathExists(current))current=history[index]||fallback;
+      const matched=history.lastIndexOf(current);
+      if(matched>=0)index=matched;
+      else{history.push(current);index=history.length-1}
+      return {id:"explorer-tab-"+(++seq),path:current,history:history.slice(-80),index,title:titleForPath(current)};
     }
-    activeId=tabs[0].id;
+
+    if(startPath==="This PC"&&navState.lastSession?.tabs?.length){
+      tabs=navState.lastSession.tabs.slice(0,12).map(s=>makeTab(s?.path||"This PC",s));
+      const activeIndex=Math.max(0,Math.min(Number(navState.lastSession.activeIndex)||0,tabs.length-1));
+      activeId=tabs[activeIndex]?.id||tabs[0]?.id||null;
+      restoredSession=tabs.length>0;
+    }
+    if(!tabs.length){tabs=[makeTab(initial)];activeId=tabs[0].id}
 
     function activeTab(){return tabs.find(t=>t.id===activeId)||tabs[0]}
+
+    function snapshotTab(tab){
+      if(!tab)return null;
+      return {
+        path:normalizePath(tab.path)||"This PC",
+        history:sanitizeHistory(tab.history,tab.path),
+        index:Number.isInteger(tab.index)?tab.index:0
+      };
+    }
+
+    function persistSession(){
+      if(isMountedMode())return;
+      const activeIndex=Math.max(0,tabs.findIndex(t=>t.id===activeId));
+      navState.lastSession={tabs:tabs.map(snapshotTab).filter(Boolean).slice(0,12),activeIndex};
+      navState.closedTabs=navState.closedTabs.slice(-20);
+      saveState();
+    }
+
+    function pushClosed(tab){
+      const snap=snapshotTab(tab);
+      if(!snap)return;
+      navState.closedTabs.push(snap);
+      navState.closedTabs=navState.closedTabs.slice(-20);
+    }
 
     function isMountedMode(){
       return wrap.classList.contains("real-mount-mode");
@@ -98,6 +156,20 @@
           closeTab(tab.id);
         };
         button.onauxclick=e=>{if(e.button===1){e.preventDefault();closeTab(tab.id)}};
+        button.oncontextmenu=e=>{
+          e.preventDefault();
+          const menu=[
+            ["Novo separador",()=>newTab("This PC")],
+            ["Duplicar separador",()=>duplicateTab(tab.id)]
+          ];
+          if(navState.closedTabs.length)menu.push(["Reabrir separador fechado",()=>reopenClosedTab()]);
+          menu.push(
+            ["Fechar separador",()=>closeTab(tab.id)],
+            ["Fechar outros separadores",()=>closeOtherTabs(tab.id)],
+            ["Fechar separadores à direita",()=>closeTabsToRight(tab.id)]
+          );
+          showContext(e.clientX,e.clientY,menu);
+        };
         tabBar.appendChild(button);
       }
       const add=document.createElement("button");
@@ -113,6 +185,7 @@
     function dispatchPath(path){
       suppressPathRecord=true;
       win.dispatchEvent(new CustomEvent("navigate",{detail:path}));
+      wrap.__explorerProV740?.refresh?.();
       clearTimeout(suppressTimer);
       suppressTimer=setTimeout(()=>{suppressPathRecord=false;syncFromPathbar()},60);
     }    function recordPath(path){
@@ -126,6 +199,7 @@
       tab.path=p;
       tab.title=titleForPath(p);
       renderTabs();
+      persistSession();
     }
 
     function go(path,{record=true}={}){
@@ -144,6 +218,7 @@
       }
       if(tab){tab.path=p;tab.title=titleForPath(p)}
       renderTabs();
+      persistSession();
       dispatchPath(p);
       return true;
     }
@@ -155,6 +230,7 @@
       if(!tab)return;
       activeId=id;
       renderTabs();
+      persistSession();
       dispatchPath(tab.path);
     }    function newTab(path="This PC"){
       if(isMountedMode()){notifyMounted();return null}
@@ -166,25 +242,75 @@
       tabs.push(tab);
       activeId=tab.id;
       renderTabs();
+      persistSession();
       dispatchPath(tab.path);
       return tab;
+    }
+
+    function duplicateTab(id=activeId){
+      if(isMountedMode()){notifyMounted();return null}
+      if(tabs.length>=12){notify("Explorador","Máximo de 12 separadores por janela.");return null}
+      const source=tabs.find(t=>t.id===id)||activeTab();
+      if(!source)return null;
+      const copy=makeTab(source.path,snapshotTab(source));
+      const index=Math.max(0,tabs.findIndex(t=>t.id===source.id));
+      tabs.splice(index+1,0,copy);
+      activeId=copy.id;
+      renderTabs();
+      persistSession();
+      dispatchPath(copy.path);
+      return copy;
+    }
+
+    function reopenClosedTab(){
+      if(isMountedMode()){notifyMounted();return null}
+      if(tabs.length>=12||!navState.closedTabs.length)return null;
+      const snap=navState.closedTabs.pop();
+      const tab=makeTab(snap?.path||"This PC",snap);
+      tabs.push(tab);
+      activeId=tab.id;
+      renderTabs();
+      persistSession();
+      dispatchPath(tab.path);
+      return tab;
+    }
+
+    function closeOtherTabs(id){
+      if(isMountedMode()){notifyMounted();return}
+      const keep=tabs.find(t=>t.id===id);
+      if(!keep)return;
+      tabs.filter(t=>t.id!==id).forEach(pushClosed);
+      tabs=[keep];activeId=keep.id;
+      renderTabs();persistSession();dispatchPath(keep.path);
+    }
+
+    function closeTabsToRight(id){
+      if(isMountedMode()){notifyMounted();return}
+      const index=tabs.findIndex(t=>t.id===id);
+      if(index<0||index===tabs.length-1)return;
+      tabs.slice(index+1).forEach(pushClosed);
+      tabs=tabs.slice(0,index+1);
+      if(!tabs.some(t=>t.id===activeId))activeId=tabs[index].id;
+      renderTabs();persistSession();dispatchPath(activeTab().path);
     }
 
     function closeTab(id){
       if(isMountedMode()){notifyMounted();return}
       const index=tabs.findIndex(t=>t.id===id);
       if(index<0)return;
+      const closing=tabs[index];
+      pushClosed(closing);
       if(tabs.length===1){
+        persistSession();
         try{closeWindow(win)}catch{win?.remove?.()}
         return;
       }
       const wasActive=id===activeId;
       tabs.splice(index,1);
-      if(wasActive){
-        activeId=tabs[Math.min(index,tabs.length-1)].id;
-        renderTabs();
-        dispatchPath(activeTab().path);
-      }else renderTabs();
+      if(wasActive)activeId=tabs[Math.min(index,tabs.length-1)].id;
+      renderTabs();
+      persistSession();
+      if(wasActive)dispatchPath(activeTab().path);
     }
 
     function travel(delta){
@@ -197,6 +323,7 @@
       tab.path=tab.history[next];
       tab.title=titleForPath(tab.path);
       renderTabs();
+      persistSession();
       dispatchPath(tab.path);
     }    function cycle(delta){
       if(tabs.length<2||isMountedMode())return;
@@ -248,6 +375,9 @@
       if(ctrl&&e.key.toLowerCase()==="l"){
         e.preventDefault();startAddressEdit();return;
       }
+      if(ctrl&&e.shiftKey&&e.key.toLowerCase()==="t"){
+        e.preventDefault();reopenClosedTab();return;
+      }
       if(ctrl&&e.key.toLowerCase()==="t"&&!e.shiftKey){
         e.preventDefault();newTab("This PC");return;
       }
@@ -288,14 +418,18 @@
     },1000);
 
     const navigationApi=Object.freeze({
-      newTab,closeTab,switchTab,go,back:()=>travel(-1),forward:()=>travel(1),
+      newTab,closeTab,duplicateTab,reopenClosedTab,closeOtherTabs,closeTabsToRight,
+      switchTab,go,back:()=>travel(-1),forward:()=>travel(1),
       getTabs:()=>tabs.map(t=>({...t,history:t.history.slice()})),
-      getActiveId:()=>activeId
+      getActiveId:()=>activeId,
+      getClosedTabs:()=>navState.closedTabs.map(x=>({...x,history:[...(x.history||[])]}))
     });
     wrap.__explorerNavigationV820=navigationApi;
     if(win)win.__explorerNavigationV820=navigationApi;
     renderTabs();
-    input.value=initial;
+    input.value=activeTab()?.path||initial;
+    if(restoredSession&&activeTab()?.path!==initial)dispatchPath(activeTab().path);
+    else persistSession();
   }
 
   globalThis.buildExplorerV5=function(wrap,win,startPath){
@@ -305,16 +439,17 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerNavigation=Object.freeze({
-    version:"8.2.0",normalizePath,pathExists,titleForPath,installNavigation
+    version:"8.2.1",normalizePath,pathExists,titleForPath,installNavigation
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.2.0",step:14,
+    version:"8.2.1",step:15,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),
       "explorer-tabs","explorer-tab-history","explorer-editable-address",
       "explorer-ctrl-t","explorer-ctrl-w","explorer-ctrl-tab","explorer-alt-history",
-      "explorer-safe-address-validation"
+      "explorer-safe-address-validation","explorer-tab-session-restore",
+      "explorer-reopen-closed-tab","explorer-duplicate-tab","explorer-tab-context-menu"
     ].filter((v,i,a)=>a.indexOf(v)===i)
   });
 })();
