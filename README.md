@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.5 Apps & Default Applications** — registry central de aplicações, associações de ficheiros e protocolos HTTP/HTTPS integradas no `Win11SettingsStore`, com UI de aplicações predefinidas e previews locais seguros no Edge.
+**V9.8.6 Storage 2.0** — análise centralizada do armazenamento virtual por categorias, integração com Settings/Explorer/Storage Sense e limpeza segura de temporários e Reciclagem.
 
 ## Funcionalidades
 
@@ -776,3 +776,26 @@ Primeiro passo de integração com funções reais do dispositivo:
 - PDF virtual abre no visualizador local do Edge através de Blob sandboxed quando o browser o suporta
 - caminhos locais são apresentados como `file://virtual/...`; não representam acesso ao filesystem real do host
 - todos os módulos alterados receberam cache-bust V9.8.5 e o service worker usa `win11-simulator-v9.8.5`
+
+## V9.8.6 Storage 2.0
+
+- novo motor central `Win11Storage` usado por Settings, Explorer e Storage Sense
+- capacidade do perfil simulada explicitamente como 128 GB virtuais; não representa o armazenamento real do PC ou telemóvel
+- snapshot único com espaço utilizado, livre, percentagem, timestamp e definições de armazenamento
+- categorias: Aplicações, Documentos, Imagens, Vídeos, Música, Transferências, Ficheiros temporários, Reciclagem e Outros
+- ficheiros virtuais usam o tamanho efetivo do respetivo conteúdo/referência virtual
+- a categoria Aplicações é uma estimativa interna controlada da instalação do simulador
+- nova página Definições > Armazenamento com resumo de capacidade, barras por categoria, contagem de ficheiros e layout responsivo claro/escuro
+- a opção `storage.cleanupEnabled` continua desativada por defeito
+- `storage.recycleBinEnabled` controla se a limpeza automática inclui a Reciclagem
+- limpeza manual exige confirmação e mostra o espaço aproximado antes da operação
+- temporários são limitados a `C:/Temp`, `C:/Windows/Temp` e `C:/AppData/Local/Temp`
+- referências de conteúdo importado são limpas através de `RealContentBridge.cleanupVirtualValue()` antes de remover o ficheiro virtual
+- esvaziamento da Reciclagem reutiliza o motor auditado `Win11ExplorerRecycle`
+- Storage Sense V7.7 passa a chamar `Win11Storage.runStorageSense()` e respeita as preferências do Settings Store
+- alterações de armazenamento geram `storage:changed` no `Win11SystemBus`
+- “Este PC” e o resumo V8.4 do Explorer leem o mesmo snapshot usado pelas Definições
+- corrigida regressão em novas janelas Explorer: um caminho explicitamente pedido através de `openAppNewWindow()` tem prioridade sobre a restauração de tabs
+- a janela Explorer principal mantém a restauração histórica da sessão quando é reaberta
+- browser audit usa um sandbox temporário de `state.files` para testar limpeza sem apagar ficheiros reais do perfil
+- módulos alterados receberam cache-bust V9.8.6 e o service worker usa `win11-simulator-v9.8.6`

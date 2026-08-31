@@ -415,9 +415,16 @@
     let result="Concluída";
     try{
       if(task.action==="storage-sense"){
-        const bin=ensureFolder("Recycle Bin");
-        const count=Object.keys(bin).length;
-        result=count?count+" item(ns) encontrados na Reciclagem":"Nenhum item para limpar";
+        if(globalThis.Win11Storage?.runStorageSense){
+          const storageResult=await Win11Storage.runStorageSense({source:"background-storage-sense"});
+          result=storageResult.ran
+            ?(storageResult.freed?Win11Storage.formatBytes(storageResult.freed)+" libertados":"Nenhum ficheiro temporário para limpar")
+            :"Sensor de Armazenamento desativado";
+        }else{
+          const bin=ensureFolder("Recycle Bin");
+          const count=Object.keys(bin).length;
+          result=count?count+" item(ns) encontrados na Reciclagem":"Nenhum item para limpar";
+        }
         pushNotification("Sensor de Armazenamento",result,{
           source:"Sensor de Armazenamento",appId:"settings",category:"system",priority:"low",
           actions:[{label:"Abrir armazenamento",type:"open-app",appId:"settings"}]

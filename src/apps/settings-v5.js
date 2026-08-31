@@ -3,7 +3,7 @@
 function buildSettingsV5(wrap){
   wrap.className="settings-v4";
   const pages=[
-    ["system","🖥️ Sistema"],["bluetooth","🔵 Bluetooth e dispositivos"],["network","🌐 Rede e Internet"],["personalization","🎨 Personalização"],
+    ["system","🖥️ Sistema"],["storage","💽 Armazenamento"],["bluetooth","🔵 Bluetooth e dispositivos"],["network","🌐 Rede e Internet"],["personalization","🎨 Personalização"],
     ["apps","▦ Aplicações"],["explorer","📁 Explorador de Ficheiros"],["accounts","👤 Contas"],["time","🕒 Hora e idioma"],["gaming","🎮 Jogos"],["accessibility","♿ Acessibilidade"],
     ["privacy","🔒 Privacidade e segurança"],["update","🔄 Windows Update"]
   ];
@@ -67,7 +67,12 @@ function renderSettingsPageV5(box,page){
 }
 function showSystemSubpage(kind){
   if(kind==="clipboard"){toggleOverlay("clipboard");return}
-  if(kind==="storage"){openApp("diskmgmt");return}
+  if(kind==="storage"){
+    const w=[...document.querySelectorAll('.window[data-app="settings"]')].pop();
+    const b=w?.querySelector('[data-settings="storage"]');
+    if(b){b.click();return}
+    openApp("settings");return
+  }
   const content={
     notifications:`<h3>Notificações</h3><p>As notificações do sistema virtual estão ${state.privacy.notifications?"ativadas":"desativadas"}.</p><button class="sys-button" id="dlg-toggle-notify">${state.privacy.notifications?"Desativar":"Ativar"}</button>`,
     multitasking:`<h3>Multitarefas</h3><p>Snap Layouts: ativo</p><p>Alt+Tab: ativo</p><p>Ambientes virtuais: ${state.desktops.length}</p><p>Use Win+Tab para gerir ambientes.</p>`,

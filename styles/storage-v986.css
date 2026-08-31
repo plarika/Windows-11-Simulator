@@ -1,0 +1,94 @@
+/* Windows 11 Simulator V9.8.6 — Storage 2.0 */
+.settings-storage-v986{display:grid;gap:14px;color:inherit}
+.storage-title-v986{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.storage-title-v986 h1{margin:0}
+.storage-title-v986 p{margin:5px 0 0;color:#68717b;font-size:10px}
+.storage-badge-v986{
+  flex:none;display:inline-flex;align-items:center;min-height:24px;padding:4px 8px;
+  border:1px solid color-mix(in srgb,var(--accent) 34%,#d5dde3);border-radius:999px;
+  background:color-mix(in srgb,var(--accent) 8%,#fff);color:var(--accent-strong);
+  font-size:8px;font-weight:700;white-space:nowrap
+}
+.storage-hero-v986,.storage-categories-v986,.storage-cleanup-v986{
+  border:1px solid #e1e5e9;border-radius:12px;background:rgba(255,255,255,.74)
+}
+.storage-hero-v986{padding:15px}
+.storage-capacity-v986{display:flex;align-items:baseline;gap:8px}
+.storage-capacity-v986 strong{font-size:26px;line-height:1}
+.storage-capacity-v986 span{font-size:10px;color:#68717b}
+.storage-total-bar-v986,.storage-category-bar-v986{
+  overflow:hidden;background:#e3e8ed;border-radius:999px
+}
+.storage-total-bar-v986{height:9px;margin-top:13px}
+.storage-total-bar-v986 i,.storage-category-bar-v986 i{
+  display:block;height:100%;background:var(--accent);border-radius:inherit
+}
+.storage-summary-v986{display:flex;justify-content:space-between;gap:10px;margin-top:7px;color:#68717b;font-size:9px}
+.storage-categories-v986{padding:13px}
+.storage-categories-v986 h3,.storage-cleanup-v986 h3{margin:0}
+.storage-category-v986{
+  display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:center;
+  padding:10px 0;border-bottom:1px solid #e7eaed
+}
+.storage-category-v986:last-child{border-bottom:0}
+.storage-category-icon-v986{
+  display:grid;place-items:center;width:30px;height:30px;border-radius:8px;
+  background:color-mix(in srgb,var(--accent) 10%,#edf2f6);font-size:15px
+}
+.storage-category-main-v986>div:first-child{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.storage-category-main-v986 strong{font-size:10px}
+.storage-category-main-v986 span{font-size:9px;font-weight:700}
+.storage-category-main-v986 small{display:block;margin-top:4px;color:#68717b;font-size:8px}
+.storage-category-bar-v986{height:5px;margin-top:6px}
+.storage-cleanup-v986{padding:13px}
+.storage-cleanup-head-v986 p{margin:5px 0 10px;color:#68717b;font-size:9px}
+.storage-toggle-row-v986{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  min-height:56px;padding:8px 0;border-top:1px solid #e7eaed
+}
+.storage-toggle-row-v986>div{display:grid;gap:3px}
+.storage-toggle-row-v986 strong{font-size:10px}
+.storage-toggle-row-v986 small{font-size:8px;color:#68717b}
+.storage-toggle-row-v986 .toggle{flex:none}
+.storage-cleanup-preview-v986{
+  display:flex;gap:14px;flex-wrap:wrap;padding:10px 0;border-top:1px solid #e7eaed;
+  color:#68717b;font-size:9px
+}
+.storage-cleanup-preview-v986 strong{color:inherit}
+.storage-actions-v986{display:flex;gap:8px;flex-wrap:wrap}
+.storage-footnote-v986{margin:0;color:#68717b;font-size:8px;line-height:1.45}
+
+#app.theme-dark .storage-title-v986 p,
+#app.theme-dark .storage-capacity-v986 span,
+#app.theme-dark .storage-summary-v986,
+#app.theme-dark .storage-category-main-v986 small,
+#app.theme-dark .storage-cleanup-head-v986 p,
+#app.theme-dark .storage-toggle-row-v986 small,
+#app.theme-dark .storage-cleanup-preview-v986,
+#app.theme-dark .storage-footnote-v986{color:#aab4bc}
+#app.theme-dark .storage-hero-v986,
+#app.theme-dark .storage-categories-v986,
+#app.theme-dark .storage-cleanup-v986{background:rgba(37,40,47,.8);border-color:#424850}
+#app.theme-dark .storage-category-v986,
+#app.theme-dark .storage-toggle-row-v986,
+#app.theme-dark .storage-cleanup-preview-v986{border-color:#41464d}
+#app.theme-dark .storage-total-bar-v986,
+#app.theme-dark .storage-category-bar-v986{background:#414750}
+#app.theme-dark .storage-category-icon-v986{background:color-mix(in srgb,var(--accent) 16%,#292e35)}
+#app.theme-dark .storage-badge-v986{
+  background:color-mix(in srgb,var(--accent) 14%,#282e34);
+  border-color:color-mix(in srgb,var(--accent) 42%,#44505a);color:#f2f6f8
+}
+
+@media(max-width:720px){
+  .storage-title-v986{align-items:flex-start}
+  .storage-badge-v986{max-width:44%;white-space:normal;text-align:center}
+  .storage-capacity-v986{align-items:flex-start;flex-direction:column;gap:4px}
+  .storage-capacity-v986 strong{font-size:22px}
+  .storage-category-v986{grid-template-columns:28px minmax(0,1fr);gap:8px}
+  .storage-category-icon-v986{width:27px;height:27px;font-size:13px}
+  .storage-category-main-v986>div:first-child{align-items:flex-start;flex-direction:column;gap:2px}
+  .storage-summary-v986{align-items:flex-start;flex-direction:column;gap:2px}
+  .storage-toggle-row-v986{align-items:flex-start}
+  .storage-cleanup-preview-v986{flex-direction:column;gap:4px}
+}

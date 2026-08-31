@@ -127,7 +127,7 @@
       return {id:"explorer-tab-"+(++seq),path:current,history:history.slice(-80),index,title:titleForPath(current),pinned:!!snapshot?.pinned};
     }
 
-    if(startPath==="This PC"&&windowSession.lastSession?.tabs?.length){
+    if(startPath==="This PC"&&win?.dataset?.explorerExplicitStart!=="1"&&windowSession.lastSession?.tabs?.length){
       tabs=windowSession.lastSession.tabs.slice(0,12).map(s=>makeTab(s?.path||"This PC",s));
       const activeIndex=Math.max(0,Math.min(Number(windowSession.lastSession.activeIndex)||0,tabs.length-1));
       activeId=tabs[activeIndex]?.id||tabs[0]?.id||null;

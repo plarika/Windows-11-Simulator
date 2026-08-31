@@ -158,8 +158,14 @@
       grid.insertBefore(section,grid.firstChild);
       const summary=document.createElement("div");
       summary.className="thispc-storage-summary-v840";
-      const all=folderStats("C:");
-      summary.innerHTML='<strong>Armazenamento virtual</strong><span>'+all.files+' ficheiro(s) · '+formatBytes(all.size)+' utilizados no perfil</span>';
+      const storage=globalThis.Win11Storage?.snapshot?.();
+      if(storage){
+        const files=storage.categories.reduce((n,c)=>n+(c.key==="apps"?0:c.files),0);
+        summary.innerHTML='<strong>Armazenamento virtual</strong><span>'+files+' ficheiro(s) · '+Win11Storage.formatBytes(storage.used)+' de '+Win11Storage.formatBytes(storage.capacity)+' utilizados no perfil</span>';
+      }else{
+        const all=folderStats("C:");
+        summary.innerHTML='<strong>Armazenamento virtual</strong><span>'+all.files+' ficheiro(s) · '+formatBytes(all.size)+' utilizados no perfil</span>';
+      }
       grid.appendChild(summary);
     };
     try{renderThisPCV5=globalThis.renderThisPCV5}catch{}

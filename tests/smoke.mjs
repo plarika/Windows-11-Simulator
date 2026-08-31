@@ -363,7 +363,7 @@ check(explorerPro.includes('wrap.classList.contains("real-mount-mode")'), "Explo
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=9.6.0"), "Explorer Pro module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.css?v=8.1.0"), "Explorer Pro CSS precached");
 const explorerNavigation=readFileSync(resolve(root, "src/features/explorer-navigation-v820.js"), "utf8");
-check(index.includes("./src/features/explorer-navigation-v820.js?v=9.3.0"), "Explorer Navigation V9.3 module loaded");
+check(index.includes("./src/features/explorer-navigation-v820.js?v=9.8.6"), "Explorer Navigation V9.3 module loaded through V9.8.6 cache key");
 check(index.includes("./styles/explorer-navigation-v820.css?v=8.3.0"), "Explorer Navigation V8.3 styles loaded");
 check(explorerNavigation.includes('version:"9.3.0"'), "Explorer Navigation V9.3 bridge present");
 check(explorerNavigation.includes('"explorer-tabs"') && explorerNavigation.includes('"explorer-tab-history"'), "Explorer tab capabilities registered");
@@ -385,13 +385,15 @@ check(explorerNavigation.includes("duplicateTab") && explorerNavigation.includes
 check(explorerNavigation.includes("closeOtherTabs") && explorerNavigation.includes("closeTabsToRight"), "Explorer tab context close actions present");
 check(explorerNavigation.includes("pathExists") && explorerNavigation.includes("O caminho não existe"), "Explorer address validation present");
 check(explorerNavigation.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Navigation guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-navigation-v820.js?v=9.3.0"), "Explorer Navigation V9.3 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-navigation-v820.js?v=9.8.6"), "Explorer Navigation V9.3 module precached with V9.8.6 cache key");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-navigation-v820.css?v=8.3.0"), "Explorer Navigation V8.3 CSS precached");
 const explorerMultiWindow=readFileSync(resolve(root, "src/features/explorer-multiwindow-v930.js"), "utf8");
 check(index.includes("./src/features/explorer-multiwindow-v930.js?v=9.3.0"), "Explorer Multi-Window V9.3 module loaded");
 check(index.includes("./styles/explorer-multiwindow-v930.css?v=9.3.0"), "Explorer Multi-Window V9.3 styles loaded");
 check(explorerMultiWindow.includes('version:VERSION') && explorerMultiWindow.includes('VERSION="9.3.0"'), "Explorer Multi-Window V9.3 bridge present");
 check(runtimeSource.includes("function openAppNewWindow") && runtimeSource.includes("globalThis.openAppNewWindow"), "Runtime explicit new-window API present");
+check(index.includes("./src/core/runtime.js?v=9.8.6") && readFileSync(resolve(root, "service-worker.js"), "utf8").includes("src/core/runtime.js?v=9.8.6"), "Runtime V9.8.6 cache-busted");
+check(runtimeSource.includes('makeWindow(appId,initialPath,true)') && runtimeSource.includes('explorerExplicitStart="1"') && explorerNavigation.includes('explorerExplicitStart!=="1"'), "Explorer explicit new-window path overrides tab-session restore");
 check(explorerNavigation.includes("windowSessions") && explorerNavigation.includes("sessionKey") && explorerNavigation.includes("isPrimaryWindow"), "Explorer per-window tab sessions present");
 check(explorerNavigation.includes("sessionEntries.length>16"), "Explorer window session state is bounded");
 check(explorerMultiWindow.includes("data-new-window-v930") && explorerMultiWindow.includes("Ctrl+N"), "Explorer new-window command present");
@@ -452,7 +454,7 @@ check(explorerPro.includes("data-open-versions-v960") && explorerPro.includes("V
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-versions-v960.js?v=9.6.0"), "Explorer Versions V9.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-versions-v960.css?v=9.6.0"), "Explorer Versions V9.6 CSS precached");
 const explorerDetails=readFileSync(resolve(root, "src/features/explorer-details-v840.js"), "utf8");
-check(index.includes("./src/features/explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module loaded");
+check(index.includes("./src/features/explorer-details-v840.js?v=9.8.6"), "Explorer Details V8.4 module loaded through V9.8.6 cache key");
 check(index.includes("./styles/explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 styles loaded");
 check(explorerDetails.includes('version:"8.4.0"'), "Explorer Details V8.4 bridge present");
 check(explorerDetails.includes("previewMarkup") && explorerDetails.includes("explorer-detail-text-v840"), "Explorer text preview present");
@@ -460,7 +462,7 @@ check(explorerDetails.includes("data:image/") && explorerDetails.includes("explo
 check(explorerDetails.includes("folderStats") && explorerDetails.includes("thispc-folders-v840"), "Explorer folder and This PC summaries present");
 check(explorerDetails.includes("pré-visualização automática desativada"), "Explorer real imported content preview privacy guard present");
 check(explorerDetails.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Details guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.js?v=9.8.6"), "Explorer Details V8.4 module precached with V9.8.6 cache key");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 CSS precached");
 const explorerContext=readFileSync(resolve(root, "src/features/explorer-context-v850.js"), "utf8");
 check(index.includes("./src/features/explorer-context-v850.js?v=9.1.0"), "Explorer Context V9.1 module loaded");
@@ -590,6 +592,8 @@ const settingsExplorerV984=readFileSync(resolve(root, "src/features/settings-exp
 const resourceMonitorV9841=readFileSync(resolve(root, "styles/resource-monitor-v9841.css"), "utf8");
 const appsDefaultsV985=readFileSync(resolve(root, "src/features/apps-defaults-v985.js"), "utf8");
 const appsDefaultsCssV985=readFileSync(resolve(root, "styles/apps-defaults-v985.css"), "utf8");
+const storageV986=readFileSync(resolve(root, "src/features/storage-v986.js"), "utf8");
+const storageCssV986=readFileSync(resolve(root, "styles/storage-v986.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.5"), "Settings Core V9.8.1 module loaded through V9.8.5 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -656,6 +660,24 @@ check(appsDefaultsCssV985.includes(".apps-registry-grid-v985") && appsDefaultsCs
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("apps-defaults-v985.js?v=9.8.5"), "Apps & Defaults V9.8.5 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("apps-defaults-v985.css?v=9.8.5"), "Apps & Defaults V9.8.5 CSS precached");
 check(index.includes("./src/features/desktop-integration-v700.js?v=9.8.5") && index.includes("./src/features/edge-advanced-v730.js?v=9.8.5") && index.includes("./src/apps/shell-integration.js?v=9.8.5"), "V9.8.5 changed consumers cache-busted");
+check(index.includes("./src/features/storage-v986.js?v=9.8.6"), "Storage V9.8.6 module loaded");
+check(index.includes("./styles/storage-v986.css?v=9.8.6"), "Storage V9.8.6 styles loaded");
+check(storageV986.includes('VERSION="9.8.6"') && storageV986.includes("Win11Storage"), "Storage V9.8.6 bridge present");
+check(storageV986.includes("CAPACITY_BYTES=128*1024*1024*1024") && storageV986.includes("CATEGORY_META"), "Storage virtual capacity and categories present");
+check(storageV986.includes("C:/Temp") && storageV986.includes("C:/Windows/Temp") && storageV986.includes("C:/AppData/Local/Temp"), "Storage temporary roots present");
+check(storageV986.includes("cleanupTemporary") && storageV986.includes("runStorageSense"), "Storage cleanup and Storage Sense engines present");
+check(storageV986.includes("RealContentBridge?.cleanupVirtualValue") && storageV986.includes("Win11ExplorerRecycle?.empty"), "Storage cleanup respects real-content and Recycle engines");
+check(storageV986.includes('bus.emit("storage:changed"') && storageV986.includes('bus.on("settings:storage:changed"'), "Storage System Bus integration present");
+check(storageV986.includes('page==="storage"') && storageV986.includes("data-storage-clean-v986"), "Storage Settings page and manual cleanup present");
+check(readFileSync(resolve(root, "src/apps/settings-v5.js"), "utf8").includes('["storage","💽 Armazenamento"]'), "Storage Settings navigation entry present");
+check(readFileSync(resolve(root, "src/apps/explorer-v5.js"), "utf8").includes("Win11Storage?.snapshot") && readFileSync(resolve(root, "src/features/explorer-details-v840.js"), "utf8").includes("Win11Storage?.snapshot"), "Explorer consumes Storage V9.8.6 snapshot");
+check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"), "utf8").includes("Win11Storage.runStorageSense"), "Background Storage Sense consumes Storage V9.8.6");
+check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.8.6'), "PWA cache bumped to V9.8.6");
+check(index.includes("./src/apps/settings-v5.js?v=9.8.6") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 changed consumers cache-busted");
+
 
 const settingsV5Compat=readFileSync(resolve(root, "src/apps/settings-v5.js"), "utf8");
 const backupRecoveryV982=readFileSync(resolve(root, "src/apps/backup-recovery.js"), "utf8");
@@ -686,7 +708,7 @@ check(deviceCenter.includes("devicechange") && deviceCenter.includes("online") &
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-integration-v760.js?v=8.1.0"), "Real Device Integration V7.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-device-integration-v760.css?v=8.1.0"), "Real Device Integration V7.6 CSS precached");
 const notificationBg=readFileSync(resolve(root, "src/features/notifications-background-v770.js"), "utf8");
-check(index.includes("./src/features/notifications-background-v770.js?v=8.1.0"), "Notifications Background V7.7 module loaded");
+check(index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "Notifications Background V7.7 module loaded through V9.8.6 cache key");
 check(index.includes("./styles/notifications-background-v770.css?v=8.1.0"), "Notifications Background V7.7 styles loaded");
 check(notificationBg.includes("Win11NotificationCenter"), "Notification Center V7.7 bridge present");
 check(notificationBg.includes("notification-groups"), "Grouped notification capability registered");
@@ -706,7 +728,7 @@ check(notificationBg.includes("Service Control Manager"), "Service Event Log int
 check(notificationBg.includes("backgroundActivityV77.runs"), "Background activity history present");
 check(!/function ensureState\(\)[\s\S]*?syncUnread\(/.test(notificationBg.match(/function ensureState\(\)[\s\S]*?\n  }/m)?.[0]||""), "Notification state initialization avoids unread recursion");
 check(!notificationBg.includes("child_process") && !notificationBg.includes("new Function") && !notificationBg.includes("eval("), "Background engine cannot execute arbitrary host code");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.js?v=8.1.0"), "Notifications Background V7.7 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.js?v=9.8.6"), "Notifications Background V7.7 module precached with V9.8.6 cache key");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("notifications-background-v770.css?v=8.1.0"), "Notifications Background V7.7 CSS precached");
 const settingsSecurity=readFileSync(resolve(root, "src/features/settings-security-v780.js"), "utf8");
 check(index.includes("./src/features/settings-security-v780.js?v=8.1.0"), "Settings Security V7.8 module loaded");

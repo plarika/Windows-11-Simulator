@@ -165,6 +165,7 @@ function buildExplorerV5(wrap,win,startPath){
 }
 function renderThisPCV5(grid,nav){
   grid.className="thispc-grid";
-  const drives=[{name:"Disco Local (C:)",icon:"💽",used:46,total:"128 GB",path:"C:/Documents"},{name:"Dados (D:)",icon:"💾",used:30,total:"256 GB",path:"C:/Downloads"},{name:"OneDrive",icon:"☁️",used:12,total:"5 GB",path:"C:/OneDrive"}];
+  const storage=globalThis.Win11Storage?.snapshot?.(),cUsed=storage?Number(Math.max(storage.percent?1:0,Math.min(100,storage.percent)).toFixed(1)):46;
+  const drives=[{name:"Disco Local (C:)",icon:"💽",used:cUsed,total:"128 GB",path:"C:/Documents"},{name:"Dados (D:)",icon:"💾",used:30,total:"256 GB",path:"C:/Downloads"},{name:"OneDrive",icon:"☁️",used:12,total:"5 GB",path:"C:/OneDrive"}];
   drives.forEach(d=>{const c=document.createElement("div");c.className="drive-card";c.innerHTML=`<div style="font-size:26px">${d.icon}</div><strong>${d.name}</strong><div style="font-size:12px;color:#68717b;margin-top:4px">${100-d.used}% livre de ${d.total} · virtual</div><div class="drive-bar"><i style="width:${d.used}%"></i></div>`;c.onclick=()=>nav(d.path);grid.appendChild(c)});
 }

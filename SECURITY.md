@@ -235,3 +235,19 @@ A abertura de HTML virtual no Edge não executa o documento original. O conteúd
 PDF virtual é materializado apenas a partir do conteúdo já autorizado no simulador e apresentado num iframe sandboxed através de Blob URL temporário. O Blob URL é revogado quando a janela correspondente deixa o DOM.
 
 Nenhuma associação V9.8.5 concede permissões do browser, acesso a ficheiros reais, capacidades do host ou execução de comandos do sistema operativo. Pastas reais montadas continuam sujeitas às fronteiras e permissões já documentadas pelo File System Access API.
+
+## Storage 2.0 V9.8.6
+
+A V9.8.6 calcula apenas armazenamento pertencente ao simulador. A capacidade de 128 GB é um modelo virtual e não consulta, representa ou modifica a capacidade do disco real do sistema anfitrião. A API `navigator.storage` usada noutro módulo de diagnóstico do dispositivo permanece separada de `Win11Storage`.
+
+O scanner de categorias percorre exclusivamente `state.files` do perfil ativo e a Reciclagem virtual. Pastas montadas através de File System Access não são percorridas nem contabilizadas automaticamente pelo Storage 2.0.
+
+A limpeza automática permanece desativada por defeito. Quando ativada, só pode remover conteúdo sob os roots virtuais allowlisted `C:/Temp`, `C:/Windows/Temp` e `C:/AppData/Local/Temp`. A Reciclagem é uma opção separada do Settings Store e pode ser excluída da limpeza.
+
+Antes de eliminar uma referência virtual que represente conteúdo importado, o motor tenta `RealContentBridge.cleanupVirtualValue()`, permitindo remover de forma consistente o Blob associado ao perfil. O esvaziamento da Reciclagem reutiliza `Win11ExplorerRecycle.empty()`, preservando as invalidações de histórico e as regras de eliminação permanente já auditadas.
+
+`Win11Storage` não recebe handles File System Access, caminhos do host, permissões adicionais, acesso a processos, execução de comandos ou capacidade de apagar ficheiros reais. O evento `storage:changed` contém apenas contadores, bytes libertados e origem textual limitada.
+
+O Browser audit da V9.8.6 testa a limpeza dentro de uma cópia temporária isolada de `state.files` e substitui temporariamente `saveState()` por um no-op durante esse sandbox. O objeto original do perfil e as definições de armazenamento são restaurados antes de continuar o audit.
+
+A correção de sessão Explorer associada à V9.8.6 separa reabertura da janela principal de criação explícita de uma nova janela. Apenas `openAppNewWindow(..., caminho)` marca o destino como explícito; isto impede que uma sessão antiga substitua o destino solicitado sem desativar o restauro normal de tabs da janela principal.
