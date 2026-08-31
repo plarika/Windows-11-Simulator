@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.4.0 Explorer Details & This PC** — o Explorador ganha painel lateral de detalhes/pré-visualização e um `This PC` mais completo com pastas e resumo de armazenamento virtual.
+**V8.5.0 Explorer Modern Context & Properties** — o Explorador ganha menus de contexto modernos com ações rápidas, `Mostrar mais opções` e Propriedades com separadores Geral/Detalhes.
 
 ## Funcionalidades
 
@@ -454,3 +454,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - `This PC` mantém os drives existentes e ganha uma secção Pastas com 6 localizações principais
 - resumo de armazenamento virtual do perfil no `This PC`
 - layout responsivo: painel lateral em desktop e overlay em ecrãs pequenos
+
+## V8.5.0 Explorer Modern Context & Properties
+
+- novo menu de contexto moderno específico para ficheiros e pastas virtuais do Explorer
+- ações rápidas no topo: Cortar, Copiar, Mudar nome, Partilhar quando aplicável e Eliminar
+- ações de item único: Abrir, Acesso rápido, Abrir com e Propriedades
+- `Mostrar mais opções` abre um menu secundário clássico com Abrir com, Partilhar, Imprimir, Copiar caminho e Propriedades
+- seleção múltipla mostra apenas ações em lote válidas e não expõe ações de item único
+- Propriedades V8.5 para seleção única com separadores realmente funcionais `Geral` e `Detalhes`
+- Geral mostra tipo, localização, tamanho, conteúdo de pasta e origem
+- Detalhes mostra caminho completo, extensão, modificação quando disponível, atributos e isolamento de perfil
+- Propriedades V7.4 continuam a ser usadas para seleção múltipla
+- menus V8.5 não interceptam `real-mount-mode`; mounts reais mantêm o fluxo próprio

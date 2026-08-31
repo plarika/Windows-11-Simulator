@@ -398,6 +398,17 @@ check(explorerDetails.includes("pré-visualização automática desativada"), "E
 check(explorerDetails.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Details guards real mount mode");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 CSS precached");
+const explorerContext=readFileSync(resolve(root, "src/features/explorer-context-v850.js"), "utf8");
+check(index.includes("./src/features/explorer-context-v850.js?v=8.5.0"), "Explorer Context V8.5 module loaded");
+check(index.includes("./styles/explorer-context-v850.css?v=8.5.0"), "Explorer Context V8.5 styles loaded");
+check(explorerContext.includes('version:"8.5.0"'), "Explorer Context V8.5 bridge present");
+check(explorerContext.includes("explorer-context-quick-v850") && explorerContext.includes("Mostrar mais opções"), "Explorer modern context menu present");
+check(explorerContext.includes("Partilhar") && explorerContext.includes("Mudar nome"), "Explorer quick context actions present");
+check(explorerContext.includes("showClassicMore") && explorerContext.includes("Copiar caminho"), "Explorer More Options and copy path present");
+check(explorerContext.includes("data-prop-tab") && explorerContext.includes("data-prop-panel"), "Explorer rich properties tabs present");
+check(explorerContext.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Context guards real mount mode");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.js?v=8.5.0"), "Explorer Context V8.5 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.css?v=8.5.0"), "Explorer Context V8.5 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");
