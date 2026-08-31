@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.1.2 Google Navigation Reliability** — pesquisas Google incorporadas usam modo de nova janela para tornar os resultados navegáveis sem permitir que um iframe substitua o simulador.
+**V8.2.0 Explorer Navigation** — o Explorador de Ficheiros ganha separadores reais na mesma janela, histórico independente, barra de endereço editável e atalhos de navegação.
 
 ## Funcionalidades
 
@@ -402,3 +402,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - a sandbox continua sem `allow-top-navigation` e não pode substituir o simulador
 - Abrir Google completo remove o parâmetro `igu` exclusivo do modo incorporado
 - Ouvir Música e restantes integrações Web permanecem inalteradas
+
+## V8.2.0 Explorer Navigation
+
+- vários separadores dentro da mesma janela do Explorador
+- histórico de navegação independente por separador
+- botão `+` para novo separador e fecho individual
+- `Ctrl+T` cria separador e `Ctrl+W` fecha o separador ativo
+- `Ctrl+Tab` e `Ctrl+Shift+Tab` alternam entre separadores
+- `Alt+←` e `Alt+→` percorrem o histórico do separador ativo
+- `Ctrl+L` ativa uma barra de endereço editável
+- caminhos inválidos são rejeitados sem criar pastas virtuais por acidente
+- pastas de sistema virtuais vazias continuam reconhecidas como destinos válidos
+- navegação por separadores fica protegida enquanto uma pasta real montada está aberta

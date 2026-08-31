@@ -1,0 +1,99 @@
+/* Windows 11 Simulator V8.2 — Explorer Navigation */
+.explorer-navigation-v820 .explorer-tabs{
+  align-items:flex-end;
+  gap:2px;
+  padding-right:6px;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+.explorer-tab-v820{
+  height:32px;
+  min-width:128px;
+  max-width:220px;
+  border:0;
+  border-radius:7px 7px 0 0;
+  background:transparent;
+  color:inherit;
+  padding:0 7px 0 9px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  cursor:pointer;
+  flex:0 1 190px;
+}
+.explorer-tab-v820:hover{background:rgba(255,255,255,.58)}
+.explorer-tab-v820.active{
+  background:#fff;
+  box-shadow:0 -1px 2px rgba(0,0,0,.05);
+}
+.explorer-tab-folder{font-size:13px;opacity:.8}
+.explorer-tab-label{
+  min-width:0;
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:left;
+}.explorer-tab-close{
+  width:20px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  border-radius:4px;
+  font-size:15px;
+  line-height:1;
+  opacity:.68;
+}
+.explorer-tab-close:hover{background:rgba(0,0,0,.08);opacity:1}
+.explorer-tab-new-v820{
+  width:32px;
+  height:30px;
+  flex:0 0 32px;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:inherit;
+  cursor:pointer;
+  font-size:17px;
+}
+.explorer-tab-new-v820:hover{background:rgba(255,255,255,.58)}
+.explorer-navigation-v820 .explorer-location-shell-v820{
+  position:relative;
+  flex:1;
+  min-width:120px;
+}
+.explorer-navigation-v820 .explorer-location-shell-v820 .pathbar{
+  width:100%;
+  box-sizing:border-box;
+}
+.explorer-location-input-v820{
+  display:none;
+  width:100%;
+  height:32px;
+  box-sizing:border-box;
+  border:1px solid #1676d2;
+  border-radius:6px;
+  padding:0 10px;
+  background:#fff;
+  color:#202124;
+  outline:none;
+}.explorer-location-shell-v820.editing .pathbar{display:none}
+.explorer-location-shell-v820.editing .explorer-location-input-v820{display:block}
+#app.theme-dark .explorer-tab-v820.active{
+  background:#202228;
+  color:#f2f3f5;
+}
+#app.theme-dark .explorer-tab-v820:hover,
+#app.theme-dark .explorer-tab-new-v820:hover{
+  background:rgba(255,255,255,.08);
+}
+#app.theme-dark .explorer-tab-close:hover{background:rgba(255,255,255,.1)}
+#app.theme-dark .explorer-location-input-v820{
+  background:#202228;
+  color:#f2f3f5;
+  border-color:#3b8fe6;
+}
+@media (max-width:760px){
+  .explorer-tab-v820{min-width:110px;max-width:165px}
+  .explorer-navigation-v820 .explorer-search.real{width:min(190px,34%)}
+}

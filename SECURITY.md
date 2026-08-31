@@ -99,3 +99,7 @@ Pins, aplicações recentes e histórico de pesquisa são guardados apenas no es
 ## Google Navigation V8.1.2
 
 A integração Google mantém o iframe sandboxed e não concede `allow-top-navigation` nem `allow-top-navigation-by-user-activation`. As pesquisas incorporadas usam `newwindow=1` para pedir ao Google que abra resultados numa nova aba/janela, caminho compatível com `allow-popups` e `allow-popups-to-escape-sandbox`. Ao usar o botão para abrir o Google completo, o parâmetro `igu` é removido antes da abertura externa. Assim, conteúdo cross-origin não recebe permissão para substituir o shell do simulador.
+
+## Explorer Navigation V8.2.0
+
+A barra de endereço V8.2 valida caminhos contra o filesystem virtual antes de navegar e não cria pastas implícitas a partir de texto introduzido pelo utilizador. A camada de separadores também suspende operações de navegação virtual enquanto o Explorer está em `real-mount-mode`, evitando misturar estado de separadores virtuais com handles de pastas reais autorizadas pelo browser.
