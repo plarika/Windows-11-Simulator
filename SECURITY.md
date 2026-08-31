@@ -147,3 +147,9 @@ A V9.1 mantém a metadata num mapa separado do conteúdo do VFS para não altera
 ## Search 2.0 V9.2.0
 
 A V9.2 constrói um índice apenas a partir do catálogo de aplicações/definições e do filesystem virtual `state.files` já autorizado. Não percorre `real-mount-mode`, não lê handles de File System Access, não consulta o clipboard e não envia queries para serviços externos. Filtros são analisados localmente como dados e não são executados como código. O índice é invalidado por hooks do Filesystem Pro em alterações de conteúdo/metadata e permanece limitado ao perfil ativo.
+
+## Explorer Multi-Window V9.3.0
+
+A V9.3 permite múltiplas janelas apenas dentro do mesmo runtime e desktop virtual autorizado. Transferências entre Explorers reutilizam o motor V9.0 e o mesmo `state.files`; não existe filesystem paralelo. O payload de drag-and-drop entre janelas contém apenas identificador da janela de origem e descritores virtuais de itens. `real-mount-mode` é explicitamente excluído. A gestão de janelas considera apenas filhos reais de `#window-layer`, impedindo previews/clones visuais do Window Manager de serem tratados como janelas operacionais. Sessões secundárias persistentes são limitadas e não armazenam handles reais.
+
+A correção de Acesso rápido V9.3 é exclusivamente visual: faz reset do estilo nativo de `<button>` e define estados normal/hover/ativo/foco no dark theme. Não altera caminhos, permissões nem estado do filesystem.

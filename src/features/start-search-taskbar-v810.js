@@ -316,6 +316,7 @@
   }
   function jumpItems(appId){
     if(appId==="explorer")return [
+      ["Nova janela",()=>globalThis.Win11ExplorerMultiWindow?.open?.("This PC")],
       ["Documentos",()=>openAppV810("explorer","C:/Documents")],
       ["Ambiente de Trabalho",()=>openAppV810("explorer","C:/Desktop")],
       ["Imagens",()=>openAppV810("explorer","C:/Pictures")]

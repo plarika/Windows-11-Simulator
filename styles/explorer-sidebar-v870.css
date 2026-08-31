@@ -79,3 +79,49 @@
 #app.theme-dark .explorer-sidebar-v870:not(.sidebar-compact-v870) .nav-item.active{
   background:rgba(62,146,214,.24);
 }
+
+/* V9.3 mobile/dark Quick Access button reset */
+.explorer-sidebar-v870 .explorer-quick-item-v830{
+  -webkit-appearance:none;
+  appearance:none;
+  box-sizing:border-box;
+  border:1px solid transparent;
+  background:transparent;
+  color:inherit;
+  box-shadow:none;
+  outline:none;
+  font:inherit;
+}
+.explorer-sidebar-v870 .explorer-quick-item-v830:focus-visible{
+  border-color:rgba(0,120,212,.65);
+  box-shadow:0 0 0 2px rgba(0,120,212,.18);
+}
+.explorer-sidebar-v870:not(.sidebar-compact-v870) .explorer-quick-item-v830.active{
+  background:rgba(0,120,212,.13);
+  border-color:rgba(0,120,212,.12);
+}
+#app.theme-dark .explorer-sidebar-v870 .explorer-quick-item-v830{
+  background:transparent;
+  color:#f2f3f5;
+  border-color:transparent;
+  box-shadow:none;
+}
+#app.theme-dark .explorer-sidebar-v870:not(.sidebar-compact-v870) .explorer-quick-item-v830:hover{
+  background:rgba(255,255,255,.09);
+}
+#app.theme-dark .explorer-sidebar-v870:not(.sidebar-compact-v870) .explorer-quick-item-v830.active{
+  background:rgba(62,146,214,.24);
+  border-color:rgba(62,146,214,.18);
+  color:#fff;
+}
+#app.theme-dark .explorer-sidebar-v870 .explorer-quick-item-v830 .explorer-sidebar-icon-v870,
+#app.theme-dark .explorer-sidebar-v870 .explorer-quick-item-v830 .explorer-sidebar-label-v870{
+  color:inherit;
+  opacity:1;
+}
+@media(max-width:760px){
+  .explorer-sidebar-v870:not(.sidebar-compact-v870) .explorer-quick-item-v830{
+    min-height:34px;
+    padding:7px 10px;
+  }
+}

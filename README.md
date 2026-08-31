@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.2.0 Search 2.0** — pesquisa local indexada com filtros por tipo/extensão/tamanho/data/localização, pastas pesquisáveis, sugestões e chips de filtro.
+**V9.3.0 Explorer Multi-Window** — múltiplas janelas independentes do Explorador, sessões/tabs próprias, drag-and-drop entre janelas, agrupamento na Taskbar e correção de legibilidade do Acesso rápido em dark/mobile.
 
 ## Funcionalidades
 
@@ -562,3 +562,22 @@ Primeiro passo de integração com funções reais do dispositivo:
 - sugestões usam histórico do perfil e exemplos de filtros
 - atalhos e metadata V9.1 continuam integrados no índice
 - pesquisa continua 100% local: sem mounts reais, sem clipboard e sem pedidos externos
+
+## V9.3.0 Explorer Multi-Window
+
+- nova API `openAppNewWindow()` cria explicitamente uma nova janela sem alterar o comportamento histórico de `openApp()`
+- o Explorador pode ter várias janelas reais no mesmo desktop virtual
+- botão `Nova janela`, `Ctrl+N` e `Win+Shift+E`
+- cada janela mantém tabs, histórico, separadores fechados e sessão independentes
+- janela principal continua a espelhar `lastSession` para compatibilidade com perfis existentes
+- sessões secundárias são limitadas a 16 registos persistentes para evitar crescimento indefinido do estado
+- clones/previews do Window Manager são excluídos: apenas filhos reais de `#window-layer` contam como janelas Explorer
+- drag-and-drop entre duas janelas Explorer usa o motor V9.0 de operações, incluindo progresso e política de conflitos
+- `Ctrl` durante o drop escolhe copiar; o drop normal move
+- `real-mount-mode` continua protegido e não entra nas transferências virtuais entre janelas
+- Snap lado a lado funciona com duas janelas Explorer independentes
+- Taskbar agrupa vários Explorers num único botão com contador e painel para focar/fechar cada janela
+- jump list do Explorer ganhou `Nova janela`
+- correção do Acesso rápido em dark/mobile: reset explícito do `<button>` elimina o fundo branco nativo dos itens inativos
+- itens inativos do Acesso rápido ficam transparentes/escuros; o item ativo mantém fundo azul e texto branco legível
+- foco por teclado do Acesso rápido ganhou contorno visível sem alterar o estado ativo

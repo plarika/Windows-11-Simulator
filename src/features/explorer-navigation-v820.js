@@ -53,6 +53,12 @@
     }
     const s=state.explorerNavigationV83;
     if(!Array.isArray(s.closedTabs))s.closedTabs=[];
+    if(!s.windowSessions||typeof s.windowSessions!=="object")s.windowSessions={};
+    const sessionEntries=Object.entries(s.windowSessions);
+    if(sessionEntries.length>16){
+      const keep=new Set(sessionEntries.sort((a,b)=>(Number(b[1]?.updatedAt)||0)-(Number(a[1]?.updatedAt)||0)).slice(0,16).map(([k])=>k));
+      for(const key of Object.keys(s.windowSessions))if(!keep.has(key))delete s.windowSessions[key];
+    }
     if(!Array.isArray(s.quickAccess))s.quickAccess=["C:/Desktop","C:/Documents","C:/Downloads"];
     s.quickAccess=[...new Set(s.quickAccess.map(normalizePath).filter(p=>p&&pathExists(p)))].slice(0,12);
     return s;
@@ -88,6 +94,23 @@
     let pathTimer=0,suppressTimer=0,draggedTabId=null;
     const initial=normalizePath(currentPath(wrap)||startPath)||"This PC";
     const navState=ensureNavigationState();
+    const desktopIndex=Number(win?.dataset?.desktop||state.currentDesktop||0);
+    const explorerWindows=[...document.querySelectorAll('#window-layer > .window[data-app="explorer"]')]
+      .filter(w=>Number(w.dataset.desktop||0)===desktopIndex);
+    const isPrimaryWindow=explorerWindows[0]===win;
+    const sessionKey=isPrimaryWindow
+      ?"desktop:"+desktopIndex+":primary"
+      :"desktop:"+desktopIndex+":"+(win?.dataset?.id||Math.random().toString(36).slice(2));
+    if(win)win.dataset.explorerSessionV930=sessionKey;
+    if(!navState.windowSessions[sessionKey]||typeof navState.windowSessions[sessionKey]!=="object"){
+      navState.windowSessions[sessionKey]={
+        lastSession:isPrimaryWindow?(navState.lastSession||null):null,
+        closedTabs:isPrimaryWindow&&Array.isArray(navState.closedTabs)?navState.closedTabs.slice():[],
+        updatedAt:Date.now()
+      };
+    }
+    const windowSession=navState.windowSessions[sessionKey];
+    if(!Array.isArray(windowSession.closedTabs))windowSession.closedTabs=[];
     let tabs=[];
     let restoredSession=false;
 
@@ -104,9 +127,9 @@
       return {id:"explorer-tab-"+(++seq),path:current,history:history.slice(-80),index,title:titleForPath(current),pinned:!!snapshot?.pinned};
     }
 
-    if(startPath==="This PC"&&navState.lastSession?.tabs?.length){
-      tabs=navState.lastSession.tabs.slice(0,12).map(s=>makeTab(s?.path||"This PC",s));
-      const activeIndex=Math.max(0,Math.min(Number(navState.lastSession.activeIndex)||0,tabs.length-1));
+    if(startPath==="This PC"&&windowSession.lastSession?.tabs?.length){
+      tabs=windowSession.lastSession.tabs.slice(0,12).map(s=>makeTab(s?.path||"This PC",s));
+      const activeIndex=Math.max(0,Math.min(Number(windowSession.lastSession.activeIndex)||0,tabs.length-1));
       activeId=tabs[activeIndex]?.id||tabs[0]?.id||null;
       restoredSession=tabs.length>0;
     }
@@ -128,16 +151,22 @@
     function persistSession(){
       if(isMountedMode())return;
       const activeIndex=Math.max(0,tabs.findIndex(t=>t.id===activeId));
-      navState.lastSession={tabs:tabs.map(snapshotTab).filter(Boolean).slice(0,12),activeIndex};
-      navState.closedTabs=navState.closedTabs.slice(-20);
+      windowSession.lastSession={tabs:tabs.map(snapshotTab).filter(Boolean).slice(0,12),activeIndex};
+      windowSession.closedTabs=windowSession.closedTabs.slice(-20);
+      windowSession.updatedAt=Date.now();
+      if(isPrimaryWindow){
+        navState.lastSession=windowSession.lastSession;
+        navState.closedTabs=windowSession.closedTabs.slice();
+      }
       saveState();
     }
 
     function pushClosed(tab){
       const snap=snapshotTab(tab);
       if(!snap)return;
-      navState.closedTabs.push(snap);
-      navState.closedTabs=navState.closedTabs.slice(-20);
+      windowSession.closedTabs.push(snap);
+      windowSession.closedTabs=windowSession.closedTabs.slice(-20);
+      if(isPrimaryWindow)navState.closedTabs=windowSession.closedTabs.slice();
     }
 
     function isMountedMode(){
@@ -379,8 +408,9 @@
 
     function reopenClosedTab(){
       if(isMountedMode()){notifyMounted();return null}
-      if(tabs.length>=12||!navState.closedTabs.length)return null;
-      const snap=navState.closedTabs.pop();
+      if(tabs.length>=12||!windowSession.closedTabs.length)return null;
+      const snap=windowSession.closedTabs.pop();
+      if(isPrimaryWindow)navState.closedTabs=windowSession.closedTabs.slice();
       const tab=makeTab(snap?.path||"This PC",snap);
       tabs.push(tab);
       normalizeTabOrder();
@@ -546,7 +576,8 @@
       switchTab,go,back:()=>travel(-1),forward:()=>travel(1),
       getTabs:()=>tabs.map(t=>({...t,history:t.history.slice()})),
       getActiveId:()=>activeId,
-      getClosedTabs:()=>navState.closedTabs.map(x=>({...x,history:[...(x.history||[])]})),
+      getClosedTabs:()=>windowSession.closedTabs.map(x=>({...x,history:[...(x.history||[])]})),
+      getSessionKey:()=>sessionKey,
       getQuickAccess:()=>navState.quickAccess.slice()
     });
     wrap.__explorerNavigationV820=navigationApi;
@@ -564,11 +595,11 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerNavigation=Object.freeze({
-    version:"8.3.0",normalizePath,pathExists,titleForPath,installNavigation
+    version:"9.3.0",normalizePath,pathExists,titleForPath,installNavigation
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.3.0",step:16,
+    version:"9.3.0",step:16,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),
       "explorer-tabs","explorer-tab-history","explorer-editable-address",
