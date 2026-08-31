@@ -109,7 +109,7 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=9.1.0"), "Real file bridge loaded");
+check(index.includes("./src/features/real-files-v640.js?v=9.6.0"), "Real file bridge loaded");
 check(index.includes("./styles/real-files-v640.css?v=8.1.0"), "Real file bridge styles loaded");
 
 
@@ -338,7 +338,7 @@ check(edgeAdvanced.includes("recordDownload"), "Edge download history present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.js?v=8.1.2"), "Edge Advanced module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.css?v=8.1.0"), "Edge Advanced CSS precached");
 const explorerPro=readFileSync(resolve(root, "src/features/explorer-pro-v740.js"), "utf8");
-check(index.includes("./src/features/explorer-pro-v740.js?v=9.5.0"), "Explorer Pro module loaded");
+check(index.includes("./src/features/explorer-pro-v740.js?v=9.6.0"), "Explorer Pro module loaded");
 check(index.includes("./styles/explorer-pro-v740.css?v=8.1.0"), "Explorer Pro styles loaded");
 check(explorerPro.includes("explorer-multiselect"), "Explorer multi-select capability registered");
 check(explorerPro.includes("__explorerProV740") && explorerPro.includes("refresh:()=>setTimeout(decorate,0)"), "Explorer Pro exposes safe refresh integration");
@@ -360,7 +360,7 @@ check(explorerPro.includes("showSelectedProperties"), "Explorer advanced propert
 check(explorerPro.includes("type:") && explorerPro.includes("ext:") && explorerPro.includes("size:"), "Explorer advanced search filters present");
 check(explorerPro.includes("explorer-pro-thumb"), "Explorer image thumbnails present");
 check(explorerPro.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Pro guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=9.5.0"), "Explorer Pro module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=9.6.0"), "Explorer Pro module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.css?v=8.1.0"), "Explorer Pro CSS precached");
 const explorerNavigation=readFileSync(resolve(root, "src/features/explorer-navigation-v820.js"), "utf8");
 check(index.includes("./src/features/explorer-navigation-v820.js?v=9.3.0"), "Explorer Navigation V9.3 module loaded");
@@ -432,6 +432,25 @@ check(explorerPro.includes("restoreRecycleItemAdvanced") && explorerPro.includes
 check(explorerPro.includes("getSelectedItems") && explorerPro.includes("restoreSelectedRecycle"), "Explorer Pro selection bridge for Recycle V9.5 present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-recycle-v950.js?v=9.5.0"), "Explorer Recycle V9.5 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-recycle-v950.css?v=9.5.0"), "Explorer Recycle V9.5 CSS precached");
+const explorerVersions=readFileSync(resolve(root, "src/features/explorer-versions-v960.js"), "utf8");
+check(index.includes("./src/features/explorer-versions-v960.js?v=9.6.0"), "Explorer Versions V9.6 module loaded");
+check(index.includes("./styles/explorer-versions-v960.css?v=9.6.0"), "Explorer Versions V9.6 styles loaded");
+check(explorerVersions.includes('VERSION="9.6.0"') && explorerVersions.includes("Win11ExplorerVersions"), "Explorer Versions V9.6 bridge present");
+check(explorerVersions.includes("MAX_PER_FILE=8") && explorerVersions.includes("MAX_GLOBAL=80"), "Explorer Versions count limits present");
+check(explorerVersions.includes("MAX_SNAPSHOT_BYTES=131072") && explorerVersions.includes("MAX_TOTAL_BYTES=1572864"), "Explorer Versions storage limits present");
+check(explorerVersions.includes('typeof value!=="string"||value.startsWith("data:")'), "Explorer Versions excludes heavy/non-text snapshots");
+check(explorerVersions.includes("beforeWrite") && explorerVersions.includes("reason:\"duplicate\""), "Explorer Versions save capture and dedupe present");
+check(explorerVersions.includes("moveBinding") && explorerVersions.includes("moveTree"), "Explorer Versions move/rename bindings present");
+check(explorerVersions.includes("detachTree") && explorerVersions.includes("attachTree"), "Explorer Versions recycle tree bindings present");
+check(explorerVersions.includes("purgeId") && explorerVersions.includes("purgePath") && explorerVersions.includes("purgeTree"), "Explorer Versions purge lifecycle present");
+check(explorerVersions.includes("Antes de restaurar versão") && explorerVersions.includes("data-version-restore"), "Explorer Versions restore UI present");
+check(readFileSync(resolve(root, "src/features/real-files-v640.js"), "utf8").includes("Win11ExplorerVersions?.beforeWrite"), "Notepad captures previous versions before save");
+check(explorerPro.includes("Win11ExplorerVersions?.moveBinding") && explorerPro.includes("Win11ExplorerVersions?.detach"), "Explorer Pro file version lifecycle integrated");
+check(explorerPro.includes("Win11ExplorerVersions?.attachTree") && explorerPro.includes("Win11ExplorerVersions?.purgeId"), "Explorer Pro recycle version lifecycle integrated");
+check(readFileSync(resolve(root, "src/features/explorer-operations-v900.js"), "utf8").includes("Antes de substituir") && readFileSync(resolve(root, "src/features/explorer-operations-v900.js"), "utf8").includes("replacementVersionId"), "Explorer replace conflict snapshots previous version");
+check(explorerPro.includes("data-open-versions-v960") && explorerPro.includes("Versões anteriores"), "Explorer Properties previous versions integration present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-versions-v960.js?v=9.6.0"), "Explorer Versions V9.6 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-versions-v960.css?v=9.6.0"), "Explorer Versions V9.6 CSS precached");
 const explorerDetails=readFileSync(resolve(root, "src/features/explorer-details-v840.js"), "utf8");
 check(index.includes("./src/features/explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module loaded");
 check(index.includes("./styles/explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 styles loaded");
@@ -496,7 +515,7 @@ check(explorerColumns.includes('wrap.classList.contains("real-mount-mode")'), "E
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.js?v=9.1.0"), "Explorer Columns V8.9 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.css?v=8.9.0"), "Explorer Columns V8.9 CSS precached");
 const explorerOperations=readFileSync(resolve(root, "src/features/explorer-operations-v900.js"), "utf8");
-check(index.includes("./src/features/explorer-operations-v900.js?v=9.4.0"), "Explorer Operations V9.0 module loaded");
+check(index.includes("./src/features/explorer-operations-v900.js?v=9.6.0"), "Explorer Operations V9.0 module loaded");
 check(index.includes("./styles/explorer-operations-v900.css?v=9.0.0"), "Explorer Operations V9.0 styles loaded");
 check(explorerOperations.includes('version:"9.0.0"'), "Explorer Operations V9.0 bridge present");
 check(explorerOperations.includes("explorer-file-operation-progress") && explorerOperations.includes("explorer-file-operation-pause"), "Explorer operation progress and pause present");
@@ -506,7 +525,7 @@ check(explorerOperations.includes("activeByWrap") && explorerOperations.includes
 check(explorerOperations.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Operations guards real mount mode");
 check(explorerPro.includes("Win11ExplorerOperations?.handlePaste"), "Explorer Pro delegates paste to V9.0");
 check(explorerPro.includes('(move&&srcPath===dstPath)'), "Explorer same-folder copy is allowed while same-folder move stays blocked");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.js?v=9.4.0"), "Explorer Operations V9.0 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.js?v=9.6.0"), "Explorer Operations V9.0 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.css?v=9.0.0"), "Explorer Operations V9.0 CSS precached");
 const explorerSidebarCss=readFileSync(resolve(root, "styles/explorer-sidebar-v870.css"), "utf8");
 check(explorerSidebarCss.includes("V9.0 readability pass"), "Explorer Quick Access readability pass present");

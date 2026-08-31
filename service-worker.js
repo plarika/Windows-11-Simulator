@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.5.0";
+const CACHE_NAME="win11-simulator-v9.6.0";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -42,6 +42,7 @@ const PRECACHE=[
   "./styles/explorer-multiwindow-v930.css?v=9.3.0",
   "./styles/explorer-history-v940.css?v=9.4.0",
   "./styles/explorer-recycle-v950.css?v=9.5.0",
+  "./styles/explorer-versions-v960.css?v=9.6.0",
   "./src/core/runtime.js?v=9.3.0",
   "./src/features/system-v4.js?v=8.1.0",
   "./src/apps/v5-runtime.js?v=8.1.0",
@@ -65,7 +66,7 @@ const PRECACHE=[
   "./src/apps/search-v5.js?v=8.1.0",
   "./src/features/realism-v62.js?v=8.1.0",
   "./src/features/app-realism-v63.js?v=8.1.0",
-  "./src/features/real-files-v640.js?v=9.1.0",
+  "./src/features/real-files-v640.js?v=9.6.0",
   "./src/features/real-clipboard-v650.js?v=8.1.0",
   "./src/features/real-content-v660.js?v=8.1.0",
   "./src/features/real-platform-v660.js?v=8.1.0",
@@ -75,7 +76,7 @@ const PRECACHE=[
   "./src/features/real-folder-mounts-v710.js?v=8.1.0",
   "./src/features/edge-internet-v720.js?v=8.1.2",
   "./src/features/edge-advanced-v730.js?v=8.1.2",
-  "./src/features/explorer-pro-v740.js?v=9.5.0",
+  "./src/features/explorer-pro-v740.js?v=9.6.0",
   "./src/features/explorer-navigation-v820.js?v=9.3.0",
   "./src/features/explorer-details-v840.js?v=8.4.0",
   "./src/features/explorer-context-v850.js?v=9.1.0",
@@ -83,7 +84,7 @@ const PRECACHE=[
   "./src/features/explorer-sidebar-v870.js?v=8.7.0",
   "./src/features/explorer-command-v880.js?v=8.8.0",
   "./src/features/explorer-columns-v890.js?v=9.1.0",
-  "./src/features/explorer-operations-v900.js?v=9.4.0",
+  "./src/features/explorer-operations-v900.js?v=9.6.0",
   "./src/features/explorer-filesystem-v910.js?v=9.2.0",
   "./src/features/window-manager-v750.js?v=8.1.0",
   "./src/features/real-device-integration-v760.js?v=8.1.0",
@@ -96,6 +97,7 @@ const PRECACHE=[
   "./src/features/explorer-multiwindow-v930.js?v=9.3.0",
   "./src/features/explorer-history-v940.js?v=9.5.0",
   "./src/features/explorer-recycle-v950.js?v=9.5.0",
+  "./src/features/explorer-versions-v960.js?v=9.6.0",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
   "./src/core/boot.js?v=8.1.0",
   "./icons/icon-192.png",

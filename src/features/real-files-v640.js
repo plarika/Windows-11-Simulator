@@ -199,6 +199,7 @@
     });
 
     wrap.querySelector("[data-save-virtual]").onclick=()=>{
+      globalThis.Win11ExplorerVersions?.beforeWrite?.(virtualCurrent.path,virtualCurrent.name,ta.value,"Antes de guardar no Bloco de Notas");
       ensureFolder(virtualCurrent.path)[virtualCurrent.name]=ta.value;
       globalThis.Win11ExplorerFilesystem?.touch?.(virtualCurrent.path,virtualCurrent.name);
       touchRecent(virtualCurrent.path+"/"+virtualCurrent.name);
@@ -212,6 +213,7 @@
       accept:".txt",
       defaultName:virtualCurrent.name==="Sem título.txt"?"Documento.txt":virtualCurrent.name,
       onSelect:f=>{
+        globalThis.Win11ExplorerVersions?.beforeWrite?.(f.path,f.name,ta.value,"Antes de Guardar como");
         ensureFolder(f.path)[f.name]=ta.value;
         globalThis.Win11ExplorerFilesystem?.touch?.(f.path,f.name);
         virtualCurrent={path:f.path,name:f.name};

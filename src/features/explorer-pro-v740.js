@@ -97,7 +97,10 @@
     const target=uniqueFileName(dstPath,name);
     ensureFolder(dstPath)[target]=move?src[name]:await cloneVirtualValue(src[name]);
     globalThis.Win11ExplorerFilesystem?.onTransfer?.({srcPath,srcName:name,dstPath,dstName:target,type:"file",move});
-    if(move)delete src[name];
+    if(move){
+      delete src[name];
+      globalThis.Win11ExplorerVersions?.moveBinding?.(srcPath,name,dstPath,target);
+    }
     return {ok:true,name:target};
   }
 
@@ -130,6 +133,7 @@
       srcPath:srcFolder.slice(0,srcFolder.lastIndexOf("/")),
       srcName:base,dstPath:dstParent,dstName:targetName,type:"folder",move
     });
+    if(move)globalThis.Win11ExplorerVersions?.moveTree?.(srcFolder,targetRoot);
     return {ok:true,name:targetName};
   }
 
@@ -152,7 +156,8 @@
     const files=ensureFolder(path),bin=ensureFolder("Recycle Bin");
     if(!own(files,name))return false;
     const trashName=uniqueTrashName(name);
-    bin[trashName]={content:files[name],originalPath:path,originalName:name,deletedAt:Date.now(),kind:"file"};
+    const versionId=globalThis.Win11ExplorerVersions?.detach?.(path,name)||"";
+    bin[trashName]={content:files[name],originalPath:path,originalName:name,deletedAt:Date.now(),kind:"file",versionId};
     delete files[name];
     globalThis.Win11SearchV920?.invalidate?.();
     return trashName;
@@ -163,12 +168,14 @@
     if(!own(state.files,root))return false;
     const tree=folderSnapshot(root);
     const trashName=uniqueTrashName(name);
+    const versionBindings=globalThis.Win11ExplorerVersions?.detachTree?.(root)||[];
     ensureFolder("Recycle Bin")[trashName]={
       content:{__virtualFolderTrash:true,rootName:name,tree},
       originalPath:parent,
       originalName:name,
       deletedAt:Date.now(),
-      kind:"folder"
+      kind:"folder",
+      versionBindings
     };
     [...tree].sort((a,b)=>b.rel.length-a.rel.length).forEach(entry=>delete state.files[root+entry.rel]);
     globalThis.Win11SearchV920?.invalidate?.();
@@ -194,6 +201,7 @@
       const files=ensureFolder(path);
       if(!own(files,name))return false;
       const value=files[name];
+      globalThis.Win11ExplorerVersions?.purgePath?.(path,name);
       delete files[name];
       globalThis.Win11ExplorerFilesystem?.onDelete?.({path,name,type:"file"});
       await cleanupValueIfUnreferenced(value);
@@ -202,6 +210,7 @@
     if(type==="folder"){
       const root=path+"/"+name;
       const tree=folderSnapshot(root);
+      globalThis.Win11ExplorerVersions?.purgeTree?.(root);
       [...tree].sort((a,b)=>b.rel.length-a.rel.length).forEach(entry=>delete state.files[root+entry.rel]);
       globalThis.Win11ExplorerFilesystem?.onDelete?.({path,name,type:"folder"});
       for(const entry of tree)for(const value of Object.values(entry.files||{}))await cleanupValueIfUnreferenced(value);
@@ -211,6 +220,8 @@
       const bin=ensureFolder("Recycle Bin");
       const entry=bin[name];
       if(!entry)return false;
+      if(entry.versionId)globalThis.Win11ExplorerVersions?.purgeId?.(entry.versionId);
+      for(const x of entry.versionBindings||[])if(x?.id)globalThis.Win11ExplorerVersions?.purgeId?.(x.id);
       delete bin[name];
       if(entry.content?.__virtualFolderTrash){
         for(const t of entry.content.tree||[])for(const value of Object.values(t.files||{}))await cleanupValueIfUnreferenced(value);
@@ -239,12 +250,14 @@
       const rootName=conflict&&policy==="keep"?uniqueFolderName(parent,desired):desired;
       const root=parent+"/"+rootName;
       for(const t of pack.tree||[])state.files[root+(t.rel||"")]=t.files||{};
+      globalThis.Win11ExplorerVersions?.attachTree?.(root,entry.versionBindings||[]);
       delete bin[name];
       globalThis.Win11SearchV920?.invalidate?.();
       return {ok:true,path:parent,name:rootName,type,conflict,replacedTrashName};
     }
     const target=conflict&&policy==="keep"?uniqueFileName(parent,desired):desired;
     ensureFolder(parent)[target]=pack;
+    if(entry.versionId)globalThis.Win11ExplorerVersions?.attach?.(entry.versionId,parent,target);
     delete bin[name];
     globalThis.Win11SearchV920?.invalidate?.();
     return {ok:true,path:parent,name:target,type,conflict,replacedTrashName};
@@ -268,6 +281,8 @@
       [...paths].sort((a,b)=>b.length-a.length).forEach(p=>delete state.files[p]);
     }
     globalThis.Win11ExplorerFilesystem?.onRename?.({path,oldName,newName,type});
+    if(type==="file")globalThis.Win11ExplorerVersions?.moveBinding?.(path,oldName,path,newName);
+    else globalThis.Win11ExplorerVersions?.moveTree?.(path+"/"+oldName,path+"/"+newName);
     globalThis.Win11SearchV920?.invalidate?.();
     return true;
   }
@@ -779,6 +794,8 @@
       const size=data.reduce((n,x)=>n+x.size,0);
       const fileCount=data.reduce((n,x)=>n+x.files,0);
       const folderCount=data.reduce((n,x)=>n+x.folders+(x.item.type==="folder"?1:0),0);
+      const versions=items.length===1&&items[0].type==="file"
+        ?(globalThis.Win11ExplorerVersions?.list?.(items[0].path,items[0].name)||[]):[];
       let html='<div class="explorer-pro-properties">';
       if(items.length===1){
         const x=data[0],item=x.item;
@@ -789,6 +806,9 @@
           '<dt>Localização</dt><dd>'+escapeHTML(item.path)+'</dd>'+
           '<dt>Tamanho</dt><dd>'+escapeHTML(formatBytes(x.size))+'</dd>'+
           (x.modified?'<dt>Modificado</dt><dd>'+escapeHTML(new Date(x.modified).toLocaleString("pt-PT"))+'</dd>':"")+
+          (item.type==="file"&&globalThis.Win11ExplorerVersions
+            ?'<dt>Versões anteriores</dt><dd>'+versions.length+' '+(versions.length===1?"disponível":"disponíveis")+
+              ' <button type="button" class="versions-open-v960" data-open-versions-v960>Ver versões</button></dd>':"")+
           (item.type==="folder"?'<dt>Conteúdo</dt><dd>'+x.files+' ficheiro(s), '+Math.max(0,folderCount-1)+' pasta(s)</dd>':"")+
         '</dl>';
       }else{
@@ -799,6 +819,11 @@
       }
       html+='</div>';
       showSystemDialog("Propriedades",html,"OK",()=>{});
+      if(items.length===1&&items[0].type==="file"){
+        document.querySelector("#system-dialog-body [data-open-versions-v960]")?.addEventListener("click",()=>{
+          globalThis.Win11ExplorerVersions?.show?.(items[0].path,items[0].name);
+        });
+      }
     }
 
     function applyAdvancedFilter(){

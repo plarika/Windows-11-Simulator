@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.5.0 Recycle Bin Pro** — Reciclagem evoluída com metadata, restaurar selecionados/tudo, esvaziar com confirmação e resolução segura de conflitos Keep/Skip/Replace integrada no histórico V9.4.
+**V9.6.0 Previous Versions** — versões anteriores limitadas para ficheiros virtuais de texto, captura antes de guardar/substituir, restauração pelas Propriedades e histórico que acompanha mover, renomear e Reciclagem.
 
 ## Funcionalidades
 
@@ -620,3 +620,23 @@ Primeiro passo de integração com funções reais do dispositivo:
 - integração Multi-Window: todas as janelas Explorer atualizam depois de restaurar/esvaziar
 - refresh explícito no ciclo de navegação garante toolbar/banner/metadata corretos em cliques, jump lists e navegação programática
 - estados dark/mobile mantêm o mesmo padrão de legibilidade da V9.3
+
+## V9.6.0 Previous Versions
+
+- novo motor `Win11ExplorerVersions` persistente por perfil
+- snapshots são criados antes de uma gravação que substitui conteúdo virtual existente
+- Bloco de Notas captura automaticamente a versão anterior antes de `Guardar` e `Guardar como` quando o destino já existe
+- conflitos V9.0 com política `Substituir` preservam automaticamente o conteúdo antigo do destino como versão anterior
+- `Propriedades` de ficheiros mostra a quantidade de versões e o botão `Ver versões`
+- janela `Versões anteriores` mostra data/hora, motivo e tamanho de cada snapshot
+- qualquer snapshot pode ser restaurado; antes da restauração é guardada a versão atual para permitir voltar atrás através do próprio histórico de versões
+- histórico acompanha o ficheiro ao mover e mudar nome
+- ao enviar para a Reciclagem, a ligação de versões é destacada do caminho e guardada com o item reciclado
+- ao restaurar da Reciclagem, o histórico volta a ligar-se ao novo caminho/nome, inclusive quando `Manter ambos` gera um nome diferente
+- pastas movidas/renomeadas transportam as ligações de versões dos ficheiros internos
+- eliminação permanente remove também o histórico de versões associado
+- limite de 8 versões por ficheiro e 80 snapshots globais por perfil
+- limite de 128 KB por snapshot e aproximadamente 1,5 MB de armazenamento total de versões
+- snapshots duplicados e gravações sem alterações são ignorados
+- `data:` URLs, conteúdos não textuais, blobs importados e ficheiros acima do limite não são duplicados no histórico
+- `real-mount-mode` e File System Access handles continuam fora do sistema de versões

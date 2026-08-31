@@ -124,28 +124,42 @@
 
   async function replaceExisting(item,destination){
     const type=conflictType(item,destination);
-    if(!type)return true;
-    try{return await Win11ExplorerPro.permanentlyDeleteVirtual(destination,item.name,type)}
-    catch{return false}
+    if(!type)return {ok:true,versionId:""};
+    let versionId="";
+    if(type==="file"&&globalThis.Win11ExplorerVersions){
+      Win11ExplorerVersions.capture(destination,item.name,{reason:"Antes de substituir"});
+      versionId=Win11ExplorerVersions.detach(destination,item.name)||"";
+    }
+    try{
+      const ok=await Win11ExplorerPro.permanentlyDeleteVirtual(destination,item.name,type);
+      if(!ok&&versionId)Win11ExplorerVersions.attach(versionId,destination,item.name);
+      return {ok:!!ok,versionId};
+    }catch{
+      if(versionId)Win11ExplorerVersions.attach(versionId,destination,item.name);
+      return {ok:false,versionId:""};
+    }
   }
 
   async function performItem(item,destination,move,policy){
     if(move&&item.path===destination)return {ok:false,reason:"same"};
     if(!move&&item.path===destination)policy="keep";
     const conflict=conflictType(item,destination);
-    let replaced=false;
+    let replaced=false,replacementVersionId="";
     if(conflict){
       if(policy==="skip")return {ok:false,skipped:true,reason:"conflict"};
       if(policy==="replace"){
         const removed=await replaceExisting(item,destination);
-        if(!removed)return {ok:false,reason:"replace-failed"};
-        replaced=true;
+        if(!removed?.ok)return {ok:false,reason:"replace-failed"};
+        replaced=true;replacementVersionId=removed.versionId||"";
       }
     }
     try{
       const out=item.type==="folder"
         ?await Win11ExplorerPro.copyFolderAdvanced(item.path+"/"+item.name,destination,move)
         :await Win11ExplorerPro.copyFileAdvanced(item.path,item.name,destination,move);
+      if(out?.ok&&replacementVersionId&&item.type==="file"){
+        Win11ExplorerVersions.attach(replacementVersionId,destination,out.name);
+      }
       return {...out,replaced};
     }catch(err){
       return {ok:false,reason:err?.message||"error",replaced};
