@@ -123,3 +123,7 @@ Os menus modernos V8.5 são instalados apenas sobre itens do filesystem virtual.
 ## Explorer Views & Grouping V8.6.0
 
 As preferências V8.6 armazenam apenas os valores de apresentação `mode` e `group` no `state` do perfil. O agrupamento é suspenso em `real-mount-mode` e não lê, move ou reordena handles de pastas reais. A implementação reutiliza os controlos de vista existentes do Explorer e não altera dados do filesystem.
+
+## Explorer Sidebar V8.7.0
+
+A barra lateral V8.7 persiste apenas preferências de apresentação (`width`, `compact` e estados de colapso). Não acrescenta acesso a novos caminhos, não altera mounts e reutiliza exclusivamente os destinos virtuais já autorizados pelo Explorer.

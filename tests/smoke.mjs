@@ -419,6 +419,16 @@ check(explorerViews.includes("explorerViewsV86") && explorerViews.includes("save
 check(explorerViews.includes('wrap.classList.contains("real-mount-mode")'), "Explorer grouping guards real mount mode");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-views-v860.js?v=8.6.0"), "Explorer Views V8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-views-v860.css?v=8.6.0"), "Explorer Views V8.6 CSS precached");
+const explorerSidebar=readFileSync(resolve(root, "src/features/explorer-sidebar-v870.js"), "utf8");
+check(index.includes("./src/features/explorer-sidebar-v870.js?v=8.7.0"), "Explorer Sidebar V8.7 module loaded");
+check(index.includes("./styles/explorer-sidebar-v870.css?v=8.7.0"), "Explorer Sidebar V8.7 styles loaded");
+check(explorerSidebar.includes('version:"8.7.0"'), "Explorer Sidebar V8.7 bridge present");
+check(explorerSidebar.includes("explorerSidebarV87") && explorerSidebar.includes("saveState()"), "Explorer sidebar preferences persist per profile");
+check(explorerSidebar.includes("explorer-sidebar-resize-v870"), "Explorer sidebar resize handle present");
+check(explorerSidebar.includes("toggleCompact") && explorerSidebar.includes("toggleSection"), "Explorer sidebar compact and sections present");
+check(explorerSidebar.includes('e.key==="ArrowDown"') && explorerSidebar.includes('e.key==="ArrowUp"'), "Explorer sidebar keyboard navigation present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-sidebar-v870.js?v=8.7.0"), "Explorer Sidebar V8.7 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-sidebar-v870.css?v=8.7.0"), "Explorer Sidebar V8.7 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");

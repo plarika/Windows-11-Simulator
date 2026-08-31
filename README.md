@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.6.0 Explorer Views & Grouping** — o Explorador ganha quatro modos de vista, agrupamento por tipo e preferências persistentes por perfil.
+**V8.7.0 Explorer Sidebar & Navigation** — a barra lateral do Explorador ganha secções colapsáveis, largura redimensionável, modo compacto e navegação por teclado.
 
 ## Funcionalidades
 
@@ -477,3 +477,13 @@ Primeiro passo de integração com funções reais do dispositivo:
 - vista Detalhes reutiliza o motor de lista já existente, mantendo seleção, propriedades e drag-and-drop
 - agrupamento fica desativado em `real-mount-mode` para não reorganizar conteúdo real montado
 - MutationObserver protegido contra reagir às próprias headings de agrupamento
+
+## V8.7.0 Explorer Sidebar & Navigation
+
+- barra lateral com estado próprio persistente por perfil
+- largura ajustável entre 168 e 320 px por drag ou teclado no separador de resize
+- modo compacto persistente com coluna de 64 px
+- secções `Acesso rápido` e `Este PC` colapsáveis
+- itens laterais normalizados em ícone + rótulo para evitar depender dos símbolos antigos do HTML
+- navegação acessível por `ArrowUp`, `ArrowDown`, `Home`, `End`, `Enter` e `Space`
+- sidebar continua escondida no breakpoint móvel; o audit testa o comportamento de teclado em modo desktop controlado
