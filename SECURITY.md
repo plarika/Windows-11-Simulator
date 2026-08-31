@@ -189,3 +189,13 @@ Os consumidores da Taskbar leem snapshots validados do `Win11SettingsStore`. Des
 A bridge de compatibilidade com Personalization V7.8 mantém o estado legado sincronizado apenas para consumidores existentes. A nova UI não chama `saveState()` diretamente: todas as mutações passam pelo pipeline validado/atómico do Settings Core.
 
 Snapshots de Backup V9.8.2 incluem um pacote de Settings exportado com schema e checksum. Na restauração, o pacote é validado antes de o filesystem virtual ser substituído; se for inválido, a operação é cancelada. Snapshots antigos podem migrar apenas tema e wallpaper através das mesmas regras de validação. O backup não ganha acesso a ficheiros do host, handles File System Access ou credenciais.
+
+## Taskbar System Integration Pro V9.8.3
+
+A V9.8.3 continua limitada à shell virtual do simulador. Auto-hide altera apenas classes CSS e temporizadores locais. A faixa de revelação não lê coordenadas para telemetria nem envia dados para serviços externos; usa apenas eventos de ponteiro dentro da página para revelar a Taskbar.
+
+Mostrar ambiente de trabalho atua exclusivamente sobre elementos `.window` filhos do `#window-layer` pertencentes ao desktop virtual atual. Não minimiza, enumera ou controla janelas do Windows anfitrião. O conjunto temporário de restauração contém apenas IDs internos das janelas virtuais e não é persistido.
+
+A opção de segundos no relógio apenas muda as opções de formatação de `Date.toLocaleTimeString()`. Não altera o relógio do sistema, não consulta serviços de hora externos e não cria um segundo timer de relógio.
+
+As preferências `autoHide`, `showDesktop` e `showSeconds` continuam sujeitas ao schema booleano do `Win11SettingsStore`, persistência por perfil e eventos serializáveis do `Win11SystemBus`. Nenhuma destas opções concede permissões adicionais ao browser ou ao host.

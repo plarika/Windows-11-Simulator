@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.2 Personalization & Settings Integration** — Personalização, escala da interface e opções reais da Taskbar passam a consumir o `Win11SettingsStore`/`Win11SystemBus`, com compatibilidade legada, backup/restauro das definições e integração por perfil.
+**V9.8.3 Taskbar System Integration Pro** — auto-hide real da Barra de tarefas, botão Mostrar ambiente de trabalho reversível, relógio opcional com segundos e ligação integral das novas opções ao `Win11SettingsStore`/`Win11SystemBus` por perfil.
 
 ## Funcionalidades
 
@@ -698,3 +698,21 @@ Primeiro passo de integração com funções reais do dispositivo:
 - restauração de snapshots novos usa `importConfig()`; snapshots antigos continuam compatíveis por migração controlada de tema/wallpaper
 - se o pacote de definições de um backup estiver inválido, a restauração é cancelada antes de substituir o filesystem
 - a página ativa de Settings é preservada quando eventos externos atualizam escala/personalização, evitando rerenders para a secção errada
+
+## V9.8.3 Taskbar System Integration Pro
+
+- nova camada `Win11TaskbarSystem` integrada no Settings Core e System Bus
+- opção `Ocultar automaticamente a Barra de tarefas` passa a ter comportamento real
+- auto-hide usa uma faixa de revelação segura no limite inferior e também responde a hover/focus
+- overlays abertos, menus de grupos e interação com a própria Taskbar mantêm a barra visível
+- opção `Mostrar ambiente de trabalho` controla um botão discreto no extremo direito da Taskbar
+- o botão minimiza apenas as janelas virtuais visíveis do desktop atual
+- um segundo acionamento restaura exatamente o conjunto de janelas previamente minimizado
+- o estado Mostrar ambiente de trabalho é associado ao desktop virtual onde foi iniciado
+- desativar o botão enquanto Mostrar ambiente de trabalho está ativo restaura automaticamente as janelas antes de ocultar o controlo
+- opção `Mostrar segundos no relógio` alterna entre `HH:MM` e `HH:MM:SS`
+- o relógio existente foi adaptado para consultar o Settings Store no próprio tick, evitando timers concorrentes
+- o relógio do ecrã de bloqueio continua em horas/minutos, independentemente da opção da Taskbar
+- as três novas opções são persistidas por perfil pelo mesmo `Win11SettingsStore`
+- alterações são aplicadas em tempo real através de `settings:taskbar:changed`
+- as opções V9.8.2 de alinhamento, agrupamento, badges, progresso e previews continuam integradas

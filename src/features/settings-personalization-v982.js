@@ -135,6 +135,9 @@
           toggleRow("Badges da Barra de tarefas","Mostra o número de janelas agrupadas","taskbar.showBadges",taskbar.showBadges)+
           toggleRow("Progresso de operações","Mostra cópia/movimento do Explorer na Barra de tarefas","taskbar.showProgress",taskbar.showProgress)+
           toggleRow("Pré-visualizações de janelas","Mostra previews seguros nos grupos de aplicações","taskbar.previews",taskbar.previews)+
+          toggleRow("Ocultar automaticamente a Barra de tarefas","Revela a barra ao aproximar o ponteiro da parte inferior","taskbar.autoHide",taskbar.autoHide)+
+          toggleRow("Mostrar ambiente de trabalho","Apresenta o botão discreto no extremo direito da Barra de tarefas","taskbar.showDesktop",taskbar.showDesktop)+
+          toggleRow("Mostrar segundos no relógio","Apresenta HH:MM:SS no relógio da Barra de tarefas","taskbar.showSeconds",taskbar.showSeconds)+
         '</section>'+
 
         '<div class="settings-actions-v982"><button class="sys-button" data-reset-personalization-v982>Repor personalização</button>'+
