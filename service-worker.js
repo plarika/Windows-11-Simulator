@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v8.7.0";
+const CACHE_NAME="win11-simulator-v8.8.0";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -26,6 +26,7 @@ const PRECACHE=[
   "./styles/explorer-context-v850.css?v=8.5.0",
   "./styles/explorer-views-v860.css?v=8.6.0",
   "./styles/explorer-sidebar-v870.css?v=8.7.0",
+  "./styles/explorer-command-v880.css?v=8.8.0",
   "./styles/window-manager-v750.css?v=8.1.0",
   "./styles/real-device-integration-v760.css?v=8.1.0",
   "./styles/notifications-background-v770.css?v=8.1.0",
@@ -73,6 +74,7 @@ const PRECACHE=[
   "./src/features/explorer-context-v850.js?v=8.5.0",
   "./src/features/explorer-views-v860.js?v=8.6.0",
   "./src/features/explorer-sidebar-v870.js?v=8.7.0",
+  "./src/features/explorer-command-v880.js?v=8.8.0",
   "./src/features/window-manager-v750.js?v=8.1.0",
   "./src/features/real-device-integration-v760.js?v=8.1.0",
   "./src/features/notifications-background-v770.js?v=8.1.0",

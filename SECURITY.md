@@ -127,3 +127,7 @@ As preferências V8.6 armazenam apenas os valores de apresentação `mode` e `gr
 ## Explorer Sidebar V8.7.0
 
 A barra lateral V8.7 persiste apenas preferências de apresentação (`width`, `compact` e estados de colapso). Não acrescenta acesso a novos caminhos, não altera mounts e reutiliza exclusivamente os destinos virtuais já autorizados pelo Explorer.
+
+## Explorer Adaptive Command & Selection V8.8.0
+
+A V8.8 persiste apenas a preferência visual `checkboxes`. A decoração de caixas de seleção e as operações de seleção são bloqueadas em `real-mount-mode`, evitando que a camada virtual tente gerir diretamente itens de pastas reais montadas. O overflow apenas delega ações para APIs já existentes do Explorer.

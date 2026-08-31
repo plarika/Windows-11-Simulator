@@ -1,0 +1,42 @@
+/* Windows 11 Simulator V8.8 — Adaptive Command Bar & Selection */
+.explorer-command-v880 .explorer-command.real{position:relative}
+.explorer-command-overflow-v880{margin-left:2px}
+.explorer-selection-pill-v880{
+  min-height:24px;padding:3px 8px;border-radius:999px;background:rgba(0,120,212,.1);font-size:10px;white-space:nowrap
+}
+.explorer-command-v880.command-compact-v880 .explorer-command.real [data-cut] .cmd-label,
+.explorer-command-v880.command-compact-v880 .explorer-command.real [data-copy] .cmd-label,
+.explorer-command-v880.command-compact-v880 .explorer-command.real [data-paste] .cmd-label,
+.explorer-command-v880.command-compact-v880 .explorer-command.real [data-rename] .cmd-label,
+.explorer-command-v880.command-compact-v880 .explorer-command.real [data-delete] .cmd-label{
+  display:none
+}
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-properties-v740],
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-details-v840],
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-sort],
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-icons],
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-list],
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-view-v860],
+.explorer-command-v880.command-tight-v880 .explorer-command.real [data-group-v860]{
+  display:none
+}
+.explorer-command-v880 .file,.explorer-command-v880 .file-row:not(.header){position:relative}
+.explorer-select-checkbox-v880{
+  display:none;
+  position:absolute;
+  top:6px;
+  right:6px;
+  z-index:6;
+  width:16px;height:16px;
+  margin:0;
+  accent-color:auto;
+}
+.checkbox-selection-v880 .explorer-select-checkbox-v880{display:block}
+.checkbox-selection-v880 .file-row:not(.header) .explorer-select-checkbox-v880{top:50%;transform:translateY(-50%)}
+.checkbox-selection-v880 .file-row:not(.header){padding-right:32px}
+#app.theme-dark .explorer-selection-pill-v880{background:rgba(62,146,214,.18)}
+@media(max-width:620px){
+  .explorer-command-v880 .explorer-selection-pill-v880{display:none}
+  .explorer-command-v880 [data-select-v880] .cmd-label,
+  .explorer-command-v880 [data-overflow-v880] .cmd-label{display:none}
+}

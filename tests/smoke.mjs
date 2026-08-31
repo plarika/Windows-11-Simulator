@@ -429,6 +429,16 @@ check(explorerSidebar.includes("toggleCompact") && explorerSidebar.includes("tog
 check(explorerSidebar.includes('e.key==="ArrowDown"') && explorerSidebar.includes('e.key==="ArrowUp"'), "Explorer sidebar keyboard navigation present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-sidebar-v870.js?v=8.7.0"), "Explorer Sidebar V8.7 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-sidebar-v870.css?v=8.7.0"), "Explorer Sidebar V8.7 CSS precached");
+const explorerCommand=readFileSync(resolve(root, "src/features/explorer-command-v880.js"), "utf8");
+check(index.includes("./src/features/explorer-command-v880.js?v=8.8.0"), "Explorer Command V8.8 module loaded");
+check(index.includes("./styles/explorer-command-v880.css?v=8.8.0"), "Explorer Command V8.8 styles loaded");
+check(explorerCommand.includes('version:"8.8.0"'), "Explorer Command V8.8 bridge present");
+check(explorerCommand.includes("ResizeObserver") && explorerCommand.includes("command-compact-v880"), "Explorer adaptive command bar present");
+check(explorerCommand.includes("explorer-select-checkbox-v880") && explorerCommand.includes("setCheckboxes"), "Explorer checkbox selection present");
+check(explorerCommand.includes("explorer-selection-pill-v880"), "Explorer selection indicator present");
+check(explorerCommand.includes('wrap.classList.contains("real-mount-mode")'), "Explorer checkbox selection guards real mount mode");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-command-v880.js?v=8.8.0"), "Explorer Command V8.8 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-command-v880.css?v=8.8.0"), "Explorer Command V8.8 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.7.0 Explorer Sidebar & Navigation** — a barra lateral do Explorador ganha secções colapsáveis, largura redimensionável, modo compacto e navegação por teclado.
+**V8.8.0 Explorer Adaptive Command & Selection** — a barra de comandos adapta-se à largura da janela, ganha overflow, caixas de seleção opcionais e indicador de seleção.
 
 ## Funcionalidades
 
@@ -487,3 +487,15 @@ Primeiro passo de integração com funções reais do dispositivo:
 - itens laterais normalizados em ícone + rótulo para evitar depender dos símbolos antigos do HTML
 - navegação acessível por `ArrowUp`, `ArrowDown`, `Home`, `End`, `Enter` e `Space`
 - sidebar continua escondida no breakpoint móvel; o audit testa o comportamento de teclado em modo desktop controlado
+
+## V8.8.0 Explorer Adaptive Command & Selection
+
+- barra de comandos adaptativa baseada em `ResizeObserver`
+- modos compacto e tight em janelas estreitas
+- menu `Mais` com Propriedades, Painel de detalhes, Ordenar, vistas, agrupamento e sidebar compacta
+- botão `Selecionar` com Selecionar tudo e Desmarcar tudo
+- caixas de seleção opcionais por ficheiro/pasta virtual
+- estado das caixas de seleção persistido por perfil
+- indicador de quantidade selecionada na command bar
+- checkboxes sincronizadas com o motor de seleção múltipla existente
+- seleção por checkbox e decoração suspensas em `real-mount-mode`
