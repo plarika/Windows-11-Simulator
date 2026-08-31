@@ -1,0 +1,52 @@
+/* Windows 11 Simulator V8.9 — Explorer Columns, Sort & Grouping Pro */
+.explorer-columns-v890 .file-list{min-width:100%}
+.explorer-columns-v890 .file-row{
+  min-width:0;
+  width:100%;
+}
+.explorer-column-head-v890{
+  position:relative;
+  min-width:0;
+  padding-right:12px;
+  cursor:pointer;
+  user-select:none;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.explorer-column-head-v890.sorted-v890{
+  font-weight:600;
+}
+.explorer-column-head-v890.sorted-v890::after{
+  content:"↑";
+  margin-left:5px;
+  font-size:9px;
+}
+.explorer-column-head-v890.sorted-v890[data-direction="desc"]::after{content:"↓"}
+.explorer-column-resize-v890{
+  position:absolute;
+  top:1px;
+  right:-3px;
+  bottom:1px;
+  width:7px;
+  cursor:col-resize;
+  z-index:4;
+}
+.explorer-column-resize-v890:hover{
+  background:rgba(0,120,212,.2);
+}
+.explorer-group-heading-v890{
+  grid-column:1/-1;
+  display:block;
+  padding:10px 7px 6px;
+  margin-top:4px;
+  border-bottom:1px solid rgba(0,0,0,.09);
+  font-size:11px;
+  font-weight:600;
+  color:inherit;
+}
+.file-list>.explorer-group-heading-v890{width:100%}
+#app.theme-dark .explorer-group-heading-v890{border-bottom-color:rgba(255,255,255,.1)}
+@media(max-width:720px){
+  .explorer-columns-v890 [data-columns-v890] .cmd-label{display:none}
+}

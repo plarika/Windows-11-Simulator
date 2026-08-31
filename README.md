@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.8.0 Explorer Adaptive Command & Selection** — a barra de comandos adapta-se à largura da janela, ganha overflow, caixas de seleção opcionais e indicador de seleção.
+**V8.9.0 Explorer Columns, Sort & Grouping Pro** — o Explorador ganha ordenação por Nome/Tipo/Tamanho/Data, direção ascendente/descendente, colunas configuráveis e agrupamento avançado.
 
 ## Funcionalidades
 
@@ -499,3 +499,17 @@ Primeiro passo de integração com funções reais do dispositivo:
 - indicador de quantidade selecionada na command bar
 - checkboxes sincronizadas com o motor de seleção múltipla existente
 - seleção por checkbox e decoração suspensas em `real-mount-mode`
+
+## V8.9.0 Explorer Columns, Sort & Grouping Pro
+
+- ordenação por Nome, Tipo, Tamanho e Data de modificação
+- direção ascendente/descendente persistente por perfil
+- agrupamento por Tipo, Tamanho e Data de modificação
+- grupos de tamanho: Pastas, Pequenos, Médios e Grandes
+- grupos de data: Hoje, Esta semana, Este mês, Mais antigos e Sem data
+- cabeçalhos de colunas clicáveis com indicador ↑/↓
+- colunas Tipo, Tamanho e Data podem ser mostradas/ocultadas
+- larguras de Nome, Tipo, Tamanho e Data ajustáveis e persistentes
+- resize de colunas por drag no cabeçalho da vista Detalhes
+- migração do agrupamento V8.6 para o motor V8.9, mantendo V8.6 em `none` para evitar dois motores sobre o mesmo DOM
+- criação autónoma do header Detalhes quando a camada antiga ainda não o gerou

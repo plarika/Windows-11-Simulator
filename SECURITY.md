@@ -131,3 +131,7 @@ A barra lateral V8.7 persiste apenas preferências de apresentação (`width`, `
 ## Explorer Adaptive Command & Selection V8.8.0
 
 A V8.8 persiste apenas a preferência visual `checkboxes`. A decoração de caixas de seleção e as operações de seleção são bloqueadas em `real-mount-mode`, evitando que a camada virtual tente gerir diretamente itens de pastas reais montadas. O overflow apenas delega ações para APIs já existentes do Explorer.
+
+## Explorer Columns, Sort & Grouping Pro V8.9.0
+
+A V8.9 persiste apenas preferências de apresentação (campo/direção de ordenação, agrupamento, visibilidade e larguras das colunas). Tamanho e data são calculados exclusivamente a partir do filesystem virtual já carregado. Em `real-mount-mode`, o motor de ordenação/agrupamento V8.9 retorna sem ler ou reorganizar conteúdo real montado.

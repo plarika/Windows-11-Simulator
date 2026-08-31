@@ -439,6 +439,17 @@ check(explorerCommand.includes("explorer-selection-pill-v880"), "Explorer select
 check(explorerCommand.includes('wrap.classList.contains("real-mount-mode")'), "Explorer checkbox selection guards real mount mode");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-command-v880.js?v=8.8.0"), "Explorer Command V8.8 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-command-v880.css?v=8.8.0"), "Explorer Command V8.8 CSS precached");
+const explorerColumns=readFileSync(resolve(root, "src/features/explorer-columns-v890.js"), "utf8");
+check(index.includes("./src/features/explorer-columns-v890.js?v=8.9.0"), "Explorer Columns V8.9 module loaded");
+check(index.includes("./styles/explorer-columns-v890.css?v=8.9.0"), "Explorer Columns V8.9 styles loaded");
+check(explorerColumns.includes('version:"8.9.0"'), "Explorer Columns V8.9 bridge present");
+check(explorerColumns.includes('["name","type","size","date"]'), "Explorer sort fields present");
+check(explorerColumns.includes('["none","type","size","date"]'), "Explorer Pro grouping fields present");
+check(explorerColumns.includes("explorerColumnsV89") && explorerColumns.includes("widths"), "Explorer column state persists per profile");
+check(explorerColumns.includes("explorer-column-resize-v890") && explorerColumns.includes("setColumnWidth"), "Explorer resizable columns present");
+check(explorerColumns.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Columns guards real mount mode");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.js?v=8.9.0"), "Explorer Columns V8.9 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.css?v=8.9.0"), "Explorer Columns V8.9 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");
