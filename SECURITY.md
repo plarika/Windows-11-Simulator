@@ -119,3 +119,7 @@ O painel de detalhes V8.4 gera preview automático apenas para conteúdo que já
 ## Explorer Context & Properties V8.5.0
 
 Os menus modernos V8.5 são instalados apenas sobre itens do filesystem virtual. Quando o Explorer entra em `real-mount-mode`, a captura de contexto retorna imediatamente e não substitui os menus das pastas reais montadas. A ficha de Propriedades V8.5 lê apenas metadata e valores já presentes no estado virtual; referências a conteúdo real importado são identificadas como tal sem abrir handles externos. A ação Copiar caminho usa exclusivamente o caminho virtual selecionado.
+
+## Explorer Views & Grouping V8.6.0
+
+As preferências V8.6 armazenam apenas os valores de apresentação `mode` e `group` no `state` do perfil. O agrupamento é suspenso em `real-mount-mode` e não lê, move ou reordena handles de pastas reais. A implementação reutiliza os controlos de vista existentes do Explorer e não altera dados do filesystem.

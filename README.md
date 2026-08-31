@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.5.0 Explorer Modern Context & Properties** — o Explorador ganha menus de contexto modernos com ações rápidas, `Mostrar mais opções` e Propriedades com separadores Geral/Detalhes.
+**V8.6.0 Explorer Views & Grouping** — o Explorador ganha quatro modos de vista, agrupamento por tipo e preferências persistentes por perfil.
 
 ## Funcionalidades
 
@@ -467,3 +467,13 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Detalhes mostra caminho completo, extensão, modificação quando disponível, atributos e isolamento de perfil
 - Propriedades V7.4 continuam a ser usadas para seleção múltipla
 - menus V8.5 não interceptam `real-mount-mode`; mounts reais mantêm o fluxo próprio
+
+## V8.6.0 Explorer Views & Grouping
+
+- quatro modos de vista: Ícones grandes, Ícones médios, Ícones pequenos e Detalhes
+- menu `Ver` dedicado na barra de comandos
+- agrupamento opcional por tipo com secções Pastas, Ficheiros e Reciclagem
+- preferências de vista e agrupamento persistidas no estado do perfil
+- vista Detalhes reutiliza o motor de lista já existente, mantendo seleção, propriedades e drag-and-drop
+- agrupamento fica desativado em `real-mount-mode` para não reorganizar conteúdo real montado
+- MutationObserver protegido contra reagir às próprias headings de agrupamento

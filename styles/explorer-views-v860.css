@@ -1,0 +1,24 @@
+/* Windows 11 Simulator V8.6 — Explorer Views */
+.explorer-views-v860.view-large-v860 .file-grid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px}
+.explorer-views-v860.view-large-v860 .file>.icon{font-size:46px}
+.explorer-views-v860.view-medium-v860 .file-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:9px}
+.explorer-views-v860.view-small-v860 .file-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px}
+.explorer-views-v860.view-small-v860 .file{
+  min-height:38px;display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;text-align:left;padding:5px 7px
+}
+.explorer-views-v860.view-small-v860 .file>.icon{font-size:20px}
+.explorer-views-v860.view-small-v860 .file-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.explorer-group-heading-v860{
+  grid-column:1/-1;
+  padding:9px 4px 5px;
+  margin-top:4px;
+  border-bottom:1px solid rgba(0,0,0,.09);
+  font-size:11px;
+  font-weight:600;
+}
+.file-list>.explorer-group-heading-v860{display:block}
+#app.theme-dark .explorer-group-heading-v860{border-bottom-color:rgba(255,255,255,.1)}
+@media(max-width:720px){
+  .explorer-views-v860 [data-group-v860] .cmd-label{display:none}
+  .explorer-views-v860.view-large-v860 .file-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+}

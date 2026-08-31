@@ -409,6 +409,16 @@ check(explorerContext.includes("data-prop-tab") && explorerContext.includes("dat
 check(explorerContext.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Context guards real mount mode");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.js?v=8.5.0"), "Explorer Context V8.5 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.css?v=8.5.0"), "Explorer Context V8.5 CSS precached");
+const explorerViews=readFileSync(resolve(root, "src/features/explorer-views-v860.js"), "utf8");
+check(index.includes("./src/features/explorer-views-v860.js?v=8.6.0"), "Explorer Views V8.6 module loaded");
+check(index.includes("./styles/explorer-views-v860.css?v=8.6.0"), "Explorer Views V8.6 styles loaded");
+check(explorerViews.includes('version:"8.6.0"'), "Explorer Views V8.6 bridge present");
+check(explorerViews.includes('["large","medium","small","details"]'), "Explorer four view modes present");
+check(explorerViews.includes('["none","type"]'), "Explorer grouping modes present");
+check(explorerViews.includes("explorerViewsV86") && explorerViews.includes("saveState()"), "Explorer view preferences persist per profile");
+check(explorerViews.includes('wrap.classList.contains("real-mount-mode")'), "Explorer grouping guards real mount mode");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-views-v860.js?v=8.6.0"), "Explorer Views V8.6 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-views-v860.css?v=8.6.0"), "Explorer Views V8.6 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");
