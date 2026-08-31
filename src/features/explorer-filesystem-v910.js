@@ -40,7 +40,7 @@
     Object.assign(m,patch);
     if(!("modified" in patch))m.modified=Date.now();
     m.hidden=!!m.hidden;
-    saveState();refreshAll();
+    saveState();globalThis.Win11SearchV920?.invalidate?.();refreshAll();
     return {...m};
   }
   function removeMetaTree(root){
@@ -61,7 +61,7 @@
     const oldRoot=fullPath(srcPath,srcName),newRoot=fullPath(dstPath,dstName);
     ensureMeta(srcPath,srcName,type,type==="file"?ensureFolder(srcPath)[srcName]:null,false);
     moveMetaTree(oldRoot,newRoot,!move);
-    saveState();return true;
+    saveState();globalThis.Win11SearchV920?.invalidate?.();return true;
   }
   function onRename({path,oldName,newName,type}={}){
     if(!path||!oldName||!newName)return false;
@@ -69,11 +69,11 @@
     moveMetaTree(fullPath(path,oldName),fullPath(path,newName),false);
     const m=ensureFsState().metadata[fullPath(path,newName)];
     if(m)m.modified=Date.now();
-    saveState();return true;
+    saveState();globalThis.Win11SearchV920?.invalidate?.();return true;
   }
   function onDelete({path,name,type}={}){
     if(!path||!name)return false;
-    removeMetaTree(fullPath(path,name));saveState();return true;
+    removeMetaTree(fullPath(path,name));saveState();globalThis.Win11SearchV920?.invalidate?.();return true;
   }  function uniqueShortcutName(path,targetName){
     const base=String(targetName||"Atalho").replace(/\.lnk$/i,"");
     const files=ensureFolder(path);
@@ -90,7 +90,7 @@
       createdAt:now,lastModified:now
     };
     ensureFsState().metadata[fullPath(path,name)]={created:now,modified:now,hidden:false};
-    saveState();
+    saveState();globalThis.Win11SearchV920?.invalidate?.();
     document.querySelectorAll('.window[data-app="explorer"]').forEach(w=>w.__explorerProV740?.forceRender?.());
     setTimeout(refreshAll,50);
     return {path,name};

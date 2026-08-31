@@ -1,0 +1,73 @@
+/* Windows 11 Simulator V9.2 — Search 2.0 */
+.search-controls-v920{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  padding:0 0 10px;
+}
+.search-quick-filters-v920,
+.search-active-filters-v920,
+.search-suggestions-v920{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.search-quick-filters-v920 button,
+.search-active-filters-v920 button,
+.search-suggestions-v920 button{
+  min-height:27px;
+  border:1px solid rgba(0,0,0,.09);
+  border-radius:999px;
+  padding:4px 9px;
+  background:rgba(0,0,0,.035);
+  color:inherit;
+  font:inherit;
+  font-size:10px;
+  cursor:pointer;
+}
+.search-quick-filters-v920 button.active{
+  background:rgba(0,120,212,.13);
+  border-color:rgba(0,120,212,.24);
+  font-weight:600;
+}
+.search-active-filters-v920 button{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(0,120,212,.09);
+}
+.search-active-filters-v920 button i{
+  font-style:normal;
+  font-size:12px;
+  opacity:.72;
+}
+.search-suggestions-v920 button{
+  border-style:dashed;
+  opacity:.86;
+}
+.search-quick-filters-v920 button:hover,
+.search-active-filters-v920 button:hover,
+.search-suggestions-v920 button:hover{
+  background:rgba(0,0,0,.07);
+}
+#app.theme-dark .search-quick-filters-v920 button,
+#app.theme-dark .search-active-filters-v920 button,
+#app.theme-dark .search-suggestions-v920 button{
+  border-color:rgba(255,255,255,.11);
+  background:rgba(255,255,255,.055);
+}
+#app.theme-dark .search-quick-filters-v920 button.active,
+#app.theme-dark .search-active-filters-v920 button{
+  background:rgba(62,146,214,.22);
+  border-color:rgba(62,146,214,.34);
+}
+#app.theme-dark .search-quick-filters-v920 button:hover,
+#app.theme-dark .search-active-filters-v920 button:hover,
+#app.theme-dark .search-suggestions-v920 button:hover{
+  background:rgba(255,255,255,.09);
+}
+@media(max-width:700px){
+  .search-controls-v920{padding-bottom:8px}
+  .search-quick-filters-v920{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .search-quick-filters-v920 button{white-space:nowrap}
+}

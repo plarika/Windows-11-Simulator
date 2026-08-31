@@ -465,7 +465,7 @@ check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explore
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.css?v=9.0.0"), "Explorer Operations V9.0 CSS precached");
 check(readFileSync(resolve(root, "styles/explorer-sidebar-v870.css"), "utf8").includes("V9.0 readability pass"), "Explorer Quick Access readability pass present");
 const explorerFilesystem=readFileSync(resolve(root, "src/features/explorer-filesystem-v910.js"), "utf8");
-check(index.includes("./src/features/explorer-filesystem-v910.js?v=9.1.0"), "Explorer Filesystem V9.1 module loaded");
+check(index.includes("./src/features/explorer-filesystem-v910.js?v=9.2.0"), "Explorer Filesystem V9.1 module loaded");
 check(index.includes("./styles/explorer-filesystem-v910.css?v=9.1.0"), "Explorer Filesystem V9.1 styles loaded");
 check(explorerFilesystem.includes('version:"9.1.0"'), "Explorer Filesystem V9.1 bridge present");
 check(explorerFilesystem.includes("explorerFilesystemV91") && explorerFilesystem.includes("metadata:{}"), "Explorer Filesystem metadata state present");
@@ -479,7 +479,7 @@ const startSearchV81=readFileSync(resolve(root, "src/features/start-search-taskb
 check(startSearchV81.includes("Win11ExplorerFilesystem?.shortcutTarget") && startSearchV81.includes("meta?.hidden"), "Search V9.1 hidden and shortcut integration present");
 const realFilesV64=readFileSync(resolve(root, "src/features/real-files-v640.js"), "utf8");
 check(realFilesV64.includes("Win11ExplorerFilesystem?.touch"), "Notepad virtual save updates V9.1 metadata");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-filesystem-v910.js?v=9.1.0"), "Explorer Filesystem V9.1 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-filesystem-v910.js?v=9.2.0"), "Explorer Filesystem V9.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-filesystem-v910.css?v=9.1.0"), "Explorer Filesystem V9.1 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
@@ -627,7 +627,7 @@ check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows-experience-v800.css?v=8.1.0"), "Windows Experience V8.0 CSS precached");
 check(readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("globalThis.Win11SystemTray?.refresh") && readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("notify&&!globalThis.Win11SystemTray"), "Legacy V6.2 tray delegates to modern System Tray");
 const startSearch=readFileSync(resolve(root, "src/features/start-search-taskbar-v810.js"), "utf8");
-check(index.includes("./src/features/start-search-taskbar-v810.js?v=9.1.0"), "Start Search Taskbar V8.1 module loaded");
+check(index.includes("./src/features/start-search-taskbar-v810.js?v=9.2.0"), "Start Search Taskbar V8.1 module loaded");
 check(index.includes("./styles/start-search-taskbar-v810.css?v=8.1.0"), "Start Search Taskbar V8.1 styles loaded");
 check(startSearch.includes("Win11StartSearch"), "Start Search V8.1 bridge present");
 check(startSearch.includes("state.startSearchV81") && startSearch.includes("pinned") && startSearch.includes("recentApps") && startSearch.includes("searchHistory"), "Per-profile Start and Search state present");
@@ -645,8 +645,22 @@ check(!startSearch.includes("showDirectoryPicker") && !startSearch.includes("Rea
 check(!startSearch.includes("fetch(") && !startSearch.includes("XMLHttpRequest"), "Search does not send queries to external services");
 check(!startSearch.includes("child_process") && !startSearch.includes("new Function") && !startSearch.includes("eval("), "Start Search cannot execute arbitrary host code");
 check(startSearch.includes("start-menu-v3") && startSearch.includes("search-v3") && startSearch.includes("taskbar-jump-lists"), "V8.1 capabilities registered");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("start-search-taskbar-v810.js?v=9.1.0"), "Start Search V8.1 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("start-search-taskbar-v810.js?v=9.2.0"), "Start Search V8.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("start-search-taskbar-v810.css?v=8.1.0"), "Start Search V8.1 CSS precached");
+const searchV920=readFileSync(resolve(root, "src/features/search-v920.js"), "utf8");
+check(index.includes("./src/features/search-v920.js?v=9.2.0"), "Search V9.2 module loaded");
+check(index.includes("./styles/search-v920.css?v=9.2.0"), "Search V9.2 styles loaded");
+check(searchV920.includes('version:VERSION') && searchV920.includes('VERSION="9.2.0"'), "Search V9.2 bridge present");
+check(searchV920.includes("tokenizeQuery") && searchV920.includes("filters.type") && searchV920.includes("filters.ext"), "Search V9.2 query parser present");
+check(searchV920.includes("parseBytes") && searchV920.includes("matchModified") && searchV920.includes("matchSize"), "Search V9.2 size and date filters present");
+check(searchV920.includes("type:folder") && searchV920.includes("type:image") && searchV920.includes("in:Documents"), "Search V9.2 quick filters and suggestions present");
+check(searchV920.includes("indexCache") && searchV920.includes("dirty=true") && searchV920.includes("invalidate"), "Search V9.2 cached index present");
+check(searchV920.includes('kind:"folder"') && searchV920.includes("folderSize"), "Search V9.2 folder indexing present");
+check(searchV920.includes("renderControls") && searchV920.includes("search-active-filters-v920"), "Search V9.2 filter chips present");
+check(startSearch.includes("Win11SearchV920?.collect") && startSearch.includes("Win11SearchV920?.renderControls"), "Start Search delegates to Search V9.2");
+check(readFileSync(resolve(root, "src/features/explorer-filesystem-v910.js"), "utf8").includes("Win11SearchV920?.invalidate"), "Filesystem invalidates Search V9.2 index");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("search-v920.js?v=9.2.0"), "Search V9.2 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("search-v920.css?v=9.2.0"), "Search V9.2 CSS precached");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

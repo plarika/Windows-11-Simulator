@@ -143,3 +143,7 @@ O motor V9.0 não cria um segundo filesystem: decide apenas a política da opera
 ## Explorer Filesystem Pro V9.1.0
 
 A V9.1 mantém a metadata num mapa separado do conteúdo do VFS para não alterar nem reinterpretar valores existentes, incluindo referências a blobs reais. A camada V9.1 é suspensa em `real-mount-mode` e nunca guarda handles de File System Access. Atalhos `.lnk` virtuais contêm apenas caminhos e tipos do filesystem virtual e são resolvidos com validação de existência antes da abertura. A preferência de ocultar extensões altera apenas o texto apresentado; o nome canónico interno permanece intacto.
+
+## Search 2.0 V9.2.0
+
+A V9.2 constrói um índice apenas a partir do catálogo de aplicações/definições e do filesystem virtual `state.files` já autorizado. Não percorre `real-mount-mode`, não lê handles de File System Access, não consulta o clipboard e não envia queries para serviços externos. Filtros são analisados localmente como dados e não são executados como código. O índice é invalidado por hooks do Filesystem Pro em alterações de conteúdo/metadata e permanece limitado ao perfil ativo.

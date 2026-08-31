@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.1.0 Explorer Filesystem Pro** — metadata persistente, itens ocultos, extensões configuráveis e atalhos `.lnk` virtuais integrados no Explorer, Pesquisa e Propriedades.
+**V9.2.0 Search 2.0** — pesquisa local indexada com filtros por tipo/extensão/tamanho/data/localização, pastas pesquisáveis, sugestões e chips de filtro.
 
 ## Funcionalidades
 
@@ -543,3 +543,22 @@ Primeiro passo de integração com funções reais do dispositivo:
 - ordenação/agrupamento por data usa a metadata V9.1
 - `real-mount-mode` continua excluído do motor de metadata/atalhos virtuais
 - identidade canónica do ficheiro separada do texto apresentado para impedir regressões ao ocultar extensões
+
+## V9.2.0 Search 2.0
+
+- novo motor de pesquisa local `Win11SearchV920`, mantendo a UI existente do Start/Search
+- índice local em cache: não é reconstruído a cada tecla e é invalidado por mutações do filesystem V9.1
+- pesquisa passa a incluir pastas virtuais, além de aplicações, definições e ficheiros
+- filtros `type:` / `tipo:` para apps, definições, ficheiros, pastas, imagens, texto, áudio, vídeo e atalhos
+- filtros `ext:` / `extension:` para extensão
+- filtros `size:` / `tamanho:` com operadores `>`, `>=`, `<`, `<=` e unidades B/KB/MB/GB
+- filtros `modified:` / `date:` com Hoje, Semana, Mês, Ano, `Nd`, Mais antigos e datas explícitas
+- filtros `in:` / `path:` para restringir a localização virtual
+- filtro `hidden:` respeitando a política V9.1: itens ocultos continuam invisíveis se `Mostrar itens ocultos` estiver desligado
+- ranking melhorado com prioridade a nome exato/prefixo, recência e ficheiros recentes
+- aliases de aplicações mantêm compatibilidade com pesquisas como `bloco de notas`
+- filtros rápidos no UI: Todos, Aplicações, Pastas, Imagens e Texto
+- chips removíveis mostram os filtros ativos
+- sugestões usam histórico do perfil e exemplos de filtros
+- atalhos e metadata V9.1 continuam integrados no índice
+- pesquisa continua 100% local: sem mounts reais, sem clipboard e sem pedidos externos

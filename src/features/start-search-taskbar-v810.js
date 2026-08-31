@@ -154,6 +154,10 @@
 
   function fileValue(path,name){return (state.files?.[path]||{})[name]}
   function openFileResult(r){
+    if(r?.kind==="folder"){
+      openAppV810("explorer",r.path+"/"+r.name);
+      return;
+    }
     const value=fileValue(r.path,r.name);
     try{
       touchRecent(r.path+"/"+r.name);
@@ -200,6 +204,7 @@
   }
   function collectSearchResultsV810(query){
     const q=String(query||"").trim();if(!q)return [];
+    if(globalThis.Win11SearchV920?.collect)return Win11SearchV920.collect(q,36);
     const out=[];
     Object.entries(APPS).forEach(([id,a])=>{
       const s=score(q,a.name+" "+id);if(s)out.push({type:"app",id,name:a.name,detail:"Aplicação",score:s+10});
@@ -223,6 +228,7 @@
   function resultIcon(r){
     if(r.type==="app")return appIcon(r.id,"search-icon-v81");
     if(r.type==="setting")return appIcon("settings","search-icon-v81");
+    if(r.kind==="folder"&&typeof globalThis.desktopIconSvg==="function")return '<span class="search-icon-v81">'+desktopIconSvg("folder")+'</span>';
     return fileIcon(r.name,"search-icon-v81");
   }
 
@@ -267,6 +273,7 @@
     const box=document.getElementById("search-results");if(!box)return;
     const results=String(query||"").trim()?collectSearchResultsV810(query):emptySearchResults();
     searchActiveIndex=0;box.innerHTML="";
+    globalThis.Win11SearchV920?.renderControls?.(box,query);
     const layout=document.createElement("div");layout.className="search-layout-v81";
     const list=document.createElement("div");list.className="search-list-v81";
     const preview=document.createElement("aside");preview.className="search-preview-v81";

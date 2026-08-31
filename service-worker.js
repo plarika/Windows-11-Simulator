@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.1.0";
+const CACHE_NAME="win11-simulator-v9.2.0";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -38,6 +38,7 @@ const PRECACHE=[
   "./styles/system-tray-quick-v790.css?v=8.1.0",
   "./styles/windows-experience-v800.css?v=8.1.0",
   "./styles/start-search-taskbar-v810.css?v=8.1.0",
+  "./styles/search-v920.css?v=9.2.0",
   "./src/core/runtime.js?v=8.1.0",
   "./src/features/system-v4.js?v=8.1.0",
   "./src/apps/v5-runtime.js?v=8.1.0",
@@ -80,14 +81,15 @@ const PRECACHE=[
   "./src/features/explorer-command-v880.js?v=8.8.0",
   "./src/features/explorer-columns-v890.js?v=9.1.0",
   "./src/features/explorer-operations-v900.js?v=9.0.0",
-  "./src/features/explorer-filesystem-v910.js?v=9.1.0",
+  "./src/features/explorer-filesystem-v910.js?v=9.2.0",
   "./src/features/window-manager-v750.js?v=8.1.0",
   "./src/features/real-device-integration-v760.js?v=8.1.0",
   "./src/features/notifications-background-v770.js?v=8.1.0",
   "./src/features/settings-security-v780.js?v=8.1.0",
   "./src/features/system-tray-quick-v790.js?v=8.1.0",
   "./src/features/windows-experience-v800.js?v=8.1.0",
-  "./src/features/start-search-taskbar-v810.js?v=9.1.0",
+  "./src/features/start-search-taskbar-v810.js?v=9.2.0",
+  "./src/features/search-v920.js?v=9.2.0",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
   "./src/core/boot.js?v=8.1.0",
   "./icons/icon-192.png",
