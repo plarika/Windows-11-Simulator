@@ -515,7 +515,7 @@ check(explorerColumns.includes('wrap.classList.contains("real-mount-mode")'), "E
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.js?v=9.1.0"), "Explorer Columns V8.9 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.css?v=8.9.0"), "Explorer Columns V8.9 CSS precached");
 const explorerOperations=readFileSync(resolve(root, "src/features/explorer-operations-v900.js"), "utf8");
-check(index.includes("./src/features/explorer-operations-v900.js?v=9.6.0"), "Explorer Operations V9.0 module loaded");
+check(index.includes("./src/features/explorer-operations-v900.js?v=9.7.0"), "Explorer Operations V9.0 module loaded");
 check(index.includes("./styles/explorer-operations-v900.css?v=9.0.0"), "Explorer Operations V9.0 styles loaded");
 check(explorerOperations.includes('version:"9.0.0"'), "Explorer Operations V9.0 bridge present");
 check(explorerOperations.includes("explorer-file-operation-progress") && explorerOperations.includes("explorer-file-operation-pause"), "Explorer operation progress and pause present");
@@ -525,7 +525,7 @@ check(explorerOperations.includes("activeByWrap") && explorerOperations.includes
 check(explorerOperations.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Operations guards real mount mode");
 check(explorerPro.includes("Win11ExplorerOperations?.handlePaste"), "Explorer Pro delegates paste to V9.0");
 check(explorerPro.includes('(move&&srcPath===dstPath)'), "Explorer same-folder copy is allowed while same-folder move stays blocked");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.js?v=9.6.0"), "Explorer Operations V9.0 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.js?v=9.7.0"), "Explorer Operations V9.0 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.css?v=9.0.0"), "Explorer Operations V9.0 CSS precached");
 const explorerSidebarCss=readFileSync(resolve(root, "styles/explorer-sidebar-v870.css"), "utf8");
 check(explorerSidebarCss.includes("V9.0 readability pass"), "Explorer Quick Access readability pass present");
@@ -568,6 +568,20 @@ check(windowManager.includes("Novo documento de texto"), "Desktop context menu V
 check(windowManager.includes("iframe,video,audio,canvas"), "Window previews strip active media embeds");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 CSS precached");
+const taskbarWindowV97=readFileSync(resolve(root, "src/features/taskbar-window-v970.js"), "utf8");
+check(index.includes("./src/features/taskbar-window-v970.js?v=9.7.0"), "Taskbar Window V9.7 module loaded");
+check(index.includes("./styles/taskbar-window-v970.css?v=9.7.0"), "Taskbar Window V9.7 styles loaded");
+check(taskbarWindowV97.includes('VERSION="9.7.0"') && taskbarWindowV97.includes("Win11TaskbarWindowPro"), "Taskbar Window V9.7 bridge present");
+check(taskbarWindowV97.includes("taskbar-group-lead-v970") && taskbarWindowV97.includes("taskbar-group-hidden-v970"), "Taskbar general app grouping present");
+check(taskbarWindowV97.includes("data-min-all") && taskbarWindowV97.includes("data-restore-all") && taskbarWindowV97.includes("data-close-all"), "Taskbar group actions present");
+check(taskbarWindowV97.includes("safePreview") && taskbarWindowV97.includes("taskbar-group-preview-clone-v970"), "Taskbar group live previews present");
+check(taskbarWindowV97.includes("windowManagerV97") && taskbarWindowV97.includes("placements"), "Window placement profile state present");
+check(taskbarWindowV97.includes("savePlacement") && taskbarWindowV97.includes("applyPlacement"), "Window placement persistence present");
+check(taskbarWindowV97.includes("MAX")===false && taskbarWindowV97.includes("entries.length>60"), "Window placement state bounded");
+check(taskbarWindowV97.includes("explorer-operation-progress-v970") && taskbarWindowV97.includes("task-progress-v970"), "Taskbar Explorer progress integration present");
+check(readFileSync(resolve(root, "src/features/explorer-operations-v900.js"), "utf8").includes("explorer-operation-progress-v970"), "Explorer Operations emits taskbar progress events");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("taskbar-window-v970.js?v=9.7.0"), "Taskbar Window V9.7 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("taskbar-window-v970.css?v=9.7.0"), "Taskbar Window V9.7 CSS precached");
 const deviceCenter=readFileSync(resolve(root, "src/features/real-device-integration-v760.js"), "utf8");
 check(index.includes("./src/features/real-device-integration-v760.js?v=8.1.0"), "Real Device Integration V7.6 module loaded");
 check(index.includes("./styles/real-device-integration-v760.css?v=8.1.0"), "Real Device Integration V7.6 styles loaded");

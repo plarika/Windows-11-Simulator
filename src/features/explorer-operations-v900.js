@@ -116,6 +116,9 @@
       op.cancelled=true;op.paused=false;renderOperation(op);
     });
     card.querySelector("[data-operation-close]")?.addEventListener("click",()=>card.remove());
+    op.win?.dispatchEvent?.(new CustomEvent("explorer-operation-progress-v970",{
+      detail:opSnapshot(op),bubbles:true
+    }));
   }
 
   async function waitWhilePaused(op){

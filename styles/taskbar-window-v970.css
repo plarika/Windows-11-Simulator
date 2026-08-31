@@ -1,0 +1,199 @@
+/* Windows 11 Simulator V9.7 — Taskbar & Window Management Pro */
+#task-center .taskbar-group-hidden-v970{
+  display:none!important;
+}
+#task-center .taskbar-group-lead-v970{
+  position:relative;
+}
+.taskbar-group-badge-v970{
+  position:absolute;
+  right:-2px;
+  top:-4px;
+  min-width:15px;
+  height:15px;
+  padding:0 3px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  box-sizing:border-box;
+  background:#0f6cbd;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.78);
+  font-size:9px;
+  line-height:1;
+  pointer-events:none;
+  z-index:3;
+}
+#task-center .task-btn.task-progress-v970::before{
+  content:"";
+  position:absolute;
+  left:5px;
+  bottom:0;
+  width:var(--task-progress-v970,0%);
+  height:2px;
+  border-radius:2px;
+  background:#0f6cbd;
+  transition:width .12s linear;
+  z-index:3;
+}
+#task-center .task-btn.task-progress-paused-v970::before{
+  opacity:.55;
+}
+.taskbar-group-v970{
+  position:fixed;
+  z-index:100350;
+  display:none;
+  width:min(470px,calc(100vw - 16px));
+  max-height:min(540px,74vh);
+  padding:10px;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:13px;
+  background:rgba(250,251,253,.985);
+  color:#202124;
+  box-shadow:0 20px 66px rgba(0,0,0,.26);
+  backdrop-filter:blur(22px);
+  overflow:auto;
+}
+.taskbar-group-v970.open{display:block}
+.taskbar-group-v970>header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:4px 5px 10px;
+}
+.taskbar-group-v970>header>div:first-child{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.taskbar-group-v970>header strong{
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.taskbar-group-v970>header span{
+  font-size:9px;
+  opacity:.65;
+}
+.taskbar-group-actions-v970{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:5px;
+}
+.taskbar-group-actions-v970 button,
+.taskbar-group-card-v970 button{
+  border:0;
+  background:transparent;
+  color:inherit;
+  font:inherit;
+  cursor:pointer;
+}
+.taskbar-group-actions-v970 button{
+  min-height:27px;
+  border-radius:6px;
+  padding:0 8px;
+  font-size:9px;
+  background:rgba(0,0,0,.04);
+}
+.taskbar-group-actions-v970 button:hover{
+  background:rgba(0,0,0,.08);
+}
+.taskbar-group-list-v970{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.taskbar-group-card-v970{
+  min-width:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 28px;
+  border-radius:9px;
+  overflow:hidden;
+  background:rgba(0,0,0,.035);
+  border:1px solid transparent;
+}
+.taskbar-group-card-v970.active{
+  background:rgba(0,120,212,.1);
+  border-color:rgba(0,120,212,.14);
+}
+.taskbar-group-card-v970 [data-focus]{
+  min-width:0;
+  padding:7px;
+  text-align:left;
+}
+.taskbar-group-card-v970 [data-close]{
+  font-size:15px;
+}
+.taskbar-group-card-v970 [data-close]:hover,
+.taskbar-group-card-v970 [data-focus]:hover{
+  background:rgba(0,0,0,.055);
+}
+.taskbar-group-preview-image-v970{
+  position:relative;
+  height:116px;
+  border-radius:6px;
+  overflow:hidden;
+  background:rgba(0,0,0,.07);
+  pointer-events:none;
+}
+.taskbar-group-preview-clone-v970{
+  position:absolute!important;
+  margin:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  pointer-events:none!important;
+}
+.taskbar-group-media-v970{
+  display:grid;
+  place-items:center;
+  min-height:80px;
+  background:rgba(0,0,0,.08);
+  font-size:10px;
+  opacity:.7;
+}
+.taskbar-group-card-v970 footer{
+  min-width:0;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:6px;
+}
+.taskbar-group-card-v970 footer strong,
+.taskbar-group-card-v970 footer span{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.taskbar-group-card-v970 footer strong{font-size:10px}
+.taskbar-group-card-v970 footer span{font-size:9px;opacity:.62}
+#app.theme-dark .taskbar-group-v970{
+  background:rgba(40,43,49,.985);
+  color:#f2f3f5;
+  border-color:rgba(255,255,255,.12);
+}
+#app.theme-dark .taskbar-group-actions-v970 button,
+#app.theme-dark .taskbar-group-card-v970{
+  background:rgba(255,255,255,.05);
+}
+#app.theme-dark .taskbar-group-card-v970.active{
+  background:rgba(62,146,214,.22);
+  border-color:rgba(62,146,214,.28);
+}
+#app.theme-dark .taskbar-group-actions-v970 button:hover,
+#app.theme-dark .taskbar-group-card-v970 [data-close]:hover,
+#app.theme-dark .taskbar-group-card-v970 [data-focus]:hover{
+  background:rgba(255,255,255,.09);
+}
+@media(max-width:720px){
+  .taskbar-group-v970{width:calc(100vw - 16px)}
+  .taskbar-group-v970>header{flex-direction:column}
+  .taskbar-group-actions-v970{justify-content:flex-start}
+  .taskbar-group-list-v970{grid-template-columns:1fr}
+  .taskbar-group-preview-image-v970{height:92px}
+}

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.6.0 Previous Versions** — versões anteriores limitadas para ficheiros virtuais de texto, captura antes de guardar/substituir, restauração pelas Propriedades e histórico que acompanha mover, renomear e Reciclagem.
+**V9.7.0 Taskbar & Window Management Pro** — agrupamento geral de janelas por aplicação, previews e ações de grupo, progresso das operações do Explorer na Taskbar e persistência de posição/tamanho das janelas por perfil.
 
 ## Funcionalidades
 
@@ -640,3 +640,23 @@ Primeiro passo de integração com funções reais do dispositivo:
 - snapshots duplicados e gravações sem alterações são ignorados
 - `data:` URLs, conteúdos não textuais, blobs importados e ficheiros acima do limite não são duplicados no histórico
 - `real-mount-mode` e File System Access handles continuam fora do sistema de versões
+
+## V9.7.0 Taskbar & Window Management Pro
+
+- nova camada `Win11TaskbarWindowPro` integrada na Taskbar e no Window Manager existente
+- aplicações com duas ou mais janelas no mesmo ambiente virtual passam a poder ser agrupadas num único botão da Taskbar
+- o Explorer mantém o agrupamento especializado V9.3 e a V9.7 generaliza o comportamento para as restantes aplicações
+- badge numérico mostra a quantidade de janelas do grupo
+- painel do grupo mostra previews seguros das janelas, título e estado aberta/minimizada
+- ações de grupo: `Minimizar todas`, `Restaurar todas` e `Fechar todas`
+- cada janela do painel pode ser focada ou fechada individualmente
+- previews clonados removem IDs, desativam controlos interativos e substituem iframe/vídeo/áudio/canvas por placeholders
+- operações de copiar/mover do Explorer emitem progresso para a Taskbar
+- o indicador de progresso acompanha percentagem e estado de pausa e desaparece automaticamente depois da operação terminar
+- quando várias janelas Explorer têm operações em curso, o botão agrupado pode refletir progresso agregado
+- posição e tamanho de janelas flutuantes passam a ser persistidos por perfil, ambiente virtual, aplicação e posição ordinal da janela
+- geometria restaurada é limitada ao viewport atual para evitar janelas fora do ecrã depois de mudanças de resolução
+- estados `maximized` e `wm-snapped` não sobrescrevem a geometria flutuante guardada
+- o armazenamento de placements é limitado às 60 entradas mais recentes por perfil
+- `Win11TaskbarWindowPro.refresh()` é síncrono para ações explícitas; observers continuam agrupados por `requestAnimationFrame` para evitar churn de DOM
+- Alt+Tab, Task View, Snap Assist, Snap Groups e Multi-Window V9.3 continuam preservados sem reimplementação paralela
