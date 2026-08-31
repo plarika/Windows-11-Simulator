@@ -955,6 +955,43 @@ await check("Accessibility V9.8.2 Store-backed UI",async()=>await evaluate(`(()=
 await evaluate(`(()=>{const s=document.querySelector('.window[data-app="settings"] [data-textscale]'),target=__v982AccessBefore.textScale===130?135:130;globalThis.__v982AccessTarget=target;s.value=String(target);s.dispatchEvent(new Event("input",{bubbles:true}));return true})()`); await wait(70);
 await check("Accessibility V9.8.2 persists scale without page regression",async()=>await evaluate(`Win11SettingsStore.get("accessibility.textScale")===__v982AccessTarget&&state.accessibility.textScale===__v982AccessTarget&&document.querySelector("#app").style.fontSize===(__v982AccessTarget/100*16)+"px"&&!!document.querySelector('.window[data-app="settings"] [data-textscale]')&&!document.querySelector('.window[data-app="settings"] .settings-core-badge-v982')`));
 await evaluate(`(()=>{Win11SettingsStore.update("accessibility",__v982AccessBefore,{source:"browser-audit-v982-access-cleanup"});delete globalThis.__v982AccessBefore;delete globalThis.__v982AccessTarget;return true})()`); await wait(60);
+await evaluate(`(()=>{globalThis.__resmonThemeBefore=Win11SettingsStore.get("appearance.themeMode");Win11SettingsStore.set("appearance.themeMode","dark",{source:"browser-audit-resmon-v9841"});openApp("resmon");return true})()`); await wait(140);
+await check("Resource Monitor V9.8.4.1 dark contrast",async()=>await evaluate(`(()=>{
+  const w=document.querySelector('.window[data-app="resmon"]'),root=w?.querySelector(".resmon");
+  if(!root||!document.querySelector("#app").classList.contains("theme-dark"))return false;
+  root.querySelector('[data-res="cpu"]')?.click();
+  const body=root.querySelector(".resmon-body"),title=body?.querySelector("h2"),tab=root.querySelector(".resmon-tabs button.active"),table=root.querySelector(".admin-table"),cell=table?.querySelector("td"),head=table?.querySelector("th");
+  const rgb=s=>{const m=String(s||"").match(/rgba?\\((\\d+)[, ]+(\\d+)[, ]+(\\d+)/);return m?[+m[1],+m[2],+m[3]]:null};
+  const lum=c=>{if(!c)return 0;const a=c.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]};
+  const cr=(fg,bg)=>{const a=lum(rgb(fg)),b=lum(rgb(bg)),hi=Math.max(a,b),lo=Math.min(a,b);return (hi+.05)/(lo+.05)};
+  const bodyStyle=getComputedStyle(body),tabStyle=getComputedStyle(tab),tableStyle=getComputedStyle(table),headStyle=getComputedStyle(head);
+  return cr(getComputedStyle(title).color,bodyStyle.backgroundColor)>=4.5&&
+    cr(tabStyle.color,tabStyle.backgroundColor)>=4.5&&
+    cr(getComputedStyle(cell).color,tableStyle.backgroundColor)>=4.5&&
+    cr(headStyle.color,headStyle.backgroundColor)>=4.5;
+})()`));
+await check("Resource Monitor V9.8.4.1 all tabs readable",async()=>await evaluate(`(()=>{
+  const root=document.querySelector('.window[data-app="resmon"] .resmon');
+  if(!root)return false;
+  for(const id of ["overview","cpu","memory","disk","network"]){
+    const b=root.querySelector('[data-res="'+id+'"]');b?.click();
+    if(!b?.classList.contains("active")||getComputedStyle(b).color===getComputedStyle(b).backgroundColor)return false;
+    if(!root.querySelector(".resmon-body")?.textContent?.trim())return false;
+  }
+  return true;
+})()`));
+await evaluate(`Win11SettingsStore.set("appearance.themeMode","light",{source:"browser-audit-resmon-v9841"});true`); await wait(100);
+await check("Resource Monitor V9.8.4.1 light contrast",async()=>await evaluate(`(()=>{
+  const root=document.querySelector('.window[data-app="resmon"] .resmon');root?.querySelector('[data-res="disk"]')?.click();
+  const body=root?.querySelector(".resmon-body"),title=body?.querySelector("h2"),tab=root?.querySelector(".resmon-tabs button.active");
+  if(!body||!title||!tab||document.querySelector("#app").classList.contains("theme-dark"))return false;
+  const rgb=s=>{const m=String(s||"").match(/rgba?\\((\\d+)[, ]+(\\d+)[, ]+(\\d+)/);return m?[+m[1],+m[2],+m[3]]:null};
+  const lum=c=>{const a=c.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]};
+  const cr=(fg,bg)=>{const a=lum(rgb(fg)),b=lum(rgb(bg)),hi=Math.max(a,b),lo=Math.min(a,b);return (hi+.05)/(lo+.05)};
+  const bs=getComputedStyle(body),ts=getComputedStyle(tab);
+  return cr(getComputedStyle(title).color,bs.backgroundColor)>=4.5&&cr(ts.color,ts.backgroundColor)>=4.5;
+})()`));
+await evaluate(`(()=>{const w=document.querySelector('.window[data-app="resmon"]');if(w)closeWindow(w);Win11SettingsStore.set("appearance.themeMode",__resmonThemeBefore,{source:"browser-audit-resmon-v9841-cleanup"});delete globalThis.__resmonThemeBefore;return true})()`); await wait(100);
 await evaluate(`(()=>{globalThis.__v982BackupsBefore=structuredClone(state.backups||[]);globalThis.__v982BackupSettingsBefore=Win11SettingsStore.exportConfig();openApp("backup");return true})()`); await wait(120);
 await evaluate(`(()=>{document.querySelector('.window[data-app="backup"] [data-backup-now]')?.click();return true})()`); await wait(80);
 await check("Backup V9.8.2 stores Settings export",async()=>await evaluate(`state.backups?.[0]?.data?.settingsConfig?.kind==="win11-simulator-settings"&&state.backups[0].data.settingsConfig.schemaVersion===1`));
@@ -1022,7 +1059,7 @@ await wait(80);
 await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notify-strip-v77 [data-real-notify]") && typeof RealPlatformBridge?.requestNotificationPermission==="function"`));
 await check("PWA manifest link",async()=>await evaluate(`document.querySelector('link[rel="manifest"]')?.getAttribute("href").includes("manifest.webmanifest")`));
 await check("PWA service worker registration",async()=>await evaluate(`(async()=>{if(!("serviceWorker" in navigator))return false;for(let i=0;i<20;i++){const r=await navigator.serviceWorker.getRegistration();if(r)return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
-await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v9.8.4"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v9.8.4-hotfix.1"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
 await evaluate(`(()=>{state.settingsPage="system";const settingsWin=document.querySelector('.window[data-app="settings"]');if(settingsWin){settingsWin.querySelector(".win-body").innerHTML="";settingsWin.querySelector(".win-body").appendChild(renderApp("settings",settingsWin));}return true})()`);
 await wait(140);
 await check("PWA settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-pwa-card] [data-install-pwa]')`));

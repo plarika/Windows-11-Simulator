@@ -1,0 +1,131 @@
+/* Windows 11 Simulator V9.8.4.1 — Resource Monitor contrast hotfix */
+.resmon{
+  color:#1f2328;
+  background:#f7f8fa
+}
+.resmon-tabs{
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:thin
+}
+.resmon-tabs button{
+  flex:0 0 auto;
+  color:#24272b;
+  background:transparent;
+  transition:background-color .12s ease,color .12s ease,box-shadow .12s ease
+}
+.resmon-tabs button:hover{
+  background:#e2e8ee
+}
+.resmon-tabs button.active{
+  color:#171a1f;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.12)
+}
+.resmon-tabs button:focus-visible{
+  outline:2px solid var(--accent,#0078d4);
+  outline-offset:1px
+}
+.resmon-body{
+  color:#1f2328;
+  background:#f7f8fa
+}
+.resmon-body h2,
+.resmon-body h3{
+  color:#1f2328
+}
+.resmon .admin-table{
+  color:#24272b;
+  background:#fff;
+  border:1px solid #e0e4e8;
+  border-radius:8px;
+  overflow:hidden
+}
+.resmon .admin-table th{
+  color:#4b5560;
+  background:#f1f4f7;
+  font-weight:600
+}
+.resmon .admin-table th,
+.resmon .admin-table td{
+  border-bottom-color:#e4e7ea
+}
+.resmon .admin-table tr:last-child td{
+  border-bottom:0
+}
+.resmon .admin-table tbody tr:hover{
+  color:#1f2328;
+  background:#edf4f9
+}
+.resmon-card p{
+  color:inherit
+}
+
+#app.theme-dark .resmon{
+  color:#f2f3f5;
+  background:#202228
+}
+#app.theme-dark .resmon-tabs{
+  color:#f2f3f5;
+  background:#252930;
+  border-color:#41464f
+}
+#app.theme-dark .resmon-tabs button{
+  color:#dfe5eb;
+  background:transparent
+}
+#app.theme-dark .resmon-tabs button:hover{
+  color:#fff;
+  background:#333841
+}
+#app.theme-dark .resmon-tabs button.active{
+  color:#fff;
+  background:#3a4049;
+  box-shadow:inset 0 0 0 1px #505863,0 1px 3px rgba(0,0,0,.24)
+}
+#app.theme-dark .resmon-body{
+  color:#f2f3f5;
+  background:#202228
+}
+#app.theme-dark .resmon-body h2,
+#app.theme-dark .resmon-body h3{
+  color:#f2f3f5
+}
+#app.theme-dark .resmon-card{
+  color:#f2f3f5;
+  background:#292d34;
+  border-color:#41464f
+}
+#app.theme-dark .resmon .admin-table{
+  color:#e8edf2;
+  background:#252930;
+  border-color:#41464f
+}
+#app.theme-dark .resmon .admin-table th{
+  color:#c8d0d8;
+  background:#2e333b;
+  border-bottom-color:#454b54
+}
+#app.theme-dark .resmon .admin-table td{
+  color:#e8edf2;
+  border-bottom-color:#393f47
+}
+#app.theme-dark .resmon .admin-table tbody tr:hover{
+  color:#fff;
+  background:#323841
+}
+#app.theme-dark .resmon .sys-progress{
+  background:#414750
+}
+#app.theme-dark .resmon .sys-progress i{
+  background:var(--accent,#0078d4)
+}
+
+@media(max-width:720px){
+  .resmon-tabs{padding:6px}
+  .resmon-tabs button{min-height:34px;padding:7px 10px}
+  .resmon-body{padding:10px}
+  .resmon-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .resmon-card{padding:10px}
+  .resmon-card .value{font-size:22px}
+}

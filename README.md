@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.4 Explorer Settings Integration** — hidden files, extensões, Compact View, página inicial e confirmação de eliminação passam a consumir integralmente o `Win11SettingsStore`/`Win11SystemBus`, com integração em tempo real no Explorer e Reciclagem.
+**V9.8.4.1 Resource Monitor Contrast Hotfix** — corrige contraste e legibilidade do Monitor de Recursos em tema escuro/claro, incluindo tabs, títulos, cartões e tabela de processos, com atualização do cache PWA.
 
 ## Funcionalidades
 
@@ -736,3 +736,18 @@ Primeiro passo de integração com funções reais do dispositivo:
 - desativar a confirmação permite a operação normal direta, mantendo Undo/History/Recycle existentes
 - a Reciclagem e o Explorer partilham agora o refresh de preferências V9.8.4
 - todas as preferências continuam isoladas por perfil e sujeitas ao schema V1 do Settings Core
+
+## V9.8.4.1 Resource Monitor Contrast Hotfix
+
+- corrige texto claro sobre fundo claro no Monitor de Recursos
+- o fundo do `resmon-body` passa a acompanhar corretamente o tema ativo
+- títulos CPU, Memória, Disco, Rede e Processos ficam legíveis nos dois temas
+- separador ativo deixa de usar fundo branco com texto herdado claro no tema escuro
+- tabs têm estados hover/focus com contraste explícito
+- tabela de processos recebe fundo, cabeçalhos, texto, bordas e hover específicos para tema claro/escuro
+- cartões e barra de progresso mantêm contraste consistente
+- tabs passam a aceitar scroll horizontal em ecrãs estreitos
+- layout móvel reduz paddings e mantém os quatro cartões da descrição geral legíveis em duas colunas
+- folha dedicada `styles/resource-monitor-v9841.css` evita regressões noutras aplicações
+- service worker/cache atualizado para forçar a entrega do hotfix em dispositivos que já tinham a V9.8.4 em cache
+- browser audit mede contraste computado no tema claro e escuro

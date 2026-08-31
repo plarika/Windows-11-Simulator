@@ -587,6 +587,7 @@ const settingsCoreV981=readFileSync(resolve(root, "src/features/settings-core-v9
 const settingsPersonalizationV982=readFileSync(resolve(root, "src/features/settings-personalization-v982.js"), "utf8");
 const taskbarSystemV983=readFileSync(resolve(root, "src/features/taskbar-system-v983.js"), "utf8");
 const settingsExplorerV984=readFileSync(resolve(root, "src/features/settings-explorer-v984.js"), "utf8");
+const resourceMonitorV9841=readFileSync(resolve(root, "styles/resource-monitor-v9841.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.2"), "Settings Core V9.8.1 module loaded through V9.8.x cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -595,6 +596,7 @@ check(index.includes("./src/features/taskbar-system-v983.js?v=9.8.3"), "Taskbar 
 check(index.includes("./styles/taskbar-system-v983.css?v=9.8.3"), "Taskbar System V9.8.3 styles loaded");
 check(index.includes("./src/features/settings-explorer-v984.js?v=9.8.4"), "Explorer Settings V9.8.4 module loaded");
 check(index.includes("./styles/settings-explorer-v984.css?v=9.8.4"), "Explorer Settings V9.8.4 styles loaded");
+check(index.includes("./styles/resource-monitor-v9841.css?v=9.8.4-hotfix.1"), "Resource Monitor V9.8.4.1 contrast hotfix loaded");
 check(systemBusV981.includes('VERSION="9.8.1"') && systemBusV981.includes("Win11SystemBus"), "System Bus V9.8.1 bridge present");
 check(systemBusV981.includes("HISTORY_LIMIT=80") && systemBusV981.includes("ERROR_LIMIT=20"), "System Bus histories bounded");
 check(systemBusV981.includes("Invalid system bus topic") && systemBusV981.includes("payload must be serializable"), "System Bus validates topics and payloads");
@@ -633,6 +635,9 @@ check(readFileSync(resolve(root, "src/features/explorer-filesystem-v910.js"), "u
 check(readFileSync(resolve(root, "src/features/explorer-pro-v740.js"), "utf8").includes('explorer.confirmDelete') && readFileSync(resolve(root, "src/features/explorer-pro-v740.js"), "utf8").includes("deleteSelection(permanent=false,confirmed=false)"), "Explorer delete confirmation consumes Settings Store");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-explorer-v984.js?v=9.8.4"), "Explorer Settings V9.8.4 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-explorer-v984.css?v=9.8.4"), "Explorer Settings V9.8.4 CSS precached");
+check(resourceMonitorV9841.includes("#app.theme-dark .resmon-body") && resourceMonitorV9841.includes("#app.theme-dark .resmon-tabs button.active"), "Resource Monitor dark theme contrast rules present");
+check(resourceMonitorV9841.includes("#app.theme-dark .resmon .admin-table") && resourceMonitorV9841.includes(".resmon-body h2"), "Resource Monitor table and heading contrast rules present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("resource-monitor-v9841.css?v=9.8.4-hotfix.1"), "Resource Monitor V9.8.4.1 CSS precached");
 const settingsV5Compat=readFileSync(resolve(root, "src/apps/settings-v5.js"), "utf8");
 const backupRecoveryV982=readFileSync(resolve(root, "src/apps/backup-recovery.js"), "utf8");
 check(settingsV5Compat.includes('Win11SettingsStore.set("accessibility.textScale"') && settingsV5Compat.includes("settings-v5-compat"), "Accessibility V5 writes through Settings Store");

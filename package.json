@@ -1,6 +1,6 @@
 {
   "name": "windows-11-simulator",
-  "version": "9.8.4",
+  "version": "9.8.4-hotfix.1",
   "private": true,
   "scripts": {
     "test": "node tests/smoke.mjs"

@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.8.4";
+const CACHE_NAME="win11-simulator-v9.8.4-hotfix.1";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -47,6 +47,7 @@ const PRECACHE=[
   "./styles/settings-personalization-v982.css?v=9.8.2",
   "./styles/taskbar-system-v983.css?v=9.8.3",
   "./styles/settings-explorer-v984.css?v=9.8.4",
+  "./styles/resource-monitor-v9841.css?v=9.8.4-hotfix.1",
   "./src/core/runtime.js?v=9.3.0",
   "./src/features/system-v4.js?v=8.1.0",
   "./src/apps/v5-runtime.js?v=8.1.0",

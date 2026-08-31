@@ -213,3 +213,11 @@ Compact View altera apenas classes CSS e espaçamento visual. Não muda conteúd
 Quando `confirmDelete=true`, o diálogo é mostrado antes de qualquer alteração ao filesystem virtual. A eliminação permanente por `Shift+Delete` mantém confirmação própria mesmo que a confirmação normal esteja desativada. Esta escolha é deliberada para não reduzir a proteção de uma ação irreversível.
 
 A V9.8.4 também endurece o Mount audit: o teste de cartão de pasta real cria uma nova janela explícita `This PC`, evitando depender da preferência `openTo` do perfil ou do estado de uma janela Explorer reutilizada.
+
+## Resource Monitor Contrast Hotfix V9.8.4.1
+
+Este hotfix altera apenas apresentação CSS do Monitor de Recursos. Não adiciona novas APIs, permissões, acesso ao host, recolha de métricas reais nem comunicação externa.
+
+Os valores de CPU, memória, disco e rede continuam a ser os mesmos valores virtuais/simulados já existentes. O hotfix apenas corrige fundo, cor do texto, estados de tabs, tabela e responsividade visual.
+
+A folha `resource-monitor-v9841.css` é totalmente scoped a `.resmon` e respetivo estado `#app.theme-dark`, reduzindo o risco de alterar outras aplicações. O Browser audit verifica contraste mínimo para títulos, tabs e tabela nos modos claro e escuro.
