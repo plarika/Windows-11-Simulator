@@ -221,3 +221,17 @@ Este hotfix altera apenas apresentação CSS do Monitor de Recursos. Não adicio
 Os valores de CPU, memória, disco e rede continuam a ser os mesmos valores virtuais/simulados já existentes. O hotfix apenas corrige fundo, cor do texto, estados de tabs, tabela e responsividade visual.
 
 A folha `resource-monitor-v9841.css` é totalmente scoped a `.resmon` e respetivo estado `#app.theme-dark`, reduzindo o risco de alterar outras aplicações. O Browser audit verifica contraste mínimo para títulos, tabs e tabela nos modos claro e escuro.
+
+## Apps & Default Applications V9.8.5
+
+A V9.8.5 introduz uma registry explícita de aplicações e associações, mas não permite registar código arbitrário. Todos os handlers são escolhidos a partir de uma allowlist fixa de aplicações internas conhecidas. Extensões e protocolos desconhecidos ou associações incompatíveis são rejeitados.
+
+As preferências continuam armazenadas no `Win11SettingsStore`, sujeitas ao schema V1, validação de enum, proteção contra prototype pollution, commit atómico, checksum de integridade e persistência por perfil. `state.fileAssociations` e `state.protocolAssociations` existem apenas como bridges de compatibilidade e não são a fonte canónica.
+
+O Protocol Registry limita-se a `http` e `https`. URLs inválidos e esquemas como `javascript:`, `data:` ou outros protocolos não allowlisted são rejeitados antes de abrir uma aplicação.
+
+A abertura de HTML virtual no Edge não executa o documento original. O conteúdo é analisado como dados, scripts e elementos ativos são removidos, atributos `on*`, `style`, `srcdoc` e `formaction` são eliminados, recursos remotos de imagem são bloqueados e links permitidos ficam limitados a HTTP/HTTPS com `noopener noreferrer`. O resultado é carregado num iframe sem permissões e com CSP restritiva.
+
+PDF virtual é materializado apenas a partir do conteúdo já autorizado no simulador e apresentado num iframe sandboxed através de Blob URL temporário. O Blob URL é revogado quando a janela correspondente deixa o DOM.
+
+Nenhuma associação V9.8.5 concede permissões do browser, acesso a ficheiros reais, capacidades do host ou execução de comandos do sistema operativo. Pastas reais montadas continuam sujeitas às fronteiras e permissões já documentadas pelo File System Access API.

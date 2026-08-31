@@ -470,6 +470,12 @@
       renderTabs();
       renderActive();
     }
+    wrap.__edgeV730=Object.freeze({
+      navigate:(url,options={})=>{navigate(url,options);return true},
+      newTab:(url,options={})=>clone(newTab(url,options)),
+      getCurrent:()=>clone(current()||null),
+      render:()=>{renderTabs();renderActive();return true}
+    });
 
     function openExternal(url=current()?.url){
       const target=BASE.externalUrlFor(url||"");

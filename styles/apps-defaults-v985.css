@@ -1,0 +1,39 @@
+/* Windows 11 Simulator V9.8.5 — Apps & Default Applications */
+.apps-registry-grid-v985{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:7px;margin:10px 0 14px
+}
+.apps-registry-app-v985{
+  display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid #e1e5e9;
+  border-radius:9px;background:#f8fafb;min-width:0
+}
+.apps-registry-app-v985 span{font-size:18px;line-height:1}
+.apps-registry-app-v985 strong{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.default-apps-v985 .default-app-row select{min-width:170px}
+.edge-local-document-v985{
+  height:100%;display:flex;flex-direction:column;background:#f5f6f8;color:#1f2328
+}
+.edge-local-document-v985>header{
+  flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  min-height:38px;padding:7px 12px;border-bottom:1px solid #dce1e6;background:#eef2f5;font-size:10px
+}
+.edge-local-document-v985>header span{color:#5d6872}
+.edge-local-document-v985>header strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.edge-local-html-v985,.edge-local-pdf-v985{
+  flex:1;width:100%;min-height:0;border:0;background:#fff
+}
+
+#app.theme-dark .apps-registry-app-v985{
+  background:#292d34;color:#f2f3f5;border-color:#41464f
+}
+#app.theme-dark .edge-local-document-v985{background:#202228;color:#f2f3f5}
+#app.theme-dark .edge-local-document-v985>header{
+  background:#292d34;border-color:#41464f;color:#f2f3f5
+}
+#app.theme-dark .edge-local-document-v985>header span{color:#b7c0c9}
+
+@media(max-width:720px){
+  .apps-registry-grid-v985{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .default-apps-v985 .default-app-row{gap:7px}
+  .default-apps-v985 .default-app-row select{width:100%;min-width:0}
+  .edge-local-document-v985>header{align-items:flex-start;flex-direction:column;gap:2px}
+}

@@ -7,7 +7,11 @@
     appearance:{themeMode:"light",accent:"#0078d4",transparency:true,animations:true,wallpaperIndex:0},
     taskbar:{alignment:"center",groupWindows:"when-multiple",showBadges:true,showProgress:true,previews:true,autoHide:false,showDesktop:true,showSeconds:false},
     explorer:{showHidden:false,showExtensions:true,compactView:false,openTo:"home",confirmDelete:true},
-    apps:{defaultBrowser:"edge",defaultText:"notepad",defaultImage:"photos",defaultMedia:"mediaplayer"},
+    apps:{
+      defaultBrowser:"edge",defaultText:"notepad",defaultImage:"photos",defaultMedia:"mediaplayer",
+      txtApp:"notepad",htmlApp:"edge",pngApp:"photos",jpgApp:"photos",
+      mp3App:"mediaplayer",mp4App:"mediaplayer",pdfApp:"edge",httpApp:"edge",httpsApp:"edge"
+    },
     storage:{cleanupEnabled:false,recycleBinEnabled:true},
     accessibility:{textScale:100,highContrast:false,narrator:false,stickyKeys:false},
     notifications:{enabled:true,focusMode:"off"},
@@ -19,7 +23,14 @@
     taskbar:{alignment:{type:"enum",values:["center","left"]},groupWindows:{type:"enum",values:["always","when-multiple","never"]},showBadges:{type:"boolean"},showProgress:{type:"boolean"},previews:{type:"boolean"},autoHide:{type:"boolean"},showDesktop:{type:"boolean"},showSeconds:{type:"boolean"}},
 
     explorer:{showHidden:{type:"boolean"},showExtensions:{type:"boolean"},compactView:{type:"boolean"},openTo:{type:"enum",values:["home","this-pc"]},confirmDelete:{type:"boolean"}},
-    apps:{defaultBrowser:{type:"enum",values:["edge"]},defaultText:{type:"enum",values:["notepad"]},defaultImage:{type:"enum",values:["photos","paint"]},defaultMedia:{type:"enum",values:["mediaplayer"]}},
+    apps:{
+      defaultBrowser:{type:"enum",values:["edge"]},defaultText:{type:"enum",values:["notepad"]},
+      defaultImage:{type:"enum",values:["photos","paint"]},defaultMedia:{type:"enum",values:["mediaplayer"]},
+      txtApp:{type:"enum",values:["notepad"]},htmlApp:{type:"enum",values:["edge","notepad"]},
+      pngApp:{type:"enum",values:["photos","paint"]},jpgApp:{type:"enum",values:["photos","paint"]},
+      mp3App:{type:"enum",values:["mediaplayer"]},mp4App:{type:"enum",values:["mediaplayer"]},
+      pdfApp:{type:"enum",values:["edge"]},httpApp:{type:"enum",values:["edge"]},httpsApp:{type:"enum",values:["edge"]}
+    },
     storage:{cleanupEnabled:{type:"boolean"},recycleBinEnabled:{type:"boolean"}},
     accessibility:{textScale:{type:"integer",min:90,max:160},highContrast:{type:"boolean"},narrator:{type:"boolean"},stickyKeys:{type:"boolean"}},
     notifications:{enabled:{type:"boolean"},focusMode:{type:"enum",values:["off","priority","alarms"]}},
@@ -84,6 +95,13 @@
     out.taskbar.alignment=p.taskbarAlignment==="left"?"left":"center";
     out.explorer.showHidden=!!fs.showHidden;
     out.explorer.showExtensions=fs.showExtensions!==false;
+    const assoc=plain(state.fileAssociations)?state.fileAssociations:{};
+    if(assoc[".txt"]==="notepad")out.apps.txtApp="notepad";
+    if(["edge","notepad"].includes(assoc[".html"]))out.apps.htmlApp=assoc[".html"];
+    if(["photos","paint"].includes(assoc[".png"]))out.apps.pngApp=assoc[".png"];
+    if(["photos","paint"].includes(assoc[".jpg"]))out.apps.jpgApp=assoc[".jpg"];
+    if(assoc[".mp3"]==="mediaplayer")out.apps.mp3App="mediaplayer";
+    if(assoc[".mp4"]==="mediaplayer")out.apps.mp4App="mediaplayer";
     const a=state.accessibility||{},privacy=state.privacy||{},nc=state.notificationCenterV77||{};
     if(Number.isInteger(a.textScale)&&a.textScale>=90&&a.textScale<=160)out.accessibility.textScale=a.textScale;
     out.accessibility.highContrast=!!a.highContrast;
@@ -131,6 +149,8 @@
     if(!plain(state.accessibility))state.accessibility={};
     if(!plain(state.privacy))state.privacy={};
     if(!plain(state.notificationCenterV77))state.notificationCenterV77={};
+    if(!plain(state.fileAssociations))state.fileAssociations={};
+    if(!plain(state.protocolAssociations))state.protocolAssociations={};
   }
 
   function syncLegacy(path,value){
@@ -144,6 +164,16 @@
     }else if(category==="taskbar"&&key==="alignment")state.personalizationV78.taskbarAlignment=value;
     else if(category==="explorer"&&key==="showHidden")state.explorerFilesystemV91.showHidden=value;
     else if(category==="explorer"&&key==="showExtensions")state.explorerFilesystemV91.showExtensions=value;
+    else if(category==="apps"){
+      const extMap={txtApp:".txt",htmlApp:".html",pngApp:".png",jpgApp:".jpg",mp3App:".mp3",mp4App:".mp4",pdfApp:".pdf"};
+      const protocolMap={httpApp:"http",httpsApp:"https"};
+      if(extMap[key])state.fileAssociations[extMap[key]]=value;
+      else if(protocolMap[key])state.protocolAssociations[protocolMap[key]]=value;
+      else if(key==="defaultText")for(const ext of [".md",".log",".json",".csv",".js",".css",".xml",".ini"])state.fileAssociations[ext]=value;
+      else if(key==="defaultImage")for(const ext of [".jpeg",".webp",".gif",".bmp",".svg"])state.fileAssociations[ext]=value;
+      else if(key==="defaultMedia")for(const ext of [".wav",".ogg",".m4a",".aac",".flac",".webm",".mov",".mkv",".avi"])state.fileAssociations[ext]=value;
+      else if(key==="defaultBrowser"){state.protocolAssociations.http=value;state.protocolAssociations.https=value}
+    }
     else if(category==="accessibility")state.accessibility[key]=value;
     else if(category==="notifications"&&key==="enabled")state.privacy.notifications=value;
     else if(category==="notifications"&&key==="focusMode")state.notificationCenterV77.focusMode=value;

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.4.1 Resource Monitor Contrast Hotfix** — corrige contraste e legibilidade do Monitor de Recursos em tema escuro/claro, incluindo tabs, títulos, cartões e tabela de processos, com atualização do cache PWA.
+**V9.8.5 Apps & Default Applications** — registry central de aplicações, associações de ficheiros e protocolos HTTP/HTTPS integradas no `Win11SettingsStore`, com UI de aplicações predefinidas e previews locais seguros no Edge.
 
 ## Funcionalidades
 
@@ -751,3 +751,28 @@ Primeiro passo de integração com funções reais do dispositivo:
 - folha dedicada `styles/resource-monitor-v9841.css` evita regressões noutras aplicações
 - service worker/cache atualizado para forçar a entrega do hotfix em dispositivos que já tinham a V9.8.4 em cache
 - browser audit mede contraste computado no tema claro e escuro
+
+## V9.8.5 Apps & Default Applications
+
+- nova `Win11AppRegistry` com aplicações allowlisted e metadados de compatibilidade
+- nova `Win11FileAssociations` para resolver e alterar handlers por extensão
+- nova `Win11ProtocolRegistry` para `http` e `https`
+- nova `Win11DefaultApps` como API de alto nível sobre o Settings Core
+- fonte canónica permanece o `Win11SettingsStore`; não foi criada uma segunda base de configuração
+- associações antigas em `state.fileAssociations` são migradas e mantidas apenas como bridge de compatibilidade
+- `state.protocolAssociations` mantém compatibilidade para protocolos sem substituir o Store
+- associações exatas suportadas: `.txt`, `.html/.htm`, `.png`, `.jpg/.jpeg`, `.mp3`, `.mp4`, `.pdf`
+- restantes extensões conhecidas continuam a usar os defaults genéricos de texto, imagem ou media
+- handlers incompatíveis são rejeitados antes de persistência
+- `Abrir com...` do Explorer utiliza agora a registry V9.8.5
+- a página Definições > Aplicações mostra associações por extensão/protocolo e respetivos candidatos válidos
+- alterar uma associação na UI passa por validação do Settings Core e gera eventos no System Bus
+- Run aceita URLs HTTP/HTTPS e encaminha para a aplicação de protocolo predefinida
+- Terminal `start https://...` usa o mesmo Protocol Registry
+- URLs HTTP/HTTPS abrem num novo separador Edge e preservam a sessão existente
+- HTML virtual pode abrir no Edge ou Bloco de Notas
+- HTML local no Edge é sanitizado antes do preview: scripts, handlers, formulários, embeds e recursos remotos não permitidos são removidos
+- preview HTML usa iframe sem permissões e CSP restritiva
+- PDF virtual abre no visualizador local do Edge através de Blob sandboxed quando o browser o suporta
+- caminhos locais são apresentados como `file://virtual/...`; não representam acesso ao filesystem real do host
+- todos os módulos alterados receberam cache-bust V9.8.5 e o service worker usa `win11-simulator-v9.8.5`

@@ -1,7 +1,10 @@
 "use strict";
 /* ---------- Run / Terminal integration ---------- */
 function executeRun(){
-  const cmd=$("#run-input").value.trim().toLowerCase();
+  const raw=$("#run-input").value.trim(),cmd=raw.toLowerCase();
+  if(/^https?:\/\//i.test(raw)&&globalThis.Win11ProtocolRegistry){
+    try{Win11ProtocolRegistry.open(raw);closeRun();return}catch(err){notify("Executar",err?.message||"Não foi possível abrir o URL.");return}
+  }
   const map={
     notepad:"notepad",calc:"calc",calculator:"calc",explorer:"explorer",cmd:"terminal",terminal:"terminal",powershell:"powershell",
     settings:"settings",taskmgr:"taskmanager",paint:"paint",mspaint:"paint",photos:"photos",camera:"camera",soundrecorder:"soundrecorder",snippingtool:"snipping",edge:"edge",msedge:"edge",
@@ -20,7 +23,15 @@ function runVirtualCommand(raw,out){
   const cmd=raw.trim();if(!cmd)return;const q=document.createElement("div");q.className="term-line";q.textContent=`C:\\Users\\User>${cmd}`;out.appendChild(q);
   const parts=cmd.split(/\s+/),command=(parts.shift()||"").toLowerCase(),args=parts;let r="";
   const launch={notepad:"notepad",calc:"calc",explorer:"explorer",taskmgr:"taskmanager",control:"controlpanel",regedit:"registry","devmgmt.msc":"devicemanager","eventvwr.msc":"eventviewer","services.msc":"services","diskmgmt.msc":"diskmgmt","taskschd.msc":"taskscheduler",msinfo32:"systeminfo",resmon:"resmon",powershell:"powershell",camera:"camera",soundrecorder:"soundrecorder",snippingtool:"snipping",msedge:"edge",mstsc:"remotedesktop",optionalfeatures:"optionalfeatures"};
-  if(command==="start"&&args[0]){const x=launch[args[0].toLowerCase()]||args[0].toLowerCase();if(APPS[x]){openApp(x);r="Aplicação virtual iniciada."}else r="Aplicação não encontrada."}
+  if(command==="start"&&args[0]){
+    const target=args.join(" ");
+    if(/^https?:\/\//i.test(target)&&globalThis.Win11ProtocolRegistry){
+      try{Win11ProtocolRegistry.open(target);r="URL aberto com a aplicação predefinida."}catch(err){r=err?.message||"Não foi possível abrir o URL."}
+    }else{
+      const x=launch[args[0].toLowerCase()]||args[0].toLowerCase();
+      if(APPS[x]){openApp(x);r="Aplicação virtual iniciada."}else r="Aplicação não encontrada."
+    }
+  }
   else if(launch[command]){openApp(launch[command]);r="Aplicação virtual iniciada."}
   else switch(command){
     case"help":r="help, dir, cd, mkdir, copy, move, del, echo, type, cls, tasklist, systeminfo, ipconfig, sc, schtasks, diskpart, ver, winver, whoami, date, time, start";break;

@@ -63,6 +63,7 @@
   }
 
   function candidateApps(name,value,mime=""){
+    if(globalThis.Win11AppRegistry?.candidatesForFile)return Win11AppRegistry.candidatesForFile(name,value,mime);
     const cat=categoryOf(name,value,mime);
     return Object.entries(APP_META)
       .filter(([,m])=>m.categories.includes(cat))
@@ -70,11 +71,13 @@
   }
 
   function defaultAppFor(name){
+    if(globalThis.Win11DefaultApps?.forFile)return Win11DefaultApps.forFile(name);
     ensureAssociations();
     return state.fileAssociations[extensionOf(name)]||null;
   }
 
   function setDefaultApp(ext,appId){
+    if(globalThis.Win11DefaultApps?.setForFile)return Win11DefaultApps.setForFile(ext,appId);
     ext=String(ext||"").toLowerCase();
     if(!ext.startsWith("."))throw new Error("Extensão inválida.");
     if(!APP_META[appId])throw new Error("Aplicação inválida.");
@@ -177,6 +180,10 @@
       globalThis.RealMediaPending={name,blob:item.blob,type:item.type};
       openDocumentApp("mediaplayer");
       return true;
+    }
+
+    if(appId==="edge"&&globalThis.Win11DefaultApps?.openEdgeFile){
+      return Win11DefaultApps.openEdgeFile(path,name,value,item);
     }
 
     throw new Error("Aplicação não suportada.");
@@ -336,6 +343,7 @@
   }
 
   function renderDefaultApps(box){
+    if(globalThis.Win11DefaultApps?.renderSettings)return Win11DefaultApps.renderSettings(box);
     if(box.querySelector("[data-default-apps-v700]"))return;
     const card=document.createElement("div");
     card.className="sys-card default-apps-card";
