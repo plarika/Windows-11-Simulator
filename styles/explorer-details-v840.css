@@ -1,0 +1,81 @@
+/* Windows 11 Simulator V8.4 — Explorer Details */
+.explorer-details-v840 main{position:relative}
+.explorer-details-v840 .explorer-files{transition:margin-right .16s ease}
+.explorer-details-pane-v840{
+  display:none;
+  position:absolute;
+  top:96px;
+  right:0;
+  bottom:0;
+  width:min(300px,38%);
+  z-index:18;
+  background:rgba(250,251,252,.98);
+  border-left:1px solid rgba(0,0,0,.1);
+  box-shadow:-8px 0 20px rgba(0,0,0,.05);
+  overflow:auto;
+}
+.explorer-details-v840.details-open-v840 .explorer-details-pane-v840{display:block}
+.explorer-details-v840.details-open-v840 .explorer-files{margin-right:min(300px,38%)}
+.explorer-details-head-v840{
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 12px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+.explorer-details-head-v840 button{
+  width:28px;height:28px;border:0;border-radius:6px;background:transparent;cursor:pointer;font-size:18px
+}
+.explorer-details-head-v840 button:hover{background:rgba(0,0,0,.06)}
+.explorer-details-content-v840{padding:16px}
+.explorer-detail-empty-v840{
+  min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:7px;opacity:.7
+}
+.explorer-detail-empty-v840 span{font-size:12px;max-width:210px}
+.explorer-detail-hero-v840{
+  width:92px;height:92px;margin:4px auto 14px;border-radius:14px;background:rgba(0,120,212,.09);
+  display:grid;place-items:center;font-size:42px
+}
+.explorer-detail-hero-v840.folder{font-size:38px}
+.explorer-details-content-v840 h3{margin:0 0 4px;text-align:center;font-size:16px;overflow-wrap:anywhere}
+.explorer-detail-type-v840{text-align:center;font-size:12px;opacity:.64;margin-bottom:16px}
+.explorer-details-content-v840 dl{display:grid;grid-template-columns:82px minmax(0,1fr);gap:8px 10px;margin:0}
+.explorer-details-content-v840 dt{font-size:11px;opacity:.65}
+.explorer-details-content-v840 dd{margin:0;font-size:11px;overflow-wrap:anywhere}
+.explorer-detail-image-v840{
+  height:170px;margin-bottom:14px;border-radius:10px;background:rgba(0,0,0,.04);overflow:hidden;display:grid;place-items:center
+}
+.explorer-detail-image-v840 img{max-width:100%;max-height:100%;object-fit:contain}
+.explorer-detail-text-v840{
+  max-height:180px;overflow:auto;margin:0 0 14px;padding:10px;border-radius:8px;background:rgba(0,0,0,.04);
+  white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace
+}
+.explorer-detail-real-v840{
+  margin:0 0 14px;padding:12px;border-radius:8px;background:rgba(0,120,212,.08);font-size:11px;line-height:1.45
+}
+.thispc-v840 .thispc-folders-v840{grid-column:1/-1}
+.thispc-folders-v840 h3{margin:0 0 10px;font-size:14px}
+.thispc-folder-grid-v840{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.thispc-folder-card-v840{
+  border:1px solid #dfe3e8;border-radius:9px;background:transparent;padding:10px;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:10px;color:inherit
+}
+.thispc-folder-card-v840:hover{background:#f4f8fb}
+.thispc-folder-icon-v840{font-size:22px}
+.thispc-folder-card-v840 strong{display:block;font-size:12px}
+.thispc-folder-card-v840 small{display:block;margin-top:3px;font-size:10px;opacity:.65}
+.thispc-storage-summary-v840{
+  grid-column:1/-1;padding:11px 13px;border-radius:9px;background:rgba(0,120,212,.06);display:flex;justify-content:space-between;gap:12px;font-size:11px
+}
+#app.theme-dark .explorer-details-pane-v840{background:rgba(32,34,40,.98);border-left-color:rgba(255,255,255,.1)}
+#app.theme-dark .explorer-details-head-v840{border-bottom-color:rgba(255,255,255,.08)}
+#app.theme-dark .explorer-details-head-v840 button:hover,
+#app.theme-dark .explorer-detail-text-v840{background:rgba(255,255,255,.07)}
+#app.theme-dark .thispc-folder-card-v840{border-color:#41444b}
+#app.theme-dark .thispc-folder-card-v840:hover{background:#30343c}
+@media(max-width:760px){
+  .explorer-details-pane-v840{top:96px;width:min(330px,88%);box-shadow:-12px 0 30px rgba(0,0,0,.18)}
+  .explorer-details-v840.details-open-v840 .explorer-files{margin-right:0}
+  .explorer-details-toggle-v840 .cmd-label{display:none}
+}

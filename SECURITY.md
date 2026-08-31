@@ -111,3 +111,7 @@ A persistência de separadores usa exclusivamente o objeto `state` do perfil ati
 ## Explorer Tab Management V8.3.0
 
 A V8.3 mantém tabs fixados, ordem dos separadores e Acesso rápido dentro do `state` isolado por perfil. O Acesso rápido aceita apenas caminhos que passam pela validação do filesystem virtual e rejeita `This PC`, Reciclagem e referências externas. Handles de File System Access e mounts reais continuam fora do estado persistente. Ações de fecho em massa preservam tabs fixados, reduzindo perda acidental de contexto.
+
+## Explorer Details V8.4.0
+
+O painel de detalhes V8.4 gera preview automático apenas para conteúdo que já pertence ao filesystem virtual do perfil. Ficheiros representados por referências a blobs reais/importados não são lidos automaticamente e exibem apenas uma indicação de privacidade. Em `real-mount-mode`, a seleção é tratada como conteúdo montado e o painel não chama `ensureFolder`, não lê handles e não tenta produzir preview do conteúdo real. O preview textual é truncado a 1200 caracteres para limitar exposição e custo de renderização.

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.3.0 Explorer Tab Management** — o Explorador ganha tabs fixados, reordenação por drag-and-drop e Acesso rápido persistente por perfil.
+**V8.4.0 Explorer Details & This PC** — o Explorador ganha painel lateral de detalhes/pré-visualização e um `This PC` mais completo com pastas e resumo de armazenamento virtual.
 
 ## Funcionalidades
 
@@ -441,3 +441,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - Acesso rápido é persistido no estado do perfil e limitado a 12 localizações
 - migração automática do estado Explorer V8.2.1 para a estrutura V8.3
 - estado persistente continua limitado ao filesystem virtual; mounts reais não entram no Acesso rápido
+
+## V8.4.0 Explorer Details & This PC
+
+- novo painel lateral de Detalhes, ativado pela barra de comandos
+- seleção sincronizada com nome, tipo, localização e tamanho
+- preview seguro de ficheiros de texto virtuais, limitado a 1200 caracteres
+- preview de imagens virtuais `data:image/*`
+- pastas mostram número de ficheiros, subpastas e tamanho agregado
+- conteúdo importado/real não é lido automaticamente para preview
+- em `real-mount-mode` o painel mostra apenas a proteção de privacidade e não tenta mapear o conteúdo real para o VFS
+- `This PC` mantém os drives existentes e ganha uma secção Pastas com 6 localizações principais
+- resumo de armazenamento virtual do perfil no `This PC`
+- layout responsivo: painel lateral em desktop e overlay em ecrãs pequenos

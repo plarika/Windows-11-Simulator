@@ -387,6 +387,17 @@ check(explorerNavigation.includes("pathExists") && explorerNavigation.includes("
 check(explorerNavigation.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Navigation guards real mount mode");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-navigation-v820.js?v=8.3.0"), "Explorer Navigation V8.3 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-navigation-v820.css?v=8.3.0"), "Explorer Navigation V8.3 CSS precached");
+const explorerDetails=readFileSync(resolve(root, "src/features/explorer-details-v840.js"), "utf8");
+check(index.includes("./src/features/explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module loaded");
+check(index.includes("./styles/explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 styles loaded");
+check(explorerDetails.includes('version:"8.4.0"'), "Explorer Details V8.4 bridge present");
+check(explorerDetails.includes("previewMarkup") && explorerDetails.includes("explorer-detail-text-v840"), "Explorer text preview present");
+check(explorerDetails.includes("data:image/") && explorerDetails.includes("explorer-detail-image-v840"), "Explorer image preview present");
+check(explorerDetails.includes("folderStats") && explorerDetails.includes("thispc-folders-v840"), "Explorer folder and This PC summaries present");
+check(explorerDetails.includes("pré-visualização automática desativada"), "Explorer real imported content preview privacy guard present");
+check(explorerDetails.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Details guards real mount mode");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");
