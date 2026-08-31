@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.4.0 Explorer Undo/Redo & File History** — histórico persistente por perfil, Desfazer/Refazer para copiar, mover, mudar nome e eliminar para a Reciclagem, com atalhos de teclado e integração Multi-Window.
+**V9.5.0 Recycle Bin Pro** — Reciclagem evoluída com metadata, restaurar selecionados/tudo, esvaziar com confirmação e resolução segura de conflitos Keep/Skip/Replace integrada no histórico V9.4.
 
 ## Funcionalidades
 
@@ -599,3 +599,24 @@ Primeiro passo de integração com funções reais do dispositivo:
 - ações de substituição destrutiva (`Substituir` num conflito) ficam marcadas como não anuláveis
 - `Shift+Delete` e eliminação permanente continuam deliberadamente fora do Undo
 - se origem/destino tiver sido alterado depois da operação, Undo/Redo falha de forma segura sem forçar sobrescritas
+
+## V9.5.0 Recycle Bin Pro
+
+- nova camada `Win11ExplorerRecycle` integrada no Explorer existente
+- toolbar dedicada visível apenas em `Recycle Bin`
+- ações `Restaurar`, `Restaurar tudo` e `Esvaziar`
+- banner com quantidade de itens e tamanho aproximado da Reciclagem
+- cada item mostra localização original e data/hora de eliminação
+- metadata mantém `originalName`, `originalPath`, `deletedAt` e tipo
+- restauração em lote reutiliza o motor auditado do Explorer Pro
+- conflitos de restauração suportam `Manter ambos`, `Ignorar`, `Substituir` e `Fazer o mesmo para os conflitos seguintes`
+- `Manter ambos` cria nome único sem sobrescrever o destino existente
+- `Ignorar` preserva o item na Reciclagem
+- `Substituir` move primeiro o item existente para a Reciclagem antes de restaurar, evitando perda silenciosa
+- `Restaurar tudo` processa todo o conteúdo da Reciclagem com a mesma política de conflitos
+- `Esvaziar Reciclagem` exige confirmação explícita e mostra número de itens/tamanho aproximado
+- esvaziar e apagar permanentemente continuam deliberadamente irreversíveis
+- restaurações/remoções manuais invalidam entradas V9.4 de Undo que já deixaram de ser reversíveis
+- integração Multi-Window: todas as janelas Explorer atualizam depois de restaurar/esvaziar
+- refresh explícito no ciclo de navegação garante toolbar/banner/metadata corretos em cliques, jump lists e navegação programática
+- estados dark/mobile mantêm o mesmo padrão de legibilidade da V9.3

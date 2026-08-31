@@ -329,6 +329,7 @@
       suppressPathRecord=true;
       win.dispatchEvent(new CustomEvent("navigate",{detail:path}));
       wrap.__explorerProV740?.refresh?.();
+      wrap.__explorerRecycleV950?.refresh?.();
       clearTimeout(suppressTimer);
       suppressTimer=setTimeout(()=>{suppressPathRecord=false;syncFromPathbar()},60);
     }    function recordPath(path){

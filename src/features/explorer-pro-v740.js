@@ -220,25 +220,38 @@
     return false;
   }
 
-  function restoreRecycleItem(name){
+  function restoreRecycleItemAdvanced(name,policy="keep"){
     const bin=ensureFolder("Recycle Bin"),entry=bin[name];
-    if(!entry)return false;
+    if(!entry)return {ok:false,reason:"missing"};
     const pack=entry.content;
-    if(pack?.__virtualFolderTrash){
-      const parent=entry.originalPath||"C:/Desktop";
-      const rootName=uniqueFolderName(parent,pack.rootName||name);
+    let parent=entry.originalPath||"C:/Desktop";
+    if(parent!=="C:"&&!own(state.files,parent)&&parent!=="C:/Desktop")parent="C:/Desktop";
+    const desired=entry.originalName||(pack?.__virtualFolderTrash?pack.rootName:name)||name;
+    const type=pack?.__virtualFolderTrash?"folder":"file";
+    const conflict=type==="folder"?own(state.files,parent+"/"+desired):own(ensureFolder(parent),desired);
+    if(conflict&&policy==="skip")return {ok:false,skipped:true,conflict:true,path:parent,name:desired,type};
+    let replacedTrashName="";
+    if(conflict&&policy==="replace"){
+      replacedTrashName=type==="folder"?moveFolderToRecycle(parent,desired):moveFileToRecycle(parent,desired);
+      if(!replacedTrashName)return {ok:false,reason:"replace-failed",conflict:true,path:parent,name:desired,type};
+    }
+    if(type==="folder"){
+      const rootName=conflict&&policy==="keep"?uniqueFolderName(parent,desired):desired;
       const root=parent+"/"+rootName;
       for(const t of pack.tree||[])state.files[root+(t.rel||"")]=t.files||{};
       delete bin[name];
       globalThis.Win11SearchV920?.invalidate?.();
-      return true;
+      return {ok:true,path:parent,name:rootName,type,conflict,replacedTrashName};
     }
-    const parent=entry.originalPath||"C:/Desktop";
-    const target=uniqueFileName(parent,entry.originalName||name);
+    const target=conflict&&policy==="keep"?uniqueFileName(parent,desired):desired;
     ensureFolder(parent)[target]=pack;
     delete bin[name];
     globalThis.Win11SearchV920?.invalidate?.();
-    return true;
+    return {ok:true,path:parent,name:target,type,conflict,replacedTrashName};
+  }
+
+  function restoreRecycleItem(name){
+    return !!restoreRecycleItemAdvanced(name,"keep").ok;
   }
 
   function renameVirtual(path,oldName,newName,type){
@@ -617,7 +630,10 @@
 
     const integrationApi=Object.freeze({
       refresh:()=>setTimeout(decorate,0),
-      forceRender
+      forceRender,
+      getSelectedItems:()=>selectedItems().map(x=>({...x})),
+      restoreSelectedRecycle:()=>restoreSelectedRecycle(),
+      deleteSelection:permanent=>deleteSelection(!!permanent)
     });
     wrap.__explorerProV740=integrationApi;
     if(win)win.__explorerProV740=integrationApi;
@@ -921,6 +937,7 @@
     moveFileToRecycle,
     moveFolderToRecycle,
     restoreRecycleItem,
+    restoreRecycleItemAdvanced,
     permanentlyDeleteVirtual,
     renameVirtual,
     parseFilter

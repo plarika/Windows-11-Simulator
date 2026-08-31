@@ -170,6 +170,19 @@
     return {undo:h.undo.map(cloneAction),redo:h.redo.map(cloneAction),busy};
   }
   function clear(){const h=ensureHistoryState();h.undo=[];h.redo=[];persist();return true}
+  function invalidateRecycleItems(names,reason="O item da Reciclagem foi alterado manualmente."){
+    const wanted=new Set((names||[]).filter(Boolean));
+    if(!wanted.size)return 0;
+    const h=ensureHistoryState();let changed=0;
+    for(const stack of [h.undo,h.redo])for(const action of stack){
+      if(action.kind!=="delete"||!action.undoable)continue;
+      if((action.items||[]).some(x=>wanted.has(x.trashName))){
+        action.undoable=false;action.reason=reason;changed++;
+      }
+    }
+    if(changed)persist();
+    return changed;
+  }
   function subscribe(fn){if(typeof fn!=="function")return()=>{};listeners.add(fn);return()=>listeners.delete(fn)}
 
   function installWindow(win){
@@ -223,7 +236,7 @@
 
   globalThis.Win11ExplorerHistory=Object.freeze({
     version:VERSION,recordTransfer,recordRename,recordDelete,
-    undo:()=>step("undo"),redo:()=>step("redo"),getState,clear,
+    undo:()=>step("undo"),redo:()=>step("redo"),getState,clear,invalidateRecycleItems,
     isSuppressed:()=>suppress>0
   });
   globalThis.Win11RealFunctions=Object.freeze({

@@ -157,3 +157,7 @@ A correção de Acesso rápido V9.3 é exclusivamente visual: faz reset do estil
 ## Explorer Undo/Redo & File History V9.4.0
 
 A V9.4 persiste apenas descritores reversíveis de operações (`path`, nomes, tipo, destino, timestamp e estado de reversibilidade). Conteúdo de ficheiros, blobs e handles de File System Access não são duplicados no histórico. Undo/Redo reutiliza as funções já auditadas do Explorer Pro e valida a existência da origem e a ausência de conflitos antes de inverter uma operação. `real-mount-mode`, eliminação permanente e substituições destrutivas permanecem fora do Undo. O histórico é limitado a 50 ações por perfil e é isolado pelo mesmo mecanismo de estado dos restantes dados do utilizador.
+
+## Recycle Bin Pro V9.5.0
+
+A V9.5 continua a operar apenas sobre o filesystem virtual do perfil ativo e nunca percorre `real-mount-mode` nem File System Access handles. A restauração valida o destino antes de escrever. Em conflitos, `Manter ambos` é o comportamento não destrutivo; `Ignorar` não altera nenhum dos lados; `Substituir` preserva primeiro o item existente colocando-o na própria Reciclagem. O esvaziamento exige confirmação explícita e usa a eliminação permanente já auditada, incluindo limpeza segura de conteúdos reais referenciados quando estes deixam de ter referências virtuais. Ações V9.4 de Undo que dependiam de entradas da Reciclagem restauradas ou removidas manualmente são marcadas como não reversíveis, evitando recuperação enganadora de estado inexistente.

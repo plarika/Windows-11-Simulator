@@ -1,0 +1,174 @@
+/* Windows 11 Simulator V9.5 — Recycle Bin Pro */
+.explorer-recycle-actions-v950{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  flex:0 0 auto;
+}
+.explorer-recycle-actions-v950[hidden]{display:none!important}
+.explorer-recycle-actions-v950 button{
+  min-height:30px;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:inherit;
+  padding:0 8px;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font:inherit;
+  font-size:10px;
+  cursor:pointer;
+}
+.explorer-recycle-actions-v950 button:hover:not(:disabled){
+  background:rgba(0,0,0,.065);
+}
+.explorer-recycle-actions-v950 button:disabled{
+  opacity:.38;
+  cursor:default;
+}
+.explorer-recycle-banner-v950{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:10px 12px;
+  margin:0 0 8px;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:9px;
+  background:rgba(0,0,0,.025);
+  color:inherit;
+}
+.explorer-recycle-banner-v950[hidden]{display:none!important}
+.explorer-recycle-banner-v950>div{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.explorer-recycle-banner-v950 strong{font-size:12px}
+.explorer-recycle-banner-v950 span,
+.explorer-recycle-banner-v950 small{
+  font-size:10px;
+  opacity:.68;
+}
+.recycle-item-v950{
+  position:relative;
+}
+.recycle-meta-v950{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  margin-top:3px;
+  max-width:100%;
+  font-size:9px;
+  line-height:1.25;
+  opacity:.62;
+  overflow:hidden;
+  pointer-events:none;
+}
+.recycle-meta-v950 span{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.file-row .recycle-meta-v950{
+  grid-column:1/-1;
+  margin:2px 0 0 31px;
+}
+#app.theme-dark .explorer-recycle-actions-v950 button:hover:not(:disabled){
+  background:rgba(255,255,255,.09);
+}
+#app.theme-dark .explorer-recycle-banner-v950{
+  background:rgba(255,255,255,.035);
+  border-color:rgba(255,255,255,.09);
+}
+.explorer-recycle-conflict-v950{
+  position:fixed;
+  inset:0;
+  z-index:100500;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:rgba(0,0,0,.34);
+  backdrop-filter:blur(6px);
+}
+.explorer-recycle-conflict-v950.open{display:flex}
+.recycle-conflict-card-v950{
+  width:min(460px,calc(100vw - 32px));
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:12px;
+  background:#f7f8fa;
+  color:#202124;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  padding:18px;
+}
+.recycle-conflict-card-v950 h3{
+  margin:0 0 8px;
+  font-size:15px;
+}
+.recycle-conflict-card-v950 p{
+  margin:0 0 14px;
+  font-size:11px;
+  opacity:.75;
+  word-break:break-word;
+}
+.recycle-conflict-card-v950 label{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:14px;
+  font-size:10px;
+}
+.recycle-conflict-actions-v950{
+  display:flex;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.recycle-conflict-actions-v950 button{
+  min-height:30px;
+  border:1px solid rgba(0,0,0,.11);
+  border-radius:7px;
+  padding:0 10px;
+  background:#fff;
+  color:inherit;
+  font:inherit;
+  font-size:10px;
+  cursor:pointer;
+}
+.recycle-conflict-actions-v950 [data-recycle-replace]{
+  background:#0f6cbd;
+  color:#fff;
+  border-color:#0f6cbd;
+}
+#app.theme-dark .recycle-conflict-card-v950{
+  background:#292c31;
+  color:#f2f3f5;
+  border-color:rgba(255,255,255,.12);
+}
+#app.theme-dark .recycle-conflict-actions-v950 button{
+  background:#34383f;
+  border-color:rgba(255,255,255,.12);
+}
+#app.theme-dark .recycle-conflict-actions-v950 [data-recycle-replace]{
+  background:#0f6cbd;
+  border-color:#0f6cbd;
+}
+.recycle-empty-confirm-v950 p{
+  margin:8px 0 0;
+  font-size:11px;
+  opacity:.78;
+}
+@media(max-width:820px){
+  .explorer-recycle-actions-v950 button span{display:none}
+  .explorer-recycle-actions-v950 button{width:30px;padding:0;justify-content:center}
+  .explorer-recycle-banner-v950{align-items:flex-start;flex-direction:column;gap:4px}
+}
+@media(max-width:600px){
+  .explorer-recycle-actions-v950{gap:0}
+  .explorer-recycle-actions-v950 button{width:28px;min-width:28px}
+  .recycle-conflict-actions-v950{justify-content:stretch}
+  .recycle-conflict-actions-v950 button{flex:1 1 calc(50% - 4px)}
+}
