@@ -179,3 +179,13 @@ Importações são tratadas exclusivamente como dados. JSON acima de 64 KB é re
 O checksum FNV-1a32 serve para detetar corrupção ou alteração inconsistente de um pacote exportado. Não é uma assinatura criptográfica e não fornece autenticidade contra um atacante capaz de recalcular o checksum. Configurações não concedem novas capacidades ao navegador nem elevam permissões.
 
 O `Win11SystemBus` aceita apenas tópicos com formato restrito e payloads serializáveis, mantém histórico limitado e isola exceções de listeners. Os eventos DOM associados contêm apenas cópias do payload virtual; não transportam handles de File System Access, conteúdo do desktop real ou referências executáveis.
+
+## Personalization & Settings Integration V9.8.2
+
+A V9.8.2 não acrescenta acesso ao sistema operativo anfitrião. Personalização, escala e opções da Taskbar continuam a alterar apenas DOM, CSS e estado virtual do perfil ativo.
+
+Os consumidores da Taskbar leem snapshots validados do `Win11SettingsStore`. Desativar previews impede a criação do clone visual V9.7 e mostra apenas um placeholder; não captura o desktop real, não ativa media e não adiciona permissões.
+
+A bridge de compatibilidade com Personalization V7.8 mantém o estado legado sincronizado apenas para consumidores existentes. A nova UI não chama `saveState()` diretamente: todas as mutações passam pelo pipeline validado/atómico do Settings Core.
+
+Snapshots de Backup V9.8.2 incluem um pacote de Settings exportado com schema e checksum. Na restauração, o pacote é validado antes de o filesystem virtual ser substituído; se for inválido, a operação é cancelada. Snapshots antigos podem migrar apenas tema e wallpaper através das mesmas regras de validação. O backup não ganha acesso a ficheiros do host, handles File System Access ou credenciais.

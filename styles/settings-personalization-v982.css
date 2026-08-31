@@ -1,0 +1,37 @@
+/* Windows 11 Simulator V9.8.2 — Settings Personalization Integration */
+.settings-core-badge-v982{
+  flex:none;display:inline-flex;align-items:center;min-height:24px;padding:4px 8px;
+  border:1px solid color-mix(in srgb,var(--accent) 34%,#d5dde3);
+  border-radius:999px;background:color-mix(in srgb,var(--accent) 8%,#fff);
+  color:var(--accent-strong);font-size:8px;font-weight:700;white-space:nowrap
+}
+.settings-scale-v982{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,42%);gap:18px;align-items:center}
+.settings-scale-v982>div:first-child{display:grid;gap:4px}
+.settings-scale-v982 h3{margin:0}
+.settings-scale-v982 small{font-size:9px;color:#6d7780}
+.settings-scale-control-v982{display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:10px;align-items:center}
+.settings-scale-control-v982 input{width:100%;accent-color:var(--accent)}
+.settings-scale-control-v982 output{text-align:right;font-size:10px;font-weight:700}
+.settings-actions-v982{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 6px}
+.settings-actions-v982 small{color:#6d7780;font-size:8px;text-align:right}
+.settings-personalization-v982 .settings-row-v78 .toggle{flex:none}
+#app.theme-dark .settings-core-badge-v982{
+  background:color-mix(in srgb,var(--accent) 14%,#282e34);
+  border-color:color-mix(in srgb,var(--accent) 42%,#44505a);
+  color:#f2f6f8
+}
+#app.theme-dark .settings-scale-v982 small,
+#app.theme-dark .settings-actions-v982 small{color:#aab4bc}
+
+@media(max-width:720px){
+  .settings-page-title-v78{align-items:flex-start}
+  .settings-core-badge-v982{max-width:42%;white-space:normal;text-align:center}
+  .settings-scale-v982{grid-template-columns:1fr;gap:10px}
+  .settings-actions-v982{align-items:flex-start;flex-direction:column}
+  .settings-actions-v982 small{text-align:left}
+}
+
+.taskbar-group-preview-disabled-v982{
+  display:grid;place-items:center;padding:12px;text-align:center;
+  color:var(--muted);font-size:10px;background:rgba(127,127,127,.08)
+}

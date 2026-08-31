@@ -492,6 +492,7 @@
   globalThis.Win11Personalization=Object.freeze({
     version:"8.1.0",
     accents:[...ACCENTS],
+    wallpapers:[...WALLPAPERS_V78],
     wallpaperCount:WALLPAPERS_V78.length,
     apply:applyPersonalization,
     set:setPersonalization,

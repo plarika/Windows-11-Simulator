@@ -50,8 +50,17 @@ function renderSettingsPageV5(box,page){
   const ws=box.querySelector(".wallpapers");if(ws)WALLPAPERS.forEach((bg,i)=>{const b=document.createElement("button");b.className="wallpaper-choice"+(i===state.wallpaper?" active":"");b.style.background=bg;b.onclick=()=>{state.wallpaper=i;saveState();applyState();renderSettingsPageV5(box,"personalization")};ws.appendChild(b)});
   box.querySelector("[data-sync-time]")?.addEventListener("click",()=>notify("Data e hora","Hora sincronizada com o relógio do navegador."));
   box.querySelector("[data-game]")?.addEventListener("click",()=>{state.gameMode=!state.gameMode;saveState();renderSettingsPageV5(box,"gaming")});
-  box.querySelector("[data-textscale]")?.addEventListener("input",e=>{state.accessibility.textScale=+e.target.value;saveState();$("#app").style.fontSize=(state.accessibility.textScale/100*16)+"px"});
-  box.querySelectorAll("[data-access]").forEach(b=>b.onclick=()=>{const k=b.dataset.access;state.accessibility[k]=!state.accessibility[k];saveState();renderSettingsPageV5(box,"accessibility")});
+  box.querySelector("[data-textscale]")?.addEventListener("input",e=>{
+    const value=+e.target.value;
+    if(globalThis.Win11SettingsStore)Win11SettingsStore.set("accessibility.textScale",value,{source:"settings-v5-compat"});
+    else{state.accessibility.textScale=value;saveState();$("#app").style.fontSize=(value/100*16)+"px"}
+  });
+  box.querySelectorAll("[data-access]").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.access,path="accessibility."+k,next=!state.accessibility[k];
+    if(globalThis.Win11SettingsStore&&Win11SettingsStore.validate(path,next))Win11SettingsStore.set(path,next,{source:"settings-v5-compat"});
+    else{state.accessibility[k]=next;saveState()}
+    renderSettingsPageV5(box,"accessibility");
+  });
   box.querySelectorAll("[data-privacy]").forEach(b=>b.onclick=()=>{const k=b.dataset.privacy;state.privacy[k]=!state.privacy[k];saveState();renderSettingsPageV5(box,"privacy")});
   box.querySelector("[data-check-updates]")?.addEventListener("click",()=>startWindowsUpdateCheck(box));
   box.querySelector("[data-update-restart]")?.addEventListener("click",restartSystem);

@@ -33,10 +33,15 @@
     document.body.appendChild(panel);
     return panel;
   }
+  function taskbarPrefs(){
+    const fallback={groupWindows:"when-multiple",showBadges:true};
+    try{return Object.assign(fallback,globalThis.Win11SettingsStore?.get?.("taskbar")||{})}
+    catch{return fallback}
+  }
   function hideGroup(){ensureGroupPanel().classList.remove("open")}
   function showGroup(anchor){
     const wins=explorerWindows();
-    if(wins.length<2)return;
+    if(wins.length<2||taskbarPrefs().groupWindows==="never")return;
     const panel=ensureGroupPanel();
     panel.innerHTML='<header><strong>Explorador de Ficheiros</strong><span>'+wins.length+' janelas</span></header><div class="explorer-task-group-list-v930"></div>';
     const list=panel.querySelector(".explorer-task-group-list-v930");
@@ -76,12 +81,13 @@
         const w=windowById(b.dataset.window||"");
         return w?.dataset.app==="explorer"&&Number(w.dataset.desktop||0)===(Number(state.currentDesktop)||0);
       });
-      const lead=explorerButtons.length>1?explorerButtons[0]:null;
-      const hidden=new Set(explorerButtons.length>1?explorerButtons.slice(1):[]);
+      const prefs=taskbarPrefs(),grouped=explorerButtons.length>1&&prefs.groupWindows!=="never";
+      const lead=grouped?explorerButtons[0]:null;
+      const hidden=new Set(grouped?explorerButtons.slice(1):[]);
       for(const b of taskButtons){
         b.classList.toggle("explorer-task-group-lead-v930",b===lead);
         b.classList.toggle("explorer-task-group-hidden-v930",hidden.has(b));
-        if(b===lead){
+        if(b===lead&&prefs.showBadges){
           const count=String(explorerButtons.length);
           if(b.dataset.explorerGroupCount!==count)b.dataset.explorerGroupCount=count;
         }else if(b.hasAttribute("data-explorer-group-count"))b.removeAttribute("data-explorer-group-count");

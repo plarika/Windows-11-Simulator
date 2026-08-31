@@ -20,6 +20,11 @@
     if(!s.placements||typeof s.placements!=="object")s.placements={};
     return s;
   }
+  function taskbarPrefs(){
+    const fallback={groupWindows:"when-multiple",showBadges:true,showProgress:true,previews:true};
+    try{return Object.assign(fallback,globalThis.Win11SettingsStore?.get?.("taskbar")||{})}
+    catch{return fallback}
+  }
   function placementKey(win){
     const peers=windowsForApp(win.dataset.app,Number(win.dataset.desktop||0));
     const slot=Math.max(0,peers.indexOf(win));
@@ -95,8 +100,15 @@
     return groupPanel;
   }
   function hideGroup(){groupPanel?.classList.remove("open")}
+  function disabledPreview(){
+    const host=document.createElement("div");
+    host.className="taskbar-group-preview-image-v970 taskbar-group-preview-disabled-v982";
+    host.textContent="Pré-visualização desativada";
+    return host;
+  }
   function showGroup(appId,anchor){
-    const wins=windowsForApp(appId);if(wins.length<2)return false;
+    const prefs=taskbarPrefs(),wins=windowsForApp(appId);
+    if(wins.length<2||prefs.groupWindows==="never")return false;
     const panel=ensureGroupPanel(),app=APPS[appId]||{};
     panel.innerHTML='<header><div><strong>'+escapeHTML(app.name||appId)+'</strong><span>'+wins.length+' janelas</span></div>'+
       '<div class="taskbar-group-actions-v970"><button data-min-all>Minimizar todas</button><button data-restore-all>Restaurar todas</button><button data-close-all>Fechar todas</button></div></header>'+
@@ -104,7 +116,7 @@
     const list=panel.querySelector(".taskbar-group-list-v970");
     for(const win of wins){
       const card=document.createElement("article");card.className="taskbar-group-card-v970"+(win.classList.contains("focused")?" active":"");
-      const preview=safePreview(win);
+      const preview=prefs.previews?safePreview(win):disabledPreview();
       const title=win.querySelector(".win-title span:last-child")?.textContent||app.name||appId;
       card.innerHTML='<button data-focus><div data-preview></div><footer><strong>'+escapeHTML(title)+'</strong><span>'+(win.classList.contains("hidden")?"Minimizada":"Aberta")+'</span></footer></button>'+
         '<button data-close title="Fechar">×</button>';
@@ -138,7 +150,7 @@
   }
   function refreshGroupsNow(){
       repairTaskButtons();
-      const buttons=taskButtons();
+      const prefs=taskbarPrefs(),buttons=taskButtons();
       const byApp=new Map();
       for(const b of buttons){
         const w=winById(b.dataset.window||"");
@@ -148,7 +160,7 @@
       }
       const leadByButton=new Map(),hidden=new Set();
       for(const [appId,group] of byApp){
-        if(group.length<2||appId==="explorer")continue;
+        if(group.length<2||appId==="explorer"||prefs.groupWindows==="never")continue;
         leadByButton.set(group[0],{appId,count:group.length});
         group.slice(1).forEach(b=>hidden.add(b));
       }
@@ -161,8 +173,10 @@
           const count=String(lead.count);
           if(b.dataset.taskbarGroupCount!==count)b.dataset.taskbarGroupCount=count;
           if(b.dataset.taskbarGroupApp!==lead.appId)b.dataset.taskbarGroupApp=lead.appId;
-          if(!badge){badge=document.createElement("span");badge.className="taskbar-group-badge-v970";b.appendChild(badge)}
-          if(badge.textContent!==count)badge.textContent=count;
+          if(prefs.showBadges){
+            if(!badge){badge=document.createElement("span");badge.className="taskbar-group-badge-v970";b.appendChild(badge)}
+            if(badge.textContent!==count)badge.textContent=count;
+          }else badge?.remove();
         }else{
           badge?.remove();
           if(b.hasAttribute("data-taskbar-group-count"))b.removeAttribute("data-taskbar-group-count");
@@ -201,6 +215,10 @@
   }
   function refreshProgress(){
     const buttons=taskButtons(),desired=new Map();
+    if(!taskbarPrefs().showProgress){
+      buttons.forEach(btn=>syncButtonProgress(btn,null));
+      return;
+    }
     for(const btn of buttons){
       const win=winById(btn.dataset.window||"");if(!win)continue;
       const snap=progressByWindow.get(win.dataset.id);

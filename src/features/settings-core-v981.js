@@ -191,6 +191,10 @@
   function get(path=null){
     const doc=ensureDoc();
     if(path===null||path===undefined)return clone(doc.data);
+    if(typeof path==="string"&&!path.includes(".")){
+      if(BLOCKED.has(path)||!SCHEMA[path])throw new RangeError("Unknown settings category: "+path);
+      return clone(doc.data[path]);
+    }
     const p=parsePath(path);return clone(doc.data[p.category][p.key]);
   }
   function set(path,value,options={}){return commit([{path,value}],options).changed}

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.1 Settings Core & System Integration Bus** — novo núcleo de definições por perfil com schema validado, migração do estado existente, commits atómicos, import/export com integridade e bus tipado para integrar Settings, Taskbar, Explorer e restantes componentes.
+**V9.8.2 Personalization & Settings Integration** — Personalização, escala da interface e opções reais da Taskbar passam a consumir o `Win11SettingsStore`/`Win11SystemBus`, com compatibilidade legada, backup/restauro das definições e integração por perfil.
 
 ## Funcionalidades
 
@@ -680,3 +680,21 @@ Primeiro passo de integração com funções reais do dispositivo:
 - APIs de reset por categoria e reset global usam o mesmo pipeline validado
 - compatibilidade com estado legado é mantida para os componentes V7.x–V9.7 durante a migração gradual
 - esta versão estabelece a infraestrutura; a V9.8.2 migra a UI de Personalização/Settings para consumo integral do Store e do bus
+
+## V9.8.2 Personalization & Settings Integration
+
+- nova camada `settings-personalization-v982.js` sobre o Settings Core V9.8.1
+- a página Personalização passa a persistir exclusivamente através de `Win11SettingsStore`
+- tema Claro/Escuro/Sistema, cor de destaque, transparência, animações e wallpaper são aplicados a partir do Store
+- escala da interface de 90% a 160% é guardada por perfil e propagada pelo `Win11SystemBus`
+- a Taskbar passa a consumir opções reais de agrupamento de janelas, badges, progresso e previews
+- agrupamento pode ser `Sempre`, `Quando houver várias` ou `Nunca`
+- desativar previews substitui os clones por um placeholder estático, sem executar ou clonar o conteúdo da janela
+- Explorer Multi-Window V9.3 respeita a preferência de agrupamento e de badges da Taskbar
+- a bridge pública `Win11Personalization` mantém compatibilidade com consumidores antigos sem permitir que a nova UI escreva diretamente no estado legado
+- `Win11SettingsStore.get("categoria")` passa a devolver snapshots isolados de uma categoria
+- Acessibilidade V5 encaminha escala e toggles suportados para o Settings Store
+- Backup/Recovery passa a incluir um `exportConfig()` validado das definições
+- restauração de snapshots novos usa `importConfig()`; snapshots antigos continuam compatíveis por migração controlada de tema/wallpaper
+- se o pacote de definições de um backup estiver inválido, a restauração é cancelada antes de substituir o filesystem
+- a página ativa de Settings é preservada quando eventos externos atualizam escala/personalização, evitando rerenders para a secção errada
