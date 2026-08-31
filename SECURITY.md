@@ -169,3 +169,13 @@ A V9.6 guarda apenas snapshots de strings virtuais restauráveis e pequenas. Cad
 ## Taskbar & Window Management Pro V9.7.0
 
 A V9.7 trabalha apenas sobre janelas DOM do simulador e estado virtual do perfil ativo. Os previews de grupos são clones visuais: IDs são removidos, controlos interativos recebem `tabindex=-1` e `pointer-events:none`, e `iframe`, `video`, `audio` e `canvas` são substituídos por placeholders antes da apresentação. Não são capturados pixels do desktop real nem conteúdo de outras aplicações do sistema anfitrião. A persistência de geometria guarda apenas `left`, `top`, `width`, `height` e timestamp dentro do estado do perfil; não guarda conteúdo das janelas. A geometria é limitada ao viewport na restauração e o estado é limitado às 60 entradas mais recentes. O progresso da Taskbar recebe apenas snapshots de estado das operações virtuais do Explorer (`id`, modo, estado, contadores e percentagem), sem copiar conteúdo de ficheiros para a Taskbar.
+
+## Settings Core & System Integration Bus V9.8.1
+
+A V9.8.1 opera apenas sobre o estado virtual do perfil ativo. O `Win11SettingsStore` é armazenado dentro do mesmo objeto de perfil já usado pelo simulador e não recebe acesso adicional ao sistema operativo anfitrião, a ficheiros reais ou a permissões do navegador.
+
+Importações são tratadas exclusivamente como dados. JSON acima de 64 KB é rejeitado, categorias e chaves desconhecidas são recusadas, valores são validados contra enums/tipos/intervalos e as chaves `__proto__`, `prototype` e `constructor` são bloqueadas para reduzir risco de prototype pollution. O código não usa `eval`, `new Function` ou execução dinâmica do conteúdo importado.
+
+O checksum FNV-1a32 serve para detetar corrupção ou alteração inconsistente de um pacote exportado. Não é uma assinatura criptográfica e não fornece autenticidade contra um atacante capaz de recalcular o checksum. Configurações não concedem novas capacidades ao navegador nem elevam permissões.
+
+O `Win11SystemBus` aceita apenas tópicos com formato restrito e payloads serializáveis, mantém histórico limitado e isola exceções de listeners. Os eventos DOM associados contêm apenas cópias do payload virtual; não transportam handles de File System Access, conteúdo do desktop real ou referências executáveis.

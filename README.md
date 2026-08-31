@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.7.0 Taskbar & Window Management Pro** — agrupamento geral de janelas por aplicação, previews e ações de grupo, progresso das operações do Explorer na Taskbar e persistência de posição/tamanho das janelas por perfil.
+**V9.8.1 Settings Core & System Integration Bus** — novo núcleo de definições por perfil com schema validado, migração do estado existente, commits atómicos, import/export com integridade e bus tipado para integrar Settings, Taskbar, Explorer e restantes componentes.
 
 ## Funcionalidades
 
@@ -660,3 +660,23 @@ Primeiro passo de integração com funções reais do dispositivo:
 - o armazenamento de placements é limitado às 60 entradas mais recentes por perfil
 - `Win11TaskbarWindowPro.refresh()` é síncrono para ações explícitas; observers continuam agrupados por `requestAnimationFrame` para evitar churn de DOM
 - Alt+Tab, Task View, Snap Assist, Snap Groups e Multi-Window V9.3 continuam preservados sem reimplementação paralela
+
+## V9.8.1 Settings Core & System Integration Bus
+
+- novo `Win11SystemBus` para comunicação desacoplada entre componentes do simulador
+- tópicos do bus são validados por formato estrito e os payloads têm de ser serializáveis
+- histórico do bus limitado aos 80 eventos mais recentes e diagnóstico limitado a 20 erros de listeners
+- cada listener é isolado: uma exceção não interrompe os restantes consumidores
+- eventos também são expostos como `CustomEvent("win11:<tópico>")` para integração DOM controlada
+- novo `Win11SettingsStore` persistido dentro do estado do perfil ativo, sem criar uma segunda base `localStorage`
+- schema V1 cobre aparência, Taskbar, Explorer, aplicações, armazenamento, acessibilidade, notificações, sistema e privacidade
+- migração automática reaproveita preferências existentes de Personalization V7.8, Explorer Filesystem V9.1, acessibilidade, notificações, volume, brilho e privacidade
+- tipos, enums e intervalos são validados antes de qualquer mutação
+- categorias/chaves desconhecidas e `__proto__`, `prototype` e `constructor` são rejeitadas
+- atualizações de categoria são atómicas: se um valor for inválido, nenhuma alteração do lote é aplicada
+- cada commit válido incrementa uma revisão, atualiza timestamp/checksum e persiste uma única vez
+- eventos `settings:changed`, `settings:<categoria>:changed` e `settings:committed` permitem consumidores desacoplados
+- exportação/importação tem limite de 64 KB, schema explícito e verificação de integridade FNV-1a32
+- APIs de reset por categoria e reset global usam o mesmo pipeline validado
+- compatibilidade com estado legado é mantida para os componentes V7.x–V9.7 durante a migração gradual
+- esta versão estabelece a infraestrutura; a V9.8.2 migra a UI de Personalização/Settings para consumo integral do Store e do bus
