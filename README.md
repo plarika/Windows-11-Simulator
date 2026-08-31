@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.3.0 Explorer Multi-Window** — múltiplas janelas independentes do Explorador, sessões/tabs próprias, drag-and-drop entre janelas, agrupamento na Taskbar e correção de legibilidade do Acesso rápido em dark/mobile.
+**V9.4.0 Explorer Undo/Redo & File History** — histórico persistente por perfil, Desfazer/Refazer para copiar, mover, mudar nome e eliminar para a Reciclagem, com atalhos de teclado e integração Multi-Window.
 
 ## Funcionalidades
 
@@ -581,3 +581,21 @@ Primeiro passo de integração com funções reais do dispositivo:
 - correção do Acesso rápido em dark/mobile: reset explícito do `<button>` elimina o fundo branco nativo dos itens inativos
 - itens inativos do Acesso rápido ficam transparentes/escuros; o item ativo mantém fundo azul e texto branco legível
 - foco por teclado do Acesso rápido ganhou contorno visível sem alterar o estado ativo
+
+## V9.4.0 Explorer Undo/Redo & File History
+
+- novo motor `Win11ExplorerHistory` partilhado pelas janelas Explorer do perfil ativo
+- histórico persistente limitado a 50 ações, guardando apenas descritores de caminhos/nomes/tipos e nunca cópias de blobs
+- botões `Desfazer`, `Refazer` e `Histórico` na command bar
+- `Ctrl+Z` desfaz; `Ctrl+Y` e `Ctrl+Shift+Z` refazem
+- copiar pode ser desfeito removendo apenas o destino criado e depois refeito se origem/destino continuarem válidos
+- mover pode ser invertido entre origem e destino e refeito com validação de conflitos
+- mudar nome usa um helper central `renameVirtual()` e suporta Undo/Redo para ficheiros e pastas
+- eliminar para a Reciclagem guarda `originalName` e pode restaurar exatamente o nome original quando o destino está livre
+- Redo de eliminar volta a criar a entrada correspondente na Reciclagem e atualiza o descritor do histórico
+- operações V9.0 em lote geram um único registo de histórico, incluindo operações parcialmente concluídas antes de um cancelamento
+- histórico e botões são sincronizados entre múltiplas janelas Explorer V9.3
+- o painel de histórico mostra as 10 ações mais recentes e permite limpar o histórico
+- ações de substituição destrutiva (`Substituir` num conflito) ficam marcadas como não anuláveis
+- `Shift+Delete` e eliminação permanente continuam deliberadamente fora do Undo
+- se origem/destino tiver sido alterado depois da operação, Undo/Redo falha de forma segura sem forçar sobrescritas

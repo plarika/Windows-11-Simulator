@@ -1,0 +1,60 @@
+/* Windows 11 Simulator V9.4 — Explorer Undo/Redo & History */
+.explorer-history-actions-v940{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  flex:0 0 auto;
+}
+.explorer-history-actions-v940 button{
+  min-width:30px;
+  height:30px;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:inherit;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:0 7px;
+  font:inherit;
+  font-size:11px;
+  cursor:pointer;
+}
+.explorer-history-actions-v940 button:hover:not(:disabled){
+  background:rgba(0,0,0,.065);
+}
+.explorer-history-actions-v940 button:disabled{
+  opacity:.38;
+  cursor:default;
+}
+.explorer-history-actions-v940 [data-history-undo-v940],
+.explorer-history-actions-v940 [data-history-redo-v940]{
+  font-size:14px;
+}
+.explorer-history-actions-v940 [data-history-undo-v940] span,
+.explorer-history-actions-v940 [data-history-redo-v940] span{
+  font-size:10px;
+}
+#app.theme-dark .explorer-history-actions-v940 button:hover:not(:disabled){
+  background:rgba(255,255,255,.09);
+}
+@media(max-width:820px){
+  .explorer-history-actions-v940 [data-history-undo-v940] span,
+  .explorer-history-actions-v940 [data-history-redo-v940] span{
+    display:none;
+  }
+  .explorer-history-actions-v940 button{
+    width:30px;
+    padding:0;
+  }
+}
+@media(max-width:600px){
+  .explorer-history-actions-v940{
+    gap:0;
+  }
+  .explorer-history-actions-v940 button{
+    width:28px;
+    min-width:28px;
+  }
+}

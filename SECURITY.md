@@ -153,3 +153,7 @@ A V9.2 constrói um índice apenas a partir do catálogo de aplicações/defini�
 A V9.3 permite múltiplas janelas apenas dentro do mesmo runtime e desktop virtual autorizado. Transferências entre Explorers reutilizam o motor V9.0 e o mesmo `state.files`; não existe filesystem paralelo. O payload de drag-and-drop entre janelas contém apenas identificador da janela de origem e descritores virtuais de itens. `real-mount-mode` é explicitamente excluído. A gestão de janelas considera apenas filhos reais de `#window-layer`, impedindo previews/clones visuais do Window Manager de serem tratados como janelas operacionais. Sessões secundárias persistentes são limitadas e não armazenam handles reais.
 
 A correção de Acesso rápido V9.3 é exclusivamente visual: faz reset do estilo nativo de `<button>` e define estados normal/hover/ativo/foco no dark theme. Não altera caminhos, permissões nem estado do filesystem.
+
+## Explorer Undo/Redo & File History V9.4.0
+
+A V9.4 persiste apenas descritores reversíveis de operações (`path`, nomes, tipo, destino, timestamp e estado de reversibilidade). Conteúdo de ficheiros, blobs e handles de File System Access não são duplicados no histórico. Undo/Redo reutiliza as funções já auditadas do Explorer Pro e valida a existência da origem e a ausência de conflitos antes de inverter uma operação. `real-mount-mode`, eliminação permanente e substituições destrutivas permanecem fora do Undo. O histórico é limitado a 50 ações por perfil e é isolado pelo mesmo mecanismo de estado dos restantes dados do utilizador.

@@ -152,9 +152,10 @@
     const files=ensureFolder(path),bin=ensureFolder("Recycle Bin");
     if(!own(files,name))return false;
     const trashName=uniqueTrashName(name);
-    bin[trashName]={content:files[name],originalPath:path,deletedAt:Date.now(),kind:"file"};
+    bin[trashName]={content:files[name],originalPath:path,originalName:name,deletedAt:Date.now(),kind:"file"};
     delete files[name];
-    return true;
+    globalThis.Win11SearchV920?.invalidate?.();
+    return trashName;
   }
 
   function moveFolderToRecycle(parent,name){
@@ -165,11 +166,13 @@
     ensureFolder("Recycle Bin")[trashName]={
       content:{__virtualFolderTrash:true,rootName:name,tree},
       originalPath:parent,
+      originalName:name,
       deletedAt:Date.now(),
       kind:"folder"
     };
     [...tree].sort((a,b)=>b.rel.length-a.rel.length).forEach(entry=>delete state.files[root+entry.rel]);
-    return true;
+    globalThis.Win11SearchV920?.invalidate?.();
+    return trashName;
   }
 
   async function cleanupValueIfUnreferenced(value){
@@ -227,12 +230,32 @@
       const root=parent+"/"+rootName;
       for(const t of pack.tree||[])state.files[root+(t.rel||"")]=t.files||{};
       delete bin[name];
+      globalThis.Win11SearchV920?.invalidate?.();
       return true;
     }
     const parent=entry.originalPath||"C:/Desktop";
-    const target=uniqueFileName(parent,name);
+    const target=uniqueFileName(parent,entry.originalName||name);
     ensureFolder(parent)[target]=pack;
     delete bin[name];
+    globalThis.Win11SearchV920?.invalidate?.();
+    return true;
+  }
+
+  function renameVirtual(path,oldName,newName,type){
+    if(!path||!oldName||!newName||oldName===newName||!["file","folder"].includes(type))return false;
+    if(type==="file"){
+      const files=ensureFolder(path);
+      if(!own(files,oldName)||own(files,newName))return false;
+      files[newName]=files[oldName];delete files[oldName];
+    }else{
+      const oldRoot=path+"/"+oldName,newRoot=path+"/"+newName;
+      if(!own(state.files,oldRoot)||own(state.files,newRoot))return false;
+      const paths=Object.keys(state.files).filter(p=>p===oldRoot||p.startsWith(oldRoot+"/")).sort((a,b)=>a.length-b.length);
+      for(const p of paths)state.files[newRoot+p.slice(oldRoot.length)]=state.files[p];
+      [...paths].sort((a,b)=>b.length-a.length).forEach(p=>delete state.files[p]);
+    }
+    globalThis.Win11ExplorerFilesystem?.onRename?.({path,oldName,newName,type});
+    globalThis.Win11SearchV920?.invalidate?.();
     return true;
   }
 
@@ -661,16 +684,22 @@
       const items=selectedItems();
       if(!items.length)return;
       let done=0;
+      const historyItems=[];
       for(const item of items){
         try{
           let ok=false;
           if(permanent)ok=await permanentlyDeleteVirtual(item.path,item.name,item.type);
-          else if(item.type==="file")ok=moveFileToRecycle(item.path,item.name);
-          else if(item.type==="folder")ok=moveFolderToRecycle(item.path,item.name);
-          else if(item.type==="recycle")ok=await permanentlyDeleteVirtual(item.path,item.name,item.type);
+          else if(item.type==="file"){
+            const trashName=moveFileToRecycle(item.path,item.name);
+            ok=!!trashName;if(ok)historyItems.push({path:item.path,name:item.name,type:"file",trashName});
+          }else if(item.type==="folder"){
+            const trashName=moveFolderToRecycle(item.path,item.name);
+            ok=!!trashName;if(ok)historyItems.push({path:item.path,name:item.name,type:"folder",trashName});
+          }else if(item.type==="recycle")ok=await permanentlyDeleteVirtual(item.path,item.name,item.type);
           if(ok)done++;
         }catch{}
       }
+      if(!permanent&&historyItems.length)globalThis.Win11ExplorerHistory?.recordDelete?.(historyItems);
       selectedNames.clear();
       saveState();
       forceRender();
@@ -703,18 +732,8 @@
       if(items.length!==1||items[0].type==="recycle")return;
       const item=items[0],nextRaw=prompt("Novo nome:",item.name),next=cleanName(nextRaw);
       if(!next||next===item.name)return;
-      if(item.type==="file"){
-        const files=ensureFolder(item.path);
-        if(own(files,next))return notify("Explorador","Esse nome já existe.");
-        files[next]=files[item.name];delete files[item.name];
-      }else{
-        const oldRoot=item.path+"/"+item.name,newRoot=item.path+"/"+next;
-        if(own(state.files,newRoot))return notify("Explorador","Essa pasta já existe.");
-        const paths=Object.keys(state.files).filter(p=>p===oldRoot||p.startsWith(oldRoot+"/")).sort((a,b)=>a.length-b.length);
-        for(const p of paths)state.files[newRoot+p.slice(oldRoot.length)]=state.files[p];
-        [...paths].sort((a,b)=>b.length-a.length).forEach(p=>delete state.files[p]);
-      }
-      globalThis.Win11ExplorerFilesystem?.onRename?.({path:item.path,oldName:item.name,newName:next,type:item.type});
+      if(!renameVirtual(item.path,item.name,next,item.type))return notify("Explorador",item.type==="folder"?"Essa pasta já existe.":"Esse nome já existe.");
+      globalThis.Win11ExplorerHistory?.recordRename?.({path:item.path,oldName:item.name,newName:next,type:item.type});
       selectedNames.clear();selectedNames.add(next);anchorName=next;
       saveState();forceRender();
     }
@@ -903,6 +922,7 @@
     moveFolderToRecycle,
     restoreRecycleItem,
     permanentlyDeleteVirtual,
+    renameVirtual,
     parseFilter
   });
 

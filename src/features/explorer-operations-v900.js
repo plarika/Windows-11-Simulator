@@ -133,19 +133,22 @@
     if(move&&item.path===destination)return {ok:false,reason:"same"};
     if(!move&&item.path===destination)policy="keep";
     const conflict=conflictType(item,destination);
+    let replaced=false;
     if(conflict){
       if(policy==="skip")return {ok:false,skipped:true,reason:"conflict"};
       if(policy==="replace"){
         const removed=await replaceExisting(item,destination);
         if(!removed)return {ok:false,reason:"replace-failed"};
+        replaced=true;
       }
     }
     try{
-      return item.type==="folder"
+      const out=item.type==="folder"
         ?await Win11ExplorerPro.copyFolderAdvanced(item.path+"/"+item.name,destination,move)
         :await Win11ExplorerPro.copyFileAdvanced(item.path,item.name,destination,move);
+      return {...out,replaced};
     }catch(err){
-      return {ok:false,reason:err?.message||"error"};
+      return {ok:false,reason:err?.message||"error",replaced};
     }
   }  async function transfer(wrap,win,items,destination,mode="copy",options={}){
     if(!wrap||wrap.classList.contains("real-mount-mode")||!destination||destination==="This PC"||destination==="Recycle Bin"){
@@ -165,7 +168,8 @@
     };
     activeByWrap.set(wrap,op);
     renderOperation(op);
-    const remaining=[];
+    const remaining=[],historyItems=[];
+    let historyReversible=true;
     let index=0;
     try{
       for(;index<list.length;index++){
@@ -185,7 +189,11 @@
         }
         const result=await performItem(item,destination,move,policy||"keep");
         op.processed++;
-        if(result?.ok)op.succeeded++;
+        if(result?.ok){
+          op.succeeded++;
+          historyItems.push({srcPath:item.path,srcName:item.name,dstPath:destination,dstName:result.name,type:item.type});
+          if(result.replaced)historyReversible=false;
+        }
         else if(result?.skipped){op.skipped++;if(move)remaining.push(item)}
         else {op.failed.push({item,reason:result?.reason||"error"});if(move)remaining.push(item)}
         renderOperation(op);
@@ -199,6 +207,7 @@
       renderOperation(op);
       const snapshot=opSnapshot(op);
       lastByWrap.set(wrap,snapshot);
+      if(historyItems.length)globalThis.Win11ExplorerHistory?.recordTransfer?.({mode:op.mode,items:historyItems,reversible:historyReversible});
       return {
         ok:!op.cancelled&&!op.failed.length,
         done:op.succeeded,skipped:op.skipped,failed:op.failed,
