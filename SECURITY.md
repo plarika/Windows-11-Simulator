@@ -107,3 +107,7 @@ A barra de endereço V8.2 valida caminhos contra o filesystem virtual antes de n
 ## Explorer Tab Persistence V8.2.1
 
 A persistência de separadores usa exclusivamente o objeto `state` do perfil ativo e armazena apenas caminhos e histórico do filesystem virtual. Handles de File System Access, referências de mounts reais e conteúdo de ficheiros reais não entram no estado dos separadores. A gravação ocorre no momento das alterações de navegação/tabs, evitando callbacks tardios após a janela desaparecer que pudessem coincidir com uma troca de conta.
+
+## Explorer Tab Management V8.3.0
+
+A V8.3 mantém tabs fixados, ordem dos separadores e Acesso rápido dentro do `state` isolado por perfil. O Acesso rápido aceita apenas caminhos que passam pela validação do filesystem virtual e rejeita `This PC`, Reciclagem e referências externas. Handles de File System Access e mounts reais continuam fora do estado persistente. Ações de fecho em massa preservam tabs fixados, reduzindo perda acidental de contexto.

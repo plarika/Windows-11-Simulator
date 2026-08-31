@@ -97,3 +97,43 @@
   .explorer-tab-v820{min-width:110px;max-width:165px}
   .explorer-navigation-v820 .explorer-search.real{width:min(190px,34%)}
 }
+/* V8.3 — pinned tabs, drag reorder and Quick Access */
+.explorer-tab-v820.pinned{
+  min-width:112px;
+  flex-basis:140px;
+}
+.explorer-tab-v820.pinned .explorer-tab-folder{
+  font-size:10px;
+}
+.explorer-tab-v820.dragging{
+  opacity:.45;
+}
+.explorer-tab-v820.drag-over{
+  outline:2px solid currentColor;
+  outline-offset:-2px;
+}
+.explorer-quick-access-v830{
+  margin:4px 0 8px;
+  padding-bottom:6px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+.explorer-quick-title-v830{
+  padding:5px 10px 3px;
+  font-size:11px;
+  font-weight:600;
+  opacity:.66;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.explorer-quick-item-v830{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-align:left;
+  font:inherit;
+  color:inherit;
+}
+#app.theme-dark .explorer-quick-access-v830{
+  border-bottom-color:rgba(255,255,255,.1);
+}

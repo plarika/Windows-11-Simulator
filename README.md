@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.2.1 Explorer Tab Persistence** — os separadores do Explorador passam a restaurar a sessão por perfil, com reabrir separador fechado, duplicação e menu de contexto avançado.
+**V8.3.0 Explorer Tab Management** — o Explorador ganha tabs fixados, reordenação por drag-and-drop e Acesso rápido persistente por perfil.
 
 ## Funcionalidades
 
@@ -428,3 +428,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - estado persistente contém apenas caminhos virtuais; nunca guarda handles de pastas reais montadas
 - corrigida a instalação do Explorer Pro quando a janela arranca em `This PC` (`.thispc-grid`)
 - Explorer Pro expõe um refresh idempotente para integração segura após restauração/navegação de tabs
+
+## V8.3.0 Explorer Tab Management
+
+- separadores podem ser fixados/desafixados pelo menu de contexto
+- tabs fixados ficam agrupados à esquerda e são restaurados com a sessão
+- reordenação de tabs por drag-and-drop dentro do grupo fixado ou normal
+- operações Fechar outros / Fechar à direita preservam tabs fixados
+- Acesso rápido dinâmico no topo da barra lateral
+- Acesso rápido começa com Ambiente de Trabalho, Documentos e Transferências
+- qualquer pasta virtual válida pode ser adicionada/removida pelo menu do tab
+- Acesso rápido é persistido no estado do perfil e limitado a 12 localizações
+- migração automática do estado Explorer V8.2.1 para a estrutura V8.3
+- estado persistente continua limitado ao filesystem virtual; mounts reais não entram no Acesso rápido
