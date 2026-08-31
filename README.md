@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V8.9.0 Explorer Columns, Sort & Grouping Pro** — o Explorador ganha ordenação por Nome/Tipo/Tamanho/Data, direção ascendente/descendente, colunas configuráveis e agrupamento avançado.
+**V9.0.0 Explorer File Operations** — copiar/mover passam a ter progresso, pausa/cancelamento e resolução de conflitos, juntamente com uma melhoria de legibilidade no Acesso rápido.
 
 ## Funcionalidades
 
@@ -513,3 +513,16 @@ Primeiro passo de integração com funções reais do dispositivo:
 - resize de colunas por drag no cabeçalho da vista Detalhes
 - migração do agrupamento V8.6 para o motor V8.9, mantendo V8.6 em `none` para evitar dois motores sobre o mesmo DOM
 - criação autónoma do header Detalhes quando a camada antiga ainda não o gerou
+
+## V9.0.0 Explorer File Operations
+
+- novo motor de operações que reutiliza `copyFileAdvanced` / `copyFolderAdvanced` do Explorer Pro
+- operações de copiar/mover mostram cartão de progresso dentro da janela do Explorer
+- Pausar, Retomar e Cancelar por operação
+- apenas uma operação ativa por janela para evitar corridas sobre o VFS
+- conflitos de nome oferecem Substituir, Ignorar, Manter ambos e Cancelar operação
+- opção `Fazer o mesmo para os conflitos seguintes`
+- cópia de um ficheiro para a própria pasta passa a poder criar `ficheiro (2)`; mover para a mesma pasta continua bloqueado
+- clipboard de `cut` preserva os itens ainda não movidos quando uma operação é cancelada/ignorada
+- `real-mount-mode` continua fora do motor virtual V9.0
+- Acesso rápido/sidebar recebeu um readability pass: texto de 12 px, maior altura/padding, contraste reforçado e estado ativo mais visível

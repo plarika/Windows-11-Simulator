@@ -91,7 +91,7 @@
   }
 
   async function copyFileAdvanced(srcPath,name,dstPath,move=false){
-    if(!srcPath||!dstPath||srcPath===dstPath)return {ok:false,reason:"same"};
+    if(!srcPath||!dstPath||(move&&srcPath===dstPath))return {ok:false,reason:"same"};
     const src=ensureFolder(srcPath);
     if(!own(src,name))return {ok:false,reason:"missing"};
     const target=uniqueFileName(dstPath,name);
@@ -627,6 +627,12 @@
       const p=path();
       if(!p||p==="This PC"||p==="Recycle Bin")return;
       const batch=state[CLIPBOARD_KEY];
+      if(batch?.items?.length&&globalThis.Win11ExplorerOperations?.handlePaste){
+        const handled=await Win11ExplorerOperations.handlePaste({
+          wrap,win,destination:p,batch,clipboardKey:CLIPBOARD_KEY
+        });
+        if(handled){updateCommandState();setTimeout(decorate,0);return}
+      }
       if(batch?.items?.length){
         const moving=batch.mode==="cut";
         const result=await transferItems(batch.items,p,moving);
@@ -878,7 +884,7 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerPro=Object.freeze({
-    version:"8.2.1",
+    version:"9.0.0",
     currentVirtualPath,
     itemType,
     copyFileAdvanced,
@@ -891,7 +897,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"8.2.1",
+    version:"9.0.0",
     step:13,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

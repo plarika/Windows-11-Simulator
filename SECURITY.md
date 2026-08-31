@@ -135,3 +135,7 @@ A V8.8 persiste apenas a preferência visual `checkboxes`. A decoração de caix
 ## Explorer Columns, Sort & Grouping Pro V8.9.0
 
 A V8.9 persiste apenas preferências de apresentação (campo/direção de ordenação, agrupamento, visibilidade e larguras das colunas). Tamanho e data são calculados exclusivamente a partir do filesystem virtual já carregado. Em `real-mount-mode`, o motor de ordenação/agrupamento V8.9 retorna sem ler ou reorganizar conteúdo real montado.
+
+## Explorer File Operations V9.0.0
+
+O motor V9.0 não cria um segundo filesystem: decide apenas a política da operação e delega a cópia/movimento efetivo para as funções já auditadas do Explorer Pro, incluindo o tratamento seguro de blobs reais importados. Operações virtuais são recusadas em `real-mount-mode`. Apenas uma operação é permitida por janela de cada vez, reduzindo condições de corrida. Cancelamento e pausa ocorrem entre itens e nunca interrompem uma mutação a meio. A resolução de conflitos substitui apenas o item virtual de destino explicitamente escolhido.

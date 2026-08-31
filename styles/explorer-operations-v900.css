@@ -1,0 +1,110 @@
+/* Windows 11 Simulator V9.0 — Explorer File Operations */
+.explorer-operations-v900 main{position:relative}
+.explorer-operation-center-v900{
+  position:absolute;
+  right:14px;
+  bottom:34px;
+  width:min(360px,calc(100% - 28px));
+  z-index:28;
+  pointer-events:none;
+}
+.explorer-operation-card-v900{
+  pointer-events:auto;
+  padding:13px;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:12px;
+  background:rgba(252,253,254,.98);
+  box-shadow:0 14px 34px rgba(0,0,0,.16);
+  backdrop-filter:blur(18px);
+}
+.explorer-operation-head-v900,
+.explorer-operation-meta-v900,
+.explorer-operation-actions-v900{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.explorer-operation-head-v900{font-size:12px}
+.explorer-operation-current-v900{
+  margin:8px 0 7px;
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.explorer-operation-progress-v900{
+  height:5px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(0,0,0,.09);
+}
+.explorer-operation-progress-v900 i{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:#0f6cbd;
+  transition:width .16s ease;
+}
+.explorer-operation-meta-v900{margin-top:7px;font-size:9px;opacity:.68}
+.explorer-operation-actions-v900{justify-content:flex-end;margin-top:10px}
+.explorer-operation-actions-v900 button{
+  border:0;border-radius:6px;padding:6px 10px;background:rgba(0,0,0,.06);color:inherit;cursor:pointer
+}
+.explorer-conflict-v900{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100500;
+  background:rgba(0,0,0,.34);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.explorer-conflict-v900.open{display:flex}
+.explorer-conflict-box-v900{
+  width:min(520px,94vw);
+  border-radius:14px;
+  background:#fff;
+  color:#202124;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  overflow:hidden;
+}
+.explorer-conflict-head-v900{padding:16px 18px 10px;font-size:15px}
+.explorer-conflict-body-v900{
+  padding:8px 18px 12px;
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr);
+  gap:12px;
+  align-items:start;
+}
+.explorer-conflict-icon-v900{
+  width:48px;height:48px;border-radius:10px;background:rgba(0,120,212,.09);
+  display:grid;place-items:center;font-size:25px
+}
+.explorer-conflict-body-v900 p{margin:5px 0 0;font-size:11px;opacity:.72;overflow-wrap:anywhere}
+.explorer-conflict-all-v900{display:flex;gap:8px;align-items:center;padding:6px 18px 14px;font-size:11px}
+.explorer-conflict-actions-v900{
+  padding:12px 18px 16px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:7px;
+  border-top:1px solid rgba(0,0,0,.08);
+}
+.explorer-conflict-actions-v900 button{
+  border:0;border-radius:7px;padding:8px 11px;background:#eef1f4;color:#202124;cursor:pointer
+}
+.explorer-conflict-actions-v900 button.primary{background:#0f6cbd;color:#fff}
+#app.theme-dark .explorer-operation-card-v900{
+  background:rgba(38,41,47,.98);border-color:rgba(255,255,255,.12);color:#f2f3f5
+}
+#app.theme-dark .explorer-operation-progress-v900{background:rgba(255,255,255,.12)}
+#app.theme-dark .explorer-conflict-box-v900{background:#292c33;color:#f2f3f5}
+#app.theme-dark .explorer-conflict-actions-v900{border-top-color:rgba(255,255,255,.1)}
+#app.theme-dark .explorer-conflict-actions-v900 button{background:#3a3e46;color:#f2f3f5}
+#app.theme-dark .explorer-conflict-actions-v900 button.primary{background:#3e92d6}
+@media(max-width:620px){
+  .explorer-operation-center-v900{right:8px;bottom:28px;width:calc(100% - 16px)}
+  .explorer-conflict-actions-v900 button{flex:1 1 44%}
+}
