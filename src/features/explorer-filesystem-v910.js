@@ -15,6 +15,25 @@
     return s;
   }
 
+  function effectiveFsPrefs(){
+    const legacy=ensureFsState();
+    try{
+      const p=globalThis.Win11SettingsStore?.get?.("explorer");
+      if(p)return {...legacy,showHidden:!!p.showHidden,showExtensions:!!p.showExtensions};
+    }catch{}
+    return legacy;
+  }
+  function writeExplorerSetting(key,value){
+    const path="explorer."+key;
+    try{
+      if(globalThis.Win11SettingsStore?.validate?.(path,value)){
+        Win11SettingsStore.set(path,value,{source:"explorer-filesystem-v910-compat"});
+        refreshAll();return true;
+      }
+    }catch{}
+    const s=ensureFsState();s[key]=value;saveState();refreshAll();return true;
+  }
+
   function fullPath(path,name){return String(path||"").replace(/\/$/,"")+"/"+String(name||"")}
   function cleanMeta(meta,fallback=Date.now()){
     const created=Number(meta?.created)||Number(meta?.modified)||fallback;
@@ -130,7 +149,7 @@
   }
   function labelNode(node){return node.querySelector(".file-name")||node.querySelector(".fname span:last-child")}
   function refreshWrap(wrap){
-    const prefs=ensureFsState();
+    const prefs=effectiveFsPrefs();
     if(!wrap||wrap.classList.contains("real-mount-mode"))return;
     const metaCountBefore=Object.keys(prefs.metadata).length;
     const path=globalThis.Win11ExplorerPro?.currentVirtualPath?.(wrap)||String(wrap.querySelector(".pathbar")?.textContent||"");
@@ -157,7 +176,7 @@
     if(Object.keys(prefs.metadata).length!==metaCountBefore)saveState();
   }
   function refreshAll(){
-    document.querySelectorAll('.window[data-app="explorer"]').forEach(w=>refreshWrap(w));
+    document.querySelectorAll('.window[data-app="explorer"],.window[data-app="recycle"]').forEach(w=>refreshWrap(w));
   }  function installFilesystem(wrap,win){
     if(!wrap||wrap.dataset.explorerFilesystemV910==="1")return;
     wrap.dataset.explorerFilesystemV910="1";wrap.classList.add("explorer-filesystem-v910");
@@ -173,9 +192,9 @@
     command.insertBefore(button,overflow||null);
 
     button.onclick=e=>{
-      const s=ensureFsState(),item=selectedItem(wrap),menu=[
-        [s.showHidden?"Ocultar itens ocultos":"Mostrar itens ocultos",()=>{s.showHidden=!s.showHidden;saveState();refreshAll()}],
-        [s.showExtensions?"Ocultar extensões":"Mostrar extensões",()=>{s.showExtensions=!s.showExtensions;saveState();refreshAll()}]
+      const s=effectiveFsPrefs(),item=selectedItem(wrap),menu=[
+        [s.showHidden?"Ocultar itens ocultos":"Mostrar itens ocultos",()=>writeExplorerSetting("showHidden",!s.showHidden)],
+        [s.showExtensions?"Ocultar extensões":"Mostrar extensões",()=>writeExplorerSetting("showExtensions",!s.showExtensions)]
       ];
       if(item){
         const m=getMetadata(item.path,item.name,item.type);
@@ -207,10 +226,10 @@
     schedule();
 
     const api=Object.freeze({
-      getState:()=>JSON.parse(JSON.stringify(ensureFsState())),
+      getState:()=>JSON.parse(JSON.stringify(effectiveFsPrefs())),
       getMetadata,setHidden:(path,name,hidden)=>touch(path,name,{hidden:!!hidden}),
-      setShowHidden:v=>{ensureFsState().showHidden=!!v;saveState();refreshAll()},
-      setShowExtensions:v=>{ensureFsState().showExtensions=!!v;saveState();refreshAll()},
+      setShowHidden:v=>writeExplorerSetting("showHidden",!!v),
+      setShowExtensions:v=>writeExplorerSetting("showExtensions",!!v),
       createShortcut:(target,path=target?.path)=>createShortcut(path,target),
       openShortcut:(path,name)=>openShortcut(wrap,path,name),
       refresh:()=>refreshWrap(wrap)
@@ -225,7 +244,7 @@
 
   globalThis.Win11ExplorerFilesystem=Object.freeze({
     version:"9.1.0",getMetadata,touch,onTransfer,onRename,onDelete,createShortcut,shortcutTarget,refreshAll,
-    getState:()=>JSON.parse(JSON.stringify(ensureFsState()))
+    getState:()=>JSON.parse(JSON.stringify(effectiveFsPrefs()))
   });
   globalThis.Win11RealFunctions=Object.freeze({
     version:"9.1.0",step:24,

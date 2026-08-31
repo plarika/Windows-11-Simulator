@@ -711,9 +711,25 @@
       setTimeout(decorate,0);
     }
 
-    async function deleteSelection(permanent=false){
+    async function deleteSelection(permanent=false,confirmed=false){
       const items=selectedItems();
       if(!items.length)return;
+      if(!confirmed){
+        let confirmDelete=true;
+        try{confirmDelete=globalThis.Win11SettingsStore?.get?.("explorer.confirmDelete")!==false}catch{}
+        if(confirmDelete){
+          const recycleOnly=items.every(x=>x.type==="recycle");
+          showSystemDialog(
+            recycleOnly||permanent?"Eliminar permanentemente":"Mover para a Reciclagem",
+            recycleOnly||permanent
+              ?"<p>Eliminar permanentemente <strong>"+items.length+" item"+(items.length===1?"":"s")+"</strong>?</p><p>Esta ação não pode ser anulada.</p>"
+              :"<p>Mover <strong>"+items.length+" item"+(items.length===1?"":"s")+"</strong> para a Reciclagem?</p>",
+            "Eliminar",
+            ()=>deleteSelection(permanent,true)
+          );
+          return;
+        }
+      }
       let done=0;
       const historyItems=[];
       for(const item of items){
@@ -744,7 +760,7 @@
         "Eliminar permanentemente",
         "<p>Eliminar permanentemente <strong>"+items.length+" item"+(items.length===1?"":"s")+"</strong>?</p><p>Esta ação não pode ser anulada.</p>",
         "Eliminar",
-        ()=>deleteSelection(true)
+        ()=>deleteSelection(true,true)
       );
     }
 

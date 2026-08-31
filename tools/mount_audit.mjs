@@ -199,7 +199,7 @@ await check("delete real entries",async()=>await evaluate(`(async()=>{
   return !__mountAuditRoot._entries.has("Renamed.txt")&&!__mountAuditRoot._entries.has("FolderB");
 })()`));
 
-await evaluate(`openApp("explorer");true`);
+await evaluate(`openApp("explorer","This PC");true`);
 await wait(250);
 await check("Explorer mount button",async()=>await evaluate(`!!document.querySelector('.window[data-app="explorer"] [data-mount-real]')`));
 await check("Explorer mount nav item",async()=>await waitFor(async()=>await evaluate(`document.querySelectorAll('.window[data-app="explorer"] .real-mount-nav-item').length>=1`),2500,100));
@@ -248,10 +248,33 @@ await check("Settings real mount card",async()=>await evaluate(`(()=>{
   return true;
 })()`).then(async()=>waitFor(async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-real-mount-settings]')`),2000,100)));
 
+await evaluate(`(()=>{
+  const w=[...document.querySelectorAll('.window[data-app="explorer"]')].pop();
+  w?.dispatchEvent(new CustomEvent("navigate",{detail:"This PC"}));
+  return true;
+})()`);
+await wait(180);
+await check("Explorer exits real mount to This PC",async()=>await evaluate(`(()=>{
+  const w=[...document.querySelectorAll('.window[data-app="explorer"]')].pop();
+  return !!w&&!w.querySelector(".explorer-real")?.classList.contains("real-mount-mode")&&Win11ExplorerPro.currentVirtualPath(w)==="This PC";
+})()`));
+
+await evaluate(`(()=>{
+  const w=openAppNewWindow("explorer","This PC");
+  globalThis.__mountAuditThisPcWindow=w.dataset.id;
+  return true;
+})()`);
+await wait(180);
 await check("This PC real mount card",async()=>await waitFor(async()=>await evaluate(`(()=>{
-  const cards=[...document.querySelectorAll('.window[data-app="explorer"] [data-real-mount-card]')];
-  return cards.some(x=>x.dataset.realMountCard===__mountAuditRecord.id);
+  const w=document.querySelector('#window-layer > .window[data-id="'+CSS.escape(__mountAuditThisPcWindow)+'"]');
+  return !!w&&[...w.querySelectorAll("[data-real-mount-card]")].some(x=>x.dataset.realMountCard===__mountAuditRecord.id);
 })()`),2500,100));
+await evaluate(`(()=>{
+  const w=document.querySelector('#window-layer > .window[data-id="'+CSS.escape(__mountAuditThisPcWindow)+'"]');
+  if(w)closeWindow(w);
+  delete globalThis.__mountAuditThisPcWindow;
+  return true;
+})()`);
 
 await check("forget mount",async()=>await evaluate(`(async()=>{
   const ok=await Win11RealMounts.forgetMount(__mountAuditRecord.id);

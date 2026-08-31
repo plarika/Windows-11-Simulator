@@ -1,0 +1,57 @@
+/* Windows 11 Simulator V9.8.4 — Explorer Settings Integration */
+.settings-explorer-v984{display:grid;gap:14px}
+.settings-explorer-title-v984{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.settings-explorer-title-v984 h1{margin:0}
+.settings-explorer-title-v984 p{margin:5px 0 0;color:#68717b;font-size:10px}
+.settings-explorer-badge-v984{
+  flex:none;display:inline-flex;align-items:center;min-height:24px;padding:4px 8px;
+  border:1px solid color-mix(in srgb,var(--accent) 34%,#d5dde3);
+  border-radius:999px;background:color-mix(in srgb,var(--accent) 8%,#fff);
+  color:var(--accent-strong);font-size:8px;font-weight:700
+}
+.settings-explorer-card-v984,
+.settings-explorer-list-v984{
+  border:1px solid #e1e5e9;border-radius:12px;background:rgba(255,255,255,.72)
+}
+.settings-explorer-card-v984{padding:14px}
+.settings-explorer-card-v984 h3{margin:0 0 10px}
+.settings-explorer-hint-v984{display:block;margin-top:9px;color:#68717b;font-size:9px}
+.explorer-setting-row-v984{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  min-height:62px;padding:10px 14px;border-bottom:1px solid #e7eaed
+}
+.explorer-setting-row-v984:last-child{border-bottom:0}
+.explorer-setting-row-v984>div{display:grid;gap:4px}
+.explorer-setting-row-v984 strong{font-size:11px}
+.explorer-setting-row-v984 small{font-size:9px;color:#68717b}
+.explorer-setting-row-v984 .toggle{flex:none}
+.settings-explorer-actions-v984{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.settings-explorer-actions-v984 small{font-size:8px;color:#68717b;text-align:right}
+
+.explorer-compact-v984 .explorer-command.real{min-height:40px;padding-top:3px;padding-bottom:3px}
+.explorer-compact-v984 .explorer-command.real button{height:30px}
+.explorer-compact-v984 .explorer-address.real{min-height:39px;padding-top:3px;padding-bottom:3px}
+.explorer-compact-v984 .explorer-address.real button{height:29px}
+.explorer-compact-v984 .explorer-address.real .pathbar{min-height:29px}
+.explorer-compact-v984 .explorer-files.real{padding-top:6px;padding-bottom:24px}
+.explorer-compact-v984 .file-row:not(.header){padding-top:4px;padding-bottom:4px;min-height:30px}
+.explorer-compact-v984 .file{padding-top:5px;padding-bottom:5px;min-height:66px}
+.explorer-compact-v984.view-small-v860 .file{min-height:31px;padding-top:3px;padding-bottom:3px}
+
+#app.theme-dark .settings-explorer-card-v984,
+#app.theme-dark .settings-explorer-list-v984{background:rgba(37,40,47,.78);border-color:#424850}
+#app.theme-dark .explorer-setting-row-v984{border-bottom-color:#41464d}
+#app.theme-dark .settings-explorer-title-v984 p,
+#app.theme-dark .settings-explorer-hint-v984,
+#app.theme-dark .explorer-setting-row-v984 small,
+#app.theme-dark .settings-explorer-actions-v984 small{color:#aab4bc}
+#app.theme-dark .settings-explorer-badge-v984{
+  background:color-mix(in srgb,var(--accent) 14%,#282e34);
+  border-color:color-mix(in srgb,var(--accent) 42%,#44505a);color:#f2f6f8
+}
+@media(max-width:720px){
+  .settings-explorer-title-v984{align-items:flex-start}
+  .settings-explorer-badge-v984{max-width:42%;text-align:center}
+  .settings-explorer-actions-v984{align-items:flex-start;flex-direction:column}
+  .settings-explorer-actions-v984 small{text-align:left}
+}

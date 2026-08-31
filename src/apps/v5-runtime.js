@@ -62,9 +62,17 @@ function v5MigrateState(){
 }
 v5MigrateState();
 
+function explorerInitialPathV984(initialPath){
+  if(initialPath)return initialPath;
+  try{
+    if(globalThis.Win11SettingsStore?.get?.("explorer.openTo")==="this-pc")return "This PC";
+    const quick=globalThis.Win11ExplorerNavigation?.getQuickAccess?.();
+    return Array.isArray(quick)&&quick.length?quick[0]:"C:/Documents";
+  }catch{return "This PC"}
+}
 function renderApp(appId,win,initialPath){
   const wrap=document.createElement("div");
-  if(appId==="explorer"||appId==="recycle"){buildExplorerV5(wrap,win,appId==="recycle"?"Recycle Bin":(initialPath||"This PC"));return wrap}
+  if(appId==="explorer"||appId==="recycle"){buildExplorerV5(wrap,win,appId==="recycle"?"Recycle Bin":explorerInitialPathV984(initialPath));return wrap}
   if(appId==="notepad"){buildNotepadV5(wrap);return wrap}
   if(appId==="calc"){buildCalc(wrap);return wrap}
   if(appId==="terminal"){buildTerminal(wrap);return wrap}

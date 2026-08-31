@@ -199,3 +199,17 @@ Mostrar ambiente de trabalho atua exclusivamente sobre elementos `.window` filho
 A opção de segundos no relógio apenas muda as opções de formatação de `Date.toLocaleTimeString()`. Não altera o relógio do sistema, não consulta serviços de hora externos e não cria um segundo timer de relógio.
 
 As preferências `autoHide`, `showDesktop` e `showSeconds` continuam sujeitas ao schema booleano do `Win11SettingsStore`, persistência por perfil e eventos serializáveis do `Win11SystemBus`. Nenhuma destas opções concede permissões adicionais ao browser ou ao host.
+
+## Explorer Settings Integration V9.8.4
+
+A V9.8.4 não aumenta o acesso do Explorer ao sistema operativo anfitrião. As novas preferências atuam apenas sobre o filesystem virtual, DOM e estado do perfil ativo. Pastas reais montadas através de File System Access continuam sujeitas às regras e permissões já existentes e não são convertidas em conteúdo virtual pelo Settings Store.
+
+`showHidden`, `showExtensions`, `compactView`, `openTo` e `confirmDelete` são valores validados pelo schema do `Win11SettingsStore`. O módulo de Filesystem V9.1 mantém a API pública antiga por compatibilidade, mas as alterações de visibilidade/extensões são encaminhadas para o Store quando este está disponível.
+
+Compact View altera apenas classes CSS e espaçamento visual. Não muda conteúdo de ficheiros, permissões, metadata ou modo de vista persistido pelo Explorer Views.
+
+`openTo=home` resolve apenas para um caminho virtual já presente no Acesso rápido do perfil, com fallback `C:/Documents`. Caminhos explícitos fornecidos por aplicações ou ações do utilizador têm prioridade e não são substituídos pela preferência.
+
+Quando `confirmDelete=true`, o diálogo é mostrado antes de qualquer alteração ao filesystem virtual. A eliminação permanente por `Shift+Delete` mantém confirmação própria mesmo que a confirmação normal esteja desativada. Esta escolha é deliberada para não reduzir a proteção de uma ação irreversível.
+
+A V9.8.4 também endurece o Mount audit: o teste de cartão de pasta real cria uma nova janela explícita `This PC`, evitando depender da preferência `openTo` do perfil ou do estado de uma janela Explorer reutilizada.

@@ -4,7 +4,7 @@ function buildSettingsV5(wrap){
   wrap.className="settings-v4";
   const pages=[
     ["system","🖥️ Sistema"],["bluetooth","🔵 Bluetooth e dispositivos"],["network","🌐 Rede e Internet"],["personalization","🎨 Personalização"],
-    ["apps","▦ Aplicações"],["accounts","👤 Contas"],["time","🕒 Hora e idioma"],["gaming","🎮 Jogos"],["accessibility","♿ Acessibilidade"],
+    ["apps","▦ Aplicações"],["explorer","📁 Explorador de Ficheiros"],["accounts","👤 Contas"],["time","🕒 Hora e idioma"],["gaming","🎮 Jogos"],["accessibility","♿ Acessibilidade"],
     ["privacy","🔒 Privacidade e segurança"],["update","🔄 Windows Update"]
   ];
   wrap.innerHTML=`<nav class="settings-nav"><div class="settings-profile"><strong>Utilizador</strong><small>Conta local simulada</small></div>${pages.map(([id,n])=>`<button data-settings="${id}">${n}</button>`).join("")}</nav><main class="settings-main-v4"><select class="settings-mobile-nav">${pages.map(([id,n])=>`<option value="${id}">${n}</option>`).join("")}</select><div data-settings-page></div></main>`;

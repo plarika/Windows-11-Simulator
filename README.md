@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.3 Taskbar System Integration Pro** — auto-hide real da Barra de tarefas, botão Mostrar ambiente de trabalho reversível, relógio opcional com segundos e ligação integral das novas opções ao `Win11SettingsStore`/`Win11SystemBus` por perfil.
+**V9.8.4 Explorer Settings Integration** — hidden files, extensões, Compact View, página inicial e confirmação de eliminação passam a consumir integralmente o `Win11SettingsStore`/`Win11SystemBus`, com integração em tempo real no Explorer e Reciclagem.
 
 ## Funcionalidades
 
@@ -716,3 +716,23 @@ Primeiro passo de integração com funções reais do dispositivo:
 - as três novas opções são persistidas por perfil pelo mesmo `Win11SettingsStore`
 - alterações são aplicadas em tempo real através de `settings:taskbar:changed`
 - as opções V9.8.2 de alinhamento, agrupamento, badges, progresso e previews continuam integradas
+
+## V9.8.4 Explorer Settings Integration
+
+- nova camada `Win11ExplorerSettings` integrada no Settings Core e System Bus
+- nova página `Explorador de Ficheiros` nas Definições
+- `Mostrar itens ocultos` passa a persistir exclusivamente pelo `Win11SettingsStore`
+- `Mostrar extensões de ficheiros` passa a usar o mesmo pipeline validado
+- o menu `Ficheiros` do Explorer V9.1 mantém compatibilidade, mas as mutações são encaminhadas para o Store
+- alterações de hidden/extensions propagam-se ao Explorer, pesquisa local e restantes consumidores já existentes
+- `Vista compacta` reduz espaçamento da command bar, address bar, linhas e ícones sem substituir o modo de vista escolhido pelo utilizador
+- Compact View é aplicado em tempo real a janelas Explorer e Reciclagem já abertas
+- `Abrir Explorador em: Home / Este PC` controla novas janelas Explorer
+- `Home` resolve para o primeiro destino válido do Acesso rápido; fallback seguro para `C:/Documents`
+- caminhos explícitos continuam a ter prioridade sobre a preferência `openTo`
+- `Confirmar eliminação` controla a confirmação antes de mover itens para a Reciclagem e antes de eliminar itens já dentro dela
+- `Shift+Delete` continua sempre com confirmação permanente própria, independentemente da preferência, para preservar a proteção contra eliminação irreversível
+- a confirmação acontece antes de qualquer mutação do filesystem virtual
+- desativar a confirmação permite a operação normal direta, mantendo Undo/History/Recycle existentes
+- a Reciclagem e o Explorer partilham agora o refresh de preferências V9.8.4
+- todas as preferências continuam isoladas por perfil e sujeitas ao schema V1 do Settings Core
