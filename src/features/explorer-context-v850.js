@@ -138,7 +138,10 @@
     const size=item.type==="folder"?stats.size:valueSize(value);
     const ext=extensionOf(item.name);
     const imported=!!value?.__realBlobId;
-    const modified=Number(value?.lastModified)||0;
+    const fsMeta=globalThis.Win11ExplorerFilesystem?.getMetadata?.(item.path,item.name,item.type)||null;
+    const shortcut=globalThis.Win11ExplorerFilesystem?.shortcutTarget?.(value)||null;
+    const modified=Number(fsMeta?.modified)||Number(value?.lastModified)||0;
+    const created=Number(fsMeta?.created)||Number(value?.createdAt)||0;
     let general='<dl class="explorer-properties-panel-v850 active" data-prop-panel="general">'+
       '<dt>Tipo</dt><dd>'+escapeHTML(fileKind(item.name,item.type))+'</dd>'+
       '<dt>Localização</dt><dd>'+escapeHTML(item.path)+'</dd>'+
@@ -149,8 +152,10 @@
     let details='<dl class="explorer-properties-panel-v850" data-prop-panel="details">'+
       '<dt>Caminho completo</dt><dd>'+escapeHTML(full)+'</dd>';
     if(ext)details+='<dt>Extensão</dt><dd>.'+escapeHTML(ext.toLowerCase())+'</dd>';
+    if(created)details+='<dt>Criado</dt><dd>'+escapeHTML(new Date(created).toLocaleString("pt-PT"))+'</dd>';
     if(modified)details+='<dt>Modificado</dt><dd>'+escapeHTML(new Date(modified).toLocaleString("pt-PT"))+'</dd>';
-    details+='<dt>Atributos</dt><dd>Disponível · '+(item.type==="folder"?"Pasta":"Ficheiro")+'</dd>'+
+    if(shortcut)details+='<dt>Destino do atalho</dt><dd>'+escapeHTML(shortcut.path+"/"+shortcut.name)+'</dd>';
+    details+='<dt>Atributos</dt><dd>Disponível · '+(item.type==="folder"?"Pasta":"Ficheiro")+(fsMeta?.hidden?" · Oculto":"")+'</dd>'+
       '<dt>Perfil</dt><dd>Estado local isolado</dd></dl>';
 
     const html='<div class="explorer-properties-v850">'+
@@ -263,7 +268,7 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerContext=Object.freeze({
-    version:"8.5.0",installContext,showModernMenu,showClassicMore
+    version:"9.1.0",installContext,showModernMenu,showClassicMore
   });
 
   globalThis.Win11RealFunctions=Object.freeze({

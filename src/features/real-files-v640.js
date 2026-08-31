@@ -200,6 +200,7 @@
 
     wrap.querySelector("[data-save-virtual]").onclick=()=>{
       ensureFolder(virtualCurrent.path)[virtualCurrent.name]=ta.value;
+      globalThis.Win11ExplorerFilesystem?.touch?.(virtualCurrent.path,virtualCurrent.name);
       touchRecent(virtualCurrent.path+"/"+virtualCurrent.name);
       syncState();
       setDirty(false);
@@ -212,6 +213,7 @@
       defaultName:virtualCurrent.name==="Sem título.txt"?"Documento.txt":virtualCurrent.name,
       onSelect:f=>{
         ensureFolder(f.path)[f.name]=ta.value;
+        globalThis.Win11ExplorerFilesystem?.touch?.(f.path,f.name);
         virtualCurrent={path:f.path,name:f.name};
         realCurrent=null;
         touchRecent(f.path+"/"+f.name);

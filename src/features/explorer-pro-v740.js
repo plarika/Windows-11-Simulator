@@ -96,6 +96,7 @@
     if(!own(src,name))return {ok:false,reason:"missing"};
     const target=uniqueFileName(dstPath,name);
     ensureFolder(dstPath)[target]=move?src[name]:await cloneVirtualValue(src[name]);
+    globalThis.Win11ExplorerFilesystem?.onTransfer?.({srcPath,srcName:name,dstPath,dstName:target,type:"file",move});
     if(move)delete src[name];
     return {ok:true,name:target};
   }
@@ -125,6 +126,10 @@
         state.files[targetRoot+rel]=out;
       }
     }
+    globalThis.Win11ExplorerFilesystem?.onTransfer?.({
+      srcPath:srcFolder.slice(0,srcFolder.lastIndexOf("/")),
+      srcName:base,dstPath:dstParent,dstName:targetName,type:"folder",move
+    });
     return {ok:true,name:targetName};
   }
 
@@ -187,6 +192,7 @@
       if(!own(files,name))return false;
       const value=files[name];
       delete files[name];
+      globalThis.Win11ExplorerFilesystem?.onDelete?.({path,name,type:"file"});
       await cleanupValueIfUnreferenced(value);
       return true;
     }
@@ -194,6 +200,7 @@
       const root=path+"/"+name;
       const tree=folderSnapshot(root);
       [...tree].sort((a,b)=>b.rel.length-a.rel.length).forEach(entry=>delete state.files[root+entry.rel]);
+      globalThis.Win11ExplorerFilesystem?.onDelete?.({path,name,type:"folder"});
       for(const entry of tree)for(const value of Object.values(entry.files||{}))await cleanupValueIfUnreferenced(value);
       return true;
     }
@@ -455,8 +462,9 @@
 
     function decorateNode(node,p){
       if(node.classList.contains("header"))return;
-      const name=nodeName(node);
+      const name=node.dataset.v910Name||nodeName(node);
       if(!name)return;
+      node.dataset.v910Name=name;
       const type=itemType(p,name);
       node.dataset.v740Name=name;
       node.dataset.v740Type=type;
@@ -568,6 +576,7 @@
         updateCommandState();decorating=false;return;
       }
       for(const node of getNodes())decorateNode(node,p);
+      globalThis.Win11ExplorerFilesystem?.refreshAll?.();
       for(const name of [...selectedNames]){
         if(!getNodes().some(n=>(n.dataset.v740Name||nodeName(n))===name))selectedNames.delete(name);
       }
@@ -705,6 +714,7 @@
         for(const p of paths)state.files[newRoot+p.slice(oldRoot.length)]=state.files[p];
         [...paths].sort((a,b)=>b.length-a.length).forEach(p=>delete state.files[p]);
       }
+      globalThis.Win11ExplorerFilesystem?.onRename?.({path:item.path,oldName:item.name,newName:next,type:item.type});
       selectedNames.clear();selectedNames.add(next);anchorName=next;
       saveState();forceRender();
     }
@@ -884,7 +894,7 @@
   try{buildExplorerV5=globalThis.buildExplorerV5}catch{}
 
   globalThis.Win11ExplorerPro=Object.freeze({
-    version:"9.0.0",
+    version:"9.1.0",
     currentVirtualPath,
     itemType,
     copyFileAdvanced,
@@ -897,7 +907,7 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:"9.0.0",
+    version:"9.1.0",
     step:13,
     features:[
       ...(globalThis.Win11RealFunctions?.features||[]),

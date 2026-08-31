@@ -1,0 +1,42 @@
+/* Windows 11 Simulator V9.1 — Explorer Filesystem Pro */
+.explorer-filesystem-v910 .filesystem-hidden-v910{display:none!important}
+.explorer-filesystem-v910 .filesystem-hidden-visible-v910{
+  opacity:.58;
+}
+.explorer-filesystem-v910 .filesystem-shortcut-v910{
+  position:relative;
+}
+.filesystem-shortcut-badge-v910{
+  position:absolute;
+  left:7px;
+  bottom:6px;
+  min-width:15px;
+  height:15px;
+  padding:0 3px;
+  border-radius:4px;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  color:#0f6cbd;
+  border:1px solid rgba(0,0,0,.12);
+  font-size:10px;
+  line-height:1;
+  box-shadow:0 1px 3px rgba(0,0,0,.12);
+  pointer-events:none;
+}
+.file-row .filesystem-shortcut-badge-v910{
+  left:25px;
+  bottom:50%;
+  transform:translateY(50%);
+}
+#app.theme-dark .filesystem-shortcut-badge-v910{
+  background:#2b2e34;
+  color:#6cb6f1;
+  border-color:rgba(255,255,255,.14);
+}
+.explorer-filesystem-v910 [data-filesystem-v910]{
+  white-space:nowrap;
+}
+@media(max-width:720px){
+  .explorer-filesystem-v910 [data-filesystem-v910] .cmd-label{display:none}
+}

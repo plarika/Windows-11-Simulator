@@ -157,6 +157,14 @@
     const value=fileValue(r.path,r.name);
     try{
       touchRecent(r.path+"/"+r.name);
+      const shortcut=globalThis.Win11ExplorerFilesystem?.shortcutTarget?.(value);
+      if(shortcut){
+        if(shortcut.type==="folder")return openAppV810("explorer",shortcut.path+"/"+shortcut.name);
+        const target=(state.files?.[shortcut.path]||{})[shortcut.name];
+        if(target!==undefined&&typeof globalThis.openFile==="function")return openFile(shortcut.path,shortcut.name,target);
+        notify("Pesquisa","O destino deste atalho já não existe.");
+        return;
+      }
       if(typeof globalThis.openFile==="function")return openFile(r.path,r.name,value);
     }catch{}
     openAppV810("explorer",r.path);
@@ -199,9 +207,14 @@
     SETTINGS_INDEX.forEach(item=>{
       const s=score(q,item.name+" "+item.terms);if(s)out.push({type:"setting",name:item.name,page:item.page,detail:"Definição",score:s+6});
     });
+    const showHidden=!!globalThis.Win11ExplorerFilesystem?.getState?.().showHidden;
     Object.entries(state.files||{}).forEach(([path,files])=>Object.entries(files||{}).forEach(([name,value])=>{
+      const meta=globalThis.Win11ExplorerFilesystem?.getMetadata?.(path,name,"file");
+      if(meta?.hidden&&!showHidden)return;
       const content=typeof value==="string"&&!value.startsWith("data:")?value.slice(0,4000):"";
-      const s=Math.max(score(q,name)+8,score(q,content),score(q,path));
+      const shortcut=globalThis.Win11ExplorerFilesystem?.shortcutTarget?.(value);
+      const shortcutText=shortcut?(shortcut.path+" "+shortcut.name):"";
+      const s=Math.max(score(q,name)+8,score(q,content),score(q,path),score(q,shortcutText));
       if(s)out.push({type:"file",path,name,detail:path,score:s});
     }));
     const rank={app:0,setting:1,file:2};

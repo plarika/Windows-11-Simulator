@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.0.0 Explorer File Operations** — copiar/mover passam a ter progresso, pausa/cancelamento e resolução de conflitos, juntamente com uma melhoria de legibilidade no Acesso rápido.
+**V9.1.0 Explorer Filesystem Pro** — metadata persistente, itens ocultos, extensões configuráveis e atalhos `.lnk` virtuais integrados no Explorer, Pesquisa e Propriedades.
 
 ## Funcionalidades
 
@@ -526,3 +526,20 @@ Primeiro passo de integração com funções reais do dispositivo:
 - clipboard de `cut` preserva os itens ainda não movidos quando uma operação é cancelada/ignorada
 - `real-mount-mode` continua fora do motor virtual V9.0
 - Acesso rápido/sidebar recebeu um readability pass: texto de 12 px, maior altura/padding, contraste reforçado e estado ativo mais visível
+
+## V9.1.0 Explorer Filesystem Pro
+
+- metadata persistente por perfil com `created`, `modified` e atributo `hidden`
+- metadata guardada num mapa paralelo, sem alterar o formato dos conteúdos em `state.files`
+- Mostrar/Ocultar itens ocultos
+- Mostrar/Ocultar extensões sem alterar o nome canónico interno dos ficheiros
+- ficheiros `.lnk` virtuais com resolução controlada para ficheiros e pastas virtuais
+- badge visual para atalhos e mensagem segura quando o destino já não existe
+- metadata acompanha copiar, mover, mudar nome e eliminação
+- cópias recebem metadata coerente e movimentos preservam a metadata original
+- gravações virtuais do Bloco de Notas atualizam `modified`
+- Propriedades mostra Criado, Modificado, Oculto e o destino dos atalhos
+- Pesquisa omite itens ocultos por defeito e resolve resultados de atalhos
+- ordenação/agrupamento por data usa a metadata V9.1
+- `real-mount-mode` continua excluído do motor de metadata/atalhos virtuais
+- identidade canónica do ficheiro separada do texto apresentado para impedir regressões ao ocultar extensões

@@ -61,11 +61,12 @@
       || "";
     const type=node.dataset.v740Type||"file";
     let size=0,modified=0;
+    const fsMeta=globalThis.Win11ExplorerFilesystem?.getMetadata?.(path,name,type)||null;
     if(type==="folder"){
-      const m=folderMeta(path+"/"+name);size=m.size;modified=m.modified;
+      const m=folderMeta(path+"/"+name);size=m.size;modified=Number(fsMeta?.modified)||m.modified;
     }else if(type==="file"){
       const value=ensureFolder(path)[name];
-      size=valueSize(value);modified=Number(value?.lastModified)||0;
+      size=valueSize(value);modified=Number(fsMeta?.modified)||Number(value?.lastModified)||0;
     }
     return {node,name,type,size,modified};
   }

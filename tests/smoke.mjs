@@ -109,7 +109,7 @@ check(realFiles.includes("URL.createObjectURL"), "Real file download fallback pr
 check(realFiles.includes("createWritable"), "Real file writable handle support present");
 check(realFiles.includes("Abrir do dispositivo"), "Notepad real open control present");
 check(realFiles.includes("Guardar no dispositivo"), "Notepad real save control present");
-check(index.includes("./src/features/real-files-v640.js?v=8.1.0"), "Real file bridge loaded");
+check(index.includes("./src/features/real-files-v640.js?v=9.1.0"), "Real file bridge loaded");
 check(index.includes("./styles/real-files-v640.css?v=8.1.0"), "Real file bridge styles loaded");
 
 
@@ -338,7 +338,7 @@ check(edgeAdvanced.includes("recordDownload"), "Edge download history present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.js?v=8.1.2"), "Edge Advanced module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.css?v=8.1.0"), "Edge Advanced CSS precached");
 const explorerPro=readFileSync(resolve(root, "src/features/explorer-pro-v740.js"), "utf8");
-check(index.includes("./src/features/explorer-pro-v740.js?v=9.0.0"), "Explorer Pro module loaded");
+check(index.includes("./src/features/explorer-pro-v740.js?v=9.1.0"), "Explorer Pro module loaded");
 check(index.includes("./styles/explorer-pro-v740.css?v=8.1.0"), "Explorer Pro styles loaded");
 check(explorerPro.includes("explorer-multiselect"), "Explorer multi-select capability registered");
 check(explorerPro.includes("__explorerProV740") && explorerPro.includes("refresh:()=>setTimeout(decorate,0)"), "Explorer Pro exposes safe refresh integration");
@@ -360,7 +360,7 @@ check(explorerPro.includes("showSelectedProperties"), "Explorer advanced propert
 check(explorerPro.includes("type:") && explorerPro.includes("ext:") && explorerPro.includes("size:"), "Explorer advanced search filters present");
 check(explorerPro.includes("explorer-pro-thumb"), "Explorer image thumbnails present");
 check(explorerPro.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Pro guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=9.0.0"), "Explorer Pro module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.js?v=9.1.0"), "Explorer Pro module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-pro-v740.css?v=8.1.0"), "Explorer Pro CSS precached");
 const explorerNavigation=readFileSync(resolve(root, "src/features/explorer-navigation-v820.js"), "utf8");
 check(index.includes("./src/features/explorer-navigation-v820.js?v=8.3.0"), "Explorer Navigation V8.3 module loaded");
@@ -399,15 +399,15 @@ check(explorerDetails.includes('wrap.classList.contains("real-mount-mode")'), "E
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.js?v=8.4.0"), "Explorer Details V8.4 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-details-v840.css?v=8.4.0"), "Explorer Details V8.4 CSS precached");
 const explorerContext=readFileSync(resolve(root, "src/features/explorer-context-v850.js"), "utf8");
-check(index.includes("./src/features/explorer-context-v850.js?v=8.5.0"), "Explorer Context V8.5 module loaded");
+check(index.includes("./src/features/explorer-context-v850.js?v=9.1.0"), "Explorer Context V9.1 module loaded");
 check(index.includes("./styles/explorer-context-v850.css?v=8.5.0"), "Explorer Context V8.5 styles loaded");
-check(explorerContext.includes('version:"8.5.0"'), "Explorer Context V8.5 bridge present");
+check(explorerContext.includes('version:"9.1.0"'), "Explorer Context V9.1 bridge present");
 check(explorerContext.includes("explorer-context-quick-v850") && explorerContext.includes("Mostrar mais opções"), "Explorer modern context menu present");
 check(explorerContext.includes("Partilhar") && explorerContext.includes("Mudar nome"), "Explorer quick context actions present");
 check(explorerContext.includes("showClassicMore") && explorerContext.includes("Copiar caminho"), "Explorer More Options and copy path present");
 check(explorerContext.includes("data-prop-tab") && explorerContext.includes("data-prop-panel"), "Explorer rich properties tabs present");
 check(explorerContext.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Context guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.js?v=8.5.0"), "Explorer Context V8.5 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.js?v=9.1.0"), "Explorer Context V9.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-context-v850.css?v=8.5.0"), "Explorer Context V8.5 CSS precached");
 const explorerViews=readFileSync(resolve(root, "src/features/explorer-views-v860.js"), "utf8");
 check(index.includes("./src/features/explorer-views-v860.js?v=8.6.0"), "Explorer Views V8.6 module loaded");
@@ -440,7 +440,7 @@ check(explorerCommand.includes('wrap.classList.contains("real-mount-mode")'), "E
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-command-v880.js?v=8.8.0"), "Explorer Command V8.8 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-command-v880.css?v=8.8.0"), "Explorer Command V8.8 CSS precached");
 const explorerColumns=readFileSync(resolve(root, "src/features/explorer-columns-v890.js"), "utf8");
-check(index.includes("./src/features/explorer-columns-v890.js?v=8.9.0"), "Explorer Columns V8.9 module loaded");
+check(index.includes("./src/features/explorer-columns-v890.js?v=9.1.0"), "Explorer Columns V8.9 module loaded");
 check(index.includes("./styles/explorer-columns-v890.css?v=8.9.0"), "Explorer Columns V8.9 styles loaded");
 check(explorerColumns.includes('version:"8.9.0"'), "Explorer Columns V8.9 bridge present");
 check(explorerColumns.includes('["name","type","size","date"]'), "Explorer sort fields present");
@@ -448,7 +448,7 @@ check(explorerColumns.includes('["none","type","size","date"]'), "Explorer Pro g
 check(explorerColumns.includes("explorerColumnsV89") && explorerColumns.includes("widths"), "Explorer column state persists per profile");
 check(explorerColumns.includes("explorer-column-resize-v890") && explorerColumns.includes("setColumnWidth"), "Explorer resizable columns present");
 check(explorerColumns.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Columns guards real mount mode");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.js?v=8.9.0"), "Explorer Columns V8.9 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.js?v=9.1.0"), "Explorer Columns V8.9 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-columns-v890.css?v=8.9.0"), "Explorer Columns V8.9 CSS precached");
 const explorerOperations=readFileSync(resolve(root, "src/features/explorer-operations-v900.js"), "utf8");
 check(index.includes("./src/features/explorer-operations-v900.js?v=9.0.0"), "Explorer Operations V9.0 module loaded");
@@ -464,6 +464,23 @@ check(explorerPro.includes('(move&&srcPath===dstPath)'), "Explorer same-folder c
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.js?v=9.0.0"), "Explorer Operations V9.0 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-operations-v900.css?v=9.0.0"), "Explorer Operations V9.0 CSS precached");
 check(readFileSync(resolve(root, "styles/explorer-sidebar-v870.css"), "utf8").includes("V9.0 readability pass"), "Explorer Quick Access readability pass present");
+const explorerFilesystem=readFileSync(resolve(root, "src/features/explorer-filesystem-v910.js"), "utf8");
+check(index.includes("./src/features/explorer-filesystem-v910.js?v=9.1.0"), "Explorer Filesystem V9.1 module loaded");
+check(index.includes("./styles/explorer-filesystem-v910.css?v=9.1.0"), "Explorer Filesystem V9.1 styles loaded");
+check(explorerFilesystem.includes('version:"9.1.0"'), "Explorer Filesystem V9.1 bridge present");
+check(explorerFilesystem.includes("explorerFilesystemV91") && explorerFilesystem.includes("metadata:{}"), "Explorer Filesystem metadata state present");
+check(explorerFilesystem.includes("showHidden:false") && explorerFilesystem.includes("showExtensions:true"), "Explorer hidden and extension preferences present");
+check(explorerFilesystem.includes("__virtualShortcutV91") && explorerFilesystem.includes("createShortcut"), "Explorer virtual shortcuts present");
+check(explorerFilesystem.includes("onTransfer") && explorerFilesystem.includes("onRename") && explorerFilesystem.includes("onDelete"), "Explorer metadata lifecycle hooks present");
+check(explorerFilesystem.includes('wrap.classList.contains("real-mount-mode")'), "Explorer Filesystem guards real mount mode");
+check(explorerPro.includes("Win11ExplorerFilesystem?.onTransfer") && explorerPro.includes("Win11ExplorerFilesystem?.onRename") && explorerPro.includes("Win11ExplorerFilesystem?.onDelete"), "Explorer Pro metadata hooks integrated");
+check(explorerContext.includes("Win11ExplorerFilesystem?.getMetadata") && explorerContext.includes("Destino do atalho"), "Explorer Properties V9.1 metadata integration present");
+const startSearchV81=readFileSync(resolve(root, "src/features/start-search-taskbar-v810.js"), "utf8");
+check(startSearchV81.includes("Win11ExplorerFilesystem?.shortcutTarget") && startSearchV81.includes("meta?.hidden"), "Search V9.1 hidden and shortcut integration present");
+const realFilesV64=readFileSync(resolve(root, "src/features/real-files-v640.js"), "utf8");
+check(realFilesV64.includes("Win11ExplorerFilesystem?.touch"), "Notepad virtual save updates V9.1 metadata");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-filesystem-v910.js?v=9.1.0"), "Explorer Filesystem V9.1 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("explorer-filesystem-v910.css?v=9.1.0"), "Explorer Filesystem V9.1 CSS precached");
 const windowManager=readFileSync(resolve(root, "src/features/window-manager-v750.js"), "utf8");
 check(index.includes("./src/features/window-manager-v750.js?v=8.1.0"), "Window Manager V7.5 module loaded");
 check(index.includes("./styles/window-manager-v750.css?v=8.1.0"), "Window Manager V7.5 styles loaded");
@@ -610,7 +627,7 @@ check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows-experience-v800.css?v=8.1.0"), "Windows Experience V8.0 CSS precached");
 check(readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("globalThis.Win11SystemTray?.refresh") && readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("notify&&!globalThis.Win11SystemTray"), "Legacy V6.2 tray delegates to modern System Tray");
 const startSearch=readFileSync(resolve(root, "src/features/start-search-taskbar-v810.js"), "utf8");
-check(index.includes("./src/features/start-search-taskbar-v810.js?v=8.1.0"), "Start Search Taskbar V8.1 module loaded");
+check(index.includes("./src/features/start-search-taskbar-v810.js?v=9.1.0"), "Start Search Taskbar V8.1 module loaded");
 check(index.includes("./styles/start-search-taskbar-v810.css?v=8.1.0"), "Start Search Taskbar V8.1 styles loaded");
 check(startSearch.includes("Win11StartSearch"), "Start Search V8.1 bridge present");
 check(startSearch.includes("state.startSearchV81") && startSearch.includes("pinned") && startSearch.includes("recentApps") && startSearch.includes("searchHistory"), "Per-profile Start and Search state present");
@@ -628,7 +645,7 @@ check(!startSearch.includes("showDirectoryPicker") && !startSearch.includes("Rea
 check(!startSearch.includes("fetch(") && !startSearch.includes("XMLHttpRequest"), "Search does not send queries to external services");
 check(!startSearch.includes("child_process") && !startSearch.includes("new Function") && !startSearch.includes("eval("), "Start Search cannot execute arbitrary host code");
 check(startSearch.includes("start-menu-v3") && startSearch.includes("search-v3") && startSearch.includes("taskbar-jump-lists"), "V8.1 capabilities registered");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("start-search-taskbar-v810.js?v=8.1.0"), "Start Search V8.1 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("start-search-taskbar-v810.js?v=9.1.0"), "Start Search V8.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("start-search-taskbar-v810.css?v=8.1.0"), "Start Search V8.1 CSS precached");
 
 if (failed) process.exit(1);

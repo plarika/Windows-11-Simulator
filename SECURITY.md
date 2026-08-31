@@ -139,3 +139,7 @@ A V8.9 persiste apenas preferências de apresentação (campo/direção de orden
 ## Explorer File Operations V9.0.0
 
 O motor V9.0 não cria um segundo filesystem: decide apenas a política da operação e delega a cópia/movimento efetivo para as funções já auditadas do Explorer Pro, incluindo o tratamento seguro de blobs reais importados. Operações virtuais são recusadas em `real-mount-mode`. Apenas uma operação é permitida por janela de cada vez, reduzindo condições de corrida. Cancelamento e pausa ocorrem entre itens e nunca interrompem uma mutação a meio. A resolução de conflitos substitui apenas o item virtual de destino explicitamente escolhido.
+
+## Explorer Filesystem Pro V9.1.0
+
+A V9.1 mantém a metadata num mapa separado do conteúdo do VFS para não alterar nem reinterpretar valores existentes, incluindo referências a blobs reais. A camada V9.1 é suspensa em `real-mount-mode` e nunca guarda handles de File System Access. Atalhos `.lnk` virtuais contêm apenas caminhos e tipos do filesystem virtual e são resolvidos com validação de existência antes da abertura. A preferência de ocultar extensões altera apenas o texto apresentado; o nome canónico interno permanece intacto.
