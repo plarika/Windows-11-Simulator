@@ -311,3 +311,19 @@ Os eventos `win11-session-saving` e `win11-session-start` são deliberadamente n
 Como hardening adicional, `openApp()` e o lookup principal da Taskbar foram restringidos a `#window-layer > .window`. As previews da Taskbar usam clones visuais que podem conter a classe `.window`; esses clones já não podem ser selecionados como se fossem uma janela de aplicação real.
 
 O Browser audit da V9.9.2 cria apenas sessões de teste controladas, valida que conteúdo e caminhos personalizados não entram no snapshot, fecha apenas as janelas criadas pelo teste e restaura a configuração de sessão anterior antes de continuar.
+
+## Window Restore Fidelity V9.9.3
+
+A V9.9.3 acrescenta geometria ao snapshot de sessão, mas mantém o princípio de minimização de dados da V9.9.2. Os novos campos limitam-se a coordenadas/dimensões numéricas do retângulo da janela, dimensões do viewport de origem e, quando aplicável, nome interno do layout Snap e índice do slot.
+
+Todos os valores de geometria são convertidos para números finitos, arredondados e limitados. O viewport persistido fica limitado a 320–10000 px de largura e 240–10000 px de altura. O retângulo é normalizado para permanecer dentro desse viewport, com dimensão mínima de 300×220 px e sem ocupar a área reservada à Taskbar.
+
+No restore, a geometria é recalculada para o viewport atual e novamente limitada. Valores absurdos, negativos, infinitos ou fora do ecrã não são aplicados diretamente. O snapshot não pode posicionar uma janela fora da área visível.
+
+O estado Snap é aceite apenas quando `layout` existe em `Win11WindowManager.layouts` e `slot` aponta para um slot válido desse layout. A aplicação do Snap usa a API existente `Win11WindowManager.applyLayoutSlot()`; não existe execução de CSS ou código obtido do snapshot.
+
+Para janelas maximizadas ou snapped, o snapshot utiliza apenas o retângulo flutuante interno já mantido pelo simulador. Não é lido qualquer conteúdo da aplicação.
+
+A proteção anti-restauro duplicado utiliza apenas um fingerprint em memória produzido a partir dos metadados já sanitizados do snapshot. O fingerprint não é persistido nem enviado externamente. Se o mesmo snapshot for solicitado novamente dentro de 2200 ms, o segundo restore é ignorado e é emitido apenas um evento técnico `session-restore:skipped`.
+
+Os metadados V9.9.3 continuam sem incluir texto, URLs, nomes de ficheiros, paths personalizados do Explorer, credenciais, IDs de utilizador, clipboard, handles do File System Access API ou dados do host.

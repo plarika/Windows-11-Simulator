@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.2 Session Restore & App Reopen** — snapshot seguro e bounded das aplicações abertas, restauração por perfil após login/refresh/reinício virtual e boundary reforçado para janelas reais.
+**V9.9.3 Window Restore Fidelity** — restauração de posição/tamanho, maximização, Snap, ordem e foco com geometria adaptada ao viewport e proteção contra restores duplicados.
 
 ## Funcionalidades
 
@@ -895,3 +895,28 @@ Primeiro passo de integração com funções reais do dispositivo:
 - esta correção impede que clones usados nas previews da Taskbar sejam confundidos com janelas realmente abertas
 - Browser audit valida captura, sanitização, allowlist Explorer, limite por app, restauração, snapshot expirado, hooks de sessão, UI em Contas e boundary das janelas reais
 - service worker/cache atualizado para `win11-simulator-v9.9.2`
+
+## V9.9.3 Window Restore Fidelity
+
+- `Win11SessionRestore` evolui para versão 9.9.3
+- snapshot interno atualizado para schema 2, mantendo compatibilidade com entradas V9.9.2 sem geometria
+- cada janela pode guardar um retângulo seguro com left, top, width, height e viewport de origem
+- geometria é limitada e sanitizada antes de persistir
+- ao restaurar noutro viewport, posição e tamanho são proporcionalmente adaptados e novamente limitados à área útil
+- largura mínima de 300 px e altura mínima de 220 px
+- nenhuma janela restaurada pode ficar fora do viewport ou por baixo da área reservada à Taskbar
+- janelas maximizadas guardam o retângulo flutuante anterior, permitindo regressar ao tamanho/posição corretos depois de sair de Maximizar
+- janelas em Snap guardam layout e slot, além do retângulo flutuante de fallback
+- Snap é reaplicado através de `Win11WindowManager.applyLayoutSlot()`; a V9.9.3 não duplica a lógica do Window Manager
+- layouts/slots inválidos são descartados durante a sanitização
+- no desktop ativo, a ordem visual é reconstruída através de `focusWindow()`
+- a janela previamente focada é ativada por último
+- proteção anti-restauro duplicado de 2200 ms impede que hooks de login/boot idênticos restaurem a mesma sessão duas vezes
+- um restore duplicado publica `session-restore:skipped` com `reason: "duplicate"`
+- a captura pós-restauro atualiza o fingerprint durante a janela de deduplicação
+- `snapshotInfo()` passa a expor schemaVersion, geometryCount e snapCount
+- Definições > Contas mostra agora quantas sessões têm geometria e quantas estão em Snap
+- `Win11RealFunctions.step` atualizado para 41
+- novas capabilities: `session-snapshot-schema-2`, `window-geometry-session-restore`, `viewport-aware-restore`, `snap-session-restore`, `focus-order-restore` e `duplicate-restore-guard`
+- Browser audit valida captura flutuante, fallback de Snap, clamp ao viewport atual, restauração Snap, maximização/retângulo de retorno e deduplicação
+- service worker/cache atualizado para `win11-simulator-v9.9.3`
