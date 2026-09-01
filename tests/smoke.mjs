@@ -599,6 +599,8 @@ const systemHealthCssV987=readFileSync(resolve(root, "styles/system-health-v987.
 const shellIntentsV990=readFileSync(resolve(root, "src/features/shell-intents-v990.js"), "utf8");
 const shellIntegrationV990=readFileSync(resolve(root, "src/apps/shell-integration.js"), "utf8");
 const powerShellV990=readFileSync(resolve(root, "src/apps/powershell.js"), "utf8");
+const appSessionsV991=readFileSync(resolve(root, "src/features/app-sessions-v991.js"), "utf8");
+const appSessionsCssV991=readFileSync(resolve(root, "styles/app-sessions-v991.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module loaded through V9.8.7 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -680,7 +682,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.0'), "PWA cache bumped to V9.9.0");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.1'), "PWA cache bumped to V9.9.1");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -715,6 +717,21 @@ check(powerShellV990.includes("Win11Shell?.canOpen") && powerShellV990.includes(
 check(index.includes("./src/apps/powershell.js?v=9.9.0") && index.includes("./src/apps/shell-integration.js?v=9.9.0"), "V9.9.0 shell consumers cache-busted");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("shell-intents-v990.js?v=9.9.0"), "Shell Intents V9.9.0 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("powershell.js?v=9.9.0") && readFileSync(resolve(root, "service-worker.js"), "utf8").includes("shell-integration.js?v=9.9.0"), "V9.9.0 shell consumers precached");
+check(index.includes("./src/features/app-sessions-v991.js?v=9.9.1"), "App Sessions V9.9.1 module loaded");
+check(index.includes("./styles/app-sessions-v991.css?v=9.9.1"), "App Sessions V9.9.1 styles loaded");
+check(appSessionsV991.includes('VERSION="9.9.1"') && appSessionsV991.includes("Win11AppSessions"), "App Sessions V9.9.1 bridge present");
+check(appSessionsV991.includes("SINGLE=new Set") && appSessionsV991.includes('"settings"') && appSessionsV991.includes('"taskmanager"') && appSessionsV991.includes('"security"'), "Single-instance policy set present");
+check(appSessionsV991.includes('mode==="single"') && appSessionsV991.includes("allowMultiple"), "Single/multi instance policy resolver present");
+check(appSessionsV991.includes("function activate(") && appSessionsV991.includes("function openNew(") && appSessionsV991.includes("function activateWindow("), "App session activation APIs present");
+check(appSessionsV991.includes("function closeApp(") && appSessionsV991.includes("function snapshot(") && appSessionsV991.includes("function diagnostics("), "App session close, snapshot and diagnostics APIs present");
+check(appSessionsV991.includes("HISTORY_LIMIT=80") && appSessionsV991.includes("bounded-session-history"), "App session history bounded");
+check(appSessionsV991.includes("openAppNewWindowV991") && appSessionsV991.includes("globalThis.openAppNewWindow=openAppNewWindowV991"), "openAppNewWindow is policy-aware");
+check(appSessionsV991.includes('page==="apps"') && appSessionsV991.includes("data-app-sessions-v991"), "App Sessions Settings integration present");
+check(appSessionsV991.includes('bus.emit("app-session:"') && appSessionsV991.includes('"app:launched"') && appSessionsV991.includes('"app:closed"'), "App Sessions System Bus integration present");
+check(appSessionsCssV991.includes(".app-session-row-v991") && appSessionsCssV991.includes("#app.theme-dark .app-session-row-v991"), "App Sessions responsive light/dark styles present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.js?v=9.9.1"), "App Sessions V9.9.1 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.css?v=9.9.1"), "App Sessions V9.9.1 CSS precached");
+
 
 
 

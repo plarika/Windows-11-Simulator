@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.0 App Lifecycle & System Shell** — router central de intents/deep links, integração Run/Terminal/PowerShell, abertura por apps predefinidas e lifecycle realista das janelas virtuais.
+**V9.9.1 App Sessions & Activation** — políticas single/multi-instance, ativação e restauro de sessões, gestão de janelas por aplicação e integração visual em Definições.
 
 ## Funcionalidades
 
@@ -847,3 +847,24 @@ Primeiro passo de integração com funções reais do dispositivo:
 - o histórico técnico não guarda nomes de ficheiros nem conteúdo dos ficheiros virtuais
 - browser audit valida deep links, rotas shell, rejeição de traversal/schemes inseguros, associação de ficheiros, Run/Terminal/PowerShell e transições reais de lifecycle
 - service worker/cache atualizado para `win11-simulator-v9.9.0`
+
+## V9.9.1 App Sessions & Activation
+
+- nova API `Win11AppSessions`
+- políticas explícitas `single` e `multi` por aplicação
+- `openApp()` mantém a semântica anterior de reutilização
+- `openAppNewWindow()` passa a respeitar aplicações single-instance
+- Definições, Gestor de Tarefas, Segurança, ferramentas administrativas e outras apps de sistema usam política single-instance
+- Explorer, Edge, Notepad, Calculator, Terminal, PowerShell, Paint e outras apps de conteúdo continuam multi-instance
+- `activate(appId)` restaura e foca corretamente a sessão existente antes de criar uma nova
+- `openNew(appId)` cria nova janela apenas quando a política permite múltiplas instâncias
+- `activateWindow(windowId)` restaura e foca uma sessão exata
+- `closeApp(appId,{all})` permite terminar uma sessão ou todas as janelas da aplicação no desktop selecionado
+- `snapshot()` e `diagnostics()` expõem estado agregado das sessões sem conteúdo das aplicações
+- histórico técnico de sessões limitado a 80 entradas e mantido apenas em memória
+- novos eventos `app-session:launched`, `app-session:opened-new`, `app-session:reused`, `app-session:activated-window` e `app-session:closed`
+- nova secção “Sessões de aplicações V9.9.1” em Definições > Aplicações
+- a secção mostra aplicação, número de janelas, política single/multi e ações Ativar/Fechar
+- a UI de sessões coexistente com Aplicações predefinidas V9.8.5
+- Browser audit testa single-instance real em Definições, multi-instance em Calculadora, restauro de janela minimizada, ativação exata, fecho seletivo, UI e histórico bounded
+- service worker/cache atualizado para `win11-simulator-v9.9.1`

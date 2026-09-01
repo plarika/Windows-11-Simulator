@@ -281,3 +281,15 @@ Ficheiros virtuais são abertos através da cadeia já auditada `Win11DefaultApp
 Os históricos de intents e lifecycle existem exclusivamente em memória e estão limitados a 60 e 100 entradas respetivamente. Não são gravados no perfil nem enviados para serviços externos.
 
 Executar, Terminal e PowerShell virtual continuam sem acesso ao shell do sistema operativo. `start` e `Start-Process` usam `Win11Shell` apenas quando o argumento corresponde a um intent suportado; os restantes comandos mantêm o comportamento virtual anterior.
+
+## App Sessions & Activation V9.9.1
+
+A V9.9.1 gere apenas janelas DOM do simulador e não cria processos reais. As políticas single/multi-instance são aplicadas sobre identificadores internos presentes em `APPS`; IDs desconhecidos são rejeitados.
+
+`openAppNewWindow()` continua disponível, mas é envolvido por uma política explícita. Para aplicações single-instance, uma janela já existente no desktop virtual atual é restaurada e focada em vez de duplicada. Aplicações multi-instance continuam a usar o criador de janelas já auditado.
+
+`Win11AppSessions` não persiste conteúdo de sessão, URLs, nomes de ficheiros, credenciais ou handles. O snapshot contém apenas app interna, contagem de janelas, política, estado visível/focado e números de desktops virtuais.
+
+O histórico de sessões é exclusivamente em memória, limitado a 80 entradas e contém apenas ação, app interna, ID efémero de janela, desktop virtual, origem textual limitada e política. Os eventos enviados ao `Win11SystemBus` usam o mesmo conjunto de metadados técnicos.
+
+As ações Ativar e Fechar em Definições operam apenas sobre elementos `.window` dentro de `#window-layer`. Não existe capacidade de terminar processos do Windows anfitrião nem de interagir com aplicações fora do simulador.

@@ -1,0 +1,26 @@
+/* Windows 11 Simulator V9.9.1 — App Sessions & Activation */
+.app-sessions-v991{display:grid;gap:11px}
+.app-sessions-head-v991{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.app-sessions-head-v991>div{display:grid;gap:3px}
+.app-sessions-head-v991 strong{font-size:11px}
+.app-sessions-head-v991 p{margin:0;color:#69727b;font-size:8px;line-height:1.4}
+.app-sessions-head-v991>span{flex:none;padding:4px 8px;border-radius:999px;background:color-mix(in srgb,var(--accent) 9%,#fff);border:1px solid color-mix(in srgb,var(--accent) 28%,#d9dfe4);font-size:8px;font-weight:700;color:var(--accent-strong)}
+.app-sessions-list-v991{display:grid;gap:6px}
+.app-session-row-v991{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 10px;border:1px solid #e0e5e9;border-radius:9px;background:rgba(255,255,255,.68)}
+.app-session-icon-v991{display:grid;place-items:center;width:28px;height:28px;border-radius:7px;background:#eef2f5;font-size:15px}
+.app-session-row-v991>div:nth-child(2){display:grid;gap:2px;min-width:0}
+.app-session-row-v991 strong{font-size:9px}
+.app-session-row-v991 small{font-size:8px;color:#6a737c}
+.app-session-actions-v991{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.app-session-actions-v991 .sys-button{padding:5px 8px;font-size:8px}
+.app-sessions-empty-v991{margin:0;padding:10px;border:1px dashed #d8dee3;border-radius:8px;color:#68717a;font-size:8px}
+#app.theme-dark .app-sessions-head-v991 p,#app.theme-dark .app-session-row-v991 small,#app.theme-dark .app-sessions-empty-v991{color:#aab4bc}
+#app.theme-dark .app-sessions-head-v991>span{background:color-mix(in srgb,var(--accent) 14%,#282e34);border-color:color-mix(in srgb,var(--accent) 38%,#44505a);color:#eef4f7}
+#app.theme-dark .app-session-row-v991{background:rgba(38,42,48,.8);border-color:#444a52}
+#app.theme-dark .app-session-icon-v991{background:#363c44}
+#app.theme-dark .app-sessions-empty-v991{border-color:#49515a}
+@media(max-width:720px){
+  .app-sessions-head-v991{align-items:flex-start}
+  .app-session-row-v991{grid-template-columns:28px minmax(0,1fr)}
+  .app-session-actions-v991{grid-column:2;justify-content:flex-start}
+}
