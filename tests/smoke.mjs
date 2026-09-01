@@ -289,6 +289,7 @@ check(desktopIntegration.includes("value instanceof Blob"), "Desktop integration
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.js?v=8.1.0"), "Real folder mounts precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("real-folder-mounts-v710.css?v=8.1.0"), "Real folder mounts CSS precached");
 const edgeInternet=readFileSync(resolve(root, "src/features/edge-internet-v720.js"), "utf8");
+const edgeSearchV997=readFileSync(resolve(root, "src/features/edge-search-v997.js"), "utf8");
 check(index.includes("./src/features/edge-internet-v720.js?v=9.9.6"), "Edge Internet V9.9.6 module loaded");
 check(index.includes("./styles/edge-internet-v720.css?v=8.1.2"), "Edge Internet styles loaded");
 check(edgeInternet.includes("www.google.com/search?igu=1&newwindow=0&q="), "Google search same-frame integration present");
@@ -311,8 +312,9 @@ check(edgeInternet.includes("autoplay; encrypted-media"), "Music iframe media pe
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.js?v=9.9.6"), "Edge Internet V9.9.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-internet-v720.css?v=8.1.2"), "Edge Internet CSS precached");
 const edgeAdvanced=readFileSync(resolve(root, "src/features/edge-advanced-v730.js"), "utf8");
-check(index.includes("./src/features/edge-advanced-v730.js?v=9.9.6"), "Edge Advanced V9.9.6 module loaded");
-check(index.includes("./styles/edge-advanced-v730.css?v=9.9.6"), "Edge Advanced V9.9.6 styles loaded");
+check(index.includes("./src/features/edge-search-v997.js?v=9.9.7"), "Edge Search V9.9.7 provider module loaded");
+check(index.includes("./src/features/edge-advanced-v730.js?v=9.9.7"), "Edge Advanced V9.9.7 module loaded");
+check(index.includes("./styles/edge-advanced-v730.css?v=9.9.7"), "Edge Advanced V9.9.7 styles loaded");
 check(edgeAdvanced.includes("edge://favorites"), "Edge Favorites page present");
 check(edgeAdvanced.includes("edge://history"), "Edge History page present");
 check(edgeAdvanced.includes("edge://downloads"), "Edge Downloads page present");
@@ -335,8 +337,9 @@ check(edgeAdvanced.includes('key==="tab"'), "Edge Ctrl+Tab shortcut present");
 check(edgeAdvanced.includes('fetch(normalized,{mode:"cors"'), "Edge direct downloads respect CORS");
 check(edgeAdvanced.includes("showSaveFilePicker"), "Edge downloads use File System Access when available");
 check(edgeAdvanced.includes("recordDownload"), "Edge download history present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.js?v=9.9.6"), "Edge Advanced V9.9.6 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.css?v=9.9.6"), "Edge Advanced V9.9.6 CSS precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-search-v997.js?v=9.9.7"), "Edge Search V9.9.7 provider module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.js?v=9.9.7"), "Edge Advanced V9.9.7 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("edge-advanced-v730.css?v=9.9.7"), "Edge Advanced V9.9.7 CSS precached");
 check(edgeInternet.includes('version:"9.9.6"'), "Edge Internet bridge version V9.9.6 present");
 check(edgeInternet.includes("function isGoogleHost") && edgeInternet.includes("google\\.[a-z]{2,3}"), "Google regional-domain compatibility present");
 check(edgeInternet.includes("safeYouTubeVideoId") && edgeInternet.includes("safeYouTubePlaylistId"), "YouTube video/playlist ID validation present");
@@ -348,6 +351,21 @@ check(edgeAdvanced.includes("navegação no mesmo conteúdo quando permitida"), 
 check(edgeAdvanced.includes('sandbox","allow-scripts allow-same-origin allow-presentation allow-popups"'), "YouTube player iframe remains sandboxed");
 const edgeAdvancedCss=readFileSync(resolve(root, "styles/edge-advanced-v730.css"), "utf8");
 check(edgeAdvancedCss.includes(".edge-youtube-v996") && edgeAdvancedCss.includes(".edge-youtube-player-v996"), "Edge YouTube responsive player styles present");
+check(edgeSearchV997.includes('VERSION="9.9.7"') && edgeSearchV997.includes("Win11EdgeSearch"), "Edge Search V9.9.7 bridge present");
+check(edgeSearchV997.includes('YOUTUBE_API="https://www.googleapis.com/youtube/v3/search"'), "YouTube Data API official search endpoint present");
+check(edgeSearchV997.includes('type:"video"') && edgeSearchV997.includes('videoEmbeddable:"true"') && edgeSearchV997.includes('videoSyndicated:"true"'), "YouTube official search restricted to embeddable syndicated videos");
+check(edgeSearchV997.includes("sessionStorage.setItem") && edgeSearchV997.includes("YOUTUBE_SESSION_KEY") && !edgeSearchV997.includes("youtubeApiKey:"), "YouTube API key is session-only and not part of persisted state");
+check(edgeSearchV997.includes('GOOGLE_CSE_SRC="https://cse.google.com/cse.js"') && edgeSearchV997.includes('tag:"searchresults-only"'), "Google Programmable Search official Search Element present");
+check(edgeSearchV997.includes("gname,") && edgeSearchV997.includes('attributes:{linkTarget:"_self",mobileLayout:"enabled",safeSearch:"active"}'), "Google Programmable Search render config uses official top-level gname contract");
+check(edgeSearchV997.includes('s.googleResultMode=s.googleResultMode==="external"?"external":"embed"'), "Google results default to simulated Edge tabs");
+check(edgeSearchV997.includes("installGoogleResultRouting") && edgeSearchV997.includes("event.preventDefault()") && edgeSearchV997.includes("onResult(href,event)"), "Google result clicks are intercepted for controlled routing");
+check(edgeSearchV997.includes("googleResultMode") && edgeSearchV997.includes('"external"') && edgeSearchV997.includes('"embed"'), "Google result compatibility/embed modes present");
+check(edgeAdvanced.includes("function renderGoogle") && edgeAdvanced.includes("edge://google"), "Edge internal Google search page present");
+check(edgeAdvanced.includes("data-setting-google-cx") && edgeAdvanced.includes("data-setting-youtube-key"), "Edge official search provider settings present");
+check(edgeAdvanced.includes("SEARCH.youtubeSearch(query,{pageToken})") && edgeAdvanced.includes("edge-youtube-results-grid-v997"), "Edge YouTube official results grid present");
+check(edgeAdvanced.includes("item.videoId") && !edgeAdvanced.includes("channelTitle"), "YouTube result UI uses video IDs without channel/account fields");
+check(edgeAdvancedCss.includes(".edge-google-v997") && edgeAdvancedCss.includes(".edge-google-cse-host-v997") && edgeAdvancedCss.includes(".edge-youtube-results-grid-v997"), "Edge Search V9.9.7 responsive styles present");
+
 
 const explorerPro=readFileSync(resolve(root, "src/features/explorer-pro-v740.js"), "utf8");
 check(index.includes("./src/features/explorer-pro-v740.js?v=9.6.0"), "Explorer Pro module loaded");
@@ -685,7 +703,7 @@ check(shellIntegrationV990.includes("Win11Shell?.canOpen") && shellIntegrationV9
 check(appsDefaultsCssV985.includes(".apps-registry-grid-v985") && appsDefaultsCssV985.includes(".edge-local-document-v985"), "Apps Settings and Edge local document styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("apps-defaults-v985.js?v=9.8.5"), "Apps & Defaults V9.8.5 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("apps-defaults-v985.css?v=9.8.5"), "Apps & Defaults V9.8.5 CSS precached");
-check(index.includes("./src/features/desktop-integration-v700.js?v=9.8.5") && index.includes("./src/features/edge-advanced-v730.js?v=9.9.6") && index.includes("./src/apps/shell-integration.js?v=9.9.0"), "V9.8.5 consumers remain valid with Edge hotfix V9.9.6");
+check(index.includes("./src/features/desktop-integration-v700.js?v=9.8.5") && index.includes("./src/features/edge-advanced-v730.js?v=9.9.7") && index.includes("./src/apps/shell-integration.js?v=9.9.0"), "V9.8.5 consumers remain valid with Edge Search V9.9.7");
 check(index.includes("./src/features/storage-v986.js?v=9.8.6"), "Storage V9.8.6 module loaded");
 check(index.includes("./styles/storage-v986.css?v=9.8.6"), "Storage V9.8.6 styles loaded");
 check(storageV986.includes('VERSION="9.8.6"') && storageV986.includes("Win11Storage"), "Storage V9.8.6 bridge present");
@@ -701,7 +719,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.6'), "PWA cache bumped to V9.9.6");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.7'), "PWA cache bumped to V9.9.7");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -794,7 +812,7 @@ check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-recovery-v994.css?v=9.9.4"), "Session Recovery V9.9.4 CSS precached");
 check(sessionRestoreV992.includes("setCaptureSuspended") && sessionRestoreV992.includes("captureSuspended"), "Session Restore V9.9.5 capture suspension API present");
 check(sessionRestoreV992.includes("Win11SafeMode?.isActive") && sessionRestoreV992.includes("safe-mode-restore-coordination"), "Session Restore delegates active Safe Mode before recovery");
-check(index.includes("./src/features/safe-mode-v995.js?v=9.9.6"), "Safe Mode module loaded with V9.9.6 release marker");
+check(index.includes("./src/features/safe-mode-v995.js?v=9.9.7"), "Safe Mode module loaded with V9.9.7 release marker");
 check(index.includes("./styles/safe-mode-v995.css?v=9.9.5"), "Safe Mode V9.9.5 styles loaded");
 check(safeModeV995.includes('VERSION="9.9.5"') && safeModeV995.includes("Win11SafeMode"), "Safe Mode V9.9.5 bridge present");
 check(safeModeV995.includes("const ALLOWED=new Set") && safeModeV995.includes('"explorer"') && safeModeV995.includes('"settings"') && safeModeV995.includes('"security"'), "Safe Mode essential app allowlist present");
@@ -805,9 +823,9 @@ check(safeModeV995.includes("function showRecoveryChoice") && safeModeV995.inclu
 check(safeModeV995.includes("function interruptionReport") && safeModeV995.includes("candidateCount") && !safeModeV995.includes("displayName"), "Safe Mode interruption diagnostics stay aggregate");
 check(safeModeV995.includes('page==="accounts"') && safeModeV995.includes("data-safe-mode-v995"), "Safe Mode Settings Accounts integration present");
 check(safeModeV995.includes("session-recovery:detected") && safeModeV995.includes("showRecoveryChoice"), "Safe Mode listens for manual recovery decisions");
-check(safeModeV995.includes('version:"9.9.6",step:44') && safeModeV995.includes('"virtual-safe-mode"') && safeModeV995.includes('"edge-google-youtube-hotfix"'), "V9.9.6 RealFunctions step 44 and Edge hotfix marker present");
+check(safeModeV995.includes('version:"9.9.7",step:45') && safeModeV995.includes('"edge-search-experience-pro"') && safeModeV995.includes('"edge-youtube-data-api-search"'), "V9.9.7 RealFunctions step 45 and Edge Search marker present");
 check(safeModeCssV995.includes(".recovery-choice-v995") && safeModeCssV995.includes("#safe-mode-banner-v995") && safeModeCssV995.includes("#app.safe-mode-v995::after"), "Safe Mode recovery overlay/banner/shell styles present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("safe-mode-v995.js?v=9.9.6"), "Safe Mode module precached with V9.9.6 release marker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("safe-mode-v995.js?v=9.9.7"), "Safe Mode module precached with V9.9.7 release marker");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("safe-mode-v995.css?v=9.9.5"), "Safe Mode V9.9.5 CSS precached");
 
 

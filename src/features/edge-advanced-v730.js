@@ -2,13 +2,14 @@
 /* Windows 11 Simulator V7.3 — Edge Advanced */
 (function installEdgeAdvancedV730(){
   const BASE=globalThis.Win11EdgeInternet;
-  if(!BASE)throw new Error("Edge Internet V7.2 must load before V7.3.");
+  const SEARCH=globalThis.Win11EdgeSearch;
+  if(!BASE||!SEARCH)throw new Error("Edge Internet and Edge Search must load before Edge Advanced.");
   const OUVIR_MUSICA_URL=BASE.OUVIR_MUSICA_URL||"https://www.ouvirmusica.com.br/";
   const OUVIR_MUSICA_HOSTS=BASE.OUVIR_MUSICA_HOSTS||new Set(["ouvirmusica.com.br","www.ouvirmusica.com.br"]);
   const YOUTUBE_HOSTS=BASE.YOUTUBE_HOSTS||new Set(["youtube.com","www.youtube.com","m.youtube.com","youtu.be","www.youtu.be"]);
 
   const INTERNAL_PAGES=new Set([
-    "edge://newtab","edge://favorites","edge://history","edge://downloads","edge://settings","edge://youtube"
+    "edge://newtab","edge://favorites","edge://history","edge://downloads","edge://settings","edge://youtube","edge://google"
   ]);
 
   function clone(value){
@@ -53,8 +54,13 @@
     const value=String(raw||"").trim();
     if(!value)return "edge://newtab";
     if(value.startsWith("edge://youtube"))return BASE.normalize(value);
+    if(value.startsWith("edge://google"))return value;
     if(value==="edge://ouvirmusica")return OUVIR_MUSICA_URL;
     if(INTERNAL_PAGES.has(value))return value;
+    const likelyUrl=/^https?:\/\//i.test(value)||(!/\s/.test(value)&&/^[\w.-]+\.[a-z]{2,}(?:\/.*)?$/i.test(value));
+    if(!likelyUrl&&!/^yt\s*:/i.test(value)&&SEARCH.providerStatus().google.configured){
+      return SEARCH.googleRoute(value);
+    }
     return BASE.normalize(value);
   }
 
@@ -64,6 +70,7 @@
     if(url==="edge://history")return "Histórico";
     if(url==="edge://downloads")return "Downloads";
     if(url==="edge://settings")return "Definições";
+    if(String(url||"").startsWith("edge://google"))return "Google";
     if(String(url||"").startsWith("edge://youtube"))return "YouTube";
     if(url.startsWith("local:"))return "Pesquisa local";
     try{
@@ -82,6 +89,7 @@
     if(url==="edge://downloads")return "↓";
     if(url==="edge://settings")return "⚙";
     if(url==="edge://newtab")return "🌐";
+    if(String(url||"").startsWith("edge://google"))return "G";
     if(String(url||"").startsWith("edge://youtube"))return "▶";
     if(url.startsWith("local:"))return "🔎";
     try{
@@ -666,6 +674,8 @@
     }
 
     function renderSettingsPage(){
+      const searchStatus=SEARCH.providerStatus();
+      const googleCx=SEARCH.getGoogleCx();
       page.innerHTML=
         '<div class="edge-internal-page edge-settings-page">'+
           '<div class="edge-internal-head"><div><h2>Definições do Edge</h2><p>Preferências guardadas apenas neste perfil.</p></div></div>'+
@@ -674,16 +684,49 @@
             '<label class="edge-setting-row"><span><strong>Barra de favoritos</strong><small>Mostrar favoritos por baixo da barra de endereço.</small></span><input type="checkbox" data-setting-favbar '+(edgeState.showFavoritesBar?"checked":"")+'></label>'+
             '<label class="edge-setting-row vertical"><span><strong>Página ao iniciar</strong><small>Utilizada quando não existe sessão anterior.</small></span><select data-setting-startup>'+
               '<option value="edge://newtab" '+(edgeState.startupPage==="edge://newtab"?"selected":"")+'>Novo separador</option>'+
-              '<option value="https://www.google.com/webhp?igu=1&newwindow=0" '+(edgeState.startupPage.includes("google.")?"selected":"")+'>Google</option>'+
+              '<option value="edge://google" '+((edgeState.startupPage.startsWith("edge://google")||edgeState.startupPage.includes("google."))?"selected":"")+'>Google</option>'+
               '<option value="edge://youtube" '+(edgeState.startupPage.startsWith("edge://youtube")?"selected":"")+'>YouTube</option>'+
               '<option value="'+OUVIR_MUSICA_URL+'" '+(edgeState.startupPage.includes("ouvirmusica.com.br")?"selected":"")+'>Ouvir Música</option>'+
             '</select></label>'+
           '</div>'+
+          '<section class="edge-search-provider-settings-v997">'+
+            '<div class="edge-search-provider-head-v997"><div><h3>Pesquisa oficial</h3><p>Configure os providers oficiais usados dentro do Edge.</p></div>'+
+              '<span class="edge-provider-summary-v997">'+(searchStatus.google.configured&&searchStatus.youtube.configured?"Pronto":"Configuração necessária")+'</span></div>'+
+            '<label class="edge-setting-row vertical"><span><strong>Google Programmable Search Engine ID (cx)</strong><small>Não é segredo. Crie um Programmable Search Engine e cole aqui o ID cx.</small></span>'+
+              '<input data-setting-google-cx value="'+escapeHTML(googleCx)+'" placeholder="Ex.: 012345678901234567890:abc_def-gh"></label>'+
+            '<label class="edge-setting-row vertical"><span><strong>Abrir resultados Google</strong><small>Por defeito abre numa nova tab simulada do Edge. A barra de compatibilidade mantém sempre disponível “Abrir site completo”.</small></span>'+
+              '<select data-setting-google-mode><option value="embed" '+(searchStatus.google.resultMode==="embed"?"selected":"")+'>Nova tab do Edge — recomendado</option><option value="external" '+(searchStatus.google.resultMode==="external"?"selected":"")+'>Browser real</option></select></label>'+
+            '<label class="edge-setting-row vertical"><span><strong>YouTube Data API v3 — API key</strong><small>A chave fica apenas nesta sessão do browser. Restrinja-a por HTTP referrer e à YouTube Data API v3.</small></span>'+
+              '<input type="password" autocomplete="off" data-setting-youtube-key placeholder="'+(searchStatus.youtube.configured?"Chave configurada nesta sessão":"Cole a API key oficial")+'"></label>'+
+            '<div class="edge-provider-status-v997">'+
+              '<span>Google <strong>'+(searchStatus.google.configured?"Configurado":"Por configurar")+'</strong></span>'+
+              '<span>YouTube <strong>'+(searchStatus.youtube.configured?"Configurado":"Por configurar")+'</strong></span>'+
+              '<span>Região <strong>'+escapeHTML(searchStatus.regionCode)+'</strong></span>'+
+            '</div>'+
+            '<div class="edge-settings-actions"><button class="sys-button primary" data-save-search-providers>Guardar pesquisa</button><button class="sys-button" data-clear-youtube-key>Limpar chave YouTube</button></div>'+
+          '</section>'+
           '<div class="edge-settings-actions"><button class="sys-button" data-reset-edge-session>Repor separadores guardados</button><button class="sys-button" data-clear-edge-data>Limpar histórico e downloads</button></div>'+
         '</div>';
       page.querySelector("[data-setting-restore]").onchange=e=>{edgeState.restoreTabs=e.target.checked;saveState()};
       page.querySelector("[data-setting-favbar]").onchange=e=>{edgeState.showFavoritesBar=e.target.checked;saveState();renderFavoritesBar()};
       page.querySelector("[data-setting-startup]").onchange=e=>{edgeState.startupPage=e.target.value;saveState()};
+      page.querySelector("[data-save-search-providers]").onclick=()=>{
+        const cx=String(page.querySelector("[data-setting-google-cx]")?.value||"").trim();
+        const mode=page.querySelector("[data-setting-google-mode]")?.value;
+        const youtubeValue=String(page.querySelector("[data-setting-youtube-key]")?.value||"").trim();
+        if(cx&&!/^[A-Za-z0-9:_-]{6,120}$/.test(cx)){notify("Microsoft Edge","ID cx inválido.");return}
+        if(youtubeValue&&!/^[A-Za-z0-9_-]{20,120}$/.test(youtubeValue)){notify("Microsoft Edge","Chave YouTube inválida.");return}
+        SEARCH.setGoogleCx(cx);
+        SEARCH.setGoogleResultMode(mode);
+        if(youtubeValue)SEARCH.setYouTubeApiKey(youtubeValue);
+        notify("Microsoft Edge","Configuração de pesquisa atualizada.");
+        renderSettingsPage();
+      };
+      page.querySelector("[data-clear-youtube-key]").onclick=()=>{
+        SEARCH.clearYouTubeApiKey();
+        notify("Microsoft Edge","Chave YouTube removida desta sessão.");
+        renderSettingsPage();
+      };
       page.querySelector("[data-reset-edge-session]").onclick=()=>{
         edgeState.tabs=[];edgeState.activeId=null;edgeState.closedTabs=[];saveState();
         notify("Microsoft Edge","Sessão guardada reposta. Será aplicada no próximo arranque do Edge.");
@@ -708,6 +751,77 @@
       });
     }
 
+    function renderGoogle(url){
+      let parsed=null;
+      try{parsed=new URL(url)}catch{}
+      const query=String(parsed?.searchParams?.get("q")||"").trim();
+      const status=SEARCH.providerStatus();
+      const shell=document.createElement("div");
+      shell.className="edge-google-v997";
+      shell.innerHTML=
+        '<div class="edge-google-head-v997">'+
+          '<div class="edge-google-brand-v997"><span>G</span><div><strong>Google</strong><small>Programmable Search oficial</small></div></div>'+
+          '<button class="sys-button" data-google-settings-v997>Configurar</button>'+
+        '</div>'+
+        '<div class="edge-google-search-v997"><input data-google-query-v997 placeholder="Pesquisar no Google"><button class="sys-button primary" data-google-go-v997>Pesquisar</button></div>'+
+        '<div class="edge-google-mode-v997">'+
+          '<span>Resultados: <strong>'+(status.google.resultMode==="external"?"browser real":"nova tab do Edge")+'</strong></span>'+
+          '<small>Sites externos podem proibir incorporação. A tab do Edge mantém uma barra própria com “Abrir site completo”.</small>'+
+        '</div>'+
+        '<div data-google-content-v997></div>';
+      page.appendChild(shell);
+      const input=shell.querySelector("[data-google-query-v997]");
+      const content=shell.querySelector("[data-google-content-v997]");
+      input.value=query;
+      const run=()=>{
+        const value=input.value.trim();
+        if(value)navigate(SEARCH.googleRoute(value));
+      };
+      shell.querySelector("[data-google-go-v997]").onclick=run;
+      input.onkeydown=e=>{if(e.key==="Enter")run()};
+      shell.querySelector("[data-google-settings-v997]").onclick=()=>navigate("edge://settings");
+
+      if(!status.google.configured){
+        content.className="edge-search-setup-v997";
+        content.innerHTML=
+          '<div class="edge-search-setup-icon-v997">G</div>'+
+          '<h2>Ativar Google oficial</h2>'+
+          '<p>Crie um Google Programmable Search Engine e introduza o respetivo ID <strong>cx</strong> nas Definições do Edge.</p>'+
+          '<div class="edge-search-setup-actions-v997">'+
+            '<button class="sys-button primary" data-google-setup-v997>Abrir Definições</button>'+
+            (query?'<button class="sys-button" data-google-classic-v997>Abrir esta pesquisa no Google ↗</button>':'')+
+          '</div>';
+        content.querySelector("[data-google-setup-v997]").onclick=()=>navigate("edge://settings");
+        content.querySelector("[data-google-classic-v997]")?.addEventListener("click",()=>openExternal(SEARCH.googleExternalUrl(query)));
+        return;
+      }
+      if(!query){
+        content.className="edge-google-welcome-v997";
+        content.innerHTML='<div class="edge-google-logo-v997">G</div><h2>Pesquisa Google</h2><p>Os resultados são renderizados pelo Google Programmable Search dentro do Edge.</p>';
+        return;
+      }
+
+      content.className="edge-google-results-v997";
+      content.innerHTML='<div class="edge-search-loading-v997"><span></span><strong>A pesquisar no Google…</strong></div>';
+      const expected=current()?.url;
+      SEARCH.renderGoogleResults(content,query,{
+        onResult:href=>{
+          if(SEARCH.getGoogleResultMode()==="embed"){
+            newTab(href);
+          }else{
+            addHistory(href,titleFor(href));
+            saveState();
+            openExternal(href);
+          }
+        }
+      }).catch(err=>{
+        if(!content.isConnected||current()?.url!==expected)return;
+        content.className="edge-search-error-v997";
+        content.innerHTML='<strong>Não foi possível carregar a pesquisa Google.</strong><p>'+escapeHTML(err?.message||"Erro do provider Google.")+'</p><button class="sys-button" data-google-error-settings-v997>Ver configuração</button>';
+        content.querySelector("[data-google-error-settings-v997]").onclick=()=>navigate("edge://settings");
+      });
+    }
+
     function youtubeRouteForInput(raw){
       const value=String(raw||"").trim();
       if(!value)return "edge://youtube";
@@ -715,13 +829,15 @@
       if(id)return "edge://youtube/watch?v="+id;
       const normalized=BASE.normalize(value);
       if(String(normalized||"").startsWith("edge://youtube"))return normalized;
-      return "edge://youtube?query="+encodeURIComponent(value);
+      return SEARCH.youtubeRoute(value);
     }
 
     function renderYouTube(url){
       let parsed=null;
       try{parsed=new URL(url)}catch{}
       const query=String(parsed?.searchParams?.get("query")||"").trim();
+      const pageToken=String(parsed?.searchParams?.get("pageToken")||"").trim();
+      const searchStatus=SEARCH.providerStatus();
       const embed=BASE.youtubeEmbedFor?.(url)||null;
       const external=BASE.externalUrlFor(url);
       const shell=document.createElement("div");
@@ -735,8 +851,8 @@
           '</div>'+
         '</div>'+
         '<div class="edge-youtube-open-v996">'+
-          '<input data-youtube-input-v996 placeholder="Cole URL, Shorts, playlist ou ID do YouTube">'+
-          '<button class="sys-button primary" data-youtube-open-v996>Abrir no Edge</button>'+
+          '<input data-youtube-input-v996 placeholder="Pesquisar vídeos ou colar URL, Shorts, playlist ou ID">'+
+          '<button class="sys-button primary" data-youtube-open-v996>Pesquisar / Abrir</button>'+
         '</div>'+
         '<div data-youtube-content-v996></div>';
       page.appendChild(shell);
@@ -774,20 +890,93 @@
         return;
       }
 
+      if(query){
+        if(!searchStatus.youtube.configured){
+          content.className="edge-search-setup-v997";
+          content.innerHTML=
+            '<div class="edge-search-setup-icon-v997 youtube">▶</div>'+
+            '<h2>Ativar pesquisa oficial do YouTube</h2>'+
+            '<p>Configure uma chave da YouTube Data API v3 nas Definições do Edge. A pesquisa devolve apenas vídeos incorporáveis e reproduzíveis fora de youtube.com.</p>'+
+            '<div class="edge-search-setup-actions-v997">'+
+              '<button class="sys-button primary" data-youtube-setup-v997>Abrir Definições</button>'+
+              '<button class="sys-button" data-youtube-fallback-v997>Pesquisar no YouTube completo ↗</button>'+
+            '</div>';
+          content.querySelector("[data-youtube-setup-v997]").onclick=()=>navigate("edge://settings");
+          content.querySelector("[data-youtube-fallback-v997]").onclick=()=>openExternal(url);
+          return;
+        }
+
+        content.className="edge-youtube-search-v997";
+        content.innerHTML='<div class="edge-search-loading-v997"><span></span><strong>A pesquisar vídeos no YouTube…</strong></div>';
+        const expected=current()?.url;
+        SEARCH.youtubeSearch(query,{pageToken}).then(result=>{
+          if(!content.isConnected||current()?.url!==expected)return;
+          content.innerHTML="";
+          const head=document.createElement("div");
+          head.className="edge-youtube-results-head-v997";
+          head.innerHTML='<div><strong>Vídeos</strong><small>'+escapeHTML(result.query)+'</small></div><span>'+result.items.length+' resultado(s)</span>';
+          const grid=document.createElement("div");
+          grid.className="edge-youtube-results-grid-v997";
+          for(const item of result.items){
+            const card=document.createElement("button");
+            card.className="edge-youtube-result-v997";
+            card.dataset.videoId=item.videoId;
+            const media=document.createElement("span");
+            media.className="edge-youtube-thumb-v997";
+            if(item.thumbnail){
+              const img=document.createElement("img");
+              img.src=item.thumbnail;img.alt="";img.loading="lazy";img.referrerPolicy="no-referrer";
+              media.appendChild(img);
+            }else{
+              media.textContent="▶";
+            }
+            const meta=document.createElement("span");
+            meta.className="edge-youtube-result-meta-v997";
+            const title=document.createElement("strong");
+            title.textContent=item.title;
+            const date=document.createElement("small");
+            date.textContent=item.publishedAt?new Date(item.publishedAt).toLocaleDateString("pt-PT"):"Vídeo";
+            meta.append(title,date);
+            card.append(media,meta);
+            card.onclick=()=>navigate("edge://youtube/watch?v="+encodeURIComponent(item.videoId));
+            grid.appendChild(card);
+          }
+          const pager=document.createElement("div");
+          pager.className="edge-youtube-pager-v997";
+          if(result.prevPageToken){
+            const prev=document.createElement("button");prev.className="sys-button";prev.textContent="← Anterior";
+            prev.onclick=()=>navigate(SEARCH.youtubeRoute(query,{pageToken:result.prevPageToken}));
+            pager.appendChild(prev);
+          }
+          if(result.nextPageToken){
+            const next=document.createElement("button");next.className="sys-button";next.textContent="Mais vídeos →";
+            next.onclick=()=>navigate(SEARCH.youtubeRoute(query,{pageToken:result.nextPageToken}));
+            pager.appendChild(next);
+          }
+          content.append(head,grid,pager);
+        }).catch(err=>{
+          if(!content.isConnected||current()?.url!==expected)return;
+          content.className="edge-search-error-v997";
+          content.innerHTML='<strong>Não foi possível pesquisar no YouTube.</strong><p>'+escapeHTML(err?.message||"Erro da YouTube Data API.")+'</p><div><button class="sys-button" data-youtube-error-settings-v997>Ver configuração</button><button class="sys-button" data-youtube-error-external-v997>Abrir YouTube ↗</button></div>';
+          content.querySelector("[data-youtube-error-settings-v997]").onclick=()=>navigate("edge://settings");
+          content.querySelector("[data-youtube-error-external-v997]").onclick=()=>openExternal(url);
+        });
+        return;
+      }
+
       content.className="edge-youtube-welcome-v996";
       content.innerHTML=
         '<div class="edge-youtube-logo-v996">▶</div>'+
-        '<h2>'+(query?'Pesquisa no YouTube':'YouTube dentro do Edge')+'</h2>'+
-        '<p>'+(query
-          ?'A pesquisa completa do YouTube não pode ser lida pelo simulador sem a API oficial. Pode abrir a pesquisa real e, ao escolher um vídeo, colar o respetivo link aqui para o reproduzir dentro do Edge.'
-          :'Cole acima um link de vídeo, Shorts, playlist ou apenas o ID de 11 caracteres. O player abre dentro desta janela do Edge.')+'</p>'+
-        (query?'<div class="edge-youtube-query-v996">'+escapeHTML(query)+'</div>':'')+
+        '<h2>YouTube dentro do Edge</h2>'+
+        '<p>'+(searchStatus.youtube.configured
+          ?'Pesquise acima. Os resultados vêm da YouTube Data API v3 e mostram apenas vídeos que podem ser incorporados e reproduzidos fora de youtube.com.'
+          :'Pode abrir links diretamente. Para pesquisar vídeos aqui dentro, configure a YouTube Data API v3 nas Definições do Edge.')+'</p>'+
         '<div class="edge-youtube-welcome-actions-v996">'+
-          (query?'<button class="sys-button primary" data-youtube-search-external-v996>Pesquisar no YouTube ↗</button>':'')+
+          (!searchStatus.youtube.configured?'<button class="sys-button primary" data-youtube-settings-v997>Configurar pesquisa</button>':'')+
           '<button class="sys-button" data-youtube-demo-v996>Testar player</button>'+
         '</div>'+
-        '<small>O site completo do YouTube bloqueia incorporação normal; vídeos e playlists usam o modo embed suportado oficialmente.</small>';
-      content.querySelector("[data-youtube-search-external-v996]")?.addEventListener("click",()=>openExternal(url));
+        '<small>Sem contas, comentários, subscrições ou resultados de canais — apenas pesquisa e reprodução de vídeos.</small>';
+      content.querySelector("[data-youtube-settings-v997]")?.addEventListener("click",()=>navigate("edge://settings"));
       content.querySelector("[data-youtube-demo-v996]").onclick=()=>navigate("edge://youtube/watch?v=M7lc1UVf-VE");
     }
 
@@ -813,7 +1002,7 @@
       note.className="edge-site-note";
       note.innerHTML=isGoogle
         ?'<span>G Google · navegação no mesmo conteúdo quando permitida</span><button data-ext>Abrir Google completo ↗</button>'
-        :'<span>🔒 HTTPS · conteúdo Web real incorporado</span><button data-ext>Abrir site real ↗</button>';
+        :'<span>🔒 HTTPS · se o site bloquear a incorporação, use “Abrir site completo”</span><button data-ext>Abrir site completo ↗</button>';
       const frame=document.createElement("iframe");
       frame.className="edge-tab-frame";
       frame.src=url;
@@ -838,6 +1027,7 @@
       if(t.url==="edge://history"){renderHistoryPage();return}
       if(t.url==="edge://downloads"){renderDownloadsPage();return}
       if(t.url==="edge://settings"){renderSettingsPage();return}
+      if(t.url.startsWith("edge://google")){renderGoogle(t.url);return}
       if(t.url.startsWith("local:")){renderLocal(t.url);return}
       if(t.url.startsWith("edge://youtube")){renderYouTube(t.url);return}
       renderWeb(t.url);
@@ -928,7 +1118,7 @@
   globalThis.buildEdge=buildEdgeV730;
 
   globalThis.Win11EdgeAdvanced=Object.freeze({
-    version:"9.9.6",
+    version:"9.9.7",
     ensureEdgeState,
     normalize,
     addHistory,
@@ -948,7 +1138,9 @@
       "edge-favorites","edge-history","edge-downloads","edge-persistent-tabs",
       "edge-pinned-tabs","edge-reopen-closed-tab","edge-tab-context-menu","edge-keyboard-shortcuts",
       "edge-google-same-frame","edge-google-regional","edge-youtube-embed",
-      "edge-youtube-shortlinks","edge-youtube-playlists","edge-youtube-internal-page"
+      "edge-youtube-shortlinks","edge-youtube-playlists","edge-youtube-internal-page",
+      "edge-google-programmable-search","edge-youtube-data-api-search",
+      "edge-search-provider-settings","edge-search-result-routing"
     ].filter((v,i,a)=>a.indexOf(v)===i)
   });
 })();

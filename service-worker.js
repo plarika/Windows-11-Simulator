@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.9.6";
+const CACHE_NAME="win11-simulator-v9.9.7";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -19,7 +19,7 @@ const PRECACHE=[
   "./styles/desktop-integration-v700.css?v=8.1.0",
   "./styles/real-folder-mounts-v710.css?v=8.1.0",
   "./styles/edge-internet-v720.css?v=8.1.2",
-  "./styles/edge-advanced-v730.css?v=9.9.6",
+  "./styles/edge-advanced-v730.css?v=9.9.7",
   "./styles/explorer-pro-v740.css?v=8.1.0",
   "./styles/explorer-navigation-v820.css?v=8.3.0",
   "./styles/explorer-details-v840.css?v=8.4.0",
@@ -87,7 +87,8 @@ const PRECACHE=[
   "./src/features/desktop-integration-v700.js?v=9.8.5",
   "./src/features/real-folder-mounts-v710.js?v=8.1.0",
   "./src/features/edge-internet-v720.js?v=9.9.6",
-  "./src/features/edge-advanced-v730.js?v=9.9.6",
+  "./src/features/edge-search-v997.js?v=9.9.7",
+  "./src/features/edge-advanced-v730.js?v=9.9.7",
   "./src/features/explorer-pro-v740.js?v=9.6.0",
   "./src/features/explorer-navigation-v820.js?v=9.8.6",
   "./src/features/explorer-details-v840.js?v=9.8.6",
@@ -123,7 +124,7 @@ const PRECACHE=[
 "./src/features/app-sessions-v991.js?v=9.9.1",
 "./src/features/session-restore-v992.js?v=9.9.5",
 "./src/features/session-recovery-v994.js?v=9.9.4",
-"./src/features/safe-mode-v995.js?v=9.9.6",
+"./src/features/safe-mode-v995.js?v=9.9.7",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
   "./src/core/boot.js?v=8.1.0",
   "./icons/icon-192.png",

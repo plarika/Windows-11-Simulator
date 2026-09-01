@@ -1008,3 +1008,44 @@ Primeiro passo de integração com funções reais do dispositivo:
   - `edge-google-youtube-hotfix`
 - Browser audit valida Google, Google regional, vídeo YouTube, Shorts, youtu.be, playlist, sandbox e round-trip para URL externo
 - cache PWA atualizado para `win11-simulator-v9.9.6`
+
+## V9.9.7 Edge Search Experience Pro
+
+- novo módulo `Win11EdgeSearch`
+- Google passa a ter uma página interna `edge://google`
+- integração oficial através do Google Programmable Search Element Control API
+- resultados Google são renderizados dentro da UI do Edge
+- cliques nos resultados são intercetados pelo Edge antes da navegação
+- comportamento padrão: abrir o resultado numa nova tab simulada do Edge
+- cada tab Web mantém uma barra de compatibilidade com a ação “Abrir site completo”
+- sites conhecidos por bloquear iframe entram diretamente no Compatibility Mode
+- o simulador não tenta contornar X-Frame-Options nem Content-Security-Policy
+- modo opcional permite abrir resultados diretamente no browser real
+- pesquisa textual da barra de endereço usa `edge://google` quando o provider Google está configurado
+- novo provider oficial YouTube Data API v3
+- pesquisa YouTube usa `search.list` com:
+  - `type=video`
+  - `videoEmbeddable=true`
+  - `videoSyndicated=true`
+  - `part=snippet`
+  - região PT e idioma pt por defeito
+- resultados YouTube mostram apenas vídeos: miniatura, título e data
+- canais, contas, comentários, posts, playlists e subscrições não são apresentados como resultados
+- paginação usa exclusivamente `nextPageToken` / `prevPageToken`
+- clique num resultado abre o player interno `youtube-nocookie.com`
+- links diretos, Shorts, `youtu.be` e playlists continuam suportados pela V9.9.6
+- API key do YouTube é guardada apenas em `sessionStorage`, nunca em `state.edgeBrowser` nem `state.edgeSearchV997`
+- o ID Google `cx` pode ser guardado no perfil porque não é tratado como segredo
+- suporte opcional a configuração de deployment:
+  - `WIN11_EDGE_GOOGLE_CX`
+  - `WIN11_EDGE_YOUTUBE_API_KEY`
+- `Win11RealFunctions.version` atualizado para 9.9.7 / step 45
+- cache PWA atualizado para `win11-simulator-v9.9.7`
+
+### Configurar a pesquisa oficial do Edge
+
+**Google:** crie um Google Programmable Search Engine, defina o âmbito de pesquisa pretendido e copie o respetivo Search Engine ID (`cx`). No simulador abra **Edge > Definições > Pesquisa oficial** e cole o `cx`.
+
+**YouTube:** num projeto Google Cloud, ative **YouTube Data API v3** e crie uma API key. Para GitHub Pages, restrinja a chave por HTTP referrer ao domínio do simulador (por exemplo `https://plarika.github.io/*`) e restrinja a API key exclusivamente à **YouTube Data API v3**. Depois cole-a em **Edge > Definições > Pesquisa oficial**.
+
+A chave YouTube é mantida apenas durante a sessão atual do browser. Um refresh/tab nova pode exigir nova introdução da chave, exceto quando a deployment fornece `WIN11_EDGE_YOUTUBE_API_KEY`.

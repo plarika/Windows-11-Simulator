@@ -381,3 +381,21 @@ A pesquisa completa do YouTube não é extraída nem contornada. Sem uma API ofi
 Domínios Google regionais são reconhecidos por uma allowlist/padrão limitado de host; isto não relaxa as regras para hosts arbitrários.
 
 O hotfix não lê histórico do browser anfitrião, cookies externos, tokens, credenciais, clipboard, ficheiros reais ou dados de conta Google/YouTube. O histórico guardado continua a ser apenas o histórico virtual já existente no perfil do simulador.
+
+## Edge Search Experience Pro V9.9.7
+
+A V9.9.7 integra apenas providers oficiais: Google Programmable Search Element e YouTube Data API v3. Não utiliza scraping, proxy de terceiros, bypass de X-Frame-Options/CSP ou endpoints não documentados.
+
+O Google Search Engine ID (`cx`) pode ser persistido no perfil virtual porque funciona como identificador público de configuração do Programmable Search Engine. O Edge não guarda passwords, cookies ou credenciais Google.
+
+A chave YouTube é tratada como credencial pública de browser e nunca como segredo confiável. Quando introduzida pela UI, é guardada apenas em `sessionStorage` sob uma chave dedicada e não é copiada para `state.edgeBrowser`, `state.edgeSearchV997`, backups, diagnósticos, histórico ou Git. Uma deployment pode fornecer `WIN11_EDGE_YOUTUBE_API_KEY`, mas uma chave exposta ao browser deve ser restringida por HTTP referrer e por API no Google Cloud.
+
+As chamadas YouTube usam `credentials: "omit"` e apenas o endpoint oficial `https://www.googleapis.com/youtube/v3/search`. A pesquisa força `type=video`, `videoEmbeddable=true` e `videoSyndicated=true`. A UI ignora resultados que não contenham um video ID válido e não apresenta channel/account fields.
+
+Títulos e metadados devolvidos pelo YouTube são inseridos na UI via `textContent`. URLs de miniaturas são aceites apenas por HTTPS em hosts `ytimg.com` esperados. IDs de vídeo e page tokens são validados antes de reutilização.
+
+O Google Programmable Search é carregado apenas quando existe um `cx` configurado. O componente é renderizado com o contrato oficial `searchresults-only`, `gname` de topo e `linkTarget="_self"`. Cliques HTTP/HTTPS são intercetados no container de resultados; esquemas como `javascript:` são rejeitados.
+
+Por defeito, resultados Google abrem numa nova tab virtual do Edge. Essa tab mantém sempre uma barra controlada pelo simulador com “Abrir site completo”. Quando um host é conhecido por bloquear frames, o simulador apresenta Compatibility Mode imediatamente. Para hosts desconhecidos, o browser continua a ter a palavra final sobre CSP/X-Frame-Options; o simulador não tenta contornar essas políticas.
+
+O hotfix não lê cookies do browser real, histórico externo, tokens Google, credenciais de conta, clipboard real, ficheiros do host ou conteúdo privado de Google/YouTube.
