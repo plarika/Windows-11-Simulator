@@ -1,0 +1,57 @@
+/* Windows 11 Simulator V9.8.7 — System Integration & Hardening */
+.settings-health-v987{display:grid;gap:14px}
+.health-title-v987{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.health-title-v987 h1{margin:0}
+.health-title-v987 p{margin:5px 0 0;color:#68717b;font-size:10px}
+.health-badge-v987{flex:none;padding:5px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent) 35%,#d5dde3);background:color-mix(in srgb,var(--accent) 8%,#fff);font-size:8px;font-weight:700;color:var(--accent-strong)}
+.health-hero-v987{display:flex;align-items:center;gap:15px;padding:15px;border:1px solid #dfe4e8;border-radius:12px;background:rgba(255,255,255,.76)}
+.health-hero-v987.healthy{border-color:#8bc9a1;background:rgba(230,247,235,.78)}
+.health-hero-v987.attention{border-color:#e2c278;background:rgba(255,247,224,.8)}
+.health-hero-v987.degraded{border-color:#e2a0a0;background:rgba(255,235,235,.8)}
+.health-score-v987{display:flex;align-items:baseline;min-width:72px}
+.health-score-v987 strong{font-size:30px;line-height:1}
+.health-score-v987 span{font-size:11px;color:#68717b}
+.health-hero-v987 h2{margin:0;font-size:17px}
+.health-hero-v987 p{margin:4px 0;font-size:10px}
+.health-hero-v987 small{color:#68717b;font-size:8px}
+.health-checks-v987{display:grid;gap:7px}
+.health-check-v987{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:9px;padding:10px 12px;border:1px solid #e1e5e9;border-radius:10px;background:rgba(255,255,255,.72)}
+.health-check-icon-v987{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-weight:800;background:#e9eef2}
+.health-check-v987.ok .health-check-icon-v987{background:#dff3e5;color:#176b35}
+.health-check-v987.warn .health-check-icon-v987{background:#fff0c9;color:#8b5a00}
+.health-check-v987.error .health-check-icon-v987{background:#f8dede;color:#9c2929}
+.health-check-v987>div{display:grid;gap:3px;min-width:0}
+.health-check-v987 strong{font-size:10px}
+.health-check-v987 small{font-size:8px;color:#68717b;overflow-wrap:anywhere}
+.health-check-status-v987{font-size:8px;font-weight:700}
+.health-check-v987.ok .health-check-status-v987{color:#176b35}
+.health-check-v987.warn .health-check-status-v987{color:#8b5a00}
+.health-check-v987.error .health-check-status-v987{color:#9c2929}
+.health-actions-v987{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid #e1e5e9;border-radius:12px;background:rgba(255,255,255,.72)}
+.health-actions-v987>div:first-child{display:grid;gap:4px}
+.health-actions-v987 strong{font-size:10px}
+.health-actions-v987 small,.health-footnote-v987{font-size:8px;color:#68717b}
+.health-buttons-v987{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.health-footnote-v987{margin:0;line-height:1.45}
+
+#app.theme-dark .health-title-v987 p,#app.theme-dark .health-score-v987 span,#app.theme-dark .health-hero-v987 small,#app.theme-dark .health-check-v987 small,#app.theme-dark .health-actions-v987 small,#app.theme-dark .health-footnote-v987{color:#aab4bc}
+#app.theme-dark .health-badge-v987{background:color-mix(in srgb,var(--accent) 14%,#282e34);border-color:color-mix(in srgb,var(--accent) 42%,#44505a);color:#f2f6f8}
+#app.theme-dark .health-hero-v987,#app.theme-dark .health-check-v987,#app.theme-dark .health-actions-v987{background:rgba(37,40,47,.82);border-color:#424850}
+#app.theme-dark .health-hero-v987.healthy{background:rgba(29,55,38,.84);border-color:#477b57}
+#app.theme-dark .health-hero-v987.attention{background:rgba(61,50,25,.84);border-color:#826d3d}
+#app.theme-dark .health-hero-v987.degraded{background:rgba(62,32,32,.84);border-color:#875050}
+#app.theme-dark .health-check-icon-v987{background:#3a4048}
+#app.theme-dark .health-check-v987.ok .health-check-icon-v987{background:#244b31;color:#a8e2b9}
+#app.theme-dark .health-check-v987.warn .health-check-icon-v987{background:#57461f;color:#f5d782}
+#app.theme-dark .health-check-v987.error .health-check-icon-v987{background:#582f2f;color:#f3b0b0}
+
+@media(max-width:720px){
+  .health-title-v987{align-items:flex-start}
+  .health-hero-v987{align-items:flex-start}
+  .health-score-v987{min-width:62px}
+  .health-score-v987 strong{font-size:25px}
+  .health-check-v987{grid-template-columns:26px minmax(0,1fr);align-items:start}
+  .health-check-status-v987{grid-column:2}
+  .health-actions-v987{align-items:flex-start;flex-direction:column}
+  .health-buttons-v987{justify-content:flex-start;width:100%}
+}

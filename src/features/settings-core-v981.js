@@ -165,12 +165,15 @@
     else if(category==="explorer"&&key==="showHidden")state.explorerFilesystemV91.showHidden=value;
     else if(category==="explorer"&&key==="showExtensions")state.explorerFilesystemV91.showExtensions=value;
     else if(category==="apps"){
-      const extMap={txtApp:".txt",htmlApp:".html",pngApp:".png",jpgApp:".jpg",mp3App:".mp3",mp4App:".mp4",pdfApp:".pdf"};
+      const extMap={
+        txtApp:[".txt"],htmlApp:[".html",".htm"],pngApp:[".png"],jpgApp:[".jpg",".jpeg"],
+        mp3App:[".mp3"],mp4App:[".mp4"],pdfApp:[".pdf"]
+      };
       const protocolMap={httpApp:"http",httpsApp:"https"};
-      if(extMap[key])state.fileAssociations[extMap[key]]=value;
+      if(extMap[key])for(const ext of extMap[key])state.fileAssociations[ext]=value;
       else if(protocolMap[key])state.protocolAssociations[protocolMap[key]]=value;
       else if(key==="defaultText")for(const ext of [".md",".log",".json",".csv",".js",".css",".xml",".ini"])state.fileAssociations[ext]=value;
-      else if(key==="defaultImage")for(const ext of [".jpeg",".webp",".gif",".bmp",".svg"])state.fileAssociations[ext]=value;
+      else if(key==="defaultImage")for(const ext of [".webp",".gif",".bmp",".svg"])state.fileAssociations[ext]=value;
       else if(key==="defaultMedia")for(const ext of [".wav",".ogg",".m4a",".aac",".flac",".webm",".mov",".mkv",".avi"])state.fileAssociations[ext]=value;
       else if(key==="defaultBrowser"){state.protocolAssociations.http=value;state.protocolAssociations.https=value}
     }
@@ -287,11 +290,36 @@
   function validate(path,value){
     try{const p=parsePath(path);return validateValue(p.rule,value)}catch{return false}
   }
+  function legacyDigest(){
+    ensureLegacyObjects();
+    return JSON.stringify({
+      personalizationV78:state.personalizationV78,
+      explorerFilesystemV91:state.explorerFilesystemV91,
+      accessibility:state.accessibility,privacy:state.privacy,
+      notificationCenterV77:state.notificationCenterV77,
+      fileAssociations:state.fileAssociations,protocolAssociations:state.protocolAssociations,
+      brightness:state.brightness,volume:state.volume
+    });
+  }
+  function reconcileLegacy(options={}){
+    const doc=ensureDoc(),paths=[],before=legacyDigest();
+    for(const [category,values] of Object.entries(doc.data)){
+      for(const [key,value] of Object.entries(values)){
+        const path=category+"."+key;
+        syncLegacy(path,value);paths.push(path);
+      }
+    }
+    const changed=legacyDigest()!==before;
+    if(changed)saveState();
+    const source=String(options.source||"reconcile-legacy").slice(0,64);
+    globalThis.Win11SystemBus?.emit?.("settings:reconciled",{revision:doc.revision,count:paths.length,changed,source});
+    return Object.freeze({revision:doc.revision,count:paths.length,changed,source});
+  }
 
   ensureDoc();
   globalThis.Win11SettingsStore=Object.freeze({
     version:VERSION,schemaVersion:SCHEMA_VERSION,
-    get,set,update,resetCategory,resetAll,exportConfig,importConfig,metadata,schema,validate
+    get,set,update,resetCategory,resetAll,exportConfig,importConfig,metadata,schema,validate,reconcileLegacy
 
   });
   globalThis.Win11SystemBus?.emit?.("settings:ready",metadata());

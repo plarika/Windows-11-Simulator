@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.6 Storage 2.0** — análise centralizada do armazenamento virtual por categorias, integração com Settings/Explorer/Storage Sense e limpeza segura de temporários e Reciclagem.
+**V9.8.7 System Integration & Hardening** — diagnóstico central das integrações V9.8, reconciliação segura entre Settings e bridges legadas, reparação idempotente e export técnico agregado.
 
 ## Funcionalidades
 
@@ -799,3 +799,25 @@ Primeiro passo de integração com funções reais do dispositivo:
 - a janela Explorer principal mantém a restauração histórica da sessão quando é reaberta
 - browser audit usa um sandbox temporário de `state.files` para testar limpeza sem apagar ficheiros reais do perfil
 - módulos alterados receberam cache-bust V9.8.6 e o service worker usa `win11-simulator-v9.8.6`
+
+## V9.8.7 System Integration & Hardening
+
+- nova API central `Win11SystemHealth`
+- nova página Definições > Integridade do sistema
+- diagnóstico agregado de Settings, System Bus, bridges legadas, Aplicações, Storage, Taskbar, Explorer e Personalização
+- score técnico de 0 a 100 com estados Saudável, Atenção e Degradado
+- o diagnóstico é read-only por defeito; não altera ficheiros nem preferências
+- botão `Reconciliar` reaplica apenas APIs públicas/idempotentes já auditadas
+- o Settings Core ganhou `reconcileLegacy()` para sincronizar bridges antigas a partir da fonte canónica
+- a reconciliação não incrementa a revisão do Settings Store porque os valores canónicos não são alterados
+- a reconciliação só chama `saveState()` quando existe realmente uma divergência legada
+- novos eventos `settings:reconciled` e `system-health:reconciled`
+- aliases de associações endurecidos: `.html/.htm` usam `htmlApp` e `.jpg/.jpeg` usam `jpgApp`
+- `.jpeg` deixa de ser tratado como fallback genérico de imagem, evitando divergência com `jpgApp`
+- reparação reaplica Personalização, Explorer Settings, Explorer Filesystem, Taskbar System, Taskbar Window Pro e invalida o índice Search V9.2
+- o histórico de diagnósticos é mantido apenas em memória e limitado a 20 entradas
+- exportação de diagnóstico contém apenas estado técnico agregado; não inclui IDs de conta, nomes/conteúdo de ficheiros ou handles
+- o System Bus continua a isolar erros de listeners; a página de saúde mostra apenas a contagem agregada
+- reconciliação automática de boot é segura e write-on-change
+- Browser audit testa deteção de divergência, reparação de aliases, imutabilidade do Settings canónico, eventos e idempotência
+- service worker/cache atualizado para `win11-simulator-v9.8.7`

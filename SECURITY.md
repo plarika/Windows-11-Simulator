@@ -251,3 +251,17 @@ Antes de eliminar uma referência virtual que represente conteúdo importado, o 
 O Browser audit da V9.8.6 testa a limpeza dentro de uma cópia temporária isolada de `state.files` e substitui temporariamente `saveState()` por um no-op durante esse sandbox. O objeto original do perfil e as definições de armazenamento são restaurados antes de continuar o audit.
 
 A correção de sessão Explorer associada à V9.8.6 separa reabertura da janela principal de criação explícita de uma nova janela. Apenas `openAppNewWindow(..., caminho)` marca o destino como explícito; isto impede que uma sessão antiga substitua o destino solicitado sem desativar o restauro normal de tabs da janela principal.
+
+## System Integration & Hardening V9.8.7
+
+A V9.8.7 introduz diagnóstico e reconciliação apenas para o estado interno do simulador. `Win11SystemHealth` não recebe acesso ao host, File System Access handles, processos, credenciais, clipboard real ou conteúdo dos ficheiros virtuais.
+
+O diagnóstico usa APIs públicas dos módulos já existentes e compara apenas valores de configuração agregados. O pacote exportado `win11-simulator-system-health` inclui versão, score, estado, revisão do Settings Store, contadores do System Bus e resultados técnicos dos checks. Não inclui `activeUserId`, `state.files`, nomes de ficheiros, conteúdo, `fileAssociations` completos ou dados de conta.
+
+`Win11SettingsStore.reconcileLegacy()` considera o Settings Store a fonte canónica. A função reaplica os valores validados às bridges legadas e não altera os valores do Store nem incrementa a revisão. Um digest das bridges é comparado antes/depois; `saveState()` só é chamado se existir uma mudança real.
+
+A reconciliação V9.8.7 não executa resets. Reaplica apenas Personalização, Explorer Settings/Filesystem, Taskbar e reparação de botões já auditada, além de invalidar o índice de pesquisa local. Erros individuais dessas reaplicações são isolados e o diagnóstico final indica se a integração continua degradada.
+
+Os aliases `.htm` e `.jpeg` foram alinhados com a registry V9.8.5 para impedir que bridges antigas apontem para handlers diferentes dos resolvidos por `Win11FileAssociations`.
+
+O histórico de saúde é exclusivamente em memória e limitado a 20 entradas. Os eventos `settings:reconciled` e `system-health:reconciled` transportam apenas revisão, contagens, score, origem textual limitada e nomes internos de ações de reconciliação.

@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.8.6";
+const CACHE_NAME="win11-simulator-v9.8.7";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -50,11 +50,12 @@ const PRECACHE=[
   "./styles/resource-monitor-v9841.css?v=9.8.4-hotfix.1",
 "./styles/apps-defaults-v985.css?v=9.8.5",
 "./styles/storage-v986.css?v=9.8.6",
+"./styles/system-health-v987.css?v=9.8.7",
   "./src/core/runtime.js?v=9.8.6",
   "./src/features/system-v4.js?v=8.1.0",
   "./src/apps/v5-runtime.js?v=8.1.0",
   "./src/apps/explorer-v5.js?v=9.8.6",
-  "./src/apps/settings-v5.js?v=9.8.6",
+  "./src/apps/settings-v5.js?v=9.8.7",
   "./src/apps/windows-tools.js?v=8.1.0",
   "./src/apps/services.js?v=8.1.0",
   "./src/apps/disk-management.js?v=8.1.0",
@@ -107,12 +108,13 @@ const PRECACHE=[
   "./src/features/explorer-versions-v960.js?v=9.6.0",
   "./src/features/taskbar-window-v970.js?v=9.7.0",
   "./src/features/system-bus-v981.js?v=9.8.1",
-  "./src/features/settings-core-v981.js?v=9.8.5",
+  "./src/features/settings-core-v981.js?v=9.8.7",
   "./src/features/settings-personalization-v982.js?v=9.8.3",
   "./src/features/taskbar-system-v983.js?v=9.8.3",
   "./src/features/settings-explorer-v984.js?v=9.8.4",
 "./src/features/apps-defaults-v985.js?v=9.8.5",
 "./src/features/storage-v986.js?v=9.8.6",
+"./src/features/system-health-v987.js?v=9.8.7",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
   "./src/core/boot.js?v=8.1.0",
   "./icons/icon-192.png",

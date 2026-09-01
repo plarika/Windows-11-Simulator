@@ -3,7 +3,7 @@
 function buildSettingsV5(wrap){
   wrap.className="settings-v4";
   const pages=[
-    ["system","🖥️ Sistema"],["storage","💽 Armazenamento"],["bluetooth","🔵 Bluetooth e dispositivos"],["network","🌐 Rede e Internet"],["personalization","🎨 Personalização"],
+    ["system","🖥️ Sistema"],["storage","💽 Armazenamento"],["health","🩺 Integridade do sistema"],["bluetooth","🔵 Bluetooth e dispositivos"],["network","🌐 Rede e Internet"],["personalization","🎨 Personalização"],
     ["apps","▦ Aplicações"],["explorer","📁 Explorador de Ficheiros"],["accounts","👤 Contas"],["time","🕒 Hora e idioma"],["gaming","🎮 Jogos"],["accessibility","♿ Acessibilidade"],
     ["privacy","🔒 Privacidade e segurança"],["update","🔄 Windows Update"]
   ];

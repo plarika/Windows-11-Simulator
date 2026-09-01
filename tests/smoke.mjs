@@ -594,8 +594,10 @@ const appsDefaultsV985=readFileSync(resolve(root, "src/features/apps-defaults-v9
 const appsDefaultsCssV985=readFileSync(resolve(root, "styles/apps-defaults-v985.css"), "utf8");
 const storageV986=readFileSync(resolve(root, "src/features/storage-v986.js"), "utf8");
 const storageCssV986=readFileSync(resolve(root, "styles/storage-v986.css"), "utf8");
+const systemHealthV987=readFileSync(resolve(root, "src/features/system-health-v987.js"), "utf8");
+const systemHealthCssV987=readFileSync(resolve(root, "styles/system-health-v987.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
-check(index.includes("./src/features/settings-core-v981.js?v=9.8.5"), "Settings Core V9.8.1 module loaded through V9.8.5 cache key");
+check(index.includes("./src/features/settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module loaded through V9.8.7 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
 check(index.includes("./styles/settings-personalization-v982.css?v=9.8.2"), "Settings Personalization V9.8.2 styles loaded");
 check(index.includes("./src/features/taskbar-system-v983.js?v=9.8.3"), "Taskbar System V9.8.3 module loaded");
@@ -614,7 +616,7 @@ check(settingsCoreV981.includes("fromLegacy") && settingsCoreV981.includes("sett
 check(settingsCoreV981.includes("fnv1a32") && settingsCoreV981.includes("integrity check failed"), "Settings import integrity verification present");
 check(settingsCoreV981.includes('bus.emit("settings:changed"') && settingsCoreV981.includes('"settings:committed"'), "Settings change events present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-core-v981.js?v=9.8.5"), "Settings Core V9.8.1 module precached with V9.8.5 cache key");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module precached with V9.8.7 cache key");
 check(settingsPersonalizationV982.includes('VERSION="9.8.2"') && settingsPersonalizationV982.includes("Win11Personalization"), "Settings Personalization V9.8.2 bridge present");
 check(settingsPersonalizationV982.includes("Win11SettingsStore") && settingsPersonalizationV982.includes("Win11SystemBus"), "Personalization consumes Settings Core and System Bus");
 check(settingsPersonalizationV982.includes("settings-ui-v982") && !settingsPersonalizationV982.includes("saveState()"), "Personalization UI persists only through Settings Store");
@@ -675,8 +677,26 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.8.6'), "PWA cache bumped to V9.8.6");
-check(index.includes("./src/apps/settings-v5.js?v=9.8.6") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 changed consumers cache-busted");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.8.7'), "PWA cache bumped to V9.8.7");
+check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
+check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
+check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
+check(systemHealthV987.includes('VERSION="9.8.7"') && systemHealthV987.includes("Win11SystemHealth"), "System Health V9.8.7 bridge present");
+check(systemHealthV987.includes("diagnose") && systemHealthV987.includes("reconcile") && systemHealthV987.includes("exportDiagnostics"), "System Health diagnostics, reconcile and export APIs present");
+check(systemHealthV987.includes("HISTORY_LIMIT=20") && systemHealthV987.includes("bounded-health-history"), "System Health history is bounded");
+check(systemHealthV987.includes("legacyBridgeIssues") && systemHealthV987.includes("settings-legacy-reconcile"), "System Health bridge reconciliation present");
+check(settingsCoreV981.includes("function reconcileLegacy") && settingsCoreV981.includes('"settings:reconciled"'), "Settings Core exposes legacy reconciliation");
+check(settingsCoreV981.includes("function legacyDigest") && settingsCoreV981.includes("if(changed)saveState()"), "Settings Core legacy reconciliation writes only on change");
+check(settingsCoreV981.includes('htmlApp:[".html",".htm"]') && settingsCoreV981.includes('jpgApp:[".jpg",".jpeg"]'), "Settings Core exact alias bridges cover HTM and JPEG");
+check(!settingsCoreV981.includes('defaultImage")for(const ext of [".jpeg"'), "JPEG removed from generic image fallback bridge");
+check(systemHealthV987.includes("Win11TaskbarWindowPro?.repairTaskButtons") && systemHealthV987.includes("Win11SearchV920?.invalidate"), "System Health safe repair reuses audited consumers");
+check(systemHealthV987.includes('kind:"win11-simulator-system-health"') && !systemHealthV987.includes("activeUserId"), "System Health export omits account identifiers");
+check(systemHealthV987.includes('page==="health"') && systemHealthV987.includes("data-health-reconcile-v987"), "System Health Settings page and reconcile control present");
+check(readFileSync(resolve(root, "src/apps/settings-v5.js"), "utf8").includes('["health","🩺 Integridade do sistema"]'), "System Health Settings navigation entry present");
+check(systemHealthCssV987.includes(".health-hero-v987") && systemHealthCssV987.includes("#app.theme-dark .health-hero-v987"), "System Health responsive light/dark styles present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-health-v987.css?v=9.8.7"), "System Health V9.8.7 CSS precached");
+
 
 
 const settingsV5Compat=readFileSync(resolve(root, "src/apps/settings-v5.js"), "utf8");
