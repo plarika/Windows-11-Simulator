@@ -1,6 +1,6 @@
 "use strict";
 (function installSessionRestoreV992(){
-  const VERSION="9.9.3";
+  const VERSION="9.9.5";
   const SCHEMA_VERSION=2;
   const MAX_WINDOWS=24;
   const MAX_PER_APP_DESKTOP=4;
@@ -19,6 +19,7 @@
   let captureTimer=0;
   let restoring=false;
   let rerenderPending=false;
+  let captureSuspended=false;
   let lastRestoreFingerprint="";
   let lastRestoreCompletedAt=0;
   const DUPLICATE_RESTORE_MS=2200;
@@ -188,7 +189,7 @@
   }
   function capture({source="api",force=false}={}){
     const s=ensureState();
-    if(!s.enabled||restoring)return {captured:false,count:s.sessions.length,reason:restoring?"restoring":"disabled"};
+    if(!s.enabled||restoring||captureSuspended)return {captured:false,count:s.sessions.length,reason:restoring?"restoring":captureSuspended?"suspended":"disabled"};
     const next=buildSnapshot(),changed=JSON.stringify(next)!==JSON.stringify(s.sessions);
     if(changed||force){
       s.sessions=next;s.savedAt=Date.now();saveState();
@@ -201,10 +202,21 @@
     return {captured:true,count:next.length,changed};
   }
   function scheduleCapture(source="lifecycle"){
-    if(restoring||!ensureState().enabled)return;
+    if(restoring||captureSuspended||!ensureState().enabled)return;
     clearTimeout(captureTimer);
     captureTimer=setTimeout(()=>capture({source}),180);
   }
+  function setCaptureSuspended(value,{source="api"}={}){
+    const next=Boolean(value);
+    if(captureSuspended===next)return next;
+    captureSuspended=next;
+    clearTimeout(captureTimer);
+    bus.emit("session-restore:capture-suspended",{
+      version:VERSION,source:String(source).slice(0,64),suspended:next
+    });
+    return next;
+  }
+
   function clearSnapshot({source="api"}={}){
     clearTimeout(captureTimer);
     const s=ensureState();s.sessions=[];s.savedAt=0;s.lastRestoreAt=0;s.lastRestored=0;lastRestoreFingerprint="";lastRestoreCompletedAt=0;saveState();
@@ -371,6 +383,10 @@
   window.addEventListener("win11-session-start",event=>{
     const reason=String(event.detail?.reason||"login");
     try{
+      if(globalThis.Win11SafeMode?.isActive){
+        globalThis.Win11SafeMode.handleSessionStart?.(reason);
+        return;
+      }
       if(globalThis.Win11SessionRecovery?.handleSessionStart?.(reason))return;
     }catch{}
     setTimeout(()=>restore({source:"session-start-"+reason}).catch(()=>{}),60);
@@ -380,8 +396,8 @@
   ensureState();
 
   globalThis.Win11SessionRestore=Object.freeze({
-    version:VERSION,schemaVersion:SCHEMA_VERSION,capture,restore,setEnabled,clearSnapshot,snapshotInfo,
-    get state(){return Object.freeze(clone(ensureState()))},
+    version:VERSION,schemaVersion:SCHEMA_VERSION,capture,restore,setEnabled,setCaptureSuspended,clearSnapshot,snapshotInfo,
+    get state(){return Object.freeze({...clone(ensureState()),captureSuspended})},
     limits:Object.freeze({
       maxWindows:MAX_WINDOWS,maxPerAppDesktop:MAX_PER_APP_DESKTOP,
       maxAgeMs:MAX_AGE_MS,duplicateRestoreMs:DUPLICATE_RESTORE_MS
@@ -397,7 +413,8 @@
       "session-saving-hook","accounts-session-restore-ui",
       "session-snapshot-schema-2","window-geometry-session-restore",
       "viewport-aware-restore","snap-session-restore",
-      "focus-order-restore","duplicate-restore-guard"
+      "focus-order-restore","duplicate-restore-guard",
+      "session-capture-suspension","safe-mode-restore-coordination"
     ].filter((v,i,a)=>a.indexOf(v)===i)
   });
 })();

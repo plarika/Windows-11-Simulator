@@ -1,0 +1,50 @@
+/* Windows 11 Simulator V9.9.5 — Recovery UX & Safe Mode */
+.recovery-choice-v995{position:fixed;inset:0;z-index:2600;display:grid;place-items:center;padding:20px;background:rgba(7,11,18,.58);backdrop-filter:blur(12px)}
+.recovery-choice-v995>section{width:min(560px,calc(100vw - 28px));display:grid;gap:13px;padding:24px;border-radius:18px;border:1px solid rgba(255,255,255,.55);background:rgba(248,250,252,.96);box-shadow:0 24px 80px rgba(0,0,0,.3)}
+.recovery-choice-icon-v995{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#fff0c9;color:#7d5700;font-size:22px;font-weight:800}
+.recovery-choice-v995 h2{margin:0;font-size:20px;font-weight:650}
+.recovery-choice-v995 p{margin:0;color:#5f6973;font-size:12px;line-height:1.5}
+.recovery-choice-diagnostics-v995{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.recovery-choice-diagnostics-v995 span{display:grid;gap:3px;padding:10px;border-radius:10px;background:#eef2f5;color:#65717b;font-size:9px}
+.recovery-choice-diagnostics-v995 strong{overflow:hidden;text-overflow:ellipsis;color:#28323a;font-size:10px}
+.recovery-choice-actions-v995{display:flex;gap:8px;flex-wrap:wrap}
+.recovery-choice-actions-v995 button,#safe-mode-banner-v995 button{border:1px solid rgba(0,0,0,.15);border-radius:7px;padding:7px 12px;background:#fff;color:#20272d;font:inherit;font-size:9px;cursor:pointer}
+.recovery-choice-actions-v995 button.primary{border-color:#1767c9;background:#1767c9;color:#fff}
+.recovery-choice-v995>section>small{color:#69737b;font-size:9px;line-height:1.45}
+#safe-mode-banner-v995{position:fixed;top:10px;left:50%;z-index:2350;transform:translateX(-50%);display:flex;align-items:center;justify-content:space-between;gap:18px;width:min(760px,calc(100vw - 26px));padding:9px 12px;border:1px solid rgba(255,255,255,.5);border-radius:10px;background:rgba(27,31,38,.92);box-shadow:0 10px 35px rgba(0,0,0,.25);color:#f7f8fa;backdrop-filter:blur(12px)}
+#safe-mode-banner-v995[hidden]{display:none}
+#safe-mode-banner-v995>div:first-child{display:grid;gap:1px}
+#safe-mode-banner-v995 strong{font-size:10px}
+#safe-mode-banner-v995 small{font-size:8px;color:#c9d0d6}
+.safe-mode-banner-actions-v995{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#safe-mode-banner-v995 button{border-color:rgba(255,255,255,.22);background:#303640;color:#f5f7f8}
+#app.safe-mode-v995::after{content:"Modo de Segurança";position:fixed;right:10px;bottom:58px;z-index:12;padding:4px 7px;border:1px solid rgba(255,255,255,.35);border-radius:5px;background:rgba(0,0,0,.48);color:#fff;font-size:8px;pointer-events:none}
+.safe-mode-card-v995{display:grid;gap:11px}
+.safe-mode-card-head-v995{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.safe-mode-card-head-v995>div{display:grid;gap:4px}
+.safe-mode-card-head-v995 strong{font-size:11px}
+.safe-mode-card-head-v995 p{margin:0;color:#68717b;font-size:8px;line-height:1.45}
+.safe-mode-state-v995{flex:none;padding:4px 8px;border-radius:999px;border:1px solid #d5dce2;background:#eef2f5;color:#5c6670;font-size:8px;font-weight:700}
+.safe-mode-state-v995.on{border-color:#7ca7d6;background:#e2efff;color:#155da8}
+.safe-mode-diag-v995{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.safe-mode-diag-v995 span{display:flex;justify-content:space-between;gap:10px;padding:7px 9px;border-radius:8px;background:#f2f4f6;color:#66717b;font-size:8px}
+.safe-mode-diag-v995 strong{color:#303941;white-space:nowrap}
+.safe-mode-actions-v995{display:flex;gap:7px;flex-wrap:wrap}
+.safe-mode-note-v995{color:#68717b;font-size:8px;line-height:1.45}
+#app.theme-dark .recovery-choice-v995>section{border-color:#4a5159;background:rgba(35,40,47,.97);color:#f1f4f6}
+#app.theme-dark .recovery-choice-v995 p,#app.theme-dark .recovery-choice-v995>section>small,#app.theme-dark .safe-mode-card-head-v995 p,#app.theme-dark .safe-mode-note-v995{color:#aeb7be}
+#app.theme-dark .recovery-choice-diagnostics-v995 span,#app.theme-dark .safe-mode-diag-v995 span{background:#30363d;color:#abb4bc}
+#app.theme-dark .recovery-choice-diagnostics-v995 strong,#app.theme-dark .safe-mode-diag-v995 strong{color:#edf1f3}
+#app.theme-dark .safe-mode-state-v995{border-color:#4a5159;background:#343a42;color:#cbd3d9}
+#app.theme-dark .safe-mode-state-v995.on{border-color:#4e78a4;background:#203b58;color:#a9d2ff}
+@media(max-width:720px){
+  .recovery-choice-v995{padding:10px}
+  .recovery-choice-v995>section{padding:18px}
+  .recovery-choice-diagnostics-v995{grid-template-columns:1fr}
+  .recovery-choice-actions-v995{display:grid}
+  #safe-mode-banner-v995{top:6px;align-items:flex-start;flex-direction:column;gap:7px}
+  .safe-mode-banner-actions-v995{width:100%;justify-content:stretch}
+  .safe-mode-banner-actions-v995 button{flex:1}
+  .safe-mode-card-head-v995{flex-direction:column}
+  .safe-mode-diag-v995{grid-template-columns:1fr}
+}

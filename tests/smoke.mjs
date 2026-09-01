@@ -606,6 +606,8 @@ const sessionRestoreV992=readFileSync(resolve(root, "src/features/session-restor
 const sessionRestoreCssV992=readFileSync(resolve(root, "styles/session-restore-v992.css"), "utf8");
 const sessionRecoveryV994=readFileSync(resolve(root, "src/features/session-recovery-v994.js"), "utf8");
 const sessionRecoveryCssV994=readFileSync(resolve(root, "styles/session-recovery-v994.css"), "utf8");
+const safeModeV995=readFileSync(resolve(root, "src/features/safe-mode-v995.js"), "utf8");
+const safeModeCssV995=readFileSync(resolve(root, "styles/safe-mode-v995.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module loaded through V9.8.7 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -687,7 +689,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.4'), "PWA cache bumped to V9.9.4");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.5'), "PWA cache bumped to V9.9.5");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -736,9 +738,9 @@ check(appSessionsV991.includes('bus.emit("app-session:"') && appSessionsV991.inc
 check(appSessionsCssV991.includes(".app-session-row-v991") && appSessionsCssV991.includes("#app.theme-dark .app-session-row-v991"), "App Sessions responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.js?v=9.9.1"), "App Sessions V9.9.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.css?v=9.9.1"), "App Sessions V9.9.1 CSS precached");
-check(index.includes("./src/features/session-restore-v992.js?v=9.9.4"), "Session Restore core loaded through V9.9.4 cache key");
+check(index.includes("./src/features/session-restore-v992.js?v=9.9.5"), "Session Restore core loaded through V9.9.5 cache key");
 check(index.includes("./styles/session-restore-v992.css?v=9.9.2"), "Session Restore V9.9.2 styles loaded");
-check(sessionRestoreV992.includes('VERSION="9.9.3"') && sessionRestoreV992.includes("Win11SessionRestore"), "Session Restore V9.9.3 bridge present");
+check(sessionRestoreV992.includes('VERSION="9.9.5"') && sessionRestoreV992.includes("Win11SessionRestore"), "Session Restore core upgraded for V9.9.5 coordination");
 check(sessionRestoreV992.includes("MAX_WINDOWS=24") && sessionRestoreV992.includes("MAX_PER_APP_DESKTOP=4") && sessionRestoreV992.includes("MAX_AGE_MS=30*24*60*60*1000"), "Session Restore bounds and age limit present");
 check(sessionRestoreV992.includes("SAFE_EXPLORER_PATHS") && sessionRestoreV992.includes('"C:/Documents"') && sessionRestoreV992.includes('"Recycle Bin"'), "Session Restore safe Explorer path allowlist present");
 check(sessionRestoreV992.includes("function capture(") && sessionRestoreV992.includes("function restore(") && sessionRestoreV992.includes("function setEnabled("), "Session Restore capture/restore/settings APIs present");
@@ -749,7 +751,7 @@ check(!sessionRestoreV992.includes("activeUserId") && !sessionRestoreV992.includ
 check(sessionRestoreV992.includes('page==="accounts"') && sessionRestoreV992.includes("data-session-restore-v992"), "Session Restore Accounts Settings UI present");
 check(sessionRestoreV992.includes("session-restore:captured") && sessionRestoreV992.includes("session-restore:restored") && sessionRestoreV992.includes("session-restore:enabled"), "Session Restore System Bus events present");
 check(sessionRestoreCssV992.includes(".session-restore-v992") && sessionRestoreCssV992.includes("#app.theme-dark .session-restore-head-v992"), "Session Restore responsive light/dark styles present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.js?v=9.9.4"), "Session Restore core precached with V9.9.4 cache key");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.js?v=9.9.5"), "Session Restore core precached with V9.9.5 cache key");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.css?v=9.9.2"), "Session Restore V9.9.2 CSS precached");
 check(sessionRestoreV992.includes("SCHEMA_VERSION=2") && sessionRestoreV992.includes("schemaVersion:SCHEMA_VERSION"), "Session Restore V9.9.3 schema 2 exposed");
 check(sessionRestoreV992.includes("function safeRectOf") && sessionRestoreV992.includes("function sanitizeRect") && sessionRestoreV992.includes("function applyRect"), "Session Restore V9.9.3 safe geometry pipeline present");
@@ -778,6 +780,24 @@ check(sessionRecoveryCssV994.includes(".session-recovery-v994") && sessionRecove
 check(sessionRecoveryV994.includes("step:42") && sessionRecoveryV994.includes('"session-recovery-manager"') && sessionRecoveryV994.includes('"crash-resume"'), "Session Recovery V9.9.4 RealFunctions step 42 present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-recovery-v994.js?v=9.9.4"), "Session Recovery V9.9.4 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-recovery-v994.css?v=9.9.4"), "Session Recovery V9.9.4 CSS precached");
+check(sessionRestoreV992.includes("setCaptureSuspended") && sessionRestoreV992.includes("captureSuspended"), "Session Restore V9.9.5 capture suspension API present");
+check(sessionRestoreV992.includes("Win11SafeMode?.isActive") && sessionRestoreV992.includes("safe-mode-restore-coordination"), "Session Restore delegates active Safe Mode before recovery");
+check(index.includes("./src/features/safe-mode-v995.js?v=9.9.5"), "Safe Mode V9.9.5 module loaded");
+check(index.includes("./styles/safe-mode-v995.css?v=9.9.5"), "Safe Mode V9.9.5 styles loaded");
+check(safeModeV995.includes('VERSION="9.9.5"') && safeModeV995.includes("Win11SafeMode"), "Safe Mode V9.9.5 bridge present");
+check(safeModeV995.includes("const ALLOWED=new Set") && safeModeV995.includes('"explorer"') && safeModeV995.includes('"settings"') && safeModeV995.includes('"security"'), "Safe Mode essential app allowlist present");
+check(safeModeV995.includes("guardedOpenApp") && safeModeV995.includes("guardedOpenAppNewWindow") && safeModeV995.includes("safe-mode:launch-blocked"), "Safe Mode shell launch policy present");
+check(safeModeV995.includes("restore.setCaptureSuspended(true") && safeModeV995.includes("restore.setCaptureSuspended(false"), "Safe Mode preserves recovery snapshot through capture suspension");
+check(safeModeV995.includes("background?.stop?.()") && safeModeV995.includes("background?.start?.()"), "Safe Mode pauses and restores virtual background engine");
+check(safeModeV995.includes("function showRecoveryChoice") && safeModeV995.includes("data-recovery-choice-safe-v995") && safeModeV995.includes("data-recovery-choice-restore-v995"), "Recovery choice overlay includes restore/normal/safe options");
+check(safeModeV995.includes("function interruptionReport") && safeModeV995.includes("candidateCount") && !safeModeV995.includes("displayName"), "Safe Mode interruption diagnostics stay aggregate");
+check(safeModeV995.includes('page==="accounts"') && safeModeV995.includes("data-safe-mode-v995"), "Safe Mode Settings Accounts integration present");
+check(safeModeV995.includes("session-recovery:detected") && safeModeV995.includes("showRecoveryChoice"), "Safe Mode listens for manual recovery decisions");
+check(safeModeV995.includes("step:43") && safeModeV995.includes('"virtual-safe-mode"') && safeModeV995.includes('"safe-mode-snapshot-preservation"'), "Safe Mode V9.9.5 RealFunctions step 43 present");
+check(safeModeCssV995.includes(".recovery-choice-v995") && safeModeCssV995.includes("#safe-mode-banner-v995") && safeModeCssV995.includes("#app.safe-mode-v995::after"), "Safe Mode recovery overlay/banner/shell styles present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("safe-mode-v995.js?v=9.9.5"), "Safe Mode V9.9.5 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("safe-mode-v995.css?v=9.9.5"), "Safe Mode V9.9.5 CSS precached");
+
 
 
 

@@ -347,3 +347,21 @@ Auto-resume está ativo por defeito apenas para manter a compatibilidade funcion
 O histórico do Recovery Manager existe apenas em memória e é limitado a 24 entradas. Os eventos enviados ao `Win11SystemBus` contêm apenas versão, origem/reason limitada, contagens e flags técnicas.
 
 O Recovery Manager não tem acesso ao shell do sistema operativo, processos reais, filesystem real, credenciais, clipboard real, permissões do browser ou conteúdo das janelas.
+
+## Recovery UX & Safe Mode V9.9.5
+
+O Modo de Segurança da V9.9.5 é uma funcionalidade do simulador. Não corresponde ao Safe Mode do Windows anfitrião e não altera boot configuration, serviços, drivers, registry, processos ou políticas do sistema operativo real.
+
+A política de aplicações essenciais é aplicada ao caminho final de lançamento do shell do simulador através de `openApp()` e `openAppNewWindow()`. Serve para reproduzir a experiência de um ambiente reduzido; não deve ser interpretada como uma fronteira de segurança contra JavaScript já executado dentro da própria aplicação.
+
+Ao entrar em Safe Mode, `Win11SessionRestore.setCaptureSuspended(true)` impede que o fecho das janelas normais e a abertura das ferramentas essenciais substituam o snapshot recuperável. Esta flag existe apenas em memória e não desativa nem apaga a preferência de Session Restore do perfil.
+
+A saída do Safe Mode reativa a captura antes de executar qualquer recuperação. Recuperar usa exclusivamente o snapshot já sanitizado pelo Session Restore schema 2. Sair sem recuperar descarta apenas o pedido de recovery pendente; o mecanismo não lê conteúdo das aplicações.
+
+O estado `safeModeV995` persiste apenas schema, flag ativa, timestamps, reason limitada, estado anterior do motor de background e contadores técnicos de lançamentos bloqueados. Não contém ID/nome da conta, credenciais, texto, URLs, ficheiros, clipboard, tokens, paths reais ou handles.
+
+O diagnóstico mostrado no overlay e em Definições contém apenas classificação da última saída, timestamps de heartbeat/recovery e contagens agregadas. O overlay não recolhe nem transmite dados externamente.
+
+O motor `Win11BackgroundEngine` é pausado através da sua API pública existente. Safe Mode não termina processos do host nem interfere com tarefas do Windows real.
+
+Os testes dinâmicos da V9.9.5 preservam o estado anterior de Restore/Recovery, suspendem a captura durante as mudanças de janelas, validam a política do shell e restauram a configuração anterior antes de continuar a suite.

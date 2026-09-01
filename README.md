@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.4 Session Recovery & Crash Resume** — deteção de encerramento limpo/interrupção, heartbeat de sessão, recuperação automática ou manual e centro de recovery em Definições > Contas.
+**V9.9.5 Recovery UX & Safe Mode** — escolha visual após interrupção, Modo de Segurança virtual com apps essenciais, preservação do snapshot e diagnóstico de recuperação em Definições > Contas.
 
 ## Funcionalidades
 
@@ -948,3 +948,32 @@ Primeiro passo de integração com funções reais do dispositivo:
 - novas capabilities: `session-recovery-manager`, `clean-exit-detection`, `unexpected-session-detection`, `session-heartbeat`, `crash-resume`, `manual-recovery-choice`, `auto-crash-resume`, `session-recovery-history` e `accounts-recovery-center`
 - Browser audit valida heartbeat, clean exit, lock/unlock, interrupção inesperada, recovery pendente, UI, descarte, recovery manual, auto-recovery e histórico bounded
 - service worker/cache atualizado para `win11-simulator-v9.9.4`
+
+## V9.9.5 Recovery UX & Safe Mode
+
+- nova API `Win11SafeMode`
+- novo overlay de escolha quando existe recovery pendente e auto-resume está desligado
+- o utilizador pode escolher Recuperar sessão, Continuar sem recuperar ou Modo de Segurança
+- o overlay mostra apenas diagnóstico agregado: número de janelas recuperáveis, último heartbeat e motivo técnico da interrupção
+- novo Modo de Segurança exclusivamente virtual do Windows Simulator
+- conjunto de aplicações essenciais permitido: Explorer, Definições, Terminal, PowerShell, Gestor de Tarefas, Segurança, Informação do Sistema, Recuperação, Ajuda, Visualizador de Eventos e Gestor de Dispositivos
+- tentativas de abrir aplicações fora da allowlist através do shell são recusadas com feedback visual
+- o Modo de Segurança fecha as janelas correntes e inicia Definições > Contas como centro de recuperação
+- o motor de tarefas/background virtual é pausado durante Safe Mode e retomado ao sair quando estava ativo
+- novo banner persistente “Modo de Segurança” no topo do simulador
+- banner permite Recuperar sessão ou Sair sem recuperar
+- novo cartão “Modo de Segurança virtual” em Definições > Contas
+- o cartão mostra último encerramento, heartbeat, recovery pendente, janelas recuperáveis e número de lançamentos bloqueados
+- o estado Safe Mode pertence ao perfil e pode sobreviver a refresh enquanto o utilizador não sair explicitamente
+- `Win11SessionRestore` evolui para versão 9.9.5 e ganha `setCaptureSuspended()`
+- enquanto Safe Mode está ativo, a captura automática de sessões fica suspensa para não sobrescrever o snapshot da sessão interrompida
+- a preferência original “Reabrir aplicações” não é desligada nem apagada
+- ao sair do Safe Mode, a captura normal é reativada antes de qualquer recovery
+- Safe Mode pode regressar à shell normal e reconstruir a sessão através do mesmo snapshot seguro V9.9.3/schema 2
+- `win11-session-start` passa a verificar primeiro Safe Mode ativo, depois Session Recovery e finalmente Session Restore normal
+- eventos adicionais: `safe-mode:entered`, `safe-mode:exited`, `safe-mode:resumed`, `safe-mode:launch-blocked` e `safe-mode:recovery-choice-shown`
+- novos eventos do Session Restore para coordenação: `session-restore:capture-suspended`
+- `Win11RealFunctions.step` atualizado para 43
+- novas capabilities: `recovery-choice-ui`, `virtual-safe-mode`, `safe-mode-launch-policy`, `safe-mode-background-pause`, `safe-mode-snapshot-preservation`, `safe-mode-session-resume`, `safe-mode-diagnostics` e `safe-mode-settings-center`
+- Browser audit valida overlay automático, allowlist, bloqueio de app, app essencial permitida, preservação do snapshot, UI, resume, saída e reconstrução da shell
+- service worker/cache atualizado para `win11-simulator-v9.9.5`
