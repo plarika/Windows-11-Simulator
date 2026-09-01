@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.1 App Sessions & Activation** — políticas single/multi-instance, ativação e restauro de sessões, gestão de janelas por aplicação e integração visual em Definições.
+**V9.9.2 Session Restore & App Reopen** — snapshot seguro e bounded das aplicações abertas, restauração por perfil após login/refresh/reinício virtual e boundary reforçado para janelas reais.
 
 ## Funcionalidades
 
@@ -868,3 +868,30 @@ Primeiro passo de integração com funções reais do dispositivo:
 - a UI de sessões coexistente com Aplicações predefinidas V9.8.5
 - Browser audit testa single-instance real em Definições, multi-instance em Calculadora, restauro de janela minimizada, ativação exata, fecho seletivo, UI e histórico bounded
 - service worker/cache atualizado para `win11-simulator-v9.9.1`
+
+## V9.9.2 Session Restore & App Reopen
+
+- nova API `Win11SessionRestore`
+- nova opção em Definições > Contas: “Reabrir aplicações após iniciar sessão”
+- a opção fica desativada por defeito
+- quando ativada, o simulador guarda incrementalmente um snapshot das aplicações/janelas abertas no perfil atual
+- o snapshot é reconciliado após refresh com sessão ativa, novo login/desbloqueio e reinício virtual seguido de login
+- a restauração reutiliza `Win11AppSessions`, portanto respeita as políticas single-instance e multi-instance da V9.9.1
+- single-instance é reconciliado sem duplicação
+- multi-instance cria apenas as instâncias em falta
+- desktop virtual, estado minimizado/maximizado e foco são restaurados quando aplicável
+- o desktop ativo é preservado durante a reconciliação
+- máximo de 24 janelas por snapshot
+- máximo de 4 instâncias multi por aplicação e por desktop virtual
+- snapshots com mais de 30 dias não são restaurados automaticamente
+- o snapshot guarda apenas app interna, desktop, flags de janela, ordem e um hint Explorer opcional
+- não são persistidos conteúdos das aplicações, texto do Notepad, URLs do Edge, nomes de ficheiros, credenciais, IDs de conta ou File System Access handles
+- destinos Explorer persistíveis estão limitados a This PC, Desktop, Documents, Downloads, Pictures, Music, Videos, OneDrive e Recycle Bin
+- caminhos personalizados e real mounts nunca entram no hint persistido
+- novos hooks neutros `win11-session-saving` e `win11-session-start` permitem capturar antes da gravação do perfil e restaurar depois de o perfil correto ficar ativo
+- ações manuais disponíveis: Guardar agora, Restaurar agora e Limpar snapshot
+- eventos `session-restore:captured`, `session-restore:restored`, `session-restore:enabled` e `session-restore:cleared` passam pelo `Win11SystemBus`
+- `openApp()` e o lookup da Taskbar foram reforçados para pesquisar apenas `#window-layer > .window`
+- esta correção impede que clones usados nas previews da Taskbar sejam confundidos com janelas realmente abertas
+- Browser audit valida captura, sanitização, allowlist Explorer, limite por app, restauração, snapshot expirado, hooks de sessão, UI em Contas e boundary das janelas reais
+- service worker/cache atualizado para `win11-simulator-v9.9.2`

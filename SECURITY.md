@@ -293,3 +293,21 @@ A V9.9.1 gere apenas janelas DOM do simulador e não cria processos reais. As po
 O histórico de sessões é exclusivamente em memória, limitado a 80 entradas e contém apenas ação, app interna, ID efémero de janela, desktop virtual, origem textual limitada e política. Os eventos enviados ao `Win11SystemBus` usam o mesmo conjunto de metadados técnicos.
 
 As ações Ativar e Fechar em Definições operam apenas sobre elementos `.window` dentro de `#window-layer`. Não existe capacidade de terminar processos do Windows anfitrião nem de interagir com aplicações fora do simulador.
+
+## Session Restore & App Reopen V9.9.2
+
+A V9.9.2 persiste apenas metadados mínimos das janelas virtuais quando o utilizador ativa explicitamente a opção de reabrir aplicações. A funcionalidade permanece desativada por defeito.
+
+O snapshot pertence ao estado do perfil já existente e contém apenas identificador interno da aplicação, desktop virtual, flags minimizada/maximizada/focada, ordem e, exclusivamente para o Explorer, um destino virtual allowlisted. Não contém texto do Notepad, URLs do Edge, nomes de ficheiros, conteúdo de documentos, credenciais, IDs de conta, clipboard, permissões, dados de dispositivo ou File System Access handles.
+
+Os destinos Explorer persistíveis estão limitados a `This PC`, `C:/Desktop`, `C:/Documents`, `C:/Downloads`, `C:/Pictures`, `C:/Music`, `C:/Videos`, `C:/OneDrive` e `Recycle Bin`. Caminhos personalizados e Explorer em `real-mount-mode` não produzem hint de restauração.
+
+O snapshot é limitado a 24 janelas. Aplicações multi-instance ficam limitadas a 4 entradas por aplicação e desktop virtual; aplicações single-instance ficam limitadas a uma. Snapshots com mais de 30 dias são considerados expirados e não são restaurados automaticamente.
+
+A restauração usa exclusivamente `Win11AppSessions` e elementos dentro de `#window-layer`. Não inicia processos do sistema anfitrião, não abre aplicações do Windows real e não converte caminhos virtuais em caminhos do host.
+
+Os eventos `win11-session-saving` e `win11-session-start` são deliberadamente neutros e não transportam o identificador da conta. Servem apenas para ordenar captura e restauração em relação à persistência do perfil.
+
+Como hardening adicional, `openApp()` e o lookup principal da Taskbar foram restringidos a `#window-layer > .window`. As previews da Taskbar usam clones visuais que podem conter a classe `.window`; esses clones já não podem ser selecionados como se fossem uma janela de aplicação real.
+
+O Browser audit da V9.9.2 cria apenas sessões de teste controladas, valida que conteúdo e caminhos personalizados não entram no snapshot, fecha apenas as janelas criadas pelo teste e restaura a configuração de sessão anterior antes de continuar.

@@ -1,0 +1,20 @@
+/* Windows 11 Simulator V9.9.2 — Session Restore & App Reopen */
+.session-restore-v992{display:grid;gap:11px}
+.session-restore-head-v992{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.session-restore-head-v992>div{display:grid;gap:4px}
+.session-restore-head-v992 strong{font-size:11px}
+.session-restore-head-v992 p{margin:0;color:#68717b;font-size:8px;line-height:1.45}
+.session-restore-head-v992 .toggle{flex:none}
+.session-restore-meta-v992{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 0;border-top:1px solid #e2e6ea;border-bottom:1px solid #e2e6ea;color:#68717b;font-size:8px}
+.session-restore-meta-v992 strong{color:inherit;font-size:10px}
+.session-restore-actions-v992{display:flex;gap:7px;flex-wrap:wrap}
+.session-restore-actions-v992 .sys-button{font-size:8px}
+.session-restore-note-v992{color:#68717b;font-size:8px;line-height:1.4}
+#app.theme-dark .session-restore-head-v992 p,#app.theme-dark .session-restore-meta-v992,#app.theme-dark .session-restore-note-v992{color:#aab4bc}
+#app.theme-dark .session-restore-meta-v992{border-color:#434a52}
+@media(max-width:720px){
+  .session-restore-head-v992{align-items:flex-start}
+  .session-restore-meta-v992{flex-direction:column;gap:4px}
+  .session-restore-actions-v992{align-items:stretch}
+  .session-restore-actions-v992 .sys-button{flex:1 1 120px}
+}

@@ -174,12 +174,12 @@ check(sessions.includes("Terminar sessão"), "Sign out control present");
 check(sessions.includes("Mudar de utilizador"), "Switch user control present");
 check(sessions.includes("legacy-backup-v67"), "Legacy migration backup present");
 check(!/localStorage\.setItem\([^;]*secret/i.test(sessions), "Secrets are not stored directly");
-check(index.includes("./src/features/local-accounts-v670.js?v=8.1.0"), "Session module loaded");
+check(index.includes("./src/features/local-accounts-v670.js?v=9.9.2"), "Session module loaded through V9.9.2 cache key");
 check(index.includes("./styles/local-accounts-v670.css?v=8.1.0"), "Session styles loaded");
 check(realContent.includes("ownerId:currentOwnerId()"), "IndexedDB blobs record ownerId");
 check(realContent.includes("claimLegacyBlobs"), "Legacy IndexedDB ownership migration present");
 check(realContent.includes("record.ownerId&&record.ownerId!==owner"), "IndexedDB owner isolation enforced");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=8.1.0"), "Session module precached by service worker");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("local-accounts-v670.js?v=9.9.2"), "Session module precached by service worker with V9.9.2 cache key");
 check(existsSync(resolve(root, "src/workers/auth-crypto-v673.js")), "Auth crypto worker exists");
 const authWorkerSource=readFileSync(resolve(root, "src/workers/auth-crypto-v673.js"), "utf8");
 const authWorkerCheck=spawnSync(process.execPath, ["--check", resolve(root, "src/workers/auth-crypto-v673.js")], {encoding:"utf8"});
@@ -392,7 +392,8 @@ check(index.includes("./src/features/explorer-multiwindow-v930.js?v=9.3.0"), "Ex
 check(index.includes("./styles/explorer-multiwindow-v930.css?v=9.3.0"), "Explorer Multi-Window V9.3 styles loaded");
 check(explorerMultiWindow.includes('version:VERSION') && explorerMultiWindow.includes('VERSION="9.3.0"'), "Explorer Multi-Window V9.3 bridge present");
 check(runtimeSource.includes("function openAppNewWindow") && runtimeSource.includes("globalThis.openAppNewWindow"), "Runtime explicit new-window API present");
-check(index.includes("./src/core/runtime.js?v=9.8.6") && readFileSync(resolve(root, "service-worker.js"), "utf8").includes("src/core/runtime.js?v=9.8.6"), "Runtime V9.8.6 cache-busted");
+check(runtimeSource.includes('document.querySelectorAll("#window-layer > .window")') && runtimeSource.includes('document.querySelector(`#window-layer > .window[data-id="'), "Runtime window lookup is scoped to real window layer");
+check(index.includes("./src/core/runtime.js?v=9.9.2") && readFileSync(resolve(root, "service-worker.js"), "utf8").includes("src/core/runtime.js?v=9.9.2"), "Runtime cache-busted to V9.9.2");
 check(runtimeSource.includes('makeWindow(appId,initialPath,true)') && runtimeSource.includes('explorerExplicitStart="1"') && explorerNavigation.includes('explorerExplicitStart!=="1"'), "Explorer explicit new-window path overrides tab-session restore");
 check(explorerNavigation.includes("windowSessions") && explorerNavigation.includes("sessionKey") && explorerNavigation.includes("isPrimaryWindow"), "Explorer per-window tab sessions present");
 check(explorerNavigation.includes("sessionEntries.length>16"), "Explorer window session state is bounded");
@@ -601,6 +602,8 @@ const shellIntegrationV990=readFileSync(resolve(root, "src/apps/shell-integratio
 const powerShellV990=readFileSync(resolve(root, "src/apps/powershell.js"), "utf8");
 const appSessionsV991=readFileSync(resolve(root, "src/features/app-sessions-v991.js"), "utf8");
 const appSessionsCssV991=readFileSync(resolve(root, "styles/app-sessions-v991.css"), "utf8");
+const sessionRestoreV992=readFileSync(resolve(root, "src/features/session-restore-v992.js"), "utf8");
+const sessionRestoreCssV992=readFileSync(resolve(root, "styles/session-restore-v992.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module loaded through V9.8.7 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -682,7 +685,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.1'), "PWA cache bumped to V9.9.1");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.2'), "PWA cache bumped to V9.9.2");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -731,6 +734,22 @@ check(appSessionsV991.includes('bus.emit("app-session:"') && appSessionsV991.inc
 check(appSessionsCssV991.includes(".app-session-row-v991") && appSessionsCssV991.includes("#app.theme-dark .app-session-row-v991"), "App Sessions responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.js?v=9.9.1"), "App Sessions V9.9.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.css?v=9.9.1"), "App Sessions V9.9.1 CSS precached");
+check(index.includes("./src/features/session-restore-v992.js?v=9.9.2"), "Session Restore V9.9.2 module loaded");
+check(index.includes("./styles/session-restore-v992.css?v=9.9.2"), "Session Restore V9.9.2 styles loaded");
+check(sessionRestoreV992.includes('VERSION="9.9.2"') && sessionRestoreV992.includes("Win11SessionRestore"), "Session Restore V9.9.2 bridge present");
+check(sessionRestoreV992.includes("MAX_WINDOWS=24") && sessionRestoreV992.includes("MAX_PER_APP_DESKTOP=4") && sessionRestoreV992.includes("MAX_AGE_MS=30*24*60*60*1000"), "Session Restore bounds and age limit present");
+check(sessionRestoreV992.includes("SAFE_EXPLORER_PATHS") && sessionRestoreV992.includes('"C:/Documents"') && sessionRestoreV992.includes('"Recycle Bin"'), "Session Restore safe Explorer path allowlist present");
+check(sessionRestoreV992.includes("function capture(") && sessionRestoreV992.includes("function restore(") && sessionRestoreV992.includes("function setEnabled("), "Session Restore capture/restore/settings APIs present");
+check(sessionRestoreV992.includes("win11-session-saving") && sessionRestoreV992.includes("win11-session-start"), "Session Restore account lifecycle hooks present");
+check(sessions.includes("function emitSessionSaving") && sessions.includes("function emitSessionStart"), "Local Accounts emits neutral session lifecycle hooks");
+check(sessions.includes('emitSessionSaving("sign-out")') && sessions.includes('emitSessionSaving("power")') && sessions.includes('emitSessionStart("boot-resume")'), "Local Accounts session save/start integration present");
+check(!sessionRestoreV992.includes("activeUserId") && !sessionRestoreV992.includes("notepadText") && !sessionRestoreV992.includes("edge-real-address"), "Session snapshot omits account/content/URL identifiers");
+check(sessionRestoreV992.includes('page==="accounts"') && sessionRestoreV992.includes("data-session-restore-v992"), "Session Restore Accounts Settings UI present");
+check(sessionRestoreV992.includes("session-restore:captured") && sessionRestoreV992.includes("session-restore:restored") && sessionRestoreV992.includes("session-restore:enabled"), "Session Restore System Bus events present");
+check(sessionRestoreCssV992.includes(".session-restore-v992") && sessionRestoreCssV992.includes("#app.theme-dark .session-restore-head-v992"), "Session Restore responsive light/dark styles present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.js?v=9.9.2"), "Session Restore V9.9.2 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.css?v=9.9.2"), "Session Restore V9.9.2 CSS precached");
+
 
 
 

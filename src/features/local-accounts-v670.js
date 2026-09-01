@@ -542,6 +542,13 @@
     channel.close();
   }
 
+  function emitSessionSaving(reason){
+    try{window.dispatchEvent(new CustomEvent("win11-session-saving",{detail:{reason:String(reason||"unknown").slice(0,32)}}))}catch{}
+  }
+  function emitSessionStart(reason){
+    try{window.dispatchEvent(new CustomEvent("win11-session-start",{detail:{reason:String(reason||"login").slice(0,32)}}))}catch{}
+  }
+
   function updateLastLogin(account){
     const accounts=readAccounts();
     const target=accounts.find(a=>a.id===account.id);
@@ -554,7 +561,7 @@
   }
 
   async function finishLogin(account,{loadProfile=true}={}){
-    if(activeAccount&&activeAccount.id!==account.id)saveActiveProfile();
+    if(activeAccount&&activeAccount.id!==account.id){emitSessionSaving("switch-account");saveActiveProfile()}
     closeAllWindows();
     stopChannel();
 
@@ -572,6 +579,7 @@
     refreshShell();
     scheduleInactivityLock();
     $("#lock")?.classList.add("hidden");
+    emitSessionStart("login");
     notify("Windows","Sessão iniciada como "+activeAccount.displayName+".");
   }
 
@@ -591,7 +599,7 @@
   }
 
   function signOut(message="Sessão terminada."){
-    if(activeAccount)saveActiveProfile();
+    if(activeAccount){emitSessionSaving("sign-out");saveActiveProfile()}
     clearSessionIdentity();
     resetMemoryAfterLogout();
     $("#lock")?.classList.remove("hidden");
@@ -599,7 +607,7 @@
   }
 
   function forceSessionEnded(message){
-    if(activeAccount)saveActiveProfile();
+    if(activeAccount){emitSessionSaving("forced-end");saveActiveProfile()}
     clearSessionIdentity();
     resetMemoryAfterLogout();
     $("#lock")?.classList.remove("hidden");
@@ -607,7 +615,7 @@
   }
 
   function lockSession({switching=false,reason="manual"}={}){
-    if(activeAccount)saveActiveProfile();
+    if(activeAccount){emitSessionSaving("lock-"+String(reason||"manual"));saveActiveProfile()}
     clearInactivityTimer();
     locked=true;
     try{window.dispatchEvent(new CustomEvent("win11-session-lock",{detail:{reason}}))}catch{}
@@ -624,7 +632,7 @@
   try{globalThis.lockSystem=lockSystem}catch{}
 
   function endSessionForPower(){
-    if(activeAccount)saveActiveProfile();
+    if(activeAccount){emitSessionSaving("power");saveActiveProfile()}
     clearSessionIdentity();
     closeAllWindows();
     replaceStateData(defaultState());
@@ -1157,6 +1165,7 @@
       refreshShell();
       scheduleInactivityLock();
       $("#lock").classList.add("hidden");
+      emitSessionStart("boot-resume");
       return true;
     }
 
