@@ -604,6 +604,8 @@ const appSessionsV991=readFileSync(resolve(root, "src/features/app-sessions-v991
 const appSessionsCssV991=readFileSync(resolve(root, "styles/app-sessions-v991.css"), "utf8");
 const sessionRestoreV992=readFileSync(resolve(root, "src/features/session-restore-v992.js"), "utf8");
 const sessionRestoreCssV992=readFileSync(resolve(root, "styles/session-restore-v992.css"), "utf8");
+const sessionRecoveryV994=readFileSync(resolve(root, "src/features/session-recovery-v994.js"), "utf8");
+const sessionRecoveryCssV994=readFileSync(resolve(root, "styles/session-recovery-v994.css"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module loaded through V9.8.7 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -685,7 +687,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.3'), "PWA cache bumped to V9.9.3");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.4'), "PWA cache bumped to V9.9.4");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -734,7 +736,7 @@ check(appSessionsV991.includes('bus.emit("app-session:"') && appSessionsV991.inc
 check(appSessionsCssV991.includes(".app-session-row-v991") && appSessionsCssV991.includes("#app.theme-dark .app-session-row-v991"), "App Sessions responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.js?v=9.9.1"), "App Sessions V9.9.1 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("app-sessions-v991.css?v=9.9.1"), "App Sessions V9.9.1 CSS precached");
-check(index.includes("./src/features/session-restore-v992.js?v=9.9.3"), "Session Restore core loaded through V9.9.3 cache key");
+check(index.includes("./src/features/session-restore-v992.js?v=9.9.4"), "Session Restore core loaded through V9.9.4 cache key");
 check(index.includes("./styles/session-restore-v992.css?v=9.9.2"), "Session Restore V9.9.2 styles loaded");
 check(sessionRestoreV992.includes('VERSION="9.9.3"') && sessionRestoreV992.includes("Win11SessionRestore"), "Session Restore V9.9.3 bridge present");
 check(sessionRestoreV992.includes("MAX_WINDOWS=24") && sessionRestoreV992.includes("MAX_PER_APP_DESKTOP=4") && sessionRestoreV992.includes("MAX_AGE_MS=30*24*60*60*1000"), "Session Restore bounds and age limit present");
@@ -747,7 +749,7 @@ check(!sessionRestoreV992.includes("activeUserId") && !sessionRestoreV992.includ
 check(sessionRestoreV992.includes('page==="accounts"') && sessionRestoreV992.includes("data-session-restore-v992"), "Session Restore Accounts Settings UI present");
 check(sessionRestoreV992.includes("session-restore:captured") && sessionRestoreV992.includes("session-restore:restored") && sessionRestoreV992.includes("session-restore:enabled"), "Session Restore System Bus events present");
 check(sessionRestoreCssV992.includes(".session-restore-v992") && sessionRestoreCssV992.includes("#app.theme-dark .session-restore-head-v992"), "Session Restore responsive light/dark styles present");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.js?v=9.9.3"), "Session Restore core precached with V9.9.3 cache key");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.js?v=9.9.4"), "Session Restore core precached with V9.9.4 cache key");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-restore-v992.css?v=9.9.2"), "Session Restore V9.9.2 CSS precached");
 check(sessionRestoreV992.includes("SCHEMA_VERSION=2") && sessionRestoreV992.includes("schemaVersion:SCHEMA_VERSION"), "Session Restore V9.9.3 schema 2 exposed");
 check(sessionRestoreV992.includes("function safeRectOf") && sessionRestoreV992.includes("function sanitizeRect") && sessionRestoreV992.includes("function applyRect"), "Session Restore V9.9.3 safe geometry pipeline present");
@@ -757,6 +759,26 @@ check(sessionRestoreV992.includes("DUPLICATE_RESTORE_MS=2200") && sessionRestore
 check(sessionRestoreV992.includes("restoredWindows") && sessionRestoreV992.includes("focusWindow(item.win)") && sessionRestoreV992.includes("focus-order-restore"), "Session Restore active-desktop focus order restoration present");
 check(sessionRestoreV992.includes('"session-snapshot-schema-2"') && sessionRestoreV992.includes('"window-geometry-session-restore"') && sessionRestoreV992.includes('"snap-session-restore"'), "Session Restore V9.9.3 capability markers present");
 check(sessionRestoreV992.includes("step:41"), "Session Restore V9.9.3 RealFunctions step 41 present");
+check(sessionRestoreV992.includes("Win11SessionRecovery?.handleSessionStart"), "Session Restore delegates session-start to Recovery Manager when available");
+check(index.includes("./src/features/session-recovery-v994.js?v=9.9.4"), "Session Recovery V9.9.4 module loaded");
+check(index.includes("./styles/session-recovery-v994.css?v=9.9.4"), "Session Recovery V9.9.4 styles loaded");
+check(sessionRecoveryV994.includes('VERSION="9.9.4"') && sessionRecoveryV994.includes("Win11SessionRecovery"), "Session Recovery V9.9.4 bridge present");
+check(sessionRecoveryV994.includes("SCHEMA_VERSION=1") && sessionRecoveryV994.includes("autoResume:true"), "Session Recovery schema and compatibility-preserving auto-resume default present");
+check(sessionRecoveryV994.includes("HEARTBEAT_MS=30000") && sessionRecoveryV994.includes("HISTORY_LIMIT=24"), "Session Recovery heartbeat and bounded history present");
+check(sessionRecoveryV994.includes('runtimeStatus:"idle"') && sessionRecoveryV994.includes('"running"') && sessionRecoveryV994.includes('"locked"') && sessionRecoveryV994.includes('"clean"'), "Session Recovery runtime health states present");
+check(sessionRecoveryV994.includes("function handleSessionStart") && sessionRecoveryV994.includes('lastExitKind="interrupted"') && sessionRecoveryV994.includes("recoveryCandidate"), "Session Recovery unexpected-session detection present");
+check(sessionRecoveryV994.includes("function markClean") && sessionRecoveryV994.includes('["sign-out","forced-end","power","switch-account"]'), "Session Recovery clean-exit classification present");
+check(sessionRecoveryV994.includes("function markLocked") && sessionRecoveryV994.includes('reason.startsWith("lock-")'), "Session Recovery lock continuation classification present");
+check(sessionRecoveryV994.includes("function recover(") && sessionRecoveryV994.includes("function discard(") && sessionRecoveryV994.includes("function setAutoResume("), "Session Recovery recover/discard/auto APIs present");
+check(sessionRecoveryV994.includes("session-recovery:detected") && sessionRecoveryV994.includes("session-recovery:completed") && sessionRecoveryV994.includes("session-recovery:clean"), "Session Recovery System Bus events present");
+check(sessionRecoveryV994.includes('page==="accounts"') && sessionRecoveryV994.includes("data-session-recovery-v994"), "Session Recovery Accounts Settings UI present");
+check(sessionRecoveryV994.includes("data-session-recovery-now-v994") && sessionRecoveryV994.includes("data-session-recovery-discard-v994"), "Session Recovery manual decision controls present");
+check(sessionRecoveryV994.includes("sessions.activeUserId") && !sessionRecoveryV994.includes("state.activeUserId"), "Session Recovery checks authentication without persisting user identifiers");
+check(sessionRecoveryCssV994.includes(".session-recovery-v994") && sessionRecoveryCssV994.includes("#app.theme-dark .session-recovery-status-v994"), "Session Recovery responsive light/dark styles present");
+check(sessionRecoveryV994.includes("step:42") && sessionRecoveryV994.includes('"session-recovery-manager"') && sessionRecoveryV994.includes('"crash-resume"'), "Session Recovery V9.9.4 RealFunctions step 42 present");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-recovery-v994.js?v=9.9.4"), "Session Recovery V9.9.4 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("session-recovery-v994.css?v=9.9.4"), "Session Recovery V9.9.4 CSS precached");
+
 
 
 

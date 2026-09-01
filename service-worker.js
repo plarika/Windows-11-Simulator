@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.9.3";
+const CACHE_NAME="win11-simulator-v9.9.4";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -53,6 +53,7 @@ const PRECACHE=[
 "./styles/system-health-v987.css?v=9.8.7",
 "./styles/app-sessions-v991.css?v=9.9.1",
 "./styles/session-restore-v992.css?v=9.9.2",
+"./styles/session-recovery-v994.css?v=9.9.4",
   "./src/core/runtime.js?v=9.9.2",
   "./src/features/system-v4.js?v=8.1.0",
   "./src/apps/v5-runtime.js?v=8.1.0",
@@ -119,7 +120,8 @@ const PRECACHE=[
 "./src/features/system-health-v987.js?v=9.8.7",
 "./src/features/shell-intents-v990.js?v=9.9.0",
 "./src/features/app-sessions-v991.js?v=9.9.1",
-"./src/features/session-restore-v992.js?v=9.9.3",
+"./src/features/session-restore-v992.js?v=9.9.4",
+"./src/features/session-recovery-v994.js?v=9.9.4",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
   "./src/core/boot.js?v=8.1.0",
   "./icons/icon-192.png",

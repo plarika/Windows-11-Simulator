@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.3 Window Restore Fidelity** — restauração de posição/tamanho, maximização, Snap, ordem e foco com geometria adaptada ao viewport e proteção contra restores duplicados.
+**V9.9.4 Session Recovery & Crash Resume** — deteção de encerramento limpo/interrupção, heartbeat de sessão, recuperação automática ou manual e centro de recovery em Definições > Contas.
 
 ## Funcionalidades
 
@@ -920,3 +920,31 @@ Primeiro passo de integração com funções reais do dispositivo:
 - novas capabilities: `session-snapshot-schema-2`, `window-geometry-session-restore`, `viewport-aware-restore`, `snap-session-restore`, `focus-order-restore` e `duplicate-restore-guard`
 - Browser audit valida captura flutuante, fallback de Snap, clamp ao viewport atual, restauração Snap, maximização/retângulo de retorno e deduplicação
 - service worker/cache atualizado para `win11-simulator-v9.9.3`
+
+## V9.9.4 Session Recovery & Crash Resume
+
+- nova API `Win11SessionRecovery`
+- novo estado de saúde por perfil: idle, running, locked e clean
+- heartbeat de sessão a cada 30 segundos enquanto existe sessão autenticada e desbloqueada
+- encerramentos explícitos por Terminar sessão, Reiniciar/Encerrar, mudança de conta e forced-end são classificados como clean
+- Bloquear/Desbloquear é tratado como continuação da mesma sessão e não cria falso crash
+- se a aplicação voltar a iniciar com o marcador anterior ainda em running, a sessão anterior é classificada como interrupted
+- a deteção utiliza apenas o snapshot seguro do `Win11SessionRestore`; não existe um segundo snapshot de janelas
+- `Win11SessionRestore` consulta primeiro o Recovery Manager no evento `win11-session-start`
+- sessões interrompidas podem ser recuperadas automaticamente ou deixadas pendentes para decisão manual
+- auto-resume fica ativo por defeito para preservar o comportamento de reabertura das versões V9.9.2/V9.9.3
+- o utilizador pode desligar auto-resume em Definições > Contas
+- com auto-resume desligado, a UI apresenta as ações Recuperar sessão e Descartar
+- Descartar remove apenas o pedido de recovery; não apaga o snapshot V9.9.3
+- recuperação manual/automática reutiliza `Win11SessionRestore.restore()`, incluindo geometria, Snap, desktops e políticas single/multi-instance
+- novo evento `session-recovery:detected` quando é identificada uma interrupção
+- eventos adicionais: `session-recovery:clean`, `session-recovery:completed`, `session-recovery:discarded`, `session-recovery:auto-resume`, `session-recovery:session-start` e `session-recovery:history-cleared`
+- histórico técnico em memória limitado a 24 entradas
+- contadores por perfil para interrupções, recoveries e pedidos descartados
+- novo cartão “Recuperação de sessão” em Definições > Contas
+- a UI mostra estado atual, heartbeat, contadores, auto-resume e decisão de recovery quando aplicável
+- BFCache e retorno de visibilidade apenas atualizam o heartbeat; continuam a coexistir com o recovery visual V8.0
+- `Win11RealFunctions.step` atualizado para 42
+- novas capabilities: `session-recovery-manager`, `clean-exit-detection`, `unexpected-session-detection`, `session-heartbeat`, `crash-resume`, `manual-recovery-choice`, `auto-crash-resume`, `session-recovery-history` e `accounts-recovery-center`
+- Browser audit valida heartbeat, clean exit, lock/unlock, interrupção inesperada, recovery pendente, UI, descarte, recovery manual, auto-recovery e histórico bounded
+- service worker/cache atualizado para `win11-simulator-v9.9.4`

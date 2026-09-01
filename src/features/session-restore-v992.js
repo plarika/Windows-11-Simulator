@@ -369,7 +369,11 @@
 
   window.addEventListener("win11-session-saving",event=>capture({source:"session-saving-"+String(event.detail?.reason||"unknown"),force:true}));
   window.addEventListener("win11-session-start",event=>{
-    setTimeout(()=>restore({source:"session-start-"+String(event.detail?.reason||"login")}).catch(()=>{}),60);
+    const reason=String(event.detail?.reason||"login");
+    try{
+      if(globalThis.Win11SessionRecovery?.handleSessionStart?.(reason))return;
+    }catch{}
+    setTimeout(()=>restore({source:"session-start-"+reason}).catch(()=>{}),60);
   });
   window.addEventListener("pagehide",()=>capture({source:"pagehide-v993",force:true}));
 

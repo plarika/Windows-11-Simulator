@@ -327,3 +327,23 @@ Para janelas maximizadas ou snapped, o snapshot utiliza apenas o retângulo flut
 A proteção anti-restauro duplicado utiliza apenas um fingerprint em memória produzido a partir dos metadados já sanitizados do snapshot. O fingerprint não é persistido nem enviado externamente. Se o mesmo snapshot for solicitado novamente dentro de 2200 ms, o segundo restore é ignorado e é emitido apenas um evento técnico `session-restore:skipped`.
 
 Os metadados V9.9.3 continuam sem incluir texto, URLs, nomes de ficheiros, paths personalizados do Explorer, credenciais, IDs de utilizador, clipboard, handles do File System Access API ou dados do host.
+
+## Session Recovery & Crash Resume V9.9.4
+
+A V9.9.4 acrescenta um marcador de saúde da sessão ao perfil existente, mas não cria uma nova cópia do conteúdo das aplicações. O Recovery Manager reutiliza exclusivamente o snapshot sanitizado de `Win11SessionRestore`.
+
+O estado `sessionRecoveryV994` guarda apenas schema, preferência de auto-resume, estado runtime, timestamps, classificação do último encerramento, flag de recovery pendente e contadores agregados. Não guarda nome da conta, ID da conta, credenciais, texto, URLs, nomes de ficheiros, paths personalizados, clipboard ou handles de dispositivos/ficheiros.
+
+A presença de uma sessão autenticada é verificada através da API existente `Win11SessionManager.activeUserId`, mas esse identificador não é copiado para `sessionRecoveryV994`, para o diagnóstico nem para os eventos do Recovery Manager.
+
+O heartbeat é atualizado a cada 30 segundos apenas enquanto existe uma sessão autenticada com estado `running`. Cada atualização utiliza a persistência local já isolada por perfil; não envia telemetria nem faz pedidos de rede.
+
+Eventos `win11-session-saving` são síncronos. Isto permite classificar Terminar sessão, power/restart, forced-end e mudança de conta como encerramentos limpos antes de `saveActiveProfile()` persistir o perfil. Razões `lock-*` são classificadas como sessão bloqueada, não como encerramento.
+
+Uma sessão é considerada interrompida apenas quando um novo `win11-session-start` encontra o marcador anterior ainda em `running`. O Recovery Manager não tenta inferir causas externas, processos do host ou detalhes de crash.
+
+Auto-resume está ativo por defeito apenas para manter a compatibilidade funcional com a reabertura automática existente. Quando desativado, o snapshot permanece inalterado até o utilizador escolher Recuperar ou Descartar. Descartar limpa apenas a flag de recovery pendente.
+
+O histórico do Recovery Manager existe apenas em memória e é limitado a 24 entradas. Os eventos enviados ao `Win11SystemBus` contêm apenas versão, origem/reason limitada, contagens e flags técnicas.
+
+O Recovery Manager não tem acesso ao shell do sistema operativo, processos reais, filesystem real, credenciais, clipboard real, permissões do browser ou conteúdo das janelas.

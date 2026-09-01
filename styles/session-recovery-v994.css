@@ -1,0 +1,34 @@
+/* Windows 11 Simulator V9.9.4 — Session Recovery & Crash Resume */
+.session-recovery-v994{display:grid;gap:11px}
+.session-recovery-head-v994{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.session-recovery-head-v994>div{display:grid;gap:4px}
+.session-recovery-head-v994 strong{font-size:11px}
+.session-recovery-head-v994 p{margin:0;color:#68717b;font-size:8px;line-height:1.45}
+.session-recovery-status-v994{flex:none;padding:4px 8px;border-radius:999px;border:1px solid #d8dee3;background:#f3f5f7;color:#53606b;font-size:8px;font-weight:700}
+.session-recovery-status-v994.ok{border-color:#8bc9a1;background:#e6f7eb;color:#176b35}
+.session-recovery-status-v994.warn{border-color:#e2c278;background:#fff2cf;color:#875900}
+.session-recovery-row-v994{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #e2e6ea;border-bottom:1px solid #e2e6ea}
+.session-recovery-row-v994>div{display:grid;gap:3px;min-width:0}
+.session-recovery-row-v994 strong{font-size:9px}
+.session-recovery-row-v994 small,.session-recovery-note-v994{color:#68717b;font-size:8px;line-height:1.4}
+.session-recovery-meta-v994{display:flex;flex-wrap:wrap;gap:7px 13px;color:#68717b;font-size:8px}
+.session-recovery-meta-v994 strong{font-size:9px;color:inherit}
+.session-recovery-pending-v994{display:grid;gap:6px;padding:10px;border:1px solid #e2c278;border-radius:9px;background:#fff7df}
+.session-recovery-pending-v994>strong{font-size:10px;color:#7b5300}
+.session-recovery-pending-v994>small{font-size:8px;color:#7a6740}
+.session-recovery-pending-v994>div{display:flex;gap:7px;flex-wrap:wrap}
+.session-recovery-actions-v994{display:flex;gap:7px;flex-wrap:wrap}
+.session-recovery-note-v994{margin:0}
+#app.theme-dark .session-recovery-head-v994 p,#app.theme-dark .session-recovery-row-v994 small,#app.theme-dark .session-recovery-meta-v994,#app.theme-dark .session-recovery-note-v994{color:#aab4bc}
+#app.theme-dark .session-recovery-status-v994{border-color:#4a5159;background:#343a42;color:#ccd4da}
+#app.theme-dark .session-recovery-status-v994.ok{border-color:#477b57;background:#244b31;color:#a8e2b9}
+#app.theme-dark .session-recovery-status-v994.warn{border-color:#826d3d;background:#57461f;color:#f5d782}
+#app.theme-dark .session-recovery-row-v994{border-color:#434a52}
+#app.theme-dark .session-recovery-pending-v994{border-color:#826d3d;background:#473a20}
+#app.theme-dark .session-recovery-pending-v994>strong{color:#f5d782}
+#app.theme-dark .session-recovery-pending-v994>small{color:#d7c58d}
+@media(max-width:720px){
+  .session-recovery-head-v994{align-items:flex-start;flex-direction:column}
+  .session-recovery-row-v994{align-items:flex-start}
+  .session-recovery-meta-v994{flex-direction:column;gap:4px}
+}
