@@ -596,6 +596,9 @@ const storageV986=readFileSync(resolve(root, "src/features/storage-v986.js"), "u
 const storageCssV986=readFileSync(resolve(root, "styles/storage-v986.css"), "utf8");
 const systemHealthV987=readFileSync(resolve(root, "src/features/system-health-v987.js"), "utf8");
 const systemHealthCssV987=readFileSync(resolve(root, "styles/system-health-v987.css"), "utf8");
+const shellIntentsV990=readFileSync(resolve(root, "src/features/shell-intents-v990.js"), "utf8");
+const shellIntegrationV990=readFileSync(resolve(root, "src/apps/shell-integration.js"), "utf8");
+const powerShellV990=readFileSync(resolve(root, "src/apps/powershell.js"), "utf8");
 check(index.includes("./src/features/system-bus-v981.js?v=9.8.1"), "System Bus V9.8.1 module loaded");
 check(index.includes("./src/features/settings-core-v981.js?v=9.8.7"), "Settings Core V9.8.1 module loaded through V9.8.7 cache key");
 check(index.includes("./src/features/settings-personalization-v982.js?v=9.8.3"), "Settings Personalization V9.8.2 module loaded through V9.8.3 cache key");
@@ -657,11 +660,11 @@ check(appsDefaultsV985.includes("sanitizeHtmlDocument") && appsDefaultsV985.incl
 check(appsDefaultsV985.includes("settings:apps:changed") && appsDefaultsV985.includes("syncLegacySnapshot"), "Apps Settings events and compatibility synchronization present");
 check(readFileSync(resolve(root, "src/features/desktop-integration-v700.js"), "utf8").includes("Win11DefaultApps?.forFile") && readFileSync(resolve(root, "src/features/desktop-integration-v700.js"), "utf8").includes("Win11AppRegistry?.candidatesForFile"), "Desktop Integration delegates defaults to V9.8.5 registry");
 check(readFileSync(resolve(root, "src/features/edge-advanced-v730.js"), "utf8").includes("wrap.__edgeV730=Object.freeze") && readFileSync(resolve(root, "src/features/edge-advanced-v730.js"), "utf8").includes("navigate:(url,options={})") && readFileSync(resolve(root, "src/features/edge-advanced-v730.js"), "utf8").includes("newTab:(url,options={})"), "Edge exposes bounded navigation/new-tab bridge");
-check(readFileSync(resolve(root, "src/apps/shell-integration.js"), "utf8").includes("Win11ProtocolRegistry.open") && readFileSync(resolve(root, "src/apps/shell-integration.js"), "utf8").includes("URL aberto com a aplicação predefinida"), "Run and Terminal consume protocol registry");
+check(shellIntegrationV990.includes("Win11Shell?.canOpen") && shellIntegrationV990.includes('source:"run"') && shellIntegrationV990.includes('source:"terminal-start"'), "Run and Terminal consume Windows Shell intent router");
 check(appsDefaultsCssV985.includes(".apps-registry-grid-v985") && appsDefaultsCssV985.includes(".edge-local-document-v985"), "Apps Settings and Edge local document styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("apps-defaults-v985.js?v=9.8.5"), "Apps & Defaults V9.8.5 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("apps-defaults-v985.css?v=9.8.5"), "Apps & Defaults V9.8.5 CSS precached");
-check(index.includes("./src/features/desktop-integration-v700.js?v=9.8.5") && index.includes("./src/features/edge-advanced-v730.js?v=9.8.5") && index.includes("./src/apps/shell-integration.js?v=9.8.5"), "V9.8.5 changed consumers cache-busted");
+check(index.includes("./src/features/desktop-integration-v700.js?v=9.8.5") && index.includes("./src/features/edge-advanced-v730.js?v=9.8.5") && index.includes("./src/apps/shell-integration.js?v=9.9.0"), "V9.8.5 consumers remain valid and shell integration advances to V9.9.0");
 check(index.includes("./src/features/storage-v986.js?v=9.8.6"), "Storage V9.8.6 module loaded");
 check(index.includes("./styles/storage-v986.css?v=9.8.6"), "Storage V9.8.6 styles loaded");
 check(storageV986.includes('VERSION="9.8.6"') && storageV986.includes("Win11Storage"), "Storage V9.8.6 bridge present");
@@ -677,7 +680,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.8.7'), "PWA cache bumped to V9.8.7");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.0'), "PWA cache bumped to V9.9.0");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -696,6 +699,23 @@ check(readFileSync(resolve(root, "src/apps/settings-v5.js"), "utf8").includes('[
 check(systemHealthCssV987.includes(".health-hero-v987") && systemHealthCssV987.includes("#app.theme-dark .health-hero-v987"), "System Health responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("system-health-v987.css?v=9.8.7"), "System Health V9.8.7 CSS precached");
+check(index.includes("./src/features/shell-intents-v990.js?v=9.9.0"), "Shell Intents V9.9.0 module loaded");
+check(shellIntentsV990.includes('VERSION="9.9.0"') && shellIntentsV990.includes("Win11Shell") && shellIntentsV990.includes("Win11AppLifecycle"), "Shell Intents V9.9.0 public bridges present");
+check(shellIntentsV990.includes("SETTINGS_ROUTES") && shellIntentsV990.includes("SHELL_FOLDERS"), "Shell Intents V9.9.0 deep-link allowlists present");
+check(shellIntentsV990.includes("ms-settings:") && shellIntentsV990.includes("shell:") && shellIntentsV990.includes("app:"), "Shell Intents V9.9.0 supported schemes present");
+check(shellIntentsV990.includes("normalizeVirtualPath") && shellIntentsV990.includes("Segmentos relativos não são permitidos"), "Virtual path intents reject relative traversal");
+check(shellIntentsV990.includes("INTENT_HISTORY_LIMIT=60") && shellIntentsV990.includes("LIFECYCLE_HISTORY_LIMIT=100"), "Shell and lifecycle histories are bounded");
+check(shellIntentsV990.includes('bus.emit("shell:intent-') && shellIntentsV990.includes('bus.emit("app:"+type'), "Shell and lifecycle events use System Bus");
+check(shellIntentsV990.includes("MutationObserver") && shellIntentsV990.includes('attributeFilter:["class","data-desktop"]'), "App lifecycle observes window state transitions");
+check(shellIntentsV990.includes("syncSettingsWindow") && shellIntentsV990.includes("state.settingsPage=page"), "ms-settings deep links update existing Settings window");
+check(shellIntentsV990.includes("openFileIntent") && shellIntentsV990.includes("Win11DefaultApps.forFile"), "Virtual file intents use default-app registry");
+check(shellIntentsV990.includes("Win11ProtocolRegistry.open") && shellIntentsV990.includes('["http:","https:"]'), "URL intents remain restricted to HTTP/HTTPS");
+check(shellIntegrationV990.includes('source:"run"') && shellIntegrationV990.includes('source:"terminal-start"'), "Run and Terminal source-tag shell intents");
+check(powerShellV990.includes("Win11Shell?.canOpen") && powerShellV990.includes('source:"powershell-start-process"'), "PowerShell Start-Process consumes shell intent router");
+check(index.includes("./src/apps/powershell.js?v=9.9.0") && index.includes("./src/apps/shell-integration.js?v=9.9.0"), "V9.9.0 shell consumers cache-busted");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("shell-intents-v990.js?v=9.9.0"), "Shell Intents V9.9.0 module precached");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("powershell.js?v=9.9.0") && readFileSync(resolve(root, "service-worker.js"), "utf8").includes("shell-integration.js?v=9.9.0"), "V9.9.0 shell consumers precached");
+
 
 
 

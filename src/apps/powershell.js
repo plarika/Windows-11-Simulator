@@ -18,7 +18,20 @@ function runPowerShellCommand(raw,out){
   else if(c==="get-volume")r=state.disks.flatMap(d=>d.partitions.filter(p=>p.letter).map(p=>`${p.letter.padEnd(4)} ${p.fs.padEnd(7)} ${p.name.padEnd(18)} ${p.size} GB`)).join("\n");
   else if(c==="get-scheduledtask")r=state.scheduledTasks.map(t=>`${t.enabled?"Ready":"Disabled"}  ${t.name}`).join("\n");
   else if(c==="get-netipconfiguration")r=`InterfaceAlias : Wi-Fi\nIPv4Address    : 192.168.56.101\nIPv4DefaultGateway : 192.168.56.1\nNetProfile.Name: ${state.wifiNetworks.find(n=>n.connected)?.ssid||"Disconnected"}\n(Simulado)`;
-  else if(c==="start-process"){const name=(args[0]||"").toLowerCase().replace(/\.exe$/,""),map={notepad:"notepad",calc:"calc",explorer:"explorer",powershell:"powershell",msedge:"edge",taskmgr:"taskmanager",regedit:"registry"};if(map[name]){openApp(map[name]);r="Processo virtual iniciado."}else r="Processo não encontrado no simulador."}
+  else if(c==="start-process"){
+    const target=args.join(" ");
+    if(globalThis.Win11Shell?.canOpen?.(target)){
+      try{
+        const opened=Win11Shell.open(target,{source:"powershell-start-process"});
+        if(opened?.then)opened.catch(err=>notify("PowerShell",err?.message||"Falha ao abrir intent."));
+        r="Intent virtual iniciado pelo Windows Shell.";
+      }catch(err){r=err?.message||"Não foi possível abrir o intent."}
+    }else{
+      const name=(args[0]||"").toLowerCase().replace(/\.exe$/,""),
+        map={notepad:"notepad",calc:"calc",explorer:"explorer",powershell:"powershell",msedge:"edge",taskmgr:"taskmanager",regedit:"registry"};
+      if(map[name]){openApp(map[name]);r="Processo virtual iniciado."}else r="Processo não encontrado no simulador."
+    }
+  }
   else if(c==="clear-host"||c==="cls"){out.innerHTML="";return}
   else r=`${verb}: o termo não é reconhecido como cmdlet virtual.`;
   psWrite(out,r);

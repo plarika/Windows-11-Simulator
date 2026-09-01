@@ -2,6 +2,13 @@
 /* ---------- Run / Terminal integration ---------- */
 function executeRun(){
   const raw=$("#run-input").value.trim(),cmd=raw.toLowerCase();
+  if(globalThis.Win11Shell?.canOpen?.(raw)){
+    try{
+      const result=Win11Shell.open(raw,{source:"run"});
+      if(result?.then)result.catch(err=>notify("Executar",err?.message||"Não foi possível abrir o intent."));
+      closeRun();return;
+    }catch(err){notify("Executar",err?.message||"Não foi possível abrir o intent.");return}
+  }
   if(/^https?:\/\//i.test(raw)&&globalThis.Win11ProtocolRegistry){
     try{Win11ProtocolRegistry.open(raw);closeRun();return}catch(err){notify("Executar",err?.message||"Não foi possível abrir o URL.");return}
   }
@@ -25,7 +32,13 @@ function runVirtualCommand(raw,out){
   const launch={notepad:"notepad",calc:"calc",explorer:"explorer",taskmgr:"taskmanager",control:"controlpanel",regedit:"registry","devmgmt.msc":"devicemanager","eventvwr.msc":"eventviewer","services.msc":"services","diskmgmt.msc":"diskmgmt","taskschd.msc":"taskscheduler",msinfo32:"systeminfo",resmon:"resmon",powershell:"powershell",camera:"camera",soundrecorder:"soundrecorder",snippingtool:"snipping",msedge:"edge",mstsc:"remotedesktop",optionalfeatures:"optionalfeatures"};
   if(command==="start"&&args[0]){
     const target=args.join(" ");
-    if(/^https?:\/\//i.test(target)&&globalThis.Win11ProtocolRegistry){
+    if(globalThis.Win11Shell?.canOpen?.(target)){
+      try{
+        const opened=Win11Shell.open(target,{source:"terminal-start"});
+        if(opened?.then)opened.catch(err=>notify("Terminal",err?.message||"Falha ao abrir intent."));
+        r="Intent virtual encaminhado pelo Windows Shell.";
+      }catch(err){r=err?.message||"Não foi possível abrir o intent."}
+    }else if(/^https?:\/\//i.test(target)&&globalThis.Win11ProtocolRegistry){
       try{Win11ProtocolRegistry.open(target);r="URL aberto com a aplicação predefinida."}catch(err){r=err?.message||"Não foi possível abrir o URL."}
     }else{
       const x=launch[args[0].toLowerCase()]||args[0].toLowerCase();

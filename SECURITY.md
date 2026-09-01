@@ -265,3 +265,19 @@ A reconciliação V9.8.7 não executa resets. Reaplica apenas Personalização, 
 Os aliases `.htm` e `.jpeg` foram alinhados com a registry V9.8.5 para impedir que bridges antigas apontem para handlers diferentes dos resolvidos por `Win11FileAssociations`.
 
 O histórico de saúde é exclusivamente em memória e limitado a 20 entradas. Os eventos `settings:reconciled` e `system-health:reconciled` transportam apenas revisão, contagens, score, origem textual limitada e nomes internos de ações de reconciliação.
+
+## App Lifecycle & System Shell V9.9.0
+
+A V9.9.0 introduz um router interno de intents, mas não adiciona capacidade de executar comandos do host. `Win11Shell` só resolve tipos explicitamente allowlisted: aplicações internas, páginas conhecidas de `ms-settings:`, destinos `shell:` virtuais, HTTP/HTTPS e paths já existentes no filesystem virtual do perfil.
+
+Paths virtuais são normalizados para o namespace `C:/...` do simulador. Segmentos relativos `.` e `..`, strings vazias, NUL e paths fora deste namespace são rejeitados. O router não converte paths virtuais em paths Windows reais e não recebe File System Access handles.
+
+URLs continuam limitados a HTTP/HTTPS e são entregues a `Win11ProtocolRegistry`. Schemes como `javascript:`, `data:`, `file:` real, `ftp:` e outros não allowlisted não são executados pelo router.
+
+Ficheiros virtuais são abertos através da cadeia já auditada `Win11DefaultApps` + `openFile`. O router não lê nem serializa o conteúdo do ficheiro para o seu histórico. O histórico de intents guarda apenas tipo, origem, aplicação resolvida, scheme HTTP/HTTPS e uma classificação genérica do destino de pasta.
+
+`Win11AppLifecycle` observa apenas nós DOM `.window` e mudanças de classe/`data-desktop` dentro de `#window-layer`. Os eventos contêm identificador efémero da janela, app interna, PID virtual, desktop virtual e flags de estado. Não incluem credenciais, ficheiros, clipboard, localização, permissões do browser ou dados do host.
+
+Os históricos de intents e lifecycle existem exclusivamente em memória e estão limitados a 60 e 100 entradas respetivamente. Não são gravados no perfil nem enviados para serviços externos.
+
+Executar, Terminal e PowerShell virtual continuam sem acesso ao shell do sistema operativo. `start` e `Start-Process` usam `Win11Shell` apenas quando o argumento corresponde a um intent suportado; os restantes comandos mantêm o comportamento virtual anterior.

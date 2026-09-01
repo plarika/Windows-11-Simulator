@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.8.7";
+const CACHE_NAME="win11-simulator-v9.9.0";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -62,7 +62,7 @@ const PRECACHE=[
   "./src/apps/task-scheduler.js?v=8.1.0",
   "./src/apps/system-info.js?v=8.1.0",
   "./src/apps/resource-monitor.js?v=8.1.0",
-  "./src/apps/powershell.js?v=8.1.0",
+  "./src/apps/powershell.js?v=9.9.0",
   "./src/apps/optional-features.js?v=8.1.0",
   "./src/apps/backup-recovery.js?v=8.1.0",
   "./src/apps/sticky-notes.js?v=8.1.0",
@@ -70,7 +70,7 @@ const PRECACHE=[
   "./src/apps/remote-desktop.js?v=8.1.0",
   "./src/apps/sound-recorder.js?v=8.1.0",
   "./src/apps/get-help.js?v=8.1.0",
-  "./src/apps/shell-integration.js?v=9.8.5",
+  "./src/apps/shell-integration.js?v=9.9.0",
   "./src/apps/search-v5.js?v=8.1.0",
   "./src/features/realism-v62.js?v=8.1.0",
   "./src/features/app-realism-v63.js?v=8.1.0",
@@ -115,6 +115,7 @@ const PRECACHE=[
 "./src/features/apps-defaults-v985.js?v=9.8.5",
 "./src/features/storage-v986.js?v=9.8.6",
 "./src/features/system-health-v987.js?v=9.8.7",
+"./src/features/shell-intents-v990.js?v=9.9.0",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
   "./src/core/boot.js?v=8.1.0",
   "./icons/icon-192.png",

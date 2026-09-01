@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.8.7 System Integration & Hardening** — diagnóstico central das integrações V9.8, reconciliação segura entre Settings e bridges legadas, reparação idempotente e export técnico agregado.
+**V9.9.0 App Lifecycle & System Shell** — router central de intents/deep links, integração Run/Terminal/PowerShell, abertura por apps predefinidas e lifecycle realista das janelas virtuais.
 
 ## Funcionalidades
 
@@ -821,3 +821,29 @@ Primeiro passo de integração com funções reais do dispositivo:
 - reconciliação automática de boot é segura e write-on-change
 - Browser audit testa deteção de divergência, reparação de aliases, imutabilidade do Settings canónico, eventos e idempotência
 - service worker/cache atualizado para `win11-simulator-v9.8.7`
+
+## V9.9.0 App Lifecycle & System Shell
+
+- nova API central `Win11Shell`
+- nova API `Win11AppLifecycle` para observar ciclo de vida das janelas virtuais
+- router único de intents usado por Executar, Terminal e PowerShell
+- deep links `ms-settings:` encaminham diretamente para páginas reais das Definições do simulador
+- rotas suportadas incluem Sistema, Armazenamento, Integridade, Bluetooth, Rede, Personalização, Aplicações, Explorador, Contas, Hora/idioma, Jogos, Acessibilidade, Privacidade e Windows Update
+- `ms-settings:defaultapps` e `ms-settings:appsfeatures` abrem a página Aplicações
+- `shell:ThisPC`, `shell:Downloads`, `shell:Documents`, `shell:Pictures`, `shell:Music`, `shell:Videos`, `shell:OneDrive` e `shell:RecycleBinFolder` são resolvidos por allowlist
+- `shell:AppsFolder` encaminha para Aplicações nas Definições
+- intents `app:<id>` só podem iniciar aplicações presentes em `APPS`
+- paths virtuais `C:/...` podem abrir pastas ou ficheiros existentes no filesystem virtual
+- ficheiros virtuais usam `Win11DefaultApps`/`openFile`, preservando as associações V9.8.5
+- paths com `..` ou `.` são rejeitados; não existe resolução para paths do host
+- URLs ficam limitados a HTTP/HTTPS e continuam a passar por `Win11ProtocolRegistry`
+- `javascript:`, schemes desconhecidos e páginas `ms-settings` não allowlisted são rejeitados
+- Executar aceita diretamente `ms-settings:storage`, `shell:Downloads`, `app:calc`, URLs HTTP/HTTPS e paths virtuais suportados
+- Terminal `start ...` usa o mesmo router
+- PowerShell `Start-Process ...` usa o mesmo router
+- `Win11AppLifecycle` observa criação, ativação, minimizar, restaurar, maximizar, mudança de desktop e fecho de janelas
+- eventos de lifecycle são publicados no `Win11SystemBus` como `app:launched`, `app:activated`, `app:minimized`, `app:restored`, `app:maximized`, `app:unmaximized`, `app:moved-desktop` e `app:closed`
+- histórico de intents limitado a 60 entradas e histórico de lifecycle limitado a 100 entradas, ambos apenas em memória
+- o histórico técnico não guarda nomes de ficheiros nem conteúdo dos ficheiros virtuais
+- browser audit valida deep links, rotas shell, rejeição de traversal/schemes inseguros, associação de ficheiros, Run/Terminal/PowerShell e transições reais de lifecycle
+- service worker/cache atualizado para `win11-simulator-v9.9.0`
