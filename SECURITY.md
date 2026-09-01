@@ -365,3 +365,19 @@ O diagnóstico mostrado no overlay e em Definições contém apenas classificaç
 O motor `Win11BackgroundEngine` é pausado através da sua API pública existente. Safe Mode não termina processos do host nem interfere com tarefas do Windows real.
 
 Os testes dinâmicos da V9.9.5 preservam o estado anterior de Restore/Recovery, suspendem a captura durante as mudanças de janelas, validam a política do shell e restauram a configuração anterior antes de continuar a suite.
+
+## Edge Google & YouTube Compatibility V9.9.6
+
+A compatibilidade desta versão não contorna políticas de segurança dos sites. O simulador continua sujeito a Content-Security-Policy, X-Frame-Options e restantes restrições impostas por Google, YouTube e pelo navegador.
+
+O Google incorporado usa `igu=1` e solicita `newwindow=0` para favorecer navegação no mesmo iframe quando permitido. A opção de abrir o Google completo continua a usar o browser real e remove o parâmetro específico de incorporação.
+
+Links YouTube diretos são transformados apenas em rotas internas validadas e em URLs oficiais `https://www.youtube-nocookie.com/embed/...`. IDs de vídeo aceitam exclusivamente o formato seguro de 11 caracteres; IDs de playlist são limitados a caracteres alfanuméricos, hífen e underscore e a um comprimento máximo definido.
+
+O player YouTube está dentro de um iframe sandboxed. Não recebe `allow-top-navigation`, não executa código do host, não recebe credenciais do simulador e não usa proxy, API key ou serviço de bypass. Permissões multimédia são explicitamente limitadas às necessárias para o player incorporado.
+
+A pesquisa completa do YouTube não é extraída nem contornada. Sem uma API oficial configurada, o simulador oferece apenas o fallback explícito para o site real.
+
+Domínios Google regionais são reconhecidos por uma allowlist/padrão limitado de host; isto não relaxa as regras para hosts arbitrários.
+
+O hotfix não lê histórico do browser anfitrião, cookies externos, tokens, credenciais, clipboard, ficheiros reais ou dados de conta Google/YouTube. O histórico guardado continua a ser apenas o histórico virtual já existente no perfil do simulador.

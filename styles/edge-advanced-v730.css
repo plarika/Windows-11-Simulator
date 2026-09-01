@@ -136,3 +136,63 @@
   .edge-download-add .sys-button{width:100%}
   .edge-setting-row{align-items:flex-start}
 }
+
+/* V9.9.6 — Google & YouTube compatibility */
+.edge-shortcut-icon.youtube{background:#ff0033;color:#fff}
+.edge-youtube-v996{
+  height:100%;min-height:0;box-sizing:border-box;overflow:auto;padding:16px;
+  background:#f7f9fb;color:#222a31
+}
+.edge-youtube-head-v996{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px
+}
+.edge-youtube-brand-v996{display:flex;align-items:center;gap:9px}
+.edge-youtube-brand-v996>span{
+  display:grid;place-items:center;width:34px;height:26px;border-radius:8px;background:#ff0033;color:#fff;
+  font-size:14px;line-height:1
+}
+.edge-youtube-brand-v996>div{display:grid;gap:1px}
+.edge-youtube-brand-v996 strong{font-size:14px}
+.edge-youtube-brand-v996 small{font-size:8px;color:#727d86}
+.edge-youtube-actions-v996,.edge-youtube-welcome-actions-v996{display:flex;gap:7px;flex-wrap:wrap}
+.edge-youtube-open-v996{display:flex;gap:8px;margin-bottom:12px}
+.edge-youtube-open-v996 input{
+  flex:1;min-width:0;height:36px;box-sizing:border-box;border:1px solid #cbd4db;border-radius:8px;
+  padding:0 10px;background:#fff;color:#20272d
+}
+.edge-youtube-player-shell-v996{
+  display:grid;gap:7px;max-width:1120px;margin:0 auto
+}
+.edge-youtube-player-v996{
+  display:block;width:100%;aspect-ratio:16/9;min-height:260px;border:0;border-radius:12px;background:#000;
+  box-shadow:0 8px 28px rgba(0,0,0,.12)
+}
+.edge-youtube-note-v996{font-size:8px;color:#727d86;text-align:center}
+.edge-youtube-welcome-v996{
+  min-height:320px;display:grid;place-items:center;align-content:center;gap:10px;text-align:center;
+  max-width:760px;margin:0 auto;padding:22px;box-sizing:border-box;border:1px solid #e0e6ea;border-radius:14px;
+  background:#fff
+}
+.edge-youtube-logo-v996{
+  display:grid;place-items:center;width:66px;height:46px;border-radius:13px;background:#ff0033;color:#fff;font-size:25px
+}
+.edge-youtube-welcome-v996 h2{margin:0;font-size:22px}
+.edge-youtube-welcome-v996 p{max-width:620px;margin:0;color:#66717a;font-size:10px;line-height:1.5}
+.edge-youtube-welcome-v996>small{max-width:620px;color:#7a858e;font-size:8px;line-height:1.45}
+.edge-youtube-query-v996{
+  max-width:100%;padding:7px 10px;border-radius:8px;background:#f0f3f5;color:#3c4650;font-size:9px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+#app.theme-dark .edge-youtube-v996{background:#202329;color:#eff2f4}
+#app.theme-dark .edge-youtube-brand-v996 small,#app.theme-dark .edge-youtube-note-v996,
+#app.theme-dark .edge-youtube-welcome-v996 p,#app.theme-dark .edge-youtube-welcome-v996>small{color:#b3bcc4}
+#app.theme-dark .edge-youtube-open-v996 input{background:#292d33;color:#f2f4f6;border-color:#4b535b}
+#app.theme-dark .edge-youtube-welcome-v996{background:#292d33;border-color:#41484f}
+#app.theme-dark .edge-youtube-query-v996{background:#343a41;color:#dce2e6}
+@media(max-width:720px){
+  .edge-youtube-v996{padding:10px}
+  .edge-youtube-head-v996{align-items:flex-start;flex-direction:column}
+  .edge-youtube-open-v996{flex-direction:column}
+  .edge-youtube-open-v996 .sys-button{width:100%}
+  .edge-youtube-player-v996{min-height:190px}
+}

@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.5 Recovery UX & Safe Mode** — escolha visual após interrupção, Modo de Segurança virtual com apps essenciais, preservação do snapshot e diagnóstico de recuperação em Definições > Contas.
+**V9.9.6 Edge Google & YouTube Compatibility** — Google com navegação same-frame quando permitida, suporte a domínios regionais e player YouTube interno para vídeos, Shorts e playlists.
 
 ## Funcionalidades
 
@@ -977,3 +977,34 @@ Primeiro passo de integração com funções reais do dispositivo:
 - novas capabilities: `recovery-choice-ui`, `virtual-safe-mode`, `safe-mode-launch-policy`, `safe-mode-background-pause`, `safe-mode-snapshot-preservation`, `safe-mode-session-resume`, `safe-mode-diagnostics` e `safe-mode-settings-center`
 - Browser audit valida overlay automático, allowlist, bloqueio de app, app essencial permitida, preservação do snapshot, UI, resume, saída e reconstrução da shell
 - service worker/cache atualizado para `win11-simulator-v9.9.5`
+
+## V9.9.6 Edge Google & YouTube Compatibility
+
+- Google incorporado passa a usar `igu=1&newwindow=0` para manter a navegação no mesmo conteúdo quando o próprio site o permite
+- suporte a domínios Google regionais, incluindo `google.pt`
+- o fallback “Abrir Google completo” continua disponível e remove o parâmetro `igu`
+- nova normalização segura de URLs YouTube:
+  - `youtube.com/watch?v=...`
+  - `youtu.be/...`
+  - `youtube.com/shorts/...`
+  - playlists
+  - rotas internas `edge://youtube`
+- IDs de vídeo e playlist são validados antes de construir o player
+- vídeos e playlists são reproduzidos dentro do Edge através do player oficial privacy-enhanced `youtube-nocookie.com`
+- nova página interna YouTube com abertura por URL, Shorts, playlist ou ID
+- atalho YouTube restaurado na página inicial do Edge sem remover Ouvir Música
+- pesquisa textual completa do YouTube mantém fallback para o site real, porque resultados completos exigem a API oficial/credenciais próprias
+- iframes Google e YouTube continuam sandboxed e sem `allow-top-navigation`
+- o player YouTube usa `allowfullscreen` sem declaração redundante de fullscreen no atributo `allow`
+- `Win11EdgeInternet.version` e `Win11EdgeAdvanced.version` atualizados para 9.9.6
+- `Win11RealFunctions.version` atualizado para 9.9.6 / step 44
+- novas capabilities:
+  - `edge-google-same-frame`
+  - `edge-google-regional`
+  - `edge-youtube-embed`
+  - `edge-youtube-shortlinks`
+  - `edge-youtube-playlists`
+  - `edge-youtube-internal-page`
+  - `edge-google-youtube-hotfix`
+- Browser audit valida Google, Google regional, vídeo YouTube, Shorts, youtu.be, playlist, sandbox e round-trip para URL externo
+- cache PWA atualizado para `win11-simulator-v9.9.6`

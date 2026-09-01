@@ -319,11 +319,12 @@
   });
 
   globalThis.Win11RealFunctions=Object.freeze({
-    version:VERSION,step:43,
+    version:"9.9.6",step:44,
     features:[...(globalThis.Win11RealFunctions?.features||[]),
       "recovery-choice-ui","virtual-safe-mode","safe-mode-launch-policy",
       "safe-mode-background-pause","safe-mode-snapshot-preservation",
-      "safe-mode-session-resume","safe-mode-diagnostics","safe-mode-settings-center"
+      "safe-mode-session-resume","safe-mode-diagnostics","safe-mode-settings-center",
+      "edge-google-youtube-hotfix"
     ].filter((v,i,a)=>a.indexOf(v)===i)
   });
 
