@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V10.1 Boot / Recovery** — arranque por fases com timeouts, deteção de boot incompleto, plano central de recuperação e falha recuperável com integração no Safe Mode.
+**V10.2 Desktop / Taskbar** — contratos V10 nativos para Desktop, Taskbar e pins do Start, com reconciliação automática, diagnóstico de integridade e reparação de botões órfãos/duplicados.
 
 ## Funcionalidades
 
@@ -36,7 +36,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 - V9.9.7 — baseline estável anterior à nova arquitetura
 - V10.0 — Fundação: Platform Kernel, registry, lifecycle, health e compatibilidade ✅
 - V10.1 — Boot / Recovery ✅
-- V10.2 — Desktop / Taskbar
+- V10.2 — Desktop / Taskbar ✅
 - V10.3 — Window Manager
 - V10.4 — Explorer
 - V10.5 — Apps

@@ -1,6 +1,6 @@
 "use strict";
-(async function bootWindowsSimulatorV101(){
-  const VERSION="10.1.0";
+(async function bootWindowsSimulatorV102(){
+  const VERSION="10.2.0";
   const BOOT_MIN_MS=650;
   const required=[
     "openApp","applyState","renderRecommended","buildExplorerV5",
@@ -30,7 +30,7 @@
         reason:text(title,96)
       });
     }catch{}
-    console.error("[V10.1]",title,detail||"",error||"");
+    console.error("[V10.2]",title,detail||"",error||"");
     if(!bootElement)return false;
     const safeAvailable=Boolean(globalThis.Win11SessionManager?.activeUserId&&globalThis.Win11SafeMode?.enter);
     bootElement.innerHTML=
@@ -50,16 +50,16 @@
     return false;
   }
   if(!platform||typeof platform.registerModule!=="function"){
-    renderBootFailure("Falha ao iniciar V10.1","Platform Foundation indisponível.");
+    renderBootFailure("Falha ao iniciar V10.2","Platform Foundation indisponível.");
     return;
   }
   if(!recovery||typeof recovery.runPhase!=="function"){
-    renderBootFailure("Falha ao iniciar V10.1","Boot Recovery Coordinator indisponível.");
+    renderBootFailure("Falha ao iniciar V10.2","Boot Recovery Coordinator indisponível.");
     return;
   }
 
   platform.attachSystemBus();
-  const bootMeta=recovery.beginBoot({source:"boot-v101"});
+  const bootMeta=recovery.beginBoot({source:"boot-v102"});
 
   function registerCompat(id,version,globals,provides=[]){
     try{
@@ -87,6 +87,10 @@
       registerCompat("shell-intents","9.9.0",["Win11Shell"],["shell-router"]);
       registerCompat("app-sessions","9.9.1",["Win11AppSessions"],["app-session-manager"]);
       registerCompat("window-manager","8.1.0",["Win11WindowManager"],["window-manager"]);
+      registerCompat("desktop-integration","8.1.0",["Win11DesktopIntegration"],["desktop-integration"]);
+      registerCompat("start-search","8.1.0",["Win11StartSearch"],["start-search"]);
+      registerCompat("taskbar-window","9.7.0",["Win11TaskbarWindowPro"],["taskbar-window"]);
+      registerCompat("taskbar-system","9.8.3",["Win11TaskbarSystem"],["taskbar-system"]);
       registerCompat("session-restore","9.9.5",["Win11SessionRestore"],["session-restore"]);
       registerCompat("session-recovery","9.9.4",["Win11SessionRecovery"],["session-recovery"]);
       registerCompat("safe-mode","9.9.5",["Win11SafeMode"],["safe-mode"]);
@@ -97,8 +101,8 @@
       if(!platform.inspect("boot")){
         platform.registerModule({
           id:"boot",version:VERSION,layer:"core",
-          requires:["platform","legacy-runtime","boot-recovery"],
-          provides:["boot-orchestrator-v2","recovery-aware-bootstrap"]
+          requires:["platform","legacy-runtime","boot-recovery","desktop-taskbar"],
+          provides:["boot-orchestrator-v2","recovery-aware-bootstrap","shell-surface-bootstrap"]
         });
       }
     },{timeoutMs:3000});
@@ -122,17 +126,20 @@
           windowCount:document.querySelectorAll(".window").length,
           currentDesktop:Number(state.currentDesktop)||0,
           platform:platform.diagnostics(),
-          bootRecovery:recovery.diagnostics()
+          bootRecovery:recovery.diagnostics(),
+          desktopTaskbar:globalThis.Win11DesktopTaskbar?.diagnostics?.()||null
         };
       }
     };
 
-    await runPhase("state","A preparar o ambiente...",()=>{
+    await runPhase("state","A preparar o ambiente...",async()=>{
       state.desktops=Array.isArray(state.desktops)&&state.desktops.length
         ?state.desktops:["Ambiente 1"];
       state.currentDesktop=clamp(Number(state.currentDesktop)||0,0,state.desktops.length-1);
       applyState();
       renderRecommended();
+      const shellModule=await platform.start("desktop-taskbar");
+      if(shellModule.status!=="ready")throw new Error("Desktop / Taskbar V10.2 não ficou pronto.");
       return true;
     },{timeoutMs:3000});
 
@@ -158,6 +165,7 @@
     await runPhase("shell","A iniciar o ambiente de trabalho...",async()=>{
       const remaining=Math.max(0,BOOT_MIN_MS-(Date.now()-bootStartedAt));
       if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
+      globalThis.Win11DesktopTaskbar?.reconcile?.({source:"boot-shell-v102"});
       if(!sessionHandled)document.getElementById("lock")?.classList.remove("hidden");
       document.getElementById("boot")?.classList.add("hidden");
       return true;
