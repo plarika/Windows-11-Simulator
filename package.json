@@ -1,9 +1,9 @@
 {
   "name": "windows-11-simulator",
-  "version": "10.2.0",
+  "version": "10.3.0",
   "private": true,
   "scripts": {
-    "test": "node tests/smoke.mjs && node tests/platform-v100.mjs && node tests/boot-recovery-v101.mjs && node tests/desktop-taskbar-v102.mjs"
+    "test": "node tests/smoke.mjs && node tests/platform-v100.mjs && node tests/boot-recovery-v101.mjs && node tests/desktop-taskbar-v102.mjs && node tests/window-manager-v103.mjs"
   },
   "engines": {
     "node": ">=20"

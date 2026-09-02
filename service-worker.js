@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v10.2.0";
+const CACHE_NAME="win11-simulator-v10.3.0";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -83,7 +83,7 @@ const PRECACHE=[
   "./src/features/real-files-v640.js?v=9.6.0",
   "./src/features/real-clipboard-v650.js?v=8.1.0",
   "./src/features/real-content-v660.js?v=8.1.0",
-  "./src/features/real-platform-v660.js?v=10.2.0",
+  "./src/features/real-platform-v660.js?v=10.3.0",
   "./src/features/local-accounts-v670.js?v=9.9.2",
   "./src/features/real-device-tools-v680.js?v=8.1.0",
   "./src/features/desktop-integration-v700.js?v=9.8.5",
@@ -128,9 +128,10 @@ const PRECACHE=[
 "./src/features/session-recovery-v994.js?v=9.9.4",
 "./src/features/safe-mode-v995.js?v=9.9.7",
   "./src/core/desktop-taskbar-v102.js?v=10.2.0",
+  "./src/core/window-manager-v103.js?v=10.3.0",
   "./src/core/boot-recovery-v101.js?v=10.1.0",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
-  "./src/core/boot.js?v=10.2.0",
+  "./src/core/boot.js?v=10.3.0",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
 ];

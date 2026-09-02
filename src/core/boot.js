@@ -1,6 +1,6 @@
 "use strict";
-(async function bootWindowsSimulatorV102(){
-  const VERSION="10.2.0";
+(async function bootWindowsSimulatorV103(){
+  const VERSION="10.3.0";
   const BOOT_MIN_MS=650;
   const required=[
     "openApp","applyState","renderRecommended","buildExplorerV5",
@@ -30,7 +30,7 @@
         reason:text(title,96)
       });
     }catch{}
-    console.error("[V10.2]",title,detail||"",error||"");
+    console.error("[V10.3]",title,detail||"",error||"");
     if(!bootElement)return false;
     const safeAvailable=Boolean(globalThis.Win11SessionManager?.activeUserId&&globalThis.Win11SafeMode?.enter);
     bootElement.innerHTML=
@@ -50,16 +50,16 @@
     return false;
   }
   if(!platform||typeof platform.registerModule!=="function"){
-    renderBootFailure("Falha ao iniciar V10.2","Platform Foundation indisponível.");
+    renderBootFailure("Falha ao iniciar V10.3","Platform Foundation indisponível.");
     return;
   }
   if(!recovery||typeof recovery.runPhase!=="function"){
-    renderBootFailure("Falha ao iniciar V10.2","Boot Recovery Coordinator indisponível.");
+    renderBootFailure("Falha ao iniciar V10.3","Boot Recovery Coordinator indisponível.");
     return;
   }
 
   platform.attachSystemBus();
-  const bootMeta=recovery.beginBoot({source:"boot-v102"});
+  const bootMeta=recovery.beginBoot({source:"boot-v103"});
 
   function registerCompat(id,version,globals,provides=[]){
     try{
@@ -101,8 +101,8 @@
       if(!platform.inspect("boot")){
         platform.registerModule({
           id:"boot",version:VERSION,layer:"core",
-          requires:["platform","legacy-runtime","boot-recovery","desktop-taskbar"],
-          provides:["boot-orchestrator-v2","recovery-aware-bootstrap","shell-surface-bootstrap"]
+          requires:["platform","legacy-runtime","boot-recovery","desktop-taskbar","window-manager-v10"],
+          provides:["boot-orchestrator-v2","recovery-aware-bootstrap","shell-surface-bootstrap","window-manager-bootstrap"]
         });
       }
     },{timeoutMs:3000});
@@ -127,7 +127,8 @@
           currentDesktop:Number(state.currentDesktop)||0,
           platform:platform.diagnostics(),
           bootRecovery:recovery.diagnostics(),
-          desktopTaskbar:globalThis.Win11DesktopTaskbar?.diagnostics?.()||null
+          desktopTaskbar:globalThis.Win11DesktopTaskbar?.diagnostics?.()||null,
+          windowManager:globalThis.Win11WindowManagerV10?.diagnostics?.()||null
         };
       }
     };
@@ -140,6 +141,8 @@
       renderRecommended();
       const shellModule=await platform.start("desktop-taskbar");
       if(shellModule.status!=="ready")throw new Error("Desktop / Taskbar V10.2 não ficou pronto.");
+      const windowModule=await platform.start("window-manager-v10");
+      if(windowModule.status!=="ready")throw new Error("Window Manager V10.3 não ficou pronto.");
       return true;
     },{timeoutMs:3000});
 
@@ -165,7 +168,8 @@
     await runPhase("shell","A iniciar o ambiente de trabalho...",async()=>{
       const remaining=Math.max(0,BOOT_MIN_MS-(Date.now()-bootStartedAt));
       if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
-      globalThis.Win11DesktopTaskbar?.reconcile?.({source:"boot-shell-v102"});
+      globalThis.Win11DesktopTaskbar?.reconcile?.({source:"boot-shell-v103"});
+      globalThis.Win11WindowManagerV10?.reconcile?.({source:"boot-shell-v103",placements:false});
       if(!sessionHandled)document.getElementById("lock")?.classList.remove("hidden");
       document.getElementById("boot")?.classList.add("hidden");
       return true;
