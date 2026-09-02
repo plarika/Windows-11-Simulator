@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V9.9.6 Edge Google & YouTube Compatibility** — Google com navegação same-frame quando permitida, suporte a domínios regionais e player YouTube interno para vídeos, Shorts e playlists.
+**V10.0 Foundation** — fundação de plataforma com registry de módulos, lifecycle, health centralizado, diagnósticos limitados e camada de compatibilidade para os subsistemas V9.x.
 
 ## Funcionalidades
 
@@ -22,7 +22,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 - Gestão de Discos, Serviços, Agendador de Tarefas, Monitor de Recursos e System Information
 - Clipboard, Widgets, OneDrive, Remote Desktop e outras áreas do Windows
 
-## Arquitetura V6
+## Arquitetura V10
 
 - `index.html` — shell da interface
 - `styles/` — estilos separados por geração
@@ -30,6 +30,21 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 - `src/features/` — funcionalidades de sistema
 - `src/apps/` — aplicações e ferramentas administrativas
 - `tools/migrate_v6.py` — migração reproduzível do build V5 para a estrutura modular
+
+## Roadmap V10 → V11
+
+- V9.9.7 — baseline estável anterior à nova arquitetura
+- V10.0 — Fundação: Platform Kernel, registry, lifecycle, health e compatibilidade
+- V10.1 — Boot / Recovery
+- V10.2 — Desktop / Taskbar
+- V10.3 — Window Manager
+- V10.4 — Explorer
+- V10.5 — Apps
+- V10.6 — Processes / Services
+- V10.7 — Security
+- V10.8 — Network / Devices
+- V10.9 — Intelligence
+- V11.0 — Sistema virtual integrado
 
 ## Segurança
 

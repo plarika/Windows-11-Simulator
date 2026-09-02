@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME="win11-simulator-v9.9.7";
+const CACHE_NAME="win11-simulator-v10.0.0";
 const PRECACHE=[
   "./",
   "./index.html",
@@ -56,6 +56,7 @@ const PRECACHE=[
 "./styles/session-recovery-v994.css?v=9.9.4",
 "./styles/safe-mode-v995.css?v=9.9.5",
   "./src/core/runtime.js?v=9.9.2",
+  "./src/core/platform-v100.js?v=10.0.0",
   "./src/features/system-v4.js?v=8.1.0",
   "./src/apps/v5-runtime.js?v=8.1.0",
   "./src/apps/explorer-v5.js?v=9.8.6",
@@ -81,7 +82,7 @@ const PRECACHE=[
   "./src/features/real-files-v640.js?v=9.6.0",
   "./src/features/real-clipboard-v650.js?v=8.1.0",
   "./src/features/real-content-v660.js?v=8.1.0",
-  "./src/features/real-platform-v660.js?v=8.1.0",
+  "./src/features/real-platform-v660.js?v=10.0.0",
   "./src/features/local-accounts-v670.js?v=9.9.2",
   "./src/features/real-device-tools-v680.js?v=8.1.0",
   "./src/features/desktop-integration-v700.js?v=9.8.5",
@@ -126,7 +127,7 @@ const PRECACHE=[
 "./src/features/session-recovery-v994.js?v=9.9.4",
 "./src/features/safe-mode-v995.js?v=9.9.7",
   "./src/workers/auth-crypto-v673.js?v=8.1.0",
-  "./src/core/boot.js?v=8.1.0",
+  "./src/core/boot.js?v=10.0.0",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
 ];

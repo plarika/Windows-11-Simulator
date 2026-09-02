@@ -146,7 +146,7 @@ check(realPlatform.includes("new Notification"), "Real browser notification inte
 check(realPlatform.includes("serviceWorker.register"), "PWA service worker registration present");
 check(realPlatform.includes("beforeinstallprompt"), "PWA install prompt integration present");
 check(index.includes("./manifest.webmanifest?v=8.1.0"), "PWA manifest loaded");
-check(index.includes("./src/features/real-platform-v660.js?v=8.1.0"), "Real platform module loaded");
+check(index.includes("./src/features/real-platform-v660.js?v=10.0.0"), "Real platform module loaded through V10.0 cache key");
 check(existsSync(resolve(root, "manifest.webmanifest")), "PWA manifest exists");
 check(existsSync(resolve(root, "service-worker.js")), "Service worker exists");
 check(existsSync(resolve(root, "icons/icon-192.png")), "PWA 192 icon exists");
@@ -719,7 +719,7 @@ check(readFileSync(resolve(root, "src/features/notifications-background-v770.js"
 check(storageCssV986.includes(".storage-category-v986") && storageCssV986.includes("#app.theme-dark .storage-hero-v986"), "Storage V9.8.6 responsive light/dark styles present");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.js?v=9.8.6"), "Storage V9.8.6 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("storage-v986.css?v=9.8.6"), "Storage V9.8.6 CSS precached");
-check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v9.9.7'), "PWA cache bumped to V9.9.7");
+check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes('win11-simulator-v10.0.0'), "PWA cache bumped to V10.0.0");
 check(index.includes("./src/apps/settings-v5.js?v=9.8.7") && index.includes("./src/apps/explorer-v5.js?v=9.8.6") && index.includes("./src/features/explorer-details-v840.js?v=9.8.6") && index.includes("./src/features/notifications-background-v770.js?v=9.8.6"), "V9.8.6 consumers remain cache-busted and Settings advances to V9.8.7");
 check(index.includes("./src/features/system-health-v987.js?v=9.8.7"), "System Health V9.8.7 module loaded");
 check(index.includes("./styles/system-health-v987.css?v=9.8.7"), "System Health V9.8.7 styles loaded");
@@ -962,7 +962,7 @@ check(!swV8.includes(".then(()=>self.skipWaiting())"), "Service Worker install d
 check(swV8.includes('event.data?.type==="SKIP_WAITING"' ) && swV8.includes("self.skipWaiting()"), "Service Worker accepts explicit SKIP_WAITING message");
 check(winExp.includes("data-update-card-v800"), "Windows Update Settings card present");
 check(winExp.includes("pageshow") && winExp.includes("visibilitychange") && winExp.includes("recoverShell"), "Shell recovery hooks present");
-check(readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8").includes('service-worker.js?v=8.1.0'), "PWA registration references V8.0 Service Worker");
+check(readFileSync(resolve(root, "src/features/real-platform-v660.js"), "utf8").includes('service-worker.js?v=10.0.0'), "PWA registration references V10.0 Service Worker");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows-experience-v800.js?v=8.1.0"), "Windows Experience V8.0 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("windows-experience-v800.css?v=8.1.0"), "Windows Experience V8.0 CSS precached");
 check(readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("globalThis.Win11SystemTray?.refresh") && readFileSync(resolve(root, "src/features/realism-v62.js"), "utf8").includes("notify&&!globalThis.Win11SystemTray"), "Legacy V6.2 tray delegates to modern System Tray");
@@ -1001,6 +1001,32 @@ check(startSearch.includes("Win11SearchV920?.collect") && startSearch.includes("
 check(readFileSync(resolve(root, "src/features/explorer-filesystem-v910.js"), "utf8").includes("Win11SearchV920?.invalidate"), "Filesystem invalidates Search V9.2 index");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("search-v920.js?v=9.2.0"), "Search V9.2 module precached");
 check(readFileSync(resolve(root, "service-worker.js"), "utf8").includes("search-v920.css?v=9.2.0"), "Search V9.2 CSS precached");
+
+const platformV100=readFileSync(resolve(root,"src/core/platform-v100.js"),"utf8");
+const bootV100=readFileSync(resolve(root,"src/core/boot.js"),"utf8");
+const packageV100=JSON.parse(readFileSync(resolve(root,"package.json"),"utf8"));
+const serviceWorkerV100=readFileSync(resolve(root,"service-worker.js"),"utf8");
+const browserAuditV100=readFileSync(resolve(root,"tools/browser_audit.mjs"),"utf8");
+check(index.includes("./src/core/platform-v100.js?v=10.0.0"),"Platform V10.0 module loaded");
+check(
+  index.indexOf("./src/core/runtime.js?v=9.9.2")<index.indexOf("./src/core/platform-v100.js?v=10.0.0") &&
+  index.indexOf("./src/core/platform-v100.js?v=10.0.0")<index.indexOf("./src/features/system-v4.js?v=8.1.0"),
+  "Platform V10.0 loads after runtime and before feature modules"
+);
+check(platformV100.includes('VERSION="10.0.0"')&&platformV100.includes("globalThis.Win11Platform"),"Platform V10.0 bridge present");
+check(platformV100.includes("registerModule")&&platformV100.includes("registerLegacy")&&platformV100.includes("setStatus"),"Platform registry and compatibility APIs present");
+check(platformV100.includes("async function start")&&platformV100.includes("async function stop"),"Platform lifecycle APIs present");
+check(platformV100.includes("EVENT_LIMIT=160")&&platformV100.includes("ERROR_LIMIT=40"),"Platform diagnostics are bounded");
+check(bootV100.includes('VERSION="10.0.0"')&&bootV100.includes("platform.attachSystemBus()"),"Boot V10.0 platform integration present");
+check(bootV100.includes('registerCompat("session-recovery"')&&bootV100.includes('registerCompat("safe-mode"'),"Boot V10.0 registers recovery compatibility");
+check(bootV100.includes("platform.diagnostics()"),"Simulator diagnostics include Platform V10.0 health");
+check(index.includes("./src/core/boot.js?v=10.0.0"),"Boot V10.0 module loaded");
+check(packageV100.version==="10.0.0","Package version advanced to V10.0.0");
+check(packageV100.scripts?.test?.includes("platform-v100.mjs"),"Platform V10.0 unit tests wired into npm test");
+check(serviceWorkerV100.includes('win11-simulator-v10.0.0'),"Service Worker cache is V10.0.0");
+check(serviceWorkerV100.includes("./src/core/platform-v100.js?v=10.0.0"),"Platform V10.0 module precached");
+check(browserAuditV100.includes('win11-simulator-v10.0.0')&&browserAuditV100.includes("Platform V10.0 compatibility registry"),"Browser audit covers V10.0 platform and cache");
+check(readFileSync(resolve(root,"README.md"),"utf8").includes("**V10.0 Foundation**"),"README advertises V10.0 Foundation");
 
 if (failed) process.exit(1);
 console.log("All smoke tests passed.");

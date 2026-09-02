@@ -83,7 +83,7 @@
   async function registerServiceWorker(){
     if(!("serviceWorker" in navigator))return {supported:false};
     try{
-      const registration=await navigator.serviceWorker.register("./service-worker.js?v=8.1.0",{scope:"./"});
+      const registration=await navigator.serviceWorker.register("./service-worker.js?v=10.0.0",{scope:"./"});
       swRegistration=registration;
       return {supported:true,registration};
     }catch(err){

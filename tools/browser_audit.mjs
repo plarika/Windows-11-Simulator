@@ -151,6 +151,10 @@ if(!(await waitFor(async()=>await evaluate(`document.readyState==="complete" && 
 await wait(250);
 
 await check("boot diagnostics",async()=>await evaluate(`typeof Win11SimDiagnostics==="object" && Win11SimDiagnostics.run().missingFunctions.length===0`));
+await check("Platform V10.0 bridge",async()=>await evaluate(`Win11Platform?.version==="10.0.0" && Win11Platform.inspect("platform")?.status==="ready"`));
+await check("Platform V10.0 boot ready",async()=>await waitFor(async()=>await evaluate(`Win11Platform?.inspect("boot")?.status==="ready"`),3000,100));
+await check("Platform V10.0 compatibility registry",async()=>await evaluate(`["legacy-runtime","system-bus","settings-core","session-recovery","safe-mode"].every(id=>Win11Platform?.inspect(id)?.status==="ready")`));
+await check("Platform V10.0 diagnostics bounded",async()=>await evaluate(`(()=>{const d=Win11Platform?.diagnostics?.();return !!d&&d.eventCount<=160&&d.recentEvents.length<=40&&d.recentErrors.length<=20})()`));
 await check("session manager available",async()=>await evaluate(`typeof Win11SessionManager==="object" && Win11SessionManager.version==="8.1.0"`));
 await check("first account setup visible",async()=>await evaluate(`!!document.querySelector("[data-new-user-name]") && !!document.querySelector("[data-create-user]")`));
 await check("first account setup bypasses lock staging",async()=>await evaluate(`!document.querySelector("#lock").classList.contains("lock-clock-stage-v800") && !document.querySelector("[data-hello-v800]")`));
@@ -1294,7 +1298,7 @@ await wait(80);
 await check("Real notification controls",async()=>await evaluate(`!!document.querySelector("#notification-list .real-notify-strip-v77 [data-real-notify]") && typeof RealPlatformBridge?.requestNotificationPermission==="function"`));
 await check("PWA manifest link",async()=>await evaluate(`document.querySelector('link[rel="manifest"]')?.getAttribute("href").includes("manifest.webmanifest")`));
 await check("PWA service worker registration",async()=>await evaluate(`(async()=>{if(!("serviceWorker" in navigator))return false;for(let i=0;i<20;i++){const r=await navigator.serviceWorker.getRegistration();if(r)return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
-await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v9.9.7"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
+await check("PWA cache populated",async()=>await evaluate(`(async()=>{for(let i=0;i<25;i++){const keys=await caches.keys();if(keys.includes("win11-simulator-v10.0.0"))return true;await new Promise(x=>setTimeout(x,100))}return false})()`));
 await evaluate(`(()=>{state.settingsPage="system";const settingsWin=document.querySelector('.window[data-app="settings"]');if(settingsWin){settingsWin.querySelector(".win-body").innerHTML="";settingsWin.querySelector(".win-body").appendChild(renderApp("settings",settingsWin));}return true})()`);
 await wait(140);
 await check("PWA settings card",async()=>await evaluate(`!!document.querySelector('.window[data-app="settings"] [data-pwa-card] [data-install-pwa]')`));
