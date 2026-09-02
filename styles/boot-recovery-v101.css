@@ -1,0 +1,40 @@
+.boot-recovery-panel-v101{
+  width:min(520px,calc(100vw - 32px));
+  margin:auto;
+  padding:24px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:16px;
+  background:rgba(18,24,36,.92);
+  color:#fff;
+  text-align:left;
+  box-shadow:0 18px 50px rgba(0,0,0,.35);
+}
+.boot-recovery-panel-v101 h2{
+  margin:0 0 10px;
+  font-size:22px;
+}
+.boot-recovery-panel-v101 p{
+  margin:0;
+  line-height:1.5;
+  color:rgba(255,255,255,.82);
+}
+.boot-recovery-actions-v101{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:20px 0 12px;
+}
+.boot-recovery-panel-v101 small{
+  display:block;
+  color:rgba(255,255,255,.65);
+  line-height:1.4;
+}
+.boot-recovery-panel-v101 button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+@media (max-width:560px){
+  .boot-recovery-panel-v101{padding:20px}
+  .boot-recovery-actions-v101{flex-direction:column}
+  .boot-recovery-actions-v101 button{width:100%}
+}

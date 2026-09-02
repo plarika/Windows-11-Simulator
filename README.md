@@ -8,7 +8,7 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 
 ## Versão atual
 
-**V10.0 Foundation** — fundação de plataforma com registry de módulos, lifecycle, health centralizado, diagnósticos limitados e camada de compatibilidade para os subsistemas V9.x.
+**V10.1 Boot / Recovery** — arranque por fases com timeouts, deteção de boot incompleto, plano central de recuperação e falha recuperável com integração no Safe Mode.
 
 ## Funcionalidades
 
@@ -34,8 +34,8 @@ Simulador interativo do Windows 11 executado integralmente no navegador.
 ## Roadmap V10 → V11
 
 - V9.9.7 — baseline estável anterior à nova arquitetura
-- V10.0 — Fundação: Platform Kernel, registry, lifecycle, health e compatibilidade
-- V10.1 — Boot / Recovery
+- V10.0 — Fundação: Platform Kernel, registry, lifecycle, health e compatibilidade ✅
+- V10.1 — Boot / Recovery ✅
 - V10.2 — Desktop / Taskbar
 - V10.3 — Window Manager
 - V10.4 — Explorer
